@@ -11,20 +11,18 @@ language\_servers: contains the tasks for each of the language servers configure
 
 ## Run:
 You can run each playbook separately:
-`ansible-playbook build.yml --ask-become-pass` to build from source and have the last version (estable) of neovim.
 
-`ansible-playbook config.yml --ask-become-pass` to have the config without the LS.
-This is good to reset the config to the last functional commit if you need to.
-
-`ansible-playbook language_servers.yml --ask-become-pass` to install all the language servers binaries.
-
-`ansible-playbook setup.yml --ask-become-pass` to run all the other playbooks.
+- `ansible-playbook build.yml --ask-become-pass` to build from source and have the last version (estable) of neovim.
+- `ansible-playbook config.yml --ask-become-pass` to have the config without the LS. This is good to reset the config to the last functional commit if you need to.
+- `ansible-playbook language_servers.yml --ask-become-pass` to install all the language servers binaries.
+- `ansible-playbook setup.yml --ask-become-pass` to run all the other playbooks.
 
 
 ## Troubleshooting:
 You can run:
-`ansible-playbook build.yml --ask-become-pass -t reset`
-`ansible-playbook config.yml --ask-become-pass -t reset`
+
+- `ansible-playbook build.yml --ask-become-pass -t reset`
+- `ansible-playbook config.yml --ask-become-pass -t reset`
 
 to delete the directories before doing the tasks if you encounter some problems.
 
