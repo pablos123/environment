@@ -1,0 +1,10 @@
+---
+
+- name: Install the language servers...
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Import PerlNavigator role...
+      ansible.builtin.import_role:
+        name: language_servers/perl_navigator.yml

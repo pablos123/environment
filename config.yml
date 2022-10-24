@@ -1,6 +1,6 @@
 ---
 
-- name: Install my neovim environment... 
+- name: Setup the config globally...
   hosts: localhost
   become: true
 
@@ -11,9 +11,21 @@
         name: '{{ pkg_name }}'
       loop:
         - xclip
-        - pip
       loop_control:
         loop_var: pkg_name
+
+    - name: Deleting directories...
+      ansible.builtin.file:
+        path: '{{ directory_name }}'
+        state: absent
+      loop:
+        - /etc/xdg/nvim/ # nvim config
+        - /opt/nvim/plugged/ # folder for plugins repos
+      loop_control:
+        loop_var: directory_name
+      tags:
+        - never
+        - reset
 
     - name: Deleting autoload dir...
       ansible.builtin.file:
@@ -39,6 +51,17 @@
     - name: Getting vim-plug...
       ansible.builtin.command:
         cmd: curl -fLo /etc/xdg/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    - name: Changing permissions...
+      ansible.builtin.file:
+        path: /etc/xdg/nvim/autoload/plug.vim
+        mode: '0666'
+
+    - name: Changing permissions...
+      ansible.builtin.file:
+        path: /etc/xdg/nvim/autoload/
+        state: directory
+        mode: '0777'
 
     - name: Installing plugins...
       ansible.builtin.command:

@@ -36,7 +36,7 @@
     loop_control:
       loop_var: directory_name
 
-  - name: Reset repository directory...
+  - name: Deleting repository directory...
     ansible.builtin.file:
       path: /opt/nvim/repos/neovim/
       state: absent
@@ -65,7 +65,5 @@
     register: nvim_version
 
   - name: NEOVIM SUCCESSFULLY INSTALLED...
-    ansible.builtin.debug: 
+    ansible.builtin.debug:
       msg: '{{ nvim_version.stdout }}'
-
-
