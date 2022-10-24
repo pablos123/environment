@@ -1,0 +1,25 @@
+---
+
+- name: Install dependencies...
+  ansible.builtin.apt:
+    name: '{{ pkg_name }}'
+  loop:
+    - nodejs
+    - yarn
+  loop_control:
+    loop_var: pkg_name
+
+- name: Cloning PerlNavigator repo...
+  ansible.builtin.git:
+    repo: https://github.com/bscan/PerlNavigator
+    path: /opt/nvim/repos/PerlNavigator/
+
+- name: Running npm run ci-all...
+  ansible.builtin.command:
+    cmd: npm run ci-all
+    chdir: /opt/nvim/repos/PerlNavigator/
+
+- name: Running tsc in server folder...
+  ansible.builtin.command:
+    cmd: tsc
+    chdir: /opt/nvim/repos/PerlNavigator/server/

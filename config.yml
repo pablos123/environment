@@ -3,6 +3,7 @@
 - name: Setup the config globally...
   hosts: localhost
   become: true
+  gather_facts: false
 
   tasks:
 
