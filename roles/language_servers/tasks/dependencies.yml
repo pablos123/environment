@@ -1,0 +1,9 @@
+---
+
+- name: Install nodejs for Ubuntu (along with npm)...
+  ansible.builtin.shell: curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - && sudo apt-get install -y nodejs
+  when: ansible_distribution == 'Linux Mint'
+
+- name: Install nodejs for Debian (along with npm)...
+  ansible.builtin.shell: curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
+  when: ansible_distribution == 'Debian'
