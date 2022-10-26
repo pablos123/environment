@@ -4,6 +4,14 @@
   ansible.builtin.command:
     cmd: npm install typescript -g
 
+- name: Deleting PerlNavigator repo...
+  ansible.builtin.file:
+    path: /opt/nvim/repos/PerlNavigator/
+    state: absent
+  tags:
+    - never
+    - reset
+
 - name: Cloning PerlNavigator repo...
   ansible.builtin.git:
     repo: https://github.com/bscan/PerlNavigator
