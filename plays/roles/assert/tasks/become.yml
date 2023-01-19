@@ -1,0 +1,23 @@
+---
+
+- name: Asserting sudo...
+  block:
+    - name: Testing sudo password...
+      ansible.builtin.command: cat /etc/sudoers 
+      become: true
+      no_log: true
+      register: grep_output
+
+    - name: Testing sudo password...
+      ansible.builtin.command: cat /etc/sudoers 
+
+    - name: Testing sudo password...
+      ansible.builtin.command: echo "Hello!"
+
+  rescue:
+    - name: Failing because you don't have super user privileges... 
+      ansible.builtin.fail:
+        msg: "You don't have sudo access, run the playbook with `--ask-become-pass` and type the sudo password"
+      when: grep_output.rc == 1
+
+...

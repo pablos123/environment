@@ -1,0 +1,24 @@
+---
+
+- name: Install or update neovim...
+  hosts: this_machine
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Become assertions...
+      ansible.builtin.include_role:
+        name: assert
+        tasks_from: become.yml
+      tags:
+        - always
+
+    - name: Including build tasks from nvim role...
+      ansible.builtin.include_role:
+        name: nvim
+        tasks_from: build.yml
+      tags:
+        - build
+
+...
