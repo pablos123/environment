@@ -3,7 +3,7 @@
 Why Ansible?
 
 Ansible is a programming language build for provisions, beyond that I wanted
-to have a nice 'self-documented' code to not forget the one billion things that
+to have a nice 'self-documented' code to not forget to do the one billion things that
 I have written in one billion different notes when I kill my OS and
 install it again, in general is Linux Mint but at least I try to keep it Debian 
 based at this point.
