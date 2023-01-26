@@ -2,7 +2,7 @@
 
 ## Playbooks
 
-All the playbooks for the setup are in the `play/` folder:
+All the playbooks for the setup are in the `plays/` folder:
 
 ### `plays/nvim_setup`
 
