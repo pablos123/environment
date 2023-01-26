@@ -8,17 +8,31 @@
   tasks:
 
     - name: Become assertions...
+      tags:
+        - always
       ansible.builtin.include_role:
         name: assert
         tasks_from: become.yml
-      tags:
-        - always
 
     - name: Including build tasks from nvim role...
+      tags:
+        - build
       ansible.builtin.include_role:
         name: nvim
         tasks_from: build.yml
+
+    # - name: Become assertions...
+    #   ansible.builtin.include_role:
+    #     name: assert
+    #     tasks_from: become.yml
+    #   tags:
+    #     - always
+
+    - name: Including config tasks from nvim role...
       tags:
-        - build
+        - config
+      ansible.builtin.include_role:
+        name: nvim
+        tasks_from: config.yml
 
 ...

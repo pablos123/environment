@@ -1,11 +1,11 @@
 ---
 
-- name: Setup the config globally...
-  hosts: localhost
+- name: Configure neovim...
+  tags:
+    - config
   become: true
-  gather_facts: false
-
-  tasks:
+  become_user: '{{ user }}'
+  block:
 
     - name: Install dependencies...
       ansible.builtin.apt:
@@ -15,55 +15,25 @@
       loop_control:
         loop_var: pkg_name
 
-    - name: Deleting directories...
-      ansible.builtin.file:
-        path: '{{ directory_name }}'
-        state: absent
-      loop:
-        - /etc/xdg/nvim/ # nvim config
-        - /opt/nvim/plugged/ # folder for plugins repos
-      loop_control:
-        loop_var: directory_name
-      tags:
-        - never
-        - reset
-
-    - name: Deleting autoload dir...
-      ansible.builtin.file:
-        path: /etc/xdg/nvim/autoload/ # autoload for vim-plug
-        state: absent
-
     - name: Making necessary directories...
       ansible.builtin.file:
-        path: '{{ directory_name }}'
+        path: '{{ user_home }}/.config/nvim'
         state: directory
         mode: '0755'
-      loop:
-        - /etc/xdg/nvim/ # nvim config
-        - /opt/nvim/plugged/ # folder for plugins repos
-      loop_control:
-        loop_var: directory_name
 
     - name: Cloning config repo...
       ansible.builtin.git:
-        repo: https://github.com/pablos123/nvim
-        dest: /etc/xdg/nvim/
+        repo: '{{ nvim_config_repo }}'
+        dest: '{{ user_home }}/.config/nvim'
 
-    - name: Getting vim-plug...
-      ansible.builtin.command:
-        cmd: curl -fLo /etc/xdg/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    - name: Sync all the plugins with packer...
+      ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-    - name: Changing permissions...
-      ansible.builtin.file:
-        path: /etc/xdg/nvim/autoload/plug.vim
-        mode: '0666'
+    - name: Install all the plugins with packer...
+      ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerInstall'
 
-    - name: Changing permissions...
-      ansible.builtin.file:
-        path: /etc/xdg/nvim/autoload/
-        state: directory
-        mode: '0777'
+    # # TODO: wtf
+    # - name: Sync again because luasnip...
+    #   ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-    - name: Installing plugins...
-      ansible.builtin.command:
-        cmd: nvim -c 'PlugInstall' -c 'qa'
+...

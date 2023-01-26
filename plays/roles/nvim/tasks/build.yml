@@ -1,6 +1,8 @@
 ---
 
 - name: Build neovim...
+  tags:
+    - build
   block:
     - name: Install dependencies...
       ansible.builtin.apt:
@@ -60,8 +62,5 @@
     - name: NEOVIM SUCCESSFULLY INSTALLED...
       ansible.builtin.debug:
         msg: '{{ nvim_version.stdout_lines }}'
-
-  tags:
-    - build
 
 ...
