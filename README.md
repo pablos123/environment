@@ -12,7 +12,7 @@ based at this point.
 
 All the playbooks for the setup are in the `plays/` folder:
 
-### `plays/nvim_setup`
+### `nvim_setup`
 
 Tags:
 - build: compile and install neovim latest version.
