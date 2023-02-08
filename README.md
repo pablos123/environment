@@ -15,10 +15,10 @@ All the playbooks for the setup are in the `plays/` folder:
 ### `nvim_setup`
 
 Tags:
-- build: compile and install neovim latest version.
-- config: install the configuration located in the specified repo for the specified user in the specified home.
+- `build`: compile and install neovim latest version.
+- `config`: install the configuration located in the specified repo for the specified user in the specified home.
 
-Run the playbooks with the --ask-become-pass option.
+Run the playbooks with the `--ask-become-pass` option.
 
 #### Build neovim
 
