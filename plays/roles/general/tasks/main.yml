@@ -64,10 +64,18 @@
         tar xf lazygit.tar.gz lazygit
         install lazygit /usr/local/bin
 
-    - name: Autopurging...
-      tags: purge
+    - name: Deleting dmenu cache... 
       ansible.builtin.shell: |
-        apt autopurge
+        cd {{ user_home }}/dotfiles/
+        stow *
+
+    - name: Autopurging...
+      ansible.builtin.file:
+        path: '{{ cache_file }}'
+        state: absent
+      loop:
+        - '{{ user_home }}/.cache/dmenu_run'
+        - '{{ user_home }}/dmenu_cache'
 
 - name: Configurations...
   become: true
