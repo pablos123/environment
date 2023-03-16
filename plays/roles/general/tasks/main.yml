@@ -10,10 +10,9 @@
         upgrade: yes
 
     - name: Installing apt packages...
+      tags: packages
       ansible.builtin.apt:
-        name: '{{ package }}'
-        state: present
-      loop:
+        pkg:
         - git
         - tree
         - htop
@@ -43,11 +42,16 @@
         - at
         - exa
         - kitty
-        - i3
-        - virtualbox
-        - vagrant
-      loop_control:
-        loop_var: package
+        - newsboat
+
+    - name: Installing flatpak packages...
+      tags: packages
+      community.general.flatpak:
+        name:
+          - org.telegram.desktop
+          - md.obsidian.Obsidian
+          - com.spotify.Client
+          - com.discordapp.Discord
 
     - name: Adding stable release of i3...
       ansible.builtin.shell: |
@@ -76,6 +80,8 @@
       loop:
         - '{{ user_home }}/.cache/dmenu_run'
         - '{{ user_home }}/dmenu_cache'
+      loop_control:
+        loop_var: cache_file
 
 - name: Configurations...
   become: true
