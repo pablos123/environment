@@ -39,6 +39,7 @@ ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t config --ask-becom
 Tags:
 - `upgrade`: upgrade the system 
 - `purge`: autopurge packages
+- `packages`: install apt, pip, cargo packages
 
 Run the playbooks with the `--ask-become-pass` option.
 
