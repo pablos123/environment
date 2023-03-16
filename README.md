@@ -46,4 +46,4 @@ Run the playbooks with the `--ask-become-pass` option.
 ansible-playbook -i inv/localhost.ini plays/general_setup.yml --skip-tags upgrade,purge --ask-become-pass
 ```
 
-I run shell comands in Ansible knowing is not recommended but I wanted to have a exact copy of the instructions provided by the creators of each program.
+I run shell comands in Ansible knowing is not recommended but I wanted to have an exact copy (or the most similar possible) of the instructions provided by the creators of each program.
