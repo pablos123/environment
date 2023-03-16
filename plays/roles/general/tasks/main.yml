@@ -1,0 +1,91 @@
+---
+
+- name: Configure my environment...
+  become: true
+  block:
+    - name: Updating cache...
+      tags: upgrade
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: yes
+
+    - name: Installing apt packages...
+      ansible.builtin.apt:
+        name: '{{ package }}'
+        state: present
+      loop:
+        - git
+        - tree
+        - htop
+        - cowsay
+        - lolcat
+        - compton
+        - sxiv
+        - mpv
+        - scrot
+        - mypaint
+        - kolourpaint
+        - tmux
+        - hsetroot
+        - cpanminus
+        - xclip
+        - keepassxc
+        - neofetch
+        - ripgrep
+        - jq
+        - stow
+        - luarocks
+        - python3-venv
+        - progress
+        - nnn
+        - sqlitebrowser
+        - bat
+        - at
+        - exa
+        - kitty
+        - i3
+        - virtualbox
+        - vagrant
+      loop_control:
+        loop_var: package
+
+    - name: Adding stable release of i3...
+      ansible.builtin.shell: |
+        /usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
+        apt install ./keyring.deb
+        echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list
+        apt update
+        apt install i3
+
+    - name: Installing lazygit...
+      ansible.builtin.shell: |
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+        tar xf lazygit.tar.gz lazygit
+        install lazygit /usr/local/bin
+
+- name: Configurations...
+  become: true
+  become_user: '{{ user }}'
+  block:
+    - name: Installing fonts...
+      ansible.builtin.shell: |
+        wget -O {{ user_home }}/.local/share/fonts/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip
+        unzip -o {{ user_home }}/.local/share/fonts/SourceCodePro.zip -d {{ user_home }}/.local/share/fonts/
+
+    - name: Cloning dotfiles...
+      ansible.builtin.git:
+        repo: '{{ dotfiles_repo }}'
+        dest: '{{ user_home }}/dotfiles'
+
+    - name: Cloning bin...
+      ansible.builtin.git:
+        repo: '{{ bin_repo }}'
+        dest: '{{ user_home }}/bin'
+
+    - name: Adding dotfiles...
+      ansible.builtin.shell: |
+        cd {{ user_home }}/dotfiles/
+        stow *
+
+...

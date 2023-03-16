@@ -1,0 +1,13 @@
+---
+
+user: pab
+
+user_home: /home/pab/
+
+dotfiles_repo: git@github.com:pablos123/dotfiles.git
+
+bin_repo: git@github.com:pablos123/bin.git
+
+nerdfont_version: v2.3.3
+
+...
