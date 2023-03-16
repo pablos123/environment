@@ -12,6 +12,8 @@ based at this point.
 
 All the playbooks for the setup are in the `plays/` folder:
 
+Pass `user`, `user_home` and other variables with the Ansible's -e option.
+
 ### `nvim_setup`
 
 Tags:
@@ -44,4 +46,4 @@ Run the playbooks with the `--ask-become-pass` option.
 ansible-playbook -i inv/localhost.ini plays/general_setup.yml --skip-tags upgrade,purge --ask-become-pass
 ```
 
-Pass `user`, `user_home` and other variables with the Ansible's -e option.
+I run shell comands in Ansible knowing is not recommended but I wanted to have a exact copy of the instructions provided by the creators of each program.
