@@ -10,4 +10,81 @@ bin_repo: git@github.com:pablos123/bin.git
 
 nerdfont_version: v2.3.3
 
+apt_packages:
+  # https://github.com/ogham/exa
+  - exa
+  # https://github.com/cmus/cmus
+  - cmus
+  # http://www.figlet.org/
+  - figlet
+  # https://github.com/pimutils/khal
+  - khal
+  # https://github.com/muesli/duf
+  - duf
+  # https://github.com/eradman/entr
+  - entr
+  # https://github.com/sharkdp/hyperfine
+  - hyperfine
+  # https://github.com/dduan/tre
+  - tre-command
+  # https://github.com/BurntSushi/ripgrep
+  - ripgrep
+  # https://github.com/stedolan/jq
+  - jq
+  # https://github.com/sharkdp/bat
+  - bat
+  # https://github.com/jarun/nnn
+  - nnn
+
+  - kitty
+
+  - git
+  - tree
+  - htop
+  - scrot
+  - at
+  - xclip
+  - xsel
+  - tmux
+  - stow
+  - progress
+  - newsboat
+
+  - cowsay
+  - lolcat
+  - compton
+  - neofetch
+  - hsetroot
+
+  - sxiv
+  - mpv
+
+  - mypaint
+  - kolourpaint
+
+  - sqlitebrowser
+  - keepassxc
+
+  - virtualbox
+  - vagrant
+  - cpanminus
+  - cargo
+  - golang
+  - luarocks
+  - python3-venv
+
+pip_packages:
+  # https://github.com/nvbn/thefuck
+  - thefuck
+  # https://github.com/sivel/speedtest-cli
+  - speedtest-cli
+  # https://github.com/tldr-pages/tldr
+  - tldr
+
+flatpak_packages:
+  - org.telegram.desktop
+  - md.obsidian.Obsidian
+  - com.spotify.Client
+  - com.discordapp.Discord
+
 ...

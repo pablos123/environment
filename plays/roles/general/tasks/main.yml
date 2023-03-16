@@ -12,46 +12,12 @@
     - name: Installing apt packages...
       tags: packages
       ansible.builtin.apt:
-        pkg:
-        - git
-        - tree
-        - htop
-        - cowsay
-        - lolcat
-        - compton
-        - sxiv
-        - mpv
-        - scrot
-        - mypaint
-        - kolourpaint
-        - tmux
-        - hsetroot
-        - cpanminus
-        - xclip
-        - keepassxc
-        - neofetch
-        - ripgrep
-        - jq
-        - stow
-        - luarocks
-        - python3-venv
-        - progress
-        - nnn
-        - sqlitebrowser
-        - bat
-        - at
-        - exa
-        - kitty
-        - newsboat
+        pkg: '{{ apt_packages }}'
 
     - name: Installing flatpak packages...
       tags: packages
       community.general.flatpak:
-        name:
-          - org.telegram.desktop
-          - md.obsidian.Obsidian
-          - com.spotify.Client
-          - com.discordapp.Discord
+        name: '{{ flatpak_packages }}'
 
     - name: Adding stable release of i3...
       ansible.builtin.shell: |
@@ -68,7 +34,7 @@
         tar xf lazygit.tar.gz lazygit
         install lazygit /usr/local/bin
 
-    - name: Deleting dmenu cache... 
+    - name: Deleting dmenu cache...
       ansible.builtin.shell: |
         cd {{ user_home }}/dotfiles/
         stow *
@@ -83,6 +49,45 @@
       loop_control:
         loop_var: cache_file
 
+- name: Installing packages but not with privileges...
+  become: true
+  become_user: '{{ user }}'
+  block:
+    - name: Installing pip packages...
+      ansible.builtin.pip:
+        name: '{{ pip_packages }}'
+
+    # https://github.com/chmln/sd
+    # Some invention that I made because the -y option is not available
+    # in this mint cargo version, just in case the version changes at some point
+    # that echo is not necessary I think because there is no prompt.
+    - name: Installing sd (better sed)...
+      community.general.cargo:
+        name: sd
+
+    # https://github.com/boyter/scc
+    - name: Linking sd...
+      ansible.builtin.shell: |
+        ln -sf {{ user_home }}/go/bin/scc {{ user_home }}/.local/bin/scc
+
+    # https://github.com/boyter/scc
+    - name: Installing scc (view lines of code)...
+      ansible.builtin.shell: |
+        go install github.com/boyter/scc/v3@latest
+
+    - name: Linking to .local/bin...
+      ansible.builtin.file:
+        src: '{{ bin.exe }}'
+        dest: '{{ user_home }}/.local/bin/{{ bin.link }}'
+        state: link
+      loop:
+        - exe: '{{ user_home }}/go/bin/scc'
+          link: scc
+        - exe: '{{ user_home }}/.cargo/bin/sd'
+          link: sd
+      loop_control:
+        loop_var: bin
+
 - name: Configurations...
   become: true
   become_user: '{{ user }}'
@@ -92,6 +97,7 @@
         wget -O {{ user_home }}/.local/share/fonts/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip
         unzip -o {{ user_home }}/.local/share/fonts/SourceCodePro.zip -d {{ user_home }}/.local/share/fonts/
 
+    # https://github.com/junegunn/fzf
     - name: Installing fzf...
       ansible.builtin.shell: |
         git clone --depth 1 https://github.com/junegunn/fzf.git {{ user_home }}/.fzf
