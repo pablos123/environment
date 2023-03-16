@@ -78,6 +78,11 @@
         wget -O {{ user_home }}/.local/share/fonts/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip
         unzip -o {{ user_home }}/.local/share/fonts/SourceCodePro.zip -d {{ user_home }}/.local/share/fonts/
 
+    - name: Installing fzf...
+      ansible.builtin.shell: |
+        git clone --depth 1 https://github.com/junegunn/fzf.git {{ user_home }}/.fzf
+        {{ user_home }}/.fzf/install
+
     - name: Cloning dotfiles...
       ansible.builtin.git:
         repo: '{{ dotfiles_repo }}'
