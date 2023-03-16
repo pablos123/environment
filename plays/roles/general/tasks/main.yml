@@ -54,14 +54,13 @@
   become_user: '{{ user }}'
   block:
     - name: Installing pip packages...
+      tags: packages
       ansible.builtin.pip:
         name: '{{ pip_packages }}'
 
     # https://github.com/chmln/sd
-    # Some invention that I made because the -y option is not available
-    # in this mint cargo version, just in case the version changes at some point
-    # that echo is not necessary I think because there is no prompt.
-    - name: Installing sd (better sed)...
+    - name: Installing cargo packages...
+      tags: packages
       community.general.cargo:
         name: sd
 
