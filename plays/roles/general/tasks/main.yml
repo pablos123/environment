@@ -83,15 +83,15 @@
         git clone --depth 1 https://github.com/junegunn/fzf.git {{ user_home }}/.fzf
         {{ user_home }}/.fzf/install
 
-    - name: Cloning dotfiles...
-      ansible.builtin.git:
-        repo: '{{ dotfiles_repo }}'
-        dest: '{{ user_home }}/dotfiles'
-
     - name: Cloning bin...
       ansible.builtin.git:
         repo: '{{ bin_repo }}'
         dest: '{{ user_home }}/bin'
+
+    - name: Cloning dotfiles...
+      ansible.builtin.git:
+        repo: '{{ dotfiles_repo }}'
+        dest: '{{ user_home }}/dotfiles'
 
     - name: Adding dotfiles...
       ansible.builtin.shell: |
