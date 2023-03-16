@@ -29,7 +29,19 @@ ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t build --ask-become
 #### Configure neovim
 
 ```terminal
-ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t config --ask-become-pass -e user=<user> -e user_home=<user_home_path> -e nvim_config_repo=<repo_url>
+ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t config --ask-become-pass
 ```
 
-or change the defaults to change the variables...
+### `general_setup`
+
+Tags:
+- `upgrade`: upgrade the system 
+- `purge`: autopurge packages
+
+Run the playbooks with the `--ask-become-pass` option.
+
+```terminal
+ansible-playbook -i inv/localhost.ini plays/general_setup.yml --skip-tags upgrade,purge --ask-become-pass
+```
+
+Pass `user`, `user_home` and other variables with the Ansible's -e option.

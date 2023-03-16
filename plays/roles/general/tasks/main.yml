@@ -64,6 +64,11 @@
         tar xf lazygit.tar.gz lazygit
         install lazygit /usr/local/bin
 
+    - name: Autopurging...
+      tags: purge
+      ansible.builtin.shell: |
+        apt autopurge
+
 - name: Configurations...
   become: true
   become_user: '{{ user }}'
