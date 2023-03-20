@@ -58,6 +58,7 @@ apt_packages:
 
   - sxiv
   - mpv
+  - zathura
 
   - mypaint
   - kolourpaint
