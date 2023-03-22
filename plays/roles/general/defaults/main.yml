@@ -16,8 +16,6 @@ apt_packages:
   # https://github.com/cmus/cmus
   - cmus
   # http://www.figlet.org/
-  - figlet
-  # https://github.com/pimutils/khal
   - khal
   # https://github.com/muesli/duf
   - duf
@@ -36,6 +34,7 @@ apt_packages:
   # https://github.com/jarun/nnn
   - nnn
 
+  # https://sw.kovidgoyal.net/kitty/
   - kitty
 
   - git
@@ -49,11 +48,18 @@ apt_packages:
   - stow
   - progress
   - newsboat
+  - libnotify-bin
+  - anacron
+  - imagemagick
 
   - cowsay
   - lolcat
-  - compton
+  - fortune-mod
+  - figlet
+  # https://github.com/pimutils/khal
   - neofetch
+
+  - compton
   - hsetroot
 
   - sxiv
