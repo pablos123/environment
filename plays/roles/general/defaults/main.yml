@@ -8,6 +8,8 @@ dotfiles_repo: git@github.com:pablos123/dotfiles.git
 
 bin_repo: git@github.com:pablos123/bin.git
 
+wallpapers_repo: git@github.com:pablos123/.wallpapers.git
+
 nerdfont_version: v2.3.3
 
 apt_packages:
@@ -64,7 +66,11 @@ apt_packages:
 
   - sxiv
   - mpv
+  # pdf djvu viewer
   - zathura
+  - zathura-djvu
+  # chm viewer
+  - xchm
 
   - mypaint
   - kolourpaint
@@ -72,8 +78,6 @@ apt_packages:
   - sqlitebrowser
   - keepassxc
 
-  - virtualbox
-  - vagrant
   - cpanminus
   - cargo
   - golang
@@ -93,5 +97,9 @@ flatpak_packages:
   - md.obsidian.Obsidian
   - com.spotify.Client
   - com.discordapp.Discord
+
+cargo_packages:
+    # https://github.com/chmln/sd
+  - sd
 
 ...

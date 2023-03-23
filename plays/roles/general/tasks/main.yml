@@ -14,6 +14,13 @@
       ansible.builtin.apt:
         pkg: '{{ apt_packages }}'
 
+    - name: Installing virtualization packages...
+      tags: virtualization_packages
+      ansible.builtin.apt:
+        pkg:
+          - virtualbox
+          - vagrant
+
     - name: Installing flatpak packages...
       tags: packages
       community.general.flatpak:
@@ -35,11 +42,6 @@
         install lazygit /usr/local/bin
 
     - name: Deleting dmenu cache...
-      ansible.builtin.shell: |
-        cd {{ user_home }}/dotfiles/
-        stow *
-
-    - name: Autopurging...
       ansible.builtin.file:
         path: '{{ cache_file }}'
         state: absent
@@ -58,16 +60,10 @@
       ansible.builtin.pip:
         name: '{{ pip_packages }}'
 
-    # https://github.com/chmln/sd
     - name: Installing cargo packages...
       tags: packages
       community.general.cargo:
-        name: sd
-
-    # https://github.com/boyter/scc
-    - name: Linking sd...
-      ansible.builtin.shell: |
-        ln -sf {{ user_home }}/go/bin/scc {{ user_home }}/.local/bin/scc
+        name: '{{ cargo_packages }}'
 
     # https://github.com/boyter/scc
     - name: Installing scc (view lines of code)...
@@ -116,5 +112,15 @@
       ansible.builtin.shell: |
         cd {{ user_home }}/dotfiles/
         stow *
+
+    - name: Deleting .wallpapers...
+      ansible.builtin.file:
+        path: '{{ user_home }}/.wallpapers'
+        state: absent
+
+    - name: Dowloading wallpapers...
+      ansible.builtin.git:
+        repo: '{{ wallpapers_repo }}'
+        dest: '{{ user_home }}/.wallpapers'
 
 ...
