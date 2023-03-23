@@ -37,6 +37,7 @@ apt_packages:
   - nnn
 
   # https://sw.kovidgoyal.net/kitty/
+  # https://sw.kovidgoyal.net/kitty/conf/
   - kitty
 
   - git
