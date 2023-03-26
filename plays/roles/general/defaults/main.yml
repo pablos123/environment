@@ -102,5 +102,7 @@ flatpak_packages:
 cargo_packages:
     # https://github.com/chmln/sd
   - sd
+  # https://github.com/o2sh/onefetch
+  - onefetch
 
 ...
