@@ -102,6 +102,7 @@ flatpak_packages:
   - md.obsidian.Obsidian
   - com.spotify.Client
   - com.discordapp.Discord
+  - com.obsproject.Studio
 
 cargo_packages:
     # https://github.com/chmln/sd
