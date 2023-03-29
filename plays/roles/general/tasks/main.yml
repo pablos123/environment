@@ -80,6 +80,8 @@
           link: scc
         - exe: '{{ user_home }}/.cargo/bin/sd'
           link: sd
+        - exe: '{{ user_home }}/.cargo/bin/onefetch'
+          link: onefetch
       loop_control:
         loop_var: bin
 
@@ -118,7 +120,7 @@
         path: '{{ user_home }}/.wallpapers'
         state: absent
 
-    - name: Dowloading wallpapers...
+    - name: Dowloading .wallpapers...
       ansible.builtin.git:
         repo: '{{ wallpapers_repo }}'
         dest: '{{ user_home }}/.wallpapers'

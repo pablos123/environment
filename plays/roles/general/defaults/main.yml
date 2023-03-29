@@ -85,6 +85,10 @@ apt_packages:
   - luarocks
   - python3-venv
 
+  - ffmpeg
+  - x11-xserver-utils
+  - xdg-utils
+
 pip_packages:
   # https://github.com/nvbn/thefuck
   - thefuck
