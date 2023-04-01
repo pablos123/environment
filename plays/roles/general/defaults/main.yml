@@ -64,6 +64,7 @@ apt_packages:
 
   - compton
   - hsetroot
+  - gtk2-engines-murrine
 
   - sxiv
   - mpv
@@ -88,6 +89,20 @@ apt_packages:
   - ffmpeg
   - x11-xserver-utils
   - xdg-utils
+  - lightdm
+  - lightdm-gtk-greeter
+
+  # dunst dependencies
+  - libdbus-1-dev
+  - libx11-dev
+  - libxinerama-dev
+  - libxrandr-dev
+  - libxss-dev
+  - libglib2.0-dev
+  - libpango1.0-dev
+  - libgtk-3-dev
+  - libxdg-basedir-dev
+  - libnotify-dev
 
 pip_packages:
   # https://github.com/nvbn/thefuck

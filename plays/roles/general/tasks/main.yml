@@ -91,14 +91,52 @@
   block:
     - name: Installing fonts...
       ansible.builtin.shell: |
-        wget -O {{ user_home }}/.local/share/fonts/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip
-        unzip -o {{ user_home }}/.local/share/fonts/SourceCodePro.zip -d {{ user_home }}/.local/share/fonts/
+        wget -O "{{ user_home }}/.local/share/fonts/SourceCodePro.zip" "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip"
+        unzip -o "{{ user_home }}/.local/share/fonts/SourceCodePro.zip" -d "{{ user_home }}/.local/share/fonts/"
 
     # https://github.com/junegunn/fzf
     - name: Installing fzf...
       ansible.builtin.shell: |
-        git clone --depth 1 https://github.com/junegunn/fzf.git {{ user_home }}/.fzf
+        rm -rf "{{ user_home }}/.fzf"
+        git clone --depth 1 https://github.com/junegunn/fzf.git "{{ user_home }}/.fzf"
         {{ user_home }}/.fzf/install
+
+    # https://github.com/dunst-project/dunst
+    - name: Installing dunst...
+      ansible.builtin.shell: |
+        rm -rf "{{ user_home }}/.dunst"
+        git clone https://github.com/dunst-project/dunst.git "{{ user_home }}/.dunst"
+        cd {{ user_home }}.dunst
+        make
+        sudo make install
+
+    # https://github.com/sainnhe/capitaine-cursors
+    # https://wiki.archlinux.org/title/Cursor_themes (the wiki is not very good)
+    # The correct way to do it is what I do in that last cp command.
+    - name: Installing gtk cursor...
+      ansible.builtin.shell: |
+        mkdir -p "{{ user_home }}/.icons/default"
+        wget -O "{{ user_home }}/.icons/cursor.zip" "https://github.com/sainnhe/capitaine-cursors/releases/download/r5/Linux.zip"
+        unzip -o "{{ user_home }}/.icons/cursor.zip" -d "{{ user_home }}/.icons/"
+
+        cp -r "{{ user_home }}"/.icons/"Capitaine Cursors (Gruvbox)"/* "{{ user_home }}/.icons/default"
+        sudo ln -sf "{{ user_home }}/.icons/default/" "/usr/share/icons/default"
+
+    # https://github.com/SylEleuth/gruvbox-plus-icon-pack
+    - name: Installing gtk icons...
+      ansible.builtin.shell: |
+        mkdir -p "{{ user_home }}/.icons"
+        rm -rf "{{ user_home }}/.icons/gruvbox_icons"
+        git clone https://github.com/SylEleuth/gruvbox-plus-icon-pack "{{ user_home }}/.icons/gruvbox_icons"
+
+    # https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
+    - name: Installing gtk theme...
+      ansible.builtin.shell: |
+        mkdir -p "{{ user_home }}/.themes"
+        rm -rf "{{ user_home }}/.themes/gruvbox"
+        git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme "{{ user_home }}/.themes/gruvbox"
+        rm -rf "{{ user_home }}/.themes/Gruvbox-Dark-BL"
+        mv "{{ user_home }}/.themes/gruvbox/themes/Gruvbox-Dark-BL" "{{ user_home }}/.themes/"
 
     - name: Cloning bin...
       ansible.builtin.git:
