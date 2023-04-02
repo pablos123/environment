@@ -8,7 +8,8 @@ wget -O "$HOME/.icons/cursor.zip" "https://github.com/sainnhe/capitaine-cursors/
 unzip -o "$HOME/.icons/cursor.zip" -d "$HOME/.icons/"
 
 cp -r "$HOME/.icons/Capitaine Cursors (Gruvbox)"/* "$HOME/.icons/default"
-sudo ln -sf "$HOME/.icons/default/" "/usr/share/icons/default"
+# If the above is not enough maybe this solve the problem
+# sudo ln -sf "$HOME/.icons/default" "/usr/share/icons/default"
 
 # https://github.com/SylEleuth/gruvbox-plus-icon-pack
 mkdir -p "$HOME/.icons"

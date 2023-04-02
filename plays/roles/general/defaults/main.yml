@@ -31,8 +31,6 @@ repositories:
     dest: '{{ user_home }}/projects/lcc'
   - repo: git@github.com:pablos123/ctrl_tabs.git
     dest: '{{ user_home }}/projects/ctrl_tabs'
-  - repo: git@github.com:pablos123/count_tabs.git
-    dest: '{{ user_home }}/projects/count_tabs'
   - repo: git@github.com:pablos123/hello_world_bug.git
     dest: '{{ user_home }}/projects/hello_world_bug'
 
