@@ -33,6 +33,8 @@ repositories:
     dest: '{{ user_home }}/projects/ctrl_tabs'
   - repo: git@github.com:pablos123/hello_world_bug.git
     dest: '{{ user_home }}/projects/hello_world_bug'
+  - repo: git@github.com:pablos123/qr_screen_scanner.git
+    dest: '{{ user_home }}/projects/qr_screen_scanner'
 
     # Dowload more media:
     # Dowload $HOME/.wallpapers/
