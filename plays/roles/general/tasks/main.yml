@@ -55,6 +55,9 @@
     - name: Installing lazygit...
       ansible.builtin.script: ../scripts/lazygit.sh
 
+    - name: Installing ly...
+      ansible.builtin.script: ../scripts/ly.sh
+
     # Repositories
     - name: Creating projects directory...
       ansible.builtin.file:

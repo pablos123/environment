@@ -120,6 +120,11 @@ apt_packages:
   - x11-xserver-utils
   - xdg-utils
 
+  # ly build dependencies
+  - build-essential
+  - libpam0g-dev
+  - libxcb-xkb-dev
+
   # dunst build dependencies
   - libdbus-1-dev
   - libx11-dev
