@@ -63,7 +63,7 @@
       ansible.builtin.file:
         path: '{{ user_home }}/projects'
         state: directory
-        mode: '1755'
+        mode: '0755'
 
     - name: Deleting .wallpapers because I reset every commit...
       ansible.builtin.file:
