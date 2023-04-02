@@ -2,11 +2,7 @@
 
 - name: Install or update neovim...
   hosts: this_machine
-  become: true
-  gather_facts: false
-
   tasks:
-
     - name: Become assertions...
       tags:
         - always

@@ -1,46 +1,84 @@
 ---
 
-- name: Configure my environment...
+- name: Installing root packages...
   become: true
+  tags: packages
   block:
-    - name: Updating cache...
-      tags: upgrade
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: yes
-
     - name: Installing apt packages...
-      tags: packages
       ansible.builtin.apt:
         pkg: '{{ apt_packages }}'
 
     - name: Installing virtualization packages...
       tags: virtualization_packages
       ansible.builtin.apt:
-        pkg:
-          - virtualbox
-          - vagrant
+        pkg: '{{ virtualization_packages }}'
 
     - name: Installing flatpak packages...
-      tags: packages
       community.general.flatpak:
         name: '{{ flatpak_packages }}'
 
+- name: Installing no root packages...
+  become: true
+  become_user: '{{ user }}'
+  tags: packages
+  block:
+    - name: Installing pip packages...
+      ansible.builtin.pip:
+        name: '{{ pip_packages }}'
+
+    - name: Installing cargo packages...
+      community.general.cargo:
+        name: '{{ cargo_packages }}'
+
+    - name: Installing go packages...
+      ansible.builtin.shell: '{{ go_packages }}'
+
+- name: All the other stuff...
+  become: true
+  become_user: '{{ user }}'
+  block:
+    - name: Installing fonts...
+      ansible.builtin.script: ../scripts/fonts.sh
+
+    - name: Installing fzf...
+      ansible.builtin.script: ../scripts/fzf.sh
+
+    - name: Installing dunst...
+      ansible.builtin.script: ../scripts/dunst.sh
+
+    - name: Installing gtk cursor, icons, themes...
+      ansible.builtin.script: ../scripts/gtk.sh
+
     - name: Adding stable release of i3...
-      ansible.builtin.shell: |
-        /usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
-        apt install ./keyring.deb
-        echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list
-        apt update
-        apt install i3
+      ansible.builtin.script: ../scripts/i3.sh
 
     - name: Installing lazygit...
-      ansible.builtin.shell: |
-        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-        tar xf lazygit.tar.gz lazygit
-        install lazygit /usr/local/bin
+      ansible.builtin.script: ../scripts/lazygit.sh
 
+    # Repositories
+    - name: Creating projects directory...
+      ansible.builtin.file:
+        path: '{{ user_home }}/projects'
+        state: directory
+        mode: '1755'
+
+    - name: Deleting .wallpapers because I reset every commit...
+      ansible.builtin.file:
+        path: '{{ user_home }}/.wallpapers'
+        state: absent
+
+    - name: Cloning repositories...
+      ansible.builtin.git:
+        repo: '{{ repository.repo }}'
+        dest: '{{ repository.dest }}'
+      loop: '{{ repositories }}'
+      loop_control:
+        loop_var: repository
+
+    - name: Setting dotfiles...
+      ansible.builtin.script: ../scripts/dotfiles.sh
+
+    # Cleaning...
     - name: Deleting dmenu cache...
       ansible.builtin.file:
         path: '{{ cache_file }}'
@@ -50,117 +88,5 @@
         - '{{ user_home }}/dmenu_cache'
       loop_control:
         loop_var: cache_file
-
-- name: Installing packages but not with privileges...
-  become: true
-  become_user: '{{ user }}'
-  block:
-    - name: Installing pip packages...
-      tags: packages
-      ansible.builtin.pip:
-        name: '{{ pip_packages }}'
-
-    - name: Installing cargo packages...
-      tags: packages
-      community.general.cargo:
-        name: '{{ cargo_packages }}'
-
-    # https://github.com/boyter/scc
-    - name: Installing scc (view lines of code)...
-      ansible.builtin.shell: |
-        go install github.com/boyter/scc/v3@latest
-
-    - name: Linking to .local/bin...
-      ansible.builtin.file:
-        src: '{{ bin.exe }}'
-        dest: '{{ user_home }}/.local/bin/{{ bin.link }}'
-        state: link
-      loop:
-        - exe: '{{ user_home }}/go/bin/scc'
-          link: scc
-        - exe: '{{ user_home }}/.cargo/bin/sd'
-          link: sd
-        - exe: '{{ user_home }}/.cargo/bin/onefetch'
-          link: onefetch
-      loop_control:
-        loop_var: bin
-
-- name: Configurations...
-  become: true
-  become_user: '{{ user }}'
-  block:
-    - name: Installing fonts...
-      ansible.builtin.shell: |
-        wget -O "{{ user_home }}/.local/share/fonts/SourceCodePro.zip" "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerdfont_version }}/SourceCodePro.zip"
-        unzip -o "{{ user_home }}/.local/share/fonts/SourceCodePro.zip" -d "{{ user_home }}/.local/share/fonts/"
-
-    # https://github.com/junegunn/fzf
-    - name: Installing fzf...
-      ansible.builtin.shell: |
-        rm -rf "{{ user_home }}/.fzf"
-        git clone --depth 1 https://github.com/junegunn/fzf.git "{{ user_home }}/.fzf"
-        {{ user_home }}/.fzf/install
-
-    # https://github.com/dunst-project/dunst
-    - name: Installing dunst...
-      ansible.builtin.shell: |
-        rm -rf "{{ user_home }}/.dunst"
-        git clone https://github.com/dunst-project/dunst.git "{{ user_home }}/.dunst"
-        cd {{ user_home }}.dunst
-        make
-        sudo make install
-
-    # https://github.com/sainnhe/capitaine-cursors
-    # https://wiki.archlinux.org/title/Cursor_themes (the wiki is not very good)
-    # The correct way to do it is what I do in that last cp command.
-    - name: Installing gtk cursor...
-      ansible.builtin.shell: |
-        mkdir -p "{{ user_home }}/.icons/default"
-        wget -O "{{ user_home }}/.icons/cursor.zip" "https://github.com/sainnhe/capitaine-cursors/releases/download/r5/Linux.zip"
-        unzip -o "{{ user_home }}/.icons/cursor.zip" -d "{{ user_home }}/.icons/"
-
-        cp -r "{{ user_home }}"/.icons/"Capitaine Cursors (Gruvbox)"/* "{{ user_home }}/.icons/default"
-        sudo ln -sf "{{ user_home }}/.icons/default/" "/usr/share/icons/default"
-
-    # https://github.com/SylEleuth/gruvbox-plus-icon-pack
-    - name: Installing gtk icons...
-      ansible.builtin.shell: |
-        mkdir -p "{{ user_home }}/.icons"
-        rm -rf "{{ user_home }}/.icons/gruvbox_icons"
-        git clone https://github.com/SylEleuth/gruvbox-plus-icon-pack "{{ user_home }}/.icons/gruvbox_icons"
-
-    # https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
-    - name: Installing gtk theme...
-      ansible.builtin.shell: |
-        mkdir -p "{{ user_home }}/.themes"
-        rm -rf "{{ user_home }}/.themes/gruvbox"
-        git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme "{{ user_home }}/.themes/gruvbox"
-        rm -rf "{{ user_home }}/.themes/Gruvbox-Dark-BL"
-        mv "{{ user_home }}/.themes/gruvbox/themes/Gruvbox-Dark-BL" "{{ user_home }}/.themes/"
-
-    - name: Cloning bin...
-      ansible.builtin.git:
-        repo: '{{ bin_repo }}'
-        dest: '{{ user_home }}/bin'
-
-    - name: Cloning dotfiles...
-      ansible.builtin.git:
-        repo: '{{ dotfiles_repo }}'
-        dest: '{{ user_home }}/dotfiles'
-
-    - name: Adding dotfiles...
-      ansible.builtin.shell: |
-        cd {{ user_home }}/dotfiles/
-        stow *
-
-    - name: Deleting .wallpapers...
-      ansible.builtin.file:
-        path: '{{ user_home }}/.wallpapers'
-        state: absent
-
-    - name: Dowloading .wallpapers...
-      ansible.builtin.git:
-        repo: '{{ wallpapers_repo }}'
-        dest: '{{ user_home }}/.wallpapers'
 
 ...

@@ -1,23 +1,53 @@
 ---
 
-user: pab
+user: "{{ lookup('ansible.builtin.env', 'USER') }}"
 
-user_home: /home/pab/
+user_home: "{{ lookup('ansible.builtin.env', 'HOME') }}"
 
-dotfiles_repo: git@github.com:pablos123/dotfiles.git
+repositories:
+  - repo: git@github.com:pablos123/dotfiles.git
+    dest: '{{ user_home }}/dotfiles'
+  - repo: git@github.com:pablos123/bin.git
+    dest: '{{ user_home }}/bin'
+  - repo: git@github.com:pablos123/.wallpapers.git
+    dest: '{{ user_home }}/.wallpapers'
+  - repo: git@github.com:pablos123/notes.git
+    dest: '{{ user_home }}/notes'
+  - repo: git@github.com:pablos123/cinecli.git
+    dest: '{{ user_home }}/projects/cinecli'
+  - repo: git@github.com:pablos123/videowall.git
+    dest: '{{ user_home }}/projects/videowall'
+  - repo: git@github.com:pablos123/media_server_setup.git
+    dest: '{{ user_home }}/projects/media_server_setup'
+  - repo: git@github.com:pablos123/noneo.git
+    dest: '{{ user_home }}/projects/noneo'
+  - repo: git@github.com:pablos123/coding_problems.git
+    dest: '{{ user_home }}/projects/coding_problems'
+  - repo: git@github.com:pablos123/dump.git
+    dest: '{{ user_home }}/projects/dump'
+  - repo: git@github.com:pablos123/typerl.git
+    dest: '{{ user_home }}/projects/typerl'
+  - repo: git@github.com:pablos123/lcc.git
+    dest: '{{ user_home }}/projects/lcc'
+  - repo: git@github.com:pablos123/ctrl_tabs.git
+    dest: '{{ user_home }}/projects/ctrl_tabs'
+  - repo: git@github.com:pablos123/count_tabs.git
+    dest: '{{ user_home }}/projects/count_tabs'
+  - repo: git@github.com:pablos123/hello_world_bug.git
+    dest: '{{ user_home }}/projects/hello_world_bug'
 
-bin_repo: git@github.com:pablos123/bin.git
-
-wallpapers_repo: git@github.com:pablos123/.wallpapers.git
-
-nerdfont_version: v2.3.3
+    # Dowload more media:
+    # Dowload $HOME/.wallpapers/
+    # Dowload $HOME/.video_wallpapers/
+    # Dowload $HOME/.audio/
+    # from https://www.dropbox.com/home
 
 apt_packages:
   # https://github.com/ogham/exa
   - exa
   # https://github.com/cmus/cmus
   - cmus
-  # http://www.figlet.org/
+  # https://github.com/pimutils/khal
   - khal
   # https://github.com/muesli/duf
   - duf
@@ -35,10 +65,16 @@ apt_packages:
   - bat
   # https://github.com/jarun/nnn
   - nnn
-
+  # http://www.figlet.org/
+  - figlet
   # https://sw.kovidgoyal.net/kitty/
   # https://sw.kovidgoyal.net/kitty/conf/
   - kitty
+
+  - zathura
+  - zathura-djvu
+  - xchm
+  - sqlitebrowser
 
   - git
   - tree
@@ -53,46 +89,37 @@ apt_packages:
   - newsboat
   - libnotify-bin
   - anacron
+
+  - ffmpeg
   - imagemagick
+  - sxiv
+  - mpv
+  - mypaint
+  - kolourpaint
 
   - cowsay
   - lolcat
   - fortune-mod
-  - figlet
-  # https://github.com/pimutils/khal
-  - neofetch
-
-  - compton
   - hsetroot
-  - gtk2-engines-murrine
+  - neofetch
+  - compton
 
-  - sxiv
-  - mpv
-  # pdf djvu viewer
-  - zathura
-  - zathura-djvu
-  # chm viewer
-  - xchm
-
-  - mypaint
-  - kolourpaint
-
-  - sqlitebrowser
   - keepassxc
 
   - cpanminus
   - cargo
   - golang
   - luarocks
+
   - python3-venv
 
-  - ffmpeg
-  - x11-xserver-utils
-  - xdg-utils
   - lightdm
   - lightdm-gtk-greeter
+  - gtk2-engines-murrine
+  - x11-xserver-utils
+  - xdg-utils
 
-  # dunst dependencies
+  # dunst build dependencies
   - libdbus-1-dev
   - libx11-dev
   - libxinerama-dev
@@ -103,6 +130,10 @@ apt_packages:
   - libgtk-3-dev
   - libxdg-basedir-dev
   - libnotify-dev
+
+virtualization_packages:
+  - virtualbox
+  - vagrant
 
 pip_packages:
   # https://github.com/nvbn/thefuck
@@ -120,9 +151,13 @@ flatpak_packages:
   - com.obsproject.Studio
 
 cargo_packages:
-    # https://github.com/chmln/sd
+  # https://github.com/chmln/sd
   - sd
   # https://github.com/o2sh/onefetch
   - onefetch
+
+go_packages: |
+  # https://github.com/boyter/scc
+  go install github.com/boyter/scc/v3@latest
 
 ...
