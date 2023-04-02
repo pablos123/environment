@@ -107,10 +107,11 @@ apt_packages:
 
   - keepassxc
 
-  - cpanminus
+  - flatpak
   - cargo
   - golang
   - luarocks
+  - cpanminus
 
   - python3-venv
 
