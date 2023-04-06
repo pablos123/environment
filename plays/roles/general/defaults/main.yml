@@ -158,6 +158,7 @@ flatpak_packages:
   - com.spotify.Client
   - com.discordapp.Discord
   - com.obsproject.Studio
+  - com.valvesoftware.Steam
 
 cargo_packages:
   # https://github.com/chmln/sd
