@@ -35,6 +35,7 @@
 
 - name: Common stuff...
   become: true
+  tags: environment
   become_user: '{{ user }}'
   block:
     - name: Installing fonts...
@@ -93,13 +94,13 @@
         loop_var: cache_file
 
 - name: Gaming stuff...
-  when: gaming is defined
+  when: gaming is defined and (gaming | bool)
   block:
-    - name: Installing flatpak packages...
+    - name: Installing Steam...
       community.general.flatpak:
         name: com.valvesoftware.Steam
 
-    - name: Installing apt packages...
+    - name: Installing wine...
       ansible.builtin.apt:
         pkg: wine
 
