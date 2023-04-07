@@ -93,7 +93,7 @@
         loop_var: cache_file
 
 - name: Gaming stuff...
-  tags: gaming
+  when: gaming is defined
   block:
     - name: Installing flatpak packages...
       community.general.flatpak:
