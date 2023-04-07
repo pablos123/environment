@@ -96,9 +96,20 @@
 - name: Gaming stuff...
   when: gaming is defined and (gaming | bool)
   block:
+    - name: Uninstalling apt Steam...
+      ansible.builtin.apt:
+        name: steam
+        state: absent
+
     - name: Installing Steam...
       community.general.flatpak:
         name: com.valvesoftware.Steam
+
+    # the flatpack version, it's sandboxed and won't see /mnt or /media.
+    # https://discourse.flathub.org/t/how-to-add-a-new-library-to-steam/2359
+    - name: Installing Flatseal...
+      community.general.flatpak:
+        name: com.github.tchx84.Flatseal
 
     - name: Installing wine...
       ansible.builtin.apt:
