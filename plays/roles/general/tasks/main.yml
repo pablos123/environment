@@ -33,7 +33,7 @@
     - name: Installing go packages...
       ansible.builtin.shell: '{{ go_packages }}'
 
-- name: All the other stuff...
+- name: Common stuff...
   become: true
   become_user: '{{ user }}'
   block:
@@ -91,5 +91,19 @@
         - '{{ user_home }}/dmenu_cache'
       loop_control:
         loop_var: cache_file
+
+- name: Gaming stuff...
+  tags: gaming
+  block:
+    - name: Installing flatpak packages...
+      community.general.flatpak:
+        name: com.valvesoftware.Steam
+
+    - name: Installing apt packages...
+      ansible.builtin.apt:
+        pkg: wine
+
+    - name: Installing dwarf-fortress...
+      ansible.builtin.script: ../scripts/df.sh
 
 ...
