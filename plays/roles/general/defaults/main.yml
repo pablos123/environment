@@ -108,6 +108,7 @@ apt_packages:
   - hsetroot
   - neofetch
   - compton
+  - flameshot
 
   - keepassxc
 
