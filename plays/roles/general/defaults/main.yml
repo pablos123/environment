@@ -92,6 +92,7 @@ apt_packages:
   - newsboat
   - libnotify-bin
   - anacron
+  - calendar
 
   - ffmpeg
   - imagemagick
