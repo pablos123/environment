@@ -106,6 +106,7 @@ apt_packages:
   - neofetch
   - compton
   - flameshot
+  - gpick
 
   - keepassxc
 
