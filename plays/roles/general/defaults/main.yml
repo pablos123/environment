@@ -162,6 +162,8 @@ flatpak_packages:
   - com.spotify.Client
   - com.discordapp.Discord
   - com.obsproject.Studio
+  - com.skype.Client
+  - io.dbeaver.DBeaverCommunity
 
 cargo_packages:
   # https://github.com/chmln/sd
