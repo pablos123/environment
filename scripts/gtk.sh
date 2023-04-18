@@ -22,3 +22,12 @@ rm -rf "$HOME/.themes/gruvbox"
 git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme "$HOME/.themes/gruvbox"
 rm -rf "$HOME/.themes/Gruvbox-Dark-BL"
 mv "$HOME/.themes/gruvbox/themes/Gruvbox-Dark-BL" "$HOME/.themes/"
+
+# Give flatpak the same gtk theme
+sudo flatpak override --filesystem="$HOME/.themes"
+sudo flatpak override --filesystem="$HOME/.icons"
+
+sudo flatpak override --env=GTK_THEME="Gruvbox-Dark-BL"
+sudo flatpak override --env=ICON_THEME="gruvbox_icons"
+
+
