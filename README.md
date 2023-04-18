@@ -25,13 +25,13 @@ Run the playbooks with the `--ask-become-pass` option.
 #### Build neovim
 
 ```terminal
-ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t build --ask-become-pass
+ansible-playbook plays/nvim_setup.yml -t build --ask-become-pass
 ```
 
 #### Configure neovim
 
 ```terminal
-ansible-playbook -i inv/localhost.ini plays/nvim_setup.yml -t config --ask-become-pass
+ansible-playbook plays/nvim_setup.yml -t config --ask-become-pass
 ```
 
 ### `general_setup`
@@ -42,7 +42,7 @@ Tags:
 Run the playbooks with the `--ask-become-pass` option.
 
 ```terminal
-ansible-playbook -i inv/localhost.ini plays/general_setup.yml --ask-become-pass
+ansible-playbook plays/general_setup.yml --ask-become-pass
 ```
 
 I run shell comands in Ansible knowing is not recommended but I wanted to have an exact copy (or the most similar possible) of the instructions provided by the creators of each program.

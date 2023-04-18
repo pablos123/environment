@@ -39,25 +39,22 @@
   become_user: '{{ user }}'
   block:
     - name: Installing fonts...
-      ansible.builtin.script: ../scripts/fonts.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/fonts.sh'
 
     - name: Installing fzf...
-      ansible.builtin.script: ../scripts/fzf.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/fzf.sh'
 
     - name: Installing dunst...
-      ansible.builtin.script: ../scripts/dunst.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/dunst.sh'
 
     - name: Installing gtk cursor, icons, themes...
-      ansible.builtin.script: ../scripts/gtk.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/gtk.sh'
 
-    - name: Adding stable release of i3...
-      ansible.builtin.script: ../scripts/i3.sh
+    - name: Installing i3...
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/i3.sh'
 
     - name: Installing lazygit...
-      ansible.builtin.script: ../scripts/lazygit.sh
-
-    - name: Installing ly...
-      ansible.builtin.script: ../scripts/ly.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/lazygit.sh'
 
     # Repositories
     - name: Creating projects directory...
@@ -105,7 +102,7 @@
       community.general.flatpak:
         name: com.valvesoftware.Steam
 
-    # the flatpack version, it's sandboxed and won't see /mnt or /media.
+    # the flatpack version is sandboxed and won't see /mnt or /media.
     # https://discourse.flathub.org/t/how-to-add-a-new-library-to-steam/2359
     - name: Installing Flatseal...
       community.general.flatpak:
@@ -116,6 +113,6 @@
         pkg: wine
 
     - name: Installing dwarf-fortress...
-      ansible.builtin.script: ../scripts/df.sh
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/df.sh'
 
 ...
