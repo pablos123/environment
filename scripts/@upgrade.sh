@@ -3,9 +3,9 @@
 yes | "$HOME/environment/scripts/fzf.sh"
 yes | "$HOME/environment/scripts/lazygit.sh"
 
-sudo (yes "yes" | apt update)
-sudo (yes "yes" | apt full-upgrade)
-sudo (yes "yes" | flatpak update)
-sudo (yes "yes" | apt autopurge)
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo flatpak update -y
+sudo apt autopurge -y
 
 "$HOME/environment/scripts/clean.sh"

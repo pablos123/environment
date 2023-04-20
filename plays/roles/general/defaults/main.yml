@@ -154,13 +154,14 @@ pip_packages:
   - tldr
 
 flatpak_packages:
-  - org.telegram.desktop
+  - io.dbeaver.DBeaverCommunity
   - md.obsidian.Obsidian
+  - org.telegram.desktop
   - com.spotify.Client
   - com.discordapp.Discord
   - com.obsproject.Studio
   - com.skype.Client
-  - io.dbeaver.DBeaverCommunity
+  - com.visualstudio.code
 
 cargo_packages:
   # https://github.com/chmln/sd
