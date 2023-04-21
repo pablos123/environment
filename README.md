@@ -2,11 +2,8 @@
 
 Why Ansible?
 
-Ansible is a programming language build for provisions, beyond that I wanted
-to have a nice 'self-documented' code to not forget to do the one billion things that
-I have written in one billion different notes when I kill my OS and
-install it again, in general is Linux Mint but at least I try to keep it Debian
-based at this point.
+Ansible is a programming language build for provisions, beyond that I wanted to have a nice 'self-documented' code to build my environment.
+In general is Linux Mint but at least I try to keep it Ubuntu/Debian based at this point.
 
 ## Playbooks
 
@@ -24,24 +21,28 @@ Run the playbooks with the `--ask-become-pass` option.
 
 #### Build neovim
 
-```terminal
+```
 ansible-playbook plays/nvim_setup.yml -t build --ask-become-pass
 ```
 
 #### Configure neovim
 
-```terminal
+```
 ansible-playbook plays/nvim_setup.yml -t config --ask-become-pass
 ```
 
 ### `general_setup`
 
 Tags:
-- `packages`: install apt, pip, cargo packages
+- `packages`: install apt, pip, cargo, go packages.
+- `scripts`: run scripts for visuals like gtk, fonts and other programs like dunst, i3.
+
+Vars:
+- `gaming`: install gaming related stuff.
 
 Run the playbooks with the `--ask-become-pass` option.
 
-```terminal
+```
 ansible-playbook plays/general_setup.yml --ask-become-pass
 ```
 

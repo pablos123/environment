@@ -1,6 +1,6 @@
 ---
 
-- name: Install or update neovim...
+- name: Install a bunch of software...
   hosts: localhost
   tasks:
 
