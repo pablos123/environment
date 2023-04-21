@@ -7,17 +7,13 @@ In general is Linux Mint but at least I try to keep it Ubuntu/Debian based at th
 
 ## Playbooks
 
-All the playbooks for the setup are in the `plays/` folder:
-
-Pass `user`, `user_home` and other variables with the Ansible's -e option.
+Run the playbooks with the `--ask-become-pass` option.
 
 ### `nvim_setup`
 
 Tags:
 - `build`: compile and install neovim latest version.
 - `config`: install the configuration located in the specified repo for the specified user in the specified home.
-
-Run the playbooks with the `--ask-become-pass` option.
 
 #### Build neovim
 
@@ -40,10 +36,8 @@ Tags:
 Vars:
 - `gaming`: install gaming related stuff.
 
-Run the playbooks with the `--ask-become-pass` option.
-
 ```
-ansible-playbook plays/general_setup.yml --ask-become-pass
+ansible-playbook plays/general_setup.yml  --ask-become-pass
 ```
 
 I run shell comands in Ansible knowing is not recommended but I wanted to have an exact copy (or the most similar possible) of the instructions provided by the creators of each program.
