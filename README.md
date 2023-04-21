@@ -11,33 +11,14 @@ Run the playbooks with the `--ask-become-pass` option.
 
 ### `nvim_setup`
 
-Tags:
-- `build`: compile and install neovim latest version.
-- `config`: install the configuration located in the specified repo for the specified user in the specified home.
-
-#### Build neovim
-
 ```
-ansible-playbook plays/nvim_setup.yml -t build --ask-become-pass
-```
-
-#### Configure neovim
-
-```
-ansible-playbook plays/nvim_setup.yml -t config --ask-become-pass
+ansible-playbook plays/nvim_setup.yml [-t build -t config] --ask-become-pass
 ```
 
 ### `general_setup`
 
-Tags:
-- `packages`: install apt, pip, cargo, go packages.
-- `scripts`: run scripts for visuals like gtk, fonts and other programs like dunst, i3.
-
-Vars:
-- `gaming`: install gaming related stuff.
-
 ```
-ansible-playbook plays/general_setup.yml  --ask-become-pass
+ansible-playbook plays/general_setup.yml [-t packages -t scripts -e gaming=True/False] --ask-become-pass
 ```
 
 I run shell comands in Ansible knowing is not recommended but I wanted to have an exact copy (or the most similar possible) of the instructions provided by the creators of each program.

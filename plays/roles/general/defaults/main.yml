@@ -17,20 +17,12 @@ repositories:
     dest: '{{ user_home }}/projects/cinecli'
   - repo: git@github.com:pablos123/videowall.git
     dest: '{{ user_home }}/projects/videowall'
-  - repo: git@github.com:pablos123/media_server_setup.git
-    dest: '{{ user_home }}/projects/media_server_setup'
   - repo: git@github.com:pablos123/noneo.git
     dest: '{{ user_home }}/projects/noneo'
-  - repo: git@github.com:pablos123/coding_problems.git
-    dest: '{{ user_home }}/projects/coding_problems'
   - repo: git@github.com:pablos123/dump.git
     dest: '{{ user_home }}/projects/dump'
   - repo: git@github.com:pablos123/typerl.git
     dest: '{{ user_home }}/projects/typerl'
-  - repo: git@github.com:pablos123/lcc.git
-    dest: '{{ user_home }}/projects/lcc'
-  - repo: git@github.com:pablos123/ctrl_tabs.git
-    dest: '{{ user_home }}/projects/ctrl_tabs'
 
     # Dowload more media:
     # Dowload $HOME/.wallpapers/
@@ -107,6 +99,7 @@ apt_packages:
   - compton
   - flameshot
   - gpick
+  - wmctrl
 
   - keepassxc
 

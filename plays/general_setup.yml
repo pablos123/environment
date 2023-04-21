@@ -5,6 +5,12 @@
   tasks:
 
     - name: Including tasks from general role...
+      tags:
+        - packages
+        - scripts
+        - repos
+        - gaming
+        - clean
       ansible.builtin.include_role:
         name: general
 
