@@ -140,6 +140,8 @@ pip_packages:
   - speedtest-cli
   # https://github.com/tldr-pages/tldr
   - tldr
+  # https://github.com/paulopacitti/gruvbox-factory
+  - gruvbox-factory
 
 flatpak_packages:
   - io.dbeaver.DBeaverCommunity
