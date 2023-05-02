@@ -130,7 +130,6 @@ apt_packages:
   - libxdg-basedir-dev
   - libnotify-dev
 
-virtualization_packages:
   - virtualbox
   - vagrant
 

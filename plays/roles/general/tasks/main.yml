@@ -8,11 +8,6 @@
       ansible.builtin.apt:
         pkg: '{{ apt_packages }}'
 
-    - name: Installing virtualization packages...
-      tags: virtualization_packages
-      ansible.builtin.apt:
-        pkg: '{{ virtualization_packages }}'
-
     - name: Installing flatpak packages...
       community.general.flatpak:
         name: '{{ flatpak_packages }}'
