@@ -53,10 +53,7 @@
 
     - name: Installing cincli...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/cinecli.sh'
-
-    - name: Installing cinecli...
-      ansible.builtin.script: '{{ user_home }}/environment/scripts/cinecli.sh'
-
+    
     - name: Installing noneo...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/noneo.sh'
 
