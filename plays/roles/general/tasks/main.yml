@@ -53,9 +53,12 @@
 
     - name: Installing cincli...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/cinecli.sh'
-    
+
     - name: Installing noneo...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/noneo.sh'
+
+    - name: Configuring flatpak chrome...
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/flatpak_chrome.sh'
 
 - name: Repositories...
   become: true
