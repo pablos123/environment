@@ -150,8 +150,6 @@ flatpak_packages:
   - com.spotify.Client
   - com.discordapp.Discord
   - com.obsproject.Studio
-  - com.skype.Client
-  - com.visualstudio.code
   - com.google.Chrome
 
 cargo_packages:
