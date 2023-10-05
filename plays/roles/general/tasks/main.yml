@@ -109,9 +109,6 @@
       ansible.builtin.apt:
         pkg: wine
 
-    - name: Installing dwarf-fortress...
-      ansible.builtin.script: '{{ user_home }}/environment/scripts/df.sh'
-
 - name: Cleaning...
   become: true
   become_user: '{{ user }}'
