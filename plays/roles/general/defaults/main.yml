@@ -13,12 +13,6 @@ repositories:
     dest: '{{ user_home }}/notes'
   - repo: git@github.com:pablos123/cinecli.git
     dest: '{{ user_home }}/projects/cinecli'
-  - repo: git@github.com:pablos123/videowall.git
-    dest: '{{ user_home }}/projects/videowall'
-  - repo: git@github.com:pablos123/noneo.git
-    dest: '{{ user_home }}/projects/noneo'
-  - repo: git@github.com:pablos123/typerl.git
-    dest: '{{ user_home }}/projects/typerl'
   - repo: git@github.com:pablos123/dump.git
     dest: '{{ user_home }}/projects/dump'
   - repo: git@github.com:pablos123/.wallpapers.git
