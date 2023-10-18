@@ -19,7 +19,6 @@ repositories:
     dest: '{{ user_home }}/.wallpapers'
 
     # Dowload more media:
-    # Dowload $HOME/.wallpapers/
     # Dowload $HOME/.video_wallpapers/
     # Dowload $HOME/.audio/
     # from https://www.dropbox.com/home
@@ -127,16 +126,6 @@ apt_packages:
   - virtualbox
   - vagrant
 
-pip_packages:
-  # https://github.com/nvbn/thefuck
-  - thefuck
-  # https://github.com/sivel/speedtest-cli
-  - speedtest-cli
-  # https://github.com/tldr-pages/tldr
-  - tldr
-  # https://github.com/paulopacitti/gruvbox-factory
-  - gruvbox-factory
-
 flatpak_packages:
   - io.dbeaver.DBeaverCommunity
   - md.obsidian.Obsidian
@@ -145,15 +134,5 @@ flatpak_packages:
   - com.discordapp.Discord
   - com.obsproject.Studio
   - com.google.Chrome
-
-cargo_packages:
-  # https://github.com/chmln/sd
-  - sd
-  # https://github.com/o2sh/onefetch
-  - onefetch
-
-go_packages: |
-  # https://github.com/boyter/scc
-  go install github.com/boyter/scc/v3@latest
 
 ...
