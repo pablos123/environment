@@ -26,10 +26,4 @@
         repo: '{{ nvim_config_repo }}'
         dest: '{{ user_home }}/.config/nvim'
 
-    - name: Sync all the plugins with packer...
-      ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-    - name: Install all the plugins with packer...
-      ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerInstall'
-
 ...
