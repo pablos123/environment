@@ -123,6 +123,12 @@ apt_packages:
   - libxdg-basedir-dev
   - libnotify-dev
 
+  # network
+  - iftop
+  - cbm
+  - tcptrack
+  - nload
+
   - virtualbox
   - vagrant
 
