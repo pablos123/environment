@@ -140,5 +140,11 @@ flatpak_packages:
   - com.discordapp.Discord
   - com.obsproject.Studio
   - com.google.Chrome
+  - com.jgraph.drawio.desktop
+  - com.getpostman.Postman
+
+pip_packages:
+  # https://github.com/sivel/speedtest-cli
+  - speedtest-cli
 
 ...
