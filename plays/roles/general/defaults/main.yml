@@ -62,6 +62,7 @@ apt_packages:
   - sqlitebrowser
 
   - git
+  - yad
   - tree
   - htop
   - scrot
