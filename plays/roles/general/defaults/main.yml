@@ -58,6 +58,7 @@ apt_packages:
   - zathura
   - zathura-djvu
   - xchm
+  - xdotool
   - sqlitebrowser
 
   - git
