@@ -141,6 +141,7 @@ flatpak_packages:
   - com.spotify.Client
   - com.discordapp.Discord
   - com.obsproject.Studio
+  - com.github.tchx84.Flatseal
   - com.google.Chrome
   - com.jgraph.drawio.desktop
 
