@@ -44,6 +44,9 @@
     - name: Installing lazygit...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/lazygit.sh'
 
+    - name: Installing myxer...
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/myxer.sh'
+
     - name: Installing cincli...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/cinecli.sh'
 
