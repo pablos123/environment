@@ -2,8 +2,6 @@
 #
 yes | "$HOME/environment/scripts/fzf.sh"
 yes | "$HOME/environment/scripts/lazygit.sh"
-
-yes | "$HOME/environment/scripts/i3.sh"
 yes | "$HOME/environment/scripts/vscode.sh"
 
 sudo apt update -y
