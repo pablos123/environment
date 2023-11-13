@@ -44,6 +44,9 @@
     - name: Installing i3...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/i3.sh'
 
+    - name: Installing wezterm...
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/wezterm.sh'
+
     - name: Installing lazygit...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/lazygit.sh'
 
