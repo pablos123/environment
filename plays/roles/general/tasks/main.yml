@@ -26,6 +26,9 @@
   become_user: '{{ user }}'
   tags: scripts
   block:
+    - name: Creating directories...
+      ansible.builtin.script: '{{ user_home }}/environment/scripts/directories.sh'
+
     - name: Installing fonts...
       ansible.builtin.script: '{{ user_home }}/environment/scripts/fonts.sh'
 
