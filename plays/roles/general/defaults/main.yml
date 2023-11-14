@@ -91,7 +91,7 @@ apt_packages:
   - fortune-mod
   - hsetroot
   - neofetch
-  - compton
+  - picom
   - flameshot
   - gpick
   - wmctrl
