@@ -3,10 +3,12 @@
 ### General Setup
 
 ```
-ansible-playbook plays/general_setup.yml [-t packages -t scripts -t repos -t gaming ] --ask-become-pass
+cd "$HOME/environment"
+./setup.sh
 ```
 
 ### Build nvim
 ```
-ansible-playbook plays/nvim_setup.yml [-t build -t config] --ask-become-pass
+cd "$HOME/environment"
+./build_nvim.sh
 ```

@@ -6,11 +6,12 @@ if [[ ! $(pwd) == "$HOME/environment" ]]; then
 fi
 
 sudo apt update
-sudo apt full-upgrade
-sudo apt autopurge
+sudo apt full-upgrade -y
+sudo apt autopurge -y
 
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py --user
+rm -f ./get-pip.py
 
 source "$HOME/environment/utils/packages.sh"
 sudo apt install -y "${apt_packages[@]}"
@@ -20,14 +21,19 @@ pip install -y "${pip_packages[@]}"
 "$HOME/environment/utils/directories.sh"
 
 for installer in "$HOME/environment/installers/"*; do
-    "$HOME/environment/installers/$installer"
+    "$installer"
     cd "$HOME/environment/" || exit 1
 done
 
 for config in "$HOME/environment/configs/"*; do
-    "$HOME/environment/configs/$config"
+    "$config"
+    cd "$HOME/environment/" || exit 1
 done
 
-"$HOME/environment/utils/clean.sh"
+sudo apt purge -y steam wine
+sudo apt autopurge -y
+
+rm -f "$HOME/.cache/dmenu_run"
+rm -f "$HOME/dmenu_cache"
 
 echo "Done! Remember to reboot your pc"

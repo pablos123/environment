@@ -4,24 +4,18 @@
 # DOCS
 # https://github.com/ogham/exa
 # https://github.com/cmus/cmus
-# https://github.com/pimutils/khal
 # https://github.com/muesli/duf
-# https://github.com/eradman/entr
 # https://github.com/sharkdp/hyperfine
 # https://github.com/dduan/tre
 # https://github.com/stedolan/jq
 # https://github.com/BurntSushi/ripgrep
 # https://github.com/sharkdp/bat
 # https://github.com/jarun/nnn
-# http://www.figlet.org/
-# https://sw.kovidgoyal.net/kitty/
-# https://sw.kovidgoyal.net/kitty/conf/
 # https://github.com/sivel/speedtest-cli
+# https://github.com/eradman/entr
 
 apt_packages=(
   exa
-  cmus
-  khal
   duf
   entr
   hyperfine
@@ -30,7 +24,6 @@ apt_packages=(
   jq
   bat
   nnn
-  figlet
   firefox
   chromium
   zathura
