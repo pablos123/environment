@@ -9,3 +9,10 @@ rm -f "$HOME/environment/scripts/lazygit.tar.gz"
 
 rm -f ./lazygit
 rm -f ./lazygit.tar.gz
+
+sudo apt purge steam wine
+
+rm -f "$HOME/.cache/dmenu_run"
+rm -f "$HOME/dmenu_cache"
+
+sudo apt autopurge

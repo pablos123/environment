@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+#
+# DOCS
+# https://github.com/ogham/exa
+# https://github.com/cmus/cmus
+# https://github.com/pimutils/khal
+# https://github.com/muesli/duf
+# https://github.com/eradman/entr
+# https://github.com/sharkdp/hyperfine
+# https://github.com/dduan/tre
+# https://github.com/stedolan/jq
+# https://github.com/BurntSushi/ripgrep
+# https://github.com/sharkdp/bat
+# https://github.com/jarun/nnn
+# http://www.figlet.org/
+# https://sw.kovidgoyal.net/kitty/
+# https://sw.kovidgoyal.net/kitty/conf/
+# https://github.com/sivel/speedtest-cli
+
+apt_packages=(
+  exa
+  cmus
+  khal
+  duf
+  entr
+  hyperfine
+  tre-command
+  ripgrep
+  jq
+  bat
+  nnn
+  figlet
+  firefox
+  chromium
+  zathura
+  zathura-djvu
+  xchm
+  xdotool
+  sqlitebrowser
+  git
+  yad
+  tree
+  htop
+  scrot
+  at
+  xclip
+  xsel
+  tmux
+  stow
+  progress
+  newsboat
+  libnotify-bin
+  anacron
+  calendar
+  ffmpeg
+  imagemagick
+  sxiv
+  mpv
+  vlc
+  mypaint
+  kolourpaint
+  unzip
+  cowsay
+  lolcat
+  fortune-mod
+  hsetroot
+  neofetch
+  picom
+  flameshot
+  gpick
+  wmctrl
+  espeak
+  keepassxc
+  flatpak
+  cargo
+  golang
+  luarocks
+  cpanminus
+  python3-venv
+  lightdm
+  lightdm-gtk-greeter
+  gtk2-engines-murrine
+  x11-xserver-utils
+  xdg-utils
+  iftop
+  cbm
+  tcptrack
+  nload
+  virtualbox
+  vagrant
+)
+
+flatpak_packages=(
+  io.dbeaver.DBeaverCommunity
+  md.obsidian.Obsidian
+  org.telegram.desktop
+  com.spotify.Client
+  com.discordapp.Discord
+  com.obsproject.Studio
+  com.github.tchx84.Flatseal
+  com.google.Chrome
+  com.jgraph.drawio.desktop
+)
+
+pip_packages=(
+  speedtest-cli
+)
