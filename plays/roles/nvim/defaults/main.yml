@@ -1,9 +1,0 @@
----
-
-user: pab
-
-user_home: /home/pab/
-
-nvim_config_repo: git@github.com:pablos123/nvim.git
-
-...
