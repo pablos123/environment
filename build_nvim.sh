@@ -21,7 +21,7 @@ dependencies=(
 )
 
 echo -e "Installing dependencies..."
-apt install -y "${dependencies[@]}" >/dev/null
+apt install -y "${dependencies[@]}"
 
 echo "Making necessary directories..."
 mkdir -p "/opt/nvim" "/opt/nvim/repos/"
@@ -35,10 +35,10 @@ git clone https://github.com/neovim/neovim /opt/nvim/repos/neovim/
 cd /opt/nvim/repos/neovim/ || exit 1
 
 echo -e "Making neovim..."
-make CMAKE_BUILD_TYPE=Release >/dev/null
+make CMAKE_BUILD_TYPE=Release
 
 echo -e "Installing neovim..."
-make install >/dev/null
+make install
 
 echo -e "All done! Neovim installed..."
 nvim --version
