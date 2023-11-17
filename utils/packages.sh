@@ -32,6 +32,7 @@ apt_packages=(
   xdotool
   sqlitebrowser
   git
+  d-feet
   yad
   tree
   htop
@@ -87,13 +88,9 @@ apt_packages=(
 flatpak_packages=(
   io.dbeaver.DBeaverCommunity
   md.obsidian.Obsidian
-  org.telegram.desktop
   com.spotify.Client
-  com.discordapp.Discord
-  com.obsproject.Studio
   com.github.tchx84.Flatseal
   com.google.Chrome
-  com.jgraph.drawio.desktop
 )
 
 pip_packages=(
