@@ -1,3 +1,2 @@
 *.deb
-plays/lazygit
-plays/lazygit.tar.gz
+bin/apps/Artix_Games_Launcher-x86_64.AppImage
