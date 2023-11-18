@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Copy to primary clipboard the Letterboxd url to import something from TMDB
+
+tmdb_letterboxd_importer_url_generator | xclip

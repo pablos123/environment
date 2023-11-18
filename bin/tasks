@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [[ -n "$(which cinecli)" ]] && [[ "$(date +'%A')" == "Monday" ]]; then
+    echo "cinecli database --silent populate" | at "now + 4 minutes"
+fi

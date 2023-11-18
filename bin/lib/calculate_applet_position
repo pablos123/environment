@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Problem: need to have a dynamic calculator to support different monitor sizes for my custom applets.
+# Solution: Calculate the position of the an applet popup given an x/y axis and an applet's x/y size
+# Mainly used in my applets scripts
+
+unset -v axis
+unset -v size
+while getopts a:s:h o; do
+    case "${o}" in
+    a) axis="${OPTARG}" ;;
+    s) size="${OPTARG}" ;;
+    h) echo "Usage: -a x|y -s <int size in pixels>" && exit 1 ;;
+    *) echo "Usage: -a x|y -s <int size in pixels>" && exit 1 ;;
+    esac
+done
+
+if [[ -z "$axis" ]] || { [[ "$axis" != 'x' ]] && [[ "$axis" != 'y' ]]; }; then
+    echo "Usage: -a x|y -s <int size in pixels>" && exit 1
+fi
+
+if [[ -z "$size" ]] || [[ ! $size =~ ^[0-9]+$ ]]; then
+    echo "Usage: -a x|y -s <int size in pixels>" && exit 1
+fi
+
+res=$(xrandr | grep 'connected primary' | awk '{print $4}' | sed 's/\+.*$//' | column -t --separator=x)
+unset -v max
+if [[ $axis == 'x' ]]; then
+    max=$(echo "$res" | awk '{print $1}')
+    border=16
+elif [[ $axis == 'y' ]]; then
+    max=$(echo "$res" | awk '{print $2}')
+    border=42
+fi
+
+echo $((max - size - border))

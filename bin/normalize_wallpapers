@@ -1,0 +1,8 @@
+#!/bin/bash
+images=$(find "$HOME/.wallpapers/" -type f -name  '*.jpg' -o -name '*.png' -o -name '*.webp')
+for image in $images; do
+    resolution=$(identify "$image" | awk '{print $3}')
+    if [[ ! $resolution == "1920x1080" ]]; then
+        convert "$image" -resize '1920x1080>' "$image"
+    fi
+done

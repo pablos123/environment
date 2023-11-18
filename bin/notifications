@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Problem: trying to access de display on the battery_notify (because the blacklist logic was bad)
+# and some syntax error because shell != bash caused the GUI (after de DM login) to not load properly.
+# e.g the GUI start with startx with a simple .xinitrc works better.
+# But not good because .profile will still be loaded.
+#
+# My custom notifications.
+
+if [[ -n "$(which cinecli)" ]]; then
+    notify_movies() {
+        local elcairo_delay=3
+        ( (echo -e "notify-send --expire-time=600000 '📽️ $2 📽️' '\n$1'") | at "now + $elcairo_delay minutes") >/dev/null 2>&1
+    }
+
+    today_movies=$(cinecli --reverse --no_separator --no_extra_info today)
+    notify_movies "$today_movies" "El Cairo movies today"
+
+    day="$(date +'%A')"
+    if [[ "$day" == "Monday" ]]; then
+        week_movies=$(cinecli --reverse --no_separator --no_extra_info week)
+        notify_movies "$week_movies" "El Cairo movies this week"
+    elif [[ "$day" == "Friday" ]]; then
+        weekend_movies=$(cinecli --reverse --no_separator --no_extra_info weekend)
+        notify_movies "$weekend_movies" "El Cairo movies this weekend"
+    fi
+fi
+
+check_batteries_delay=2
+(echo "battery_notify" | at "now + $check_batteries_delay minutes") >/dev/null 2>&1

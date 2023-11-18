@@ -1,0 +1,22 @@
+#!/bin/bash
+# Control application volume and input/ouput devices
+# https://github.com/VixenUtils/Myxer
+
+myxer_applet_x=$(calculate_applet_position -a x -s 580)
+myxer_applet_y=$(calculate_applet_position -a y -s 400)
+
+previous_myxer=$(xdotool search --onlyvisible --class "Myxer")
+if [[ $previous_myxer ]]; then
+    xdotool windowclose "$previous_myxer"
+    exit 0
+fi
+
+myxer &
+
+while true; do
+    window_id=$(xdotool search --onlyvisible --class "Myxer")
+    if [[ $window_id ]]; then
+        xdotool windowmove "$window_id" "$myxer_applet_x" "$myxer_applet_y"
+        break
+    fi
+done

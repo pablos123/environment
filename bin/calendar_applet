@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Problem: I'm using a lot the 'cal' command and then writing the date one character at the time.
+# Solution: create an applet to copy the date to your clipboard
+
+calendar_applet_x=$(calculate_applet_position -a x -s 304)
+calendar_applet_y=$(calculate_applet_position -a y -s 208)
+
+previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar")
+if [[ $previous_calendar ]]; then
+    xdotool windowclose "$previous_calendar"
+    exit 0
+fi
+
+selected_date=$(yad --calendar --title="Tiny Calendar" --width=304 --height=208 --no-buttons --fixed --geometry="+${calendar_applet_x}+${calendar_applet_y}" 2>/dev/null)
+
+if [[ $selected_date ]]; then
+    echo "$selected_date" | xclip
+fi

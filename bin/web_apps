@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+
+web_apps=(
+    https://web.whatsapp.com/
+    https://www.instagram.com/
+    https://discord.com/channels/@me
+    https://mail.google.com/mail/u/0/#inbox
+    https://web.skype.com/
+    https://trello.com/
+    https://web.telegram.org/a/
+)
+
+for app in "${web_apps[@]}"; do
+    flatpak run com.google.Chrome --app="$app"
+done

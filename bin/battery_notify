@@ -1,0 +1,32 @@
+#!/bin/bash
+# Problem: I don't watch all the time my status bar, sometimes I don't see the battery is low and the pc shuts down.
+# Solution: Notify if below some percentage.
+
+black_list="DisplayDevice"
+
+batteries=$(upower -e)
+for battery in $batteries; do
+    if [[ $battery =~ $black_list ]]; then continue; fi
+
+    is_battery=$(upower -i "$battery" | grep battery)
+    if [[ ! $is_battery ]]; then continue; fi
+
+    state=$(upower -i "$battery" | grep state | awk '{print $2}' | sed s/%//)
+    if [[ "$state" != "discharging" ]]; then continue; fi
+
+    name=$(upower -i "$battery" | grep model | sed "s/.*:\s*\(.*\)/\1/g")
+    percentage=$(upower -i "$battery" | grep percentage | awk '{print $2}' | sed s/%//)
+
+    urgency=
+    if [[ $percentage -lt 11 ]]; then
+        urgency="critical"
+    elif [[ $percentage -lt 16 ]]; then
+        urgency="normal"
+    elif [[ $percentage -lt 21 ]]; then
+        urgency="low"
+    fi
+
+    if [[ $urgency ]]; then
+        notify-send --urgency "$urgency" --expire-time=600000 "🪫 Low battery! 🪫" "\n$name: $percentage%"
+    fi
+done

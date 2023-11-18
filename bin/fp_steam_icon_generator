@@ -1,0 +1,34 @@
+#!/bin/bash
+
+black_list="Proton|proton|Linux"
+
+find_icon() {
+    for dir in "256x256" "128x128" "96x96" "64x64" "48x48" "32x32" "24x24" "16x16"; do
+        icon_path="$HOME/.var/app/com.valvesoftware.Steam/data/icons/hicolor/$dir/apps/$1.png"
+        if [[ -e "$icon_path" ]]; then break; fi
+    done
+}
+
+for file in "$HOME/.var/app/com.valvesoftware.Steam/Desktop/"*.desktop; do
+    game_name=$(echo "$file" | sed 's/.*\/\(.*\).desktop$/\1/')
+    if [[ $game_name =~ $black_list ]]; then continue; fi
+
+    if [[ -f "$HOME/Desktop/$game_name.desktop" ]]; then
+        echo "$game_name already exists..."
+        continue
+    fi
+
+    read -p "Create icon for '$game_name'? (Y/N): " confirm && [[ $confirm == [yY] ]] || continue
+
+    file_data=$(cat "$file")
+
+    icon_name=$(echo "$file_data" | awk '/^Icon=.*$/{print $0}' | sed "s:^Icon=\(.*\)$:\1:")
+    find_icon "$icon_name"
+
+    new_icon=$(echo "$file_data" |
+        sed "s:^Exec=\(.*\)$:Exec=flatpak run com.valvesoftware.Steam \1:" |
+        sed "s:^Icon=\(.*\)$:Icon=$icon_path:")
+
+    echo "$new_icon" >"$HOME/Desktop/$game_name.desktop"
+    chmod +x "$HOME/Desktop/$game_name.desktop"
+done
