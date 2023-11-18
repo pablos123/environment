@@ -1,14 +1,21 @@
-# Linux Mint setup
+# `#!/bin/bash`
+## Initial Setup
 
-### General Setup
+Pure bash setup.
 
 ```
-cd "$HOME/environment"
-./setup.sh
+cd "$HOME/environment/setup"
+sudo ./utils/build_neovim.sh && ./setup.sh
 ```
-
-### Build nvim
+## Environment
+### Upgrade system
 ```
-cd "$HOME/environment"
-./build_nvim.sh
+upgrade_system
 ```
+### Build Neovim
+```
+build_nvim
+```
+### Used in
+Linux Mint 21.2
+Linux Mint 21.1
