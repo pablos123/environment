@@ -2,8 +2,8 @@
 Pure bash setup.
 
 My environment is very stable and I used it for almost 3 years now.
-Never the less I'm always changing, adding or optimizing somehing.
-Before I used Ansible to setup my machine but now I don't think Ansible is the right tools: I want dynamism and I walways execute this in one host.
+Never the less I'm always changing, adding or optimizing something.
+Before I used Ansible to setup my machine but now I don't think Ansible is the right tool: I want dynamism and I always execute this on one host.
 ## Initial Setup
 ```
 cd "$HOME/environment/setup"
