@@ -2,8 +2,8 @@
 # Control application volume and input/ouput devices
 # https://github.com/VixenUtils/Myxer
 
-myxer_applet_x=$(calculate_applet_position -a x -s 580)
-myxer_applet_y=$(calculate_applet_position -a y -s 400)
+myxer_applet_x=$("$HOME/environment/bin/lib/calculate_applet_position" -a x -s 580)
+myxer_applet_y=$("$HOME/environment/bin/lib/calculate_applet_position" -a y -s 400)
 
 previous_myxer=$(xdotool search --onlyvisible --class "Myxer")
 if [[ $previous_myxer ]]; then
