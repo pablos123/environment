@@ -12,5 +12,5 @@ web_apps=(
 )
 
 for app in "${web_apps[@]}"; do
-    flatpak run com.google.Chrome --app="$app"
+    flatpak run com.google.Chrome --enable-features=EnableNativeNotifications --app="$app"
 done
