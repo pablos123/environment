@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# If the terminal is not working normally,
+# maybe if because TERM is not xterm-256color
+# (kitty has this problem)
+# export TERM="xterm-256color"
+
+# Editor
+export VISUAL="/usr/local/bin/nvim"
+export EDITOR="/usr/local/bin/nvim"
+
+# Git
+export GIT_PS1_SHOWDIRTYSTATE="true"
+export GIT_PS1_SHOWSTASHSTATE="true"
+export GIT_PS1_SHOWUNTRACKEDFILES="true"
+export GIT_PS1_SHOWUPSTREAM="verbose"
+
+source "$HOME/.bashrc_colors"
+
+# Others
+export LETTERBOXD_USER="pablos123"

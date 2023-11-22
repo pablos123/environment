@@ -1,0 +1,23 @@
+-bar    # Brace on the right for multiple-line test
+        #--opening-brace-always-on-right
+
+-ce     # Cuddled else
+        #--cuddled-else
+
+-ci=2   # Continuation indent is 2 cols
+        #--continuation-indentation=2
+
+-nolc   # No outdent long comments
+        #--nooutdent-long-lines
+
+-nolq   # Don't outdent long quoted strings
+        #--nooutdent-long-quotes
+
+-sbt=2  # Maximal square bracket tightness
+        #--square-bracket-tightness=2
+
+-l=120  # Max line width is 120 cols
+        #--maximum-line-length=120
+
+-boc    # Prevent comma-separated lists from being reformatted
+        #--break-at-old-comma-breakpoints
