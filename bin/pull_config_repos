@@ -4,14 +4,6 @@ echo "Pulling environment..."
 cd "$HOME/environment/" || exit 1
 git pull
 
-echo "Pulling bin..."
-cd "$HOME/bin/" || exit 1
-git pull
-
-echo "Pulling dotfiles..."
-cd "$HOME/dotfiles/" || exit 1
-git pull
-
 echo "Pulling wallpapers..."
 cd "$HOME/.wallpapers/" || exit 1
 git reset --hard
