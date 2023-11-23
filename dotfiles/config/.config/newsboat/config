@@ -1,0 +1,7 @@
+browser "flatpak run com.google.Chrome"
+include /usr/share/doc/newsboat/contrib/colorschemes/solarized-dark
+
+highlight feedlist ".*0/0.." default default invis
+highlight feedlist ".*---$" default default invis
+
+highlight feedlist "~.*~" yellow default bold
