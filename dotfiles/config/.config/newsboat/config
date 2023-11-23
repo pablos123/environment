@@ -1,7 +1,21 @@
-browser "flatpak run com.google.Chrome"
+browser "w3m %u"
+
+auto-reload yes
+max-items 50
+
 include /usr/share/doc/newsboat/contrib/colorschemes/solarized-dark
 
 highlight feedlist ".*0/0.." default default invis
 highlight feedlist ".*---$" default default invis
 
 highlight feedlist "~.*~" yellow default bold
+
+unbind-key j
+unbind-key k
+unbind-key h
+unbind-key l
+
+bind-key j down
+bind-key k up
+bind-key l open
+bind-key h quit
