@@ -30,6 +30,7 @@ apt_packages=(
   zathura-djvu
   xchm
   xdotool
+  cmus
   sqlitebrowser
   git
   d-feet
