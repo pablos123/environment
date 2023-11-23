@@ -21,4 +21,16 @@ config.scrollback_lines = 5000
 -- Jus run bash:
 config.default_prog = { '/bin/bash' }
 
+config.keys = {
+  {
+    key = 'h',
+    mods = 'SUPER',
+    action = wezterm.action.ActivateTabRelative(-1)
+  },
+  {
+    key = 'l',
+    mods = 'SUPER',
+    action = wezterm.action.ActivateTabRelative(1)
+  },
+}
 return config

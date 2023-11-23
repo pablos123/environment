@@ -68,6 +68,14 @@ colors() {
     echo -ne "\e[0m"
 }
 
+# Stow my dotfiles
+dotfiles_stow() {
+    (
+        cd "$HOME/dotfiles/" || exit 1
+        stow --target="$HOME" --restow -- */
+    )
+}
+
 # Edit the crontab but before create a backup file
 ecrontab() {
     crontab -l >"$HOME/crontab.$USER.backup~"
