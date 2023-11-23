@@ -2,7 +2,6 @@
 #
 #
 declare -A repos=(
-    ["git@github.com:pablos123/dotfiles.git"]="$HOME/dotfiles"
     ["git@github.com:pablos123/notes.git"]="$HOME/notes"
     ["git@github.com:pablos123/.wallpapers.git"]="$HOME/.wallpapers"
     ["git@github.com:pablos123/cinecli.git"]="$HOME/projects/cinecli"
