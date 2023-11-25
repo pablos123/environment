@@ -11,6 +11,17 @@ web_apps=(
     https://web.telegram.org/a/
 )
 
+chrome_window_ids=$(xdotool search --class "Google-chrome")
+instances=()
+for id in $chrome_window_ids; do
+    instance_name=$(xprop -id "$id" | grep WM_CLASS | awk '{ print $3 }')
+    instances+=("$instance_name")
+done
 for app in "${web_apps[@]}"; do
+    instance_name=$(echo "$app" | sed -r 's/^https:\/\/([a-zA-Z.]+).*/\1/')
+    if [[ ${instances[@]} =~ $instance_name ]]; then
+        continue
+    fi
     flatpak run com.google.Chrome --enable-features=EnableNativeNotifications --app="$app"
+    sleep 1
 done
