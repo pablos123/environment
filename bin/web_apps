@@ -1,6 +1,6 @@
 #!/bin/bash
-# Open web apps only if there's not another instance of that web app
-# The web apps are opened in workspace 4 tabbed and are managed with i3
+# Open web apps only if there's not another instance of that web app.
+# The web apps are opened in workspace 4 tabbed and are managed with i3.
 
 web_apps=(
     https://web.whatsapp.com/

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Print battery status with colors
+# Print battery status with colors.
 # Other tools that do this: upower -e <battery> | inxi -Fxxxrz
 
 black_list="DisplayDevice"

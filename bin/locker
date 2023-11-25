@@ -1,5 +1,5 @@
 #!/bin/bash
-# Save an image of your current monitors and blur it then, lock your screen
+# Save an image of your current monitors and blur it then, lock your screen.
 
 scrot -o /tmp/lockerscreenshot.png
 convert -blur 0x20 /tmp/lockerscreenshot.png /tmp/lockerscreenshot_blur.png

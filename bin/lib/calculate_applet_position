@@ -1,8 +1,6 @@
 #!/bin/bash
-
-# Problem: need to have a dynamic calculator to support different monitor sizes for my custom applets.
-# Solution: Calculate the position of the an applet popup given an x/y axis and an applet's x/y size
-# Mainly used in my applets scripts
+# Calculator to support different monitor sizes for my custom applets.
+# Calculate the position of the an applet popup given an x/y axis and an applet's x/y size.
 
 unset -v axis
 unset -v size
