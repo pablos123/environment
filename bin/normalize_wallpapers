@@ -1,4 +1,7 @@
 #!/bin/bash
+# All my monitors have full hd (1920x1080) resolution and I do not plan to buy some 4k monitor in the near future.
+# I do not want 4k wallpapers and with this script I have all my wallpapers with the same resolution.
+
 images=$(find "$HOME/.wallpapers/" -type f -name  '*.jpg' -o -name '*.png' -o -name '*.webp')
 for image in $images; do
     resolution=$(identify "$image" | awk '{print $3}')

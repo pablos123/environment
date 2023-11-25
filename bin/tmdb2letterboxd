@@ -1,4 +1,5 @@
 #!/bin/python3
+# Generates the url to import a movie to letterboxd from a tmdb url
 
 import subprocess
 import re

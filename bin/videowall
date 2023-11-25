@@ -1,4 +1,7 @@
 #!/bin/bash
+# Show a video as wallpaper. 
+# Prepare a video: videowall -p <video>
+# The prepared video is located in $HOME/.videowall
 
 video=
 limit=

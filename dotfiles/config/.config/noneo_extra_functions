@@ -1,48 +1,43 @@
 #!/bin/bash
 
-function fortune!() {
-    calendar | head -n 1 | sed 's/\s\s/:/g'
-}
-
-function user_info() {
+user_info() {
     echo "User: $(id | awk '{print $1" "$2}')"
 }
 
-function hostname_info() {
+hostname_info() {
     echo "Hostname: $(hostname)"
 }
 
-function uname_info() {
+uname_info() {
     echo "Kernel release: $(uname --kernel-release)"
     #echo "Kernel version: $(uname --kernel-version)"
 }
 
-function cpu_info() {
+cpu_info() {
     lscpu | awk -F ':' '/^Model name/ {print $1":"$2}'
 }
 
-function lsb_info() {
-    lsb_release  -a 2> /dev/null | awk -F ':' '/^Description/ {print $1":"$2}'
+lsb_info() {
+    lsb_release -a 2>/dev/null | awk -F ':' '/^Description/ {print $1":"$2}'
 }
 
-function mem_info() {
+mem_info() {
     free -h | awk '/^Mem/ {print $1" "$2}'
 }
 
-function wmctrl_info() {
+wmctrl_info() {
     wmctrl_exists="$(which wmctrl)"
     if [[ -n $wmctrl_exists ]]; then
-        wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}';
+        wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}'
     fi
 }
 
 extra_functions=(
-    'fortune!'
-    'user_info'
-    'hostname_info'
-    'lsb_info'
-    'uname_info'
-    'cpu_info'
-    'mem_info'
-    'wmctrl_info'
+    user_info
+    hostname_info
+    lsb_info
+    uname_info
+    cpu_info
+    mem_info
+    wmctrl_info
 )

@@ -1,6 +1,5 @@
 #!/bin/bash
 # Problem: I don't watch all the time my status bar, sometimes I don't see the battery is low and the pc shuts down.
-# Solution: Notify if below some percentage.
 
 black_list="DisplayDevice"
 

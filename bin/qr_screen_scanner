@@ -1,2 +1,4 @@
 #!/bin/bash
+# Scan qr showed on the screen and copy the content to the clipboard (works for multiple qrs)
+
 (scrot -s '/tmp/pablito_qr_scan.png' -e 'zbarimg --raw --quiet $f && rm -f $f') 2>/dev/null | xclip

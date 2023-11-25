@@ -1,7 +1,5 @@
 #!/bin/bash
-
-# Problem: I'm using a lot the 'cal' command and then writing the date one character at the time.
-# Solution: create an applet to copy the date to your clipboard
+# Problem: I'm using a lot the 'cal' command to check for a next X day date, then writing the date one character at the time.
 
 calendar_applet_x=$("$HOME/environment/bin/lib/calculate_applet_position" -a x -s 304)
 calendar_applet_y=$("$HOME/environment/bin/lib/calculate_applet_position" -a y -s 208)

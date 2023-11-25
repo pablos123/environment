@@ -1,3 +1,4 @@
 #!/bin/bash
+# dmenu_run command with gruvbox theme
 
 dmenu_run -b -i -fn 'Lilex Nerd Font-14' -nb '#282828' -nf '#d4be98' -sb '#e78a4e' -sf '#282828'

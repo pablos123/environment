@@ -1,4 +1,5 @@
 #!/bin/bash
+# Play rain sounds located in $HOME/.audio/rain.mp3
 
 quit=false
 while getopts q opt; do

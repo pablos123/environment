@@ -1,5 +1,6 @@
 #!/bin/bash
-#
+# Open web apps only if there's not another instance of that web app
+# The web apps are opened in workspace 4 tabbed and are managed with i3
 
 web_apps=(
     https://web.whatsapp.com/
@@ -19,9 +20,7 @@ for id in $chrome_window_ids; do
 done
 for app in "${web_apps[@]}"; do
     instance_name=$(echo "$app" | sed -r 's/^https:\/\/([a-zA-Z.]+).*/\1/')
-    if [[ ${instances[@]} =~ $instance_name ]]; then
-        continue
-    fi
+    if [[ ${instances[@]} =~ $instance_name ]]; then continue; fi
     flatpak run com.google.Chrome --enable-features=EnableNativeNotifications --app="$app"
     sleep 1
 done
