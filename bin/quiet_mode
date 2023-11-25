@@ -1,6 +1,6 @@
 #!/bin/bash
-# Don't want any notifications when I share screen
-# Disable/Enable notifications for a while, indicate this with an icon in the status bar
+# I don't want any notifications when I share my screen.
+# Disable/Enable notifications for a while, indicate this with an icon in the status bar.
 
 dunstctl set-paused toggle
 
