@@ -1,3 +1,4 @@
 #!/bin/bash
-# old :') scrot -s /tmp/scrot%b%d%H%M%S.png -e 'xclip -selection clipboard -t image/png -i $f'
+# Old :')   : scrot -s /tmp/scrot%b%d%H%M%S.png -e 'xclip -selection clipboard -t image/png -i $f'
+
 flameshot gui

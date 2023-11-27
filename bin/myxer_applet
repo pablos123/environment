@@ -1,6 +1,7 @@
 #!/bin/bash
-# Control application volume and input/ouput devices
-# https://github.com/VixenUtils/Myxer
+# Control application volume and input/ouput devices https://github.com/VixenUtils/Myxer
+# Open Myxer and treat it like an applet (move the window to the right corner of the monitor)
+# The applets are always in the primary monitor and I control this with i3
 
 myxer_applet_x=$("$HOME/environment/bin/lib/calculate_applet_position" -a x -s 580)
 myxer_applet_y=$("$HOME/environment/bin/lib/calculate_applet_position" -a y -s 400)

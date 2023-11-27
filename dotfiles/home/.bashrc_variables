@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # If the terminal is not working normally,
 # maybe if because TERM is not xterm-256color
 # (kitty has this problem)

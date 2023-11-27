@@ -1,4 +1,5 @@
 #!/bin/bash
+# Pull environment and .wallpapers repo
 
 echo "Pulling environment..."
 cd "$HOME/environment/" || exit 1

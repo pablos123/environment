@@ -1,4 +1,20 @@
 #!/bin/bash
+# Print information about your system, this is to not use neofetch
+# and to use some tools that I consider more useful (or maybe just fun)
+# You can tell this program to print whatever you want.
+# It will print default functions defined here and then 'extra_functions'
+# defined in $HOME/.config/noneo_extra_functions
+# You can tell noneo to just read from the extra functions file with the flag -e
+# The functions need to print to stdout in the form of:
+# <column1>    :    <column2>
+# (The spaces are not necessary)
+# And the function needs to be in an array called 'extra_functions'
+# For example, write the noneo_extra_functions file as:
+# print_me(){
+#   echo "hello : world!"
+# }
+# extra_functions=( print_me )
+# And there you have it! Nothing more is required
 
 # Default values
 use_cowsay=false

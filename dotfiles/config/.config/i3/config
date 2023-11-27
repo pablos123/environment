@@ -82,18 +82,17 @@ exec_always --no-startup-id notifications
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 # Compositor
 exec --no-startup-id picom
-# Browser
-exec --no-startup-id chrome
 # Terminal
 exec --no-startup-id wezterm
-
+# Browser
+exec --no-startup-id sleep 2 && chrome
 # Web Apps, Social
-exec --no-startup-id web_apps
+exec --no-startup-id sleep 5 && web_apps
 
-exec --no-startup-id code
-exec --no-startup-id spotify
-exec --no-startup-id obsidian
-exec --no-startup-id nemo
+exec --no-startup-id sleep 3 && code
+exec --no-startup-id sleep 3 && obsidian
+exec --no-startup-id sleep 5 && spotify
+exec --no-startup-id sleep 6 && nemo
 
 # Applets
 exec --no-startup-id mintupdate-launcher
@@ -101,7 +100,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id yad --notification --image="sound" --command="myxer_applet"
 exec --no-startup-id yad --notification --image="calendar" --command="calendar_applet"
 
-exec --no-startup-id tasks
+exec --no-startup-id sleep 20 && tasks
 
 # MAPPINGS
 #-------------------------------------------------------------------------------

@@ -1,10 +1,8 @@
 #!/bin/bash
+# Print battery status with colors.
+# Other tools that do this: upower -e <battery> | inxi -Fxxxrz
 
 black_list="DisplayDevice"
-
-red='\e[1;31m'
-yellow='\e[1;33m'
-green='\e[1;36m'
 
 batteries=$(upower -e)
 for battery in $batteries; do
@@ -17,16 +15,16 @@ for battery in $batteries; do
     name=$(upower -i "$battery" | grep model | sed "s/.*:\s*\(.*\)/\1/g")
     percentage=$(upower -i "$battery" | grep percentage | awk '{print $2}' | sed s/%//)
 
-    percentage_color="$green"
+    percentage_color="$GREEN"
     if [[ $percentage -lt 16 ]]; then
-        percentage_color="$red"
+        percentage_color="$RED"
     elif [[ $percentage -lt 31 ]]; then
-        percentage_color="$yellow"
+        percentage_color="$YELLOW"
     fi
 
-    state_color="$yellow"
+    state_color="$YELLOW"
     if [[ "$state" = "charging" ]] || [[ "$state" = "fully-charged" ]]; then
-        state_color="$green"
+        state_color="$GREEN"
     fi
 
     echo -e "\e[1m$name $percentage_color$percentage $state_color$state\e[0m"
