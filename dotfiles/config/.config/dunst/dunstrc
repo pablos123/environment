@@ -1,10 +1,12 @@
 # See dunst(5) for all configuration options
 
 [global]
+    monitor = 0
+
     # mouse: follow mouse pointer
     # keyboard: follow window with keyboard focus
     # none: don't follow anything
-    follow = mouse
+    follow = none
 
     width = 300
     height = 600

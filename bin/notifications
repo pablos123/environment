@@ -1,8 +1,8 @@
 #!/bin/bash
-# This things were in my .profile but trying to access de display on the 
+# This things were in my .profile but trying to access de display on the
 # battery_notify (because the blacklist logic was bad)
 # and some syntax error because shell != bash caused the GUI (after de DM login) to not load properly.
-# A workaround I found was: 
+# A workaround I found was:
 # the GUI start with startx with a simple .xinitrc that only executes i3.
 # .profile will still be loaded with errors.
 #
@@ -10,7 +10,7 @@
 
 
 if [[ -f "$HOME/.greeter.png" ]]; then
-    notify-send -i "$HOME" --expire-time=60000 -i "$HOME/.greeter.png" "Welcome!" "\n  _.~\"~._.~\"~._.~\"~._.~\"~._\n🚂 Good journey, wayfarer. 🚂"
+    sleep 1 & notify-send --expire-time=60000 -i "$HOME/.greeter.png" "Welcome!" "\n  _.~\"~._.~\"~._.~\"~._.~\"~._\n🚂 Good journey, wayfarer. 🚂"
 fi
 
 if [[ -n "$(which cinecli)" ]]; then

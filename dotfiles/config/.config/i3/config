@@ -268,7 +268,7 @@ bar {
 client.focused          $aqua     $darkgray $white   $purple   $aqua
 client.focused_inactive $darkgray $darkgray $orange  $purple   $darkgray
 client.unfocused        $darkgray $darkgray $orange  $purple   $darkgray
-client.urgent           $red      $red      $white   $red      $red
+client.urgent           $red      $darkgray $white   $purple   $darkgray
 
 # Gaps
 gaps inner 10px
