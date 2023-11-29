@@ -1,11 +1,23 @@
 #!/bin/bash
 # All my monitors have full hd (1920x1080) resolution and I do not plan to buy some 4k monitor in the near future.
 # I do not want 4k wallpapers and with this script I have all my wallpapers with the same resolution.
+# Convert all images to .png
+# Rename images inside each one of the 'type' directories to the <md5sum of the file>.png.
 
-images=$(find "$HOME/.wallpapers/" -type f -name  '*.jpg' -o -name '*.png' -o -name '*.webp')
+images=$(find "$HOME/.wallpapers/" -path "$HOME/.wallpapers/.git" -prune -o -type f -print)
 for image in $images; do
-    resolution=$(identify "$image" | awk '{print $3}')
-    if [[ ! $resolution == "1920x1080" ]]; then
-        convert "$image" -resize '1920x1080>' "$image"
+    current_sum=$(md5sum "$image" | awk '{print $1}')
+    image_dirname=$(dirname "$image")
+
+    converted_image="$image_dirname/$current_sum.png"
+    if [[ $image == "$converted_image" ]]; then
+        # Already converted
+        continue
     fi
+
+    convert "$image" -resize '1920x1080>' "$converted_image"
+    new_sum=$(md5sum "$converted_image" | awk '{print $1}')
+    mv "$converted_image" "$image_dirname/$new_sum.png"
+
+    rm -f "$image"
 done

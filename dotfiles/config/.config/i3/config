@@ -256,9 +256,9 @@ bar {
         background $darkgray
         statusline $white
         separator $orange
-        #                    border     backgr.     text
-        focused_workspace    $orange    $orange     $darkgray
-        urgent_workspace     $red       $red        $white
+        #                    border   backgr.     text
+        focused_workspace    $orange  $orange     $darkgray
+        urgent_workspace     $red     $darkgray   $white
     }
 }
 

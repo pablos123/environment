@@ -120,7 +120,7 @@ reset_repo() {
     message=$2
 
     if [[ -z "$branch" ]] || { [[ ! $branch == "main" ]] && [[ ! $branch == "master" ]]; }; then
-        echo "Usage: reset_commit 'main/master' '<commit_message>'"
+        echo "Usage: reset_repo 'main/master' ['<commit_message>']"
         return
     fi
 

@@ -8,10 +8,12 @@
 #
 # My custom notifications.
 
+notify-send --expire-time=600 "Welcome!" "Fight well"
+
 if [[ -n "$(which cinecli)" ]]; then
     notify_movies() {
         local elcairo_delay=3
-        ( (echo -e "notify-send --expire-time=600000 '📽️ $2 📽️' '\n$1'") | at "now + $elcairo_delay minutes") >/dev/null 2>&1
+        ( (echo -e "notify-send --expire-time=60000 '📽️ $2 📽️' '\n$1'") | at "now + $elcairo_delay minutes") >/dev/null 2>&1
     }
 
     today_movies=$(cinecli --reverse --no_separator --no_extra_info today)
