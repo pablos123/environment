@@ -5,16 +5,16 @@ monitors=$(xrandr | grep " connected" | awk '{print $1}')
 monitors_count="${#monitors[@]}"
 
 if [[ $monitors_count -eq 1 ]]; then
+    # Desk
     if [[ $monitors == "HDMI-A-0" ]]; then
-        # Desk
         xrandr --output HDMI-A-0 --primary
         exit 0
     fi
 fi
 
 if [[ $monitors_count -eq 2 ]]; then
+    # Notebook
     if [[ ${monitors[@]} =~ "HDMI-1" ]] && [[ ${monitors[@]} =~ "eDP-1" ]]; then
-        # Notebook
         xrandr --output HDMI-1 --primary --left-of eDP-1
         exit 0
     fi
