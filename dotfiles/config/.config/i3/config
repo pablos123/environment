@@ -25,17 +25,6 @@ set $ws8 "8  "
 set $ws9 "9  "
 set $ws10 "10  "
 
-workspace $ws1 output primary
-workspace $ws2 output primary
-workspace $ws3 output primary
-workspace $ws4 output primary
-workspace $ws5 output primary
-workspace $ws6 output primary
-workspace $ws7 output primary
-workspace $ws8 output primary
-workspace $ws9 output primary
-workspace $ws10 output primary
-
 # WINDOWS
 #-------------------------------------------------------------------------------
 # View the class name with `xprop WM_CLASS`
@@ -69,7 +58,7 @@ for_window [class="Nemo"] floating enable
 
 # EXEC, STARTUP
 #-------------------------------------------------------------------------------
-exec_always --no-startup-id monitors_config
+exec_always --no-startup-id sleep 1 && monitors_config
 exec_always --no-startup-id set_wallpaper -t steampunk
 
 # Keyboard
