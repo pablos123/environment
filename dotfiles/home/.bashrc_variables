@@ -8,9 +8,6 @@
 export VISUAL="/usr/local/bin/nvim"
 export EDITOR="/usr/local/bin/nvim"
 
-# This is not supported by the executable sensible-browser
-# export BROWSER="flatpak run com.google.Chrome"
-
 # Git
 export GIT_PS1_SHOWDIRTYSTATE="true"
 export GIT_PS1_SHOWSTASHSTATE="true"

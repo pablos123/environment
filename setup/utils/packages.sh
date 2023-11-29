@@ -91,7 +91,6 @@ flatpak_packages=(
   md.obsidian.Obsidian
   com.spotify.Client
   com.github.tchx84.Flatseal
-  com.google.Chrome
 )
 
 pip_packages=(

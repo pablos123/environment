@@ -1,4 +1,4 @@
 #!/bin/bash
 # Google Chrome does not send notifications to dunst https://github.com/dunst-project/dunst/issues/375
 
-flatpak run com.google.Chrome --enable-features=EnableNativeNotifications
+google-chrome --enable-features=EnableNativeNotifications "$@"

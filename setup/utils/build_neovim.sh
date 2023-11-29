@@ -2,7 +2,7 @@
 #
 
 if [[ ! $(id -u) == 0 ]]; then
-    echo -e "${BRED}Run as root or with sudo!${CRESET}" && exit 1
+    echo -e "\e[1;31mRun as root or with sudo!\e[0m" && exit 1
 fi
 
 dependencies=(

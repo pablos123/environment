@@ -3,7 +3,10 @@
 #
 if [[ ! $(pwd) == "$HOME/environment/setup" ]]; then
     echo "Execute this script inside $HOME/environment/setup directory!"
+    exit 1
 fi
+
+set -e
 
 sudo apt update
 sudo apt full-upgrade -y
@@ -16,7 +19,7 @@ rm -f ./get-pip.py
 source "$HOME/environment/setup/utils/packages.sh"
 sudo apt install -y "${apt_packages[@]}"
 sudo flatpak install -y flathub "${flatpak_packages[@]}"
-pip install -y "${pip_packages[@]}"
+pip install "${pip_packages[@]}"
 
 "$HOME/environment/setup/utils/make_directories.sh"
 
@@ -26,7 +29,6 @@ for installer in "$HOME/environment/setup/installers/"*; do
 done
 
 "$HOME/environment/setup/utils/dotfiles.sh"
-"$HOME/environment/setup/utils/config_flatpak_chrome.sh"
 
 sudo apt purge -y steam wine
 sudo apt autopurge -y
