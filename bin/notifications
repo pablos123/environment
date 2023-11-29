@@ -8,7 +8,10 @@
 #
 # My custom notifications.
 
-notify-send --expire-time=600 "Welcome!" "Fight well"
+
+if [[ -f "$HOME/.greeter.png" ]]; then
+    notify-send -i "$HOME" --expire-time=60000 -i "$HOME/.greeter.png" "Welcome!" "\n  _.~\"~._.~\"~._.~\"~._.~\"~._\n🚂 Good journey, wayfarer. 🚂"
+fi
 
 if [[ -n "$(which cinecli)" ]]; then
     notify_movies() {
