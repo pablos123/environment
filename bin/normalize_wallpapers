@@ -1,8 +1,8 @@
 #!/bin/bash
 # All my monitors have full hd (1920x1080) resolution and I do not plan to buy some 4k monitor in the near future.
-# I do not want 4k wallpapers and with this script I have all my wallpapers with the same resolution.
-# Convert all images to .png
-# Rename images inside each one of the 'type' directories to the <md5sum of the file>.png.
+# I do not want 4k wallpapers and with this script I have all my wallpapers with (almost) the same resolution.
+# This converts all images to .png and
+# Rename images inside each one of the 'type' directories to '<md5sum of the file>.png'.
 
 images=$(find "$HOME/.wallpapers/" -path "$HOME/.wallpapers/.git" -prune -o -type f -print)
 for image in $images; do
