@@ -6,6 +6,5 @@ cd "$HOME/environment/" || exit 1
 git pull
 
 echo "Pulling wallpapers..."
-cd "$HOME/.media/wallpapers/" || exit 1
-git reset --hard
-git pull --allow-unrelated-histories
+rm -rf "$HOME/.media"
+git clone "git@github.com:pablos123/.media.git" "$HOME/.media"
