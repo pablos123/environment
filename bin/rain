@@ -1,8 +1,9 @@
 #!/bin/bash
-# Play rain sounds located in $HOME/.audio/rain.mp3
+# Play rain sounds located in $HOME/.media/rain.mp3
 
-if [[ $(pgrep myrain) ]]; then
-    pkill -f myrain;
+pids=$(ps aux | grep myrain | wc -l)
+if [[ $pids -gt 1 ]]; then
+    ps aux | grep myrain | awk '{print $2}' | head -1 | xargs kill -9
     exit 0
 fi
 
