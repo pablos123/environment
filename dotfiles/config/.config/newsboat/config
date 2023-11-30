@@ -1,5 +1,3 @@
-browser "w3m %u"
-
 auto-reload yes
 max-items 50
 
