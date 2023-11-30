@@ -1,16 +1,9 @@
 #!/bin/bash
 # Play rain sounds located in $HOME/.audio/rain.mp3
 
-quit=false
-while getopts q opt; do
-    case "$opt" in
-    q) quit=true ;;
-    *) echo "Invalid option" && exit 1 ;;
-    esac
-done
+if [[ $(pgrep myrain) ]]; then
+    pkill -f myrain;
+    exit 0
+fi
 
-pkill -f myrain
-
-if $quit; then pkill -f myrain; exit 0; fi
-
-bash -c "exec -a myrain mpv $HOME/.audio/rain.mp3 &"
+bash -c "exec -a myrain mpv $HOME/.media/rain.mp3 &"
