@@ -1,0 +1,6 @@
+#!/bin/bash
+
+setxkbmap eu -option caps:swapescape
+xset r rate 230 50
+xset s 900
+xset dpms 0 0 3600

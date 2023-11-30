@@ -59,14 +59,9 @@ for_window [class="Nemo"] floating enable
 # EXEC, STARTUP
 #-------------------------------------------------------------------------------
 exec_always --no-startup-id sleep 1 && monitors_config
+exec_always --no-startup-id keyboard_config
+
 exec_always --no-startup-id set_wallpaper -t steampunk
-
-# Keyboard
-exec_always --no-startup-id setxkbmap eu -option caps:swapescape
-exec_always --no-startup-id xset r rate 230 50
-exec_always --no-startup-id xset s 900
-exec_always --no-startup-id xset dpms 0 0 3600
-
 
 exec --no-startup-id notifications
 # Authentication agent
