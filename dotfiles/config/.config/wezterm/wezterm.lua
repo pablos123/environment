@@ -3,7 +3,7 @@ local wezterm = require "wezterm"
 local config = {}
 
 if wezterm.config_builder then
-  config = wezterm.config_builder()
+    config = wezterm.config_builder()
 end
 
 config.color_scheme = "Gruvbox Material (Gogh)"
@@ -21,28 +21,37 @@ config.scrollback_lines = 5000
 -- Jus run bash:
 config.default_prog = { "/bin/bash" }
 
+local custom_functions = require 'custom_actions'
+
 config.keys = {
-  {
-    key = "h",
-    mods = "SUPER",
-    action = wezterm.action.ActivateTabRelative(-1)
-  },
-  {
-    key = "l",
-    mods = "SUPER",
-    action = wezterm.action.ActivateTabRelative(1)
-  },
-  {
-      key = "o",
-      mods = "SUPER",
+    {
+        key = "h",
+        mods = "SUPER",
+        action = wezterm.action.ActivateTabRelative(-1)
+    },
+    {
+        key = "l",
+        mods = "SUPER",
+        action = wezterm.action.ActivateTabRelative(1)
+    },
+    {
+        key = "o",
+        mods = "SUPER",
         action = wezterm.action.QuickSelectArgs {
-          label = "open url",
-          patterns = { "https?://\\S+", "www\\.\\S+" },
-          action = wezterm.action_callback(function(window, pane)
-            local url = window:get_selection_text_for_pane(pane)
-            os.execute("chrome " .. url)
-          end),
+            label = "open url",
+            patterns = { "https?://\\S+", "www\\.\\S+" },
+            action = wezterm.action_callback(custom_functions.open_url)
         },
-  },
+    },
+    {
+        key = "i",
+        mods = "SUPER",
+        action = wezterm.action.QuickSelectArgs {
+            label = "view image",
+            patterns = { "https?://\\S+\\.webp", "https?://\\S+\\.jpg", "https?://\\S+\\.png" },
+            action = wezterm.action_callback(custom_functions.view_img)
+        },
+    },
 }
+
 return config
