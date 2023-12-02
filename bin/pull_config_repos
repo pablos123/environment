@@ -4,6 +4,8 @@
 echo "Pulling environment..."
 cd "$HOME/environment/" || exit 1
 git pull
+cd "$HOME/environment/dotfiles/" || exit 1
+stow --target="$HOME" --restow -- */
 
 echo "Pulling wallpapers..."
 rm -rf "$HOME/.media"
