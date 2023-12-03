@@ -1,3 +1,4 @@
+local M = {}
 local function open_url(window, pane)
     local url = window:get_selection_text_for_pane(pane)
     os.execute("chrome " .. url)
@@ -12,3 +13,8 @@ local function view_img(window, pane)
     pane:split { args = { '/bin/bash', '-c',
         'wezterm imgcat /tmp/wezterm_img.png' .. print_image_url .. wait_for_user_input } }
 end
+
+M.open_url = open_url
+M.view_img = view_img
+
+return M
