@@ -17,15 +17,15 @@ if [[ -n "$(which cinecli)" ]]; then
         ( (echo -e "notify-send --expire-time=60000 '📽️ $2 📽️' '\n$1'") | at "now + $elcairo_delay minutes") >/dev/null 2>&1
     }
 
-    today_movies=$(cinecli --reverse --no_separator --no_extra_info today)
+    today_movies=$(cinecli shows --reverse --no_separator --no_extra_info today)
     notify_movies "$today_movies" "El Cairo movies today"
 
     day="$(date +'%A')"
     if [[ "$day" == "Monday" ]]; then
-        week_movies=$(cinecli --reverse --no_separator --no_extra_info week)
+        week_movies=$(cinecli shows --reverse --no-separator --no-extra-info week)
         notify_movies "$week_movies" "El Cairo movies this week"
     elif [[ "$day" == "Friday" ]]; then
-        weekend_movies=$(cinecli --reverse --no_separator --no_extra_info weekend)
+        weekend_movies=$(cinecli shows --reverse --no-separator --no-extra-info weekend)
         notify_movies "$weekend_movies" "El Cairo movies this weekend"
     fi
 fi
