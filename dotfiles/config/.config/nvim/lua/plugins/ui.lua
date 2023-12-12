@@ -6,11 +6,12 @@ return {
         init = function()
             vim.opt.background = "dark"
             vim.g.gruvbox_material_background = "hard"
-            vim.g.gruvbox_material_foreground = "mix"
-            vim.g.gruvbox_material_enable_bold = 1
+            vim.g.gruvbox_material_foreground = "material"
+            vim.g.gruvbox_material_ui_contrast = "high"
+            vim.g.gruvbox_material_enable_bold = 0
             vim.g.gruvbox_material_enable_italic = 1
             vim.g.gruvbox_material_dim_inactive_windows = 1
-            vim.g.gruvbox_material_ui_contrast = 1
+            vim.g.gruvbox_material_show_eob = 0
             vim.g.gruvbox_material_better_performance = 1
             vim.cmd.colorscheme "gruvbox-material"
         end
@@ -21,33 +22,6 @@ return {
 
     -- icons
     { "nvim-tree/nvim-web-devicons", lazy = true },
-
-    -- greeter
-    {
-        "goolord/alpha-nvim",
-        event = "VimEnter",
-        init = function()
-            local alpha = require "alpha"
-            local dashboard = require "alpha.themes.dashboard"
-
-            -- Set header
-            dashboard.section.header.val = { "🍂" }
-
-            -- Set menu
-            dashboard.section.buttons.val = {
-                dashboard.button("<spc>o", "  > open file", "<cmd>Telescope find_files<cr>"),
-                dashboard.button("w", "  > workspaces", "<cmd>Telescope workspaces<cr>"),
-                dashboard.button("l", "  > lazy", "<cmd>Lazy<cr>"),
-                dashboard.button("m", "  > mason", "<cmd>Mason<cr>"),
-                dashboard.button("h", "  > health", "<cmd>checkhealth<cr>"),
-                dashboard.button("s", "  > settings", "<cmd>e $MYVIMRC | :cd %:p:h<cr>"),
-                dashboard.button("q", "󰠜  > quit", "<cmd>qa!<cr>")
-            }
-
-            -- Send config to alpha
-            alpha.setup(dashboard.opts)
-        end,
-    },
 
     -- status line
     {
@@ -62,51 +36,6 @@ return {
                 lualine_z = { "location" }
             },
         }
-    },
-
-    -- indent guides
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      indent = {
-        char = "│",
-        tab_char = "│",
-      },
-      scope = { enabled = false },
-      exclude = {
-        filetypes = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
-      },
-    },
-    main = "ibl",
-  },
-
-    -- better vim.ui
-    {
-        "stevearc/dressing.nvim",
-        lazy = true,
-        init = function()
-            vim.ui.select = function(...)
-                require "lazy".load({ plugins = { "dressing.nvim" } })
-                return vim.ui.select(...)
-            end
-            vim.ui.input = function(...)
-                require "lazy".load({ plugins = { "dressing.nvim" } })
-                return vim.ui.input(...)
-            end
-        end,
     },
 
     -- highlight current indent

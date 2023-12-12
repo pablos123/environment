@@ -36,13 +36,4 @@ return {
             require "mini.surround".setup(options)
         end,
     },
-
-    -- treesitter context
-    {
-        "nvim-treesitter/nvim-treesitter-context",
-        version = false,
-        config = function(_, options)
-            require "mini.surround".setup(options)
-        end,
-    },
 }
