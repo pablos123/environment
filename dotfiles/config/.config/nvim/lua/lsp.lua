@@ -1,36 +1,25 @@
-local lsp = require "lsp-zero".preset({})
-
-lsp.on_attach(function(_, bufnr)
-    lsp.default_keymaps({ buffer = bufnr })
-end)
-
 -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-lsp.ensure_installed({
+local language_servers = {
     "tsserver",
     "html",
     "ruff_lsp",
     "perlnavigator",
-})
+}
 
-require "lspconfig".lua_ls.setup(lsp.nvim_lua_ls())
+local lsp_zero = require('lsp-zero')
 
-lsp.setup()
+lsp_zero.on_attach(function(client, bufnr)
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp_zero.default_keymaps({buffer = bufnr})
+end)
 
-require "mason-null-ls".setup({
-    -- anything supported by mason.
-    ensure_installed = {
-        "shellcheck",
-        "djlint",
-        "black",
-    },
-    -- will automatically install masons tools based on selected sources in `null-ls`.
-    -- Can also be an exclusion list. This has no sense here, so set it to false.
-    automatic_installation = false,
-    handlers = {},
-})
-require "null-ls".setup({
-    -- anything not supported by mason.
-    sources = { }
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = language_servers,
+  handlers = {
+    lsp_zero.default_setup,
+  },
 })
 
 -- completion

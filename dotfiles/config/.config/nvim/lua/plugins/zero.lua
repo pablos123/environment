@@ -15,11 +15,6 @@ return {
                 build = function() pcall(vim.cmd, "MasonUpdate") end
             },
             "williamboman/mason-lspconfig.nvim",
-            "jose-elias-alvarez/null-ls.nvim",
-            {
-                "jay-babu/mason-null-ls.nvim",
-                event = { "BufReadPre", "BufNewFile" },
-            },
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "saadparwaiz1/cmp_luasnip",
