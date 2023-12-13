@@ -4,6 +4,7 @@ local language_servers = {
     "html",
     "ruff_lsp",
     "perlnavigator",
+    "lua_ls",
 }
 
 local lsp_zero = require('lsp-zero')
