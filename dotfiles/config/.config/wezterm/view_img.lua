@@ -4,8 +4,8 @@ local function show_image(file_name)
     return "wezterm imgcat /tmp/" .. file_name .. "; "
 end
 
-local function print_image_url(image_url)
-    return "echo '" .. image_url .. "'; "
+local function print_str(str)
+    return "echo '" .. str .. "'; "
 end
 
 local function wait_for_user_input()
@@ -60,7 +60,7 @@ local function view_img(window, pane)
         cached = " (!cached)"
     end
     pane:split { args = { '/bin/bash', '-c', show_image(file_name) ..
-    print_image_url(image_url .. cached) .. wait_for_user_input() } }
+    print_str(image_url .. cached) .. wait_for_user_input() } }
 end
 
 M.view_img = view_img
