@@ -21,7 +21,7 @@ config.scrollback_lines = 5000
 -- Jus run bash:
 config.default_prog = { "/bin/bash" }
 
-local action_functions = require "action_functions"
+local view_img = require "view_img"
 
 config.keys = {
     {
@@ -40,7 +40,10 @@ config.keys = {
         action = wezterm.action.QuickSelectArgs {
             label = "open url",
             patterns = { "https?://\\S+", "www\\.\\S+" },
-            action = wezterm.action_callback(action_functions.open_url)
+            action = wezterm.action_callback(function(window, pane)
+                local url = window:get_selection_text_for_pane(pane)
+                os.execute("chrome " .. url)
+            end)
         },
     },
     {
@@ -49,7 +52,7 @@ config.keys = {
         action = wezterm.action.QuickSelectArgs {
             label = "view image",
             patterns = { "https?://\\S+\\.webp", "https?://\\S+\\.jpg", "https?://\\S+\\.png" },
-            action = wezterm.action_callback(action_functions.view_img)
+            action = wezterm.action_callback(view_img.view_img)
         },
     },
 }
