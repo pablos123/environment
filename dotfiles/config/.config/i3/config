@@ -99,6 +99,8 @@ bindsym $mod+p exec --no-startup-id flameshot gui
 bindsym $mod+o exec --no-startup-id dmenu_run_gruvbox
 # Connect to host with dmenu
 bindsym $mod+Control+c exec --no-startup-id dmenu_hosts
+# Search with Google with dmenu
+bindsym $mod+Control+s exec --no-startup-id dmenu_search
 # Calendar Applet
 bindsym $mod+Shift+d exec --no-startup-id calendar_applet
 # Sound Applet
