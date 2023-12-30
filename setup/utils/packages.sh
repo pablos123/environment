@@ -18,6 +18,7 @@ apt_packages=(
   exa
   duf
   entr
+  inotify-tools
   hyperfine
   tre-command
   ripgrep
