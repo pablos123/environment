@@ -1,7 +1,7 @@
 #!/bin/bash
 # If the terminal is not working normally,
 # maybe if because TERM is not xterm-256color
-# (kitty has this problem)
+# (i.e. kitty has this problem)
 # export TERM="xterm-256color"
 
 # Editor
@@ -17,4 +17,8 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 source "$HOME/.bashrc_colors"
 
 # Others
+
+# For letterboxd related
 export LETTERBOXD_USER="pablos123"
+# See what to set here with 'xinput --list'
+export XINPUT_MOUSE_ID=8

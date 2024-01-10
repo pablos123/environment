@@ -1,0 +1,18 @@
+#!/bin/bash
+
+clear
+ncal -bw
+
+while true; do
+    if $(mouse_pressed left); then
+        clear
+        current_date=$(date --date="$current_date-15 -1 month" "+%Y-%m")
+        ncal -bwd "$current_date"
+    fi
+    if $(mouse_pressed right); then
+        clear
+        current_date=$(date --date="$current_date-15 +1 month" "+%Y-%m")
+        ncal -bwd "$current_date"
+    fi
+    sleep 0.08
+done
