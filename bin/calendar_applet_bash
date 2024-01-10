@@ -3,6 +3,8 @@
 clear
 ncal -bw
 
+current_date=$(date "+%Y-%m")
+
 while true; do
     if $(mouse_pressed left); then
         clear
