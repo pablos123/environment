@@ -1,20 +1,37 @@
 #!/bin/bash
 
 clear
-ncal -bw
+ncal -bwM
+current_date=$(date "+%Y-%m-%d")
 
-current_date=$(date "+%Y-%m")
-
-while true; do
-    if $(mouse_pressed left); then
-        clear
-        current_date=$(date --date="$current_date-15 -1 month" "+%Y-%m")
-        ncal -bwd "$current_date"
+while read -srn1 key; do
+    action=""
+    if [[ $key == "h" ]]; then
+        action="-1 day"
     fi
-    if $(mouse_pressed right); then
-        clear
-        current_date=$(date --date="$current_date-15 +1 month" "+%Y-%m")
-        ncal -bwd "$current_date"
+    if [[ $key == "l" ]]; then
+        action="+1 day"
     fi
-    sleep 0.08
+    if [[ $key == "j" ]]; then
+        action="+1 week"
+    fi
+    if [[ $key == "k" ]]; then
+        action="-1 week"
+    fi
+    if [[ $key == "u" ]]; then
+        action="-1 month"
+        current_date="$(date --date="$current_date" "+%Y-%m")-15"
+    fi
+    if [[ $key == "o" ]]; then
+        action="+1 month"
+        current_date="$(date --date="$current_date" "+%Y-%m")-15"
+    fi
+    if [[ $key == "q" ]]; then
+        break
+    fi
+    if [[ -n $action ]]; then
+        clear
+        current_date=$(date --date="$current_date $action" "+%Y-%m-%d")
+        ncal -bwMH "$current_date" -d "$(date --date="$current_date" "+%Y-%m")"
+    fi
 done
