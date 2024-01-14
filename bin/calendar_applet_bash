@@ -11,7 +11,3 @@ if [[ $previous_calendar ]]; then
 fi
 
 gnome-terminal --title="Tiny Bash Calendar" --geometry="28x10+${calendar_applet_x}+${calendar_applet_y}" --hide-menubar -- calendar_bash
-
-if [[ -n $selected_date ]]; then
-    echo "$selected_date" | xclip -selection clipboard
-fi
