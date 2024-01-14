@@ -1,6 +1,7 @@
 #!/bin/bash
 # Calculator to support different monitor sizes for my custom applets.
 # Calculate the position of the an applet popup given an x/y axis and an applet's x/y size.
+# You can get the size of a window with: xwininfo
 
 unset -v axis
 unset -v size

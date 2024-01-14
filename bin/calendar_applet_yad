@@ -3,8 +3,8 @@
 # Use yad to open a calendar applet.
 # The applets are always in the primary monitor and I control this with i3.
 
-calendar_applet_x=$("$HOME/environment/bin/lib/calculate_applet_position" -a x -s 304)
-calendar_applet_y=$("$HOME/environment/bin/lib/calculate_applet_position" -a y -s 208)
+calendar_applet_x=$(calculate_applet_position -a x -s 304)
+calendar_applet_y=$(calculate_applet_position -a y -s 208)
 
 previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar")
 if [[ $previous_calendar ]]; then

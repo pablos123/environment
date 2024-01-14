@@ -43,6 +43,7 @@ for_window [instance="trello.com"] move container to workspace $ws4, layout tabb
 for_window [instance="web.telegram.org"] move container to workspace $ws4, layout tabbed
 # Applets
 for_window [title="Tiny Calendar"] move container to output primary, floating enable, sticky enable
+for_window [title="Tiny Bash Calendar"] move container to output primary, floating enable, sticky enable
 for_window [class="Myxer"] move container to output primary, floating enable, sticky enable
 # Database
 for_window [class="DBeaver"] move container to workspace $ws5
@@ -84,7 +85,7 @@ exec --no-startup-id mintupdate-launcher
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id yad --notification --image="sound" --command="myxer_applet"
-exec --no-startup-id yad --notification --image="calendar" --command="calendar_applet"
+exec --no-startup-id yad --notification --image="calendar" --command="calendar_applet_bash"
 
 exec --no-startup-id sleep 20 && daily_tasks
 
@@ -102,7 +103,7 @@ bindsym $mod+Control+c exec --no-startup-id dmenu_hosts
 # Search with Google with dmenu
 bindsym $mod+Control+s exec --no-startup-id dmenu_search
 # Calendar Applet
-bindsym $mod+Shift+d exec --no-startup-id calendar_applet
+bindsym $mod+Shift+d exec --no-startup-id calendar_applet_bash
 # Sound Applet
 bindsym $mod+Shift+s exec --no-startup-id myxer_applet
 # Close Window
