@@ -16,10 +16,6 @@ opts.clipboard = "unnamedplus"
 opts.hidden = true
 opts.timeoutlen = 850
 
--- disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 -- searching
 opts.incsearch = true
 opts.hlsearch = true
@@ -34,3 +30,8 @@ opts.shiftwidth = 4
 opts.expandtab = true
 opts.smartindent = true
 opts.wrap = false
+
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+

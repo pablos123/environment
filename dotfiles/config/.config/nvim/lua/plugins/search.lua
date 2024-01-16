@@ -40,7 +40,6 @@ return {
             { "<leader>b",  "<cmd>lua require('telescope.builtin').buffers()<cr>",     desc = "Find buffers" },
             { "<leader>fs", "<cmd>lua require('telescope.builtin').live_grep()<cr>",   desc = "Find string" },
             { "<leader>fu", "<cmd>lua require('telescope.builtin').grep_string()<cr>", desc = "Find word under the cursor" },
-            { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>",   desc = "Find help" },
             { "<leader>fk", "<cmd>lua require('telescope.builtin').keymaps()<cr>",    desc = "Find keymap" },
         },
     },

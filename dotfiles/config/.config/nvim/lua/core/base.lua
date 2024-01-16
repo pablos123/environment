@@ -24,10 +24,6 @@ opts.wildmenu = true
 opts.hidden = true
 opts.timeoutlen = 850
 
--- disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 -- searching
 opts.incsearch = true
 opts.hlsearch = true
@@ -66,3 +62,8 @@ autocmd("FileType", {
     command = "setl tabstop=2 shiftwidth=2 softtabstop=2",
     group = file_types_au
 })
+
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+

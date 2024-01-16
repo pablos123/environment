@@ -6,6 +6,8 @@ else
     require "core/base"
     require "core/mappings"
 
+    -- Faster startup
+    vim.loader.enable()
     -- Bootstrap lazy.nvim
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not vim.loop.fs_stat(lazypath) then

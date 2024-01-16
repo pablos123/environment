@@ -1,6 +1,4 @@
 return {
-
-    -- theme
     {
         "sainnhe/gruvbox-material",
         init = function()
@@ -16,14 +14,7 @@ return {
             vim.cmd.colorscheme "gruvbox-material"
         end
     },
-
-    -- Ansible highlight
-    { "pearofducks/ansible-vim" },
-
-    -- icons
     { "nvim-tree/nvim-web-devicons", lazy = true },
-
-    -- status line
     {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
@@ -37,44 +28,11 @@ return {
             },
         }
     },
-
-    -- highlight current indent
     {
-        "echasnovski/mini.indentscope",
-        version = false, -- wait till new 0.7.0 release to put it back on semver
-        event = { "BufReadPre", "BufNewFile" },
-        opts = {
-            symbol = "│",
-            options = { try_as_border = true },
+        "folke/trouble.nvim",
+        opts = { use_diagnostic_signs = true },
+        keys = {
+            { "<leader>di", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble to view diagnostics" },
         },
-        init = function()
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
-                callback = function()
-                    vim.b.miniindentscope_disable = true
-                end,
-            })
-        end,
-        config = function(_, options)
-            require "mini.indentscope".setup(options)
-        end,
-    },
-
-    -- highlight trailspace
-    {
-        'echasnovski/mini.trailspace',
-        version = false,
-        config = function(_, options)
-            require "mini.trailspace".setup(options)
-        end,
-    },
-
-    -- highlight all ocurrencies of word under cursor
-    {
-        'echasnovski/mini.cursorword',
-        version = false,
-        config = function(_, options)
-            require "mini.cursorword".setup(options)
-        end,
     },
 }

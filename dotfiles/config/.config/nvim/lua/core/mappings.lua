@@ -44,7 +44,7 @@ map("n", "tl", "<cmd>tabnext<cr>", add_desc("Next Tab"))
 map("n", "th", "<cmd>tabprevious<cr>", add_desc("Previous Tab"))
 
 map("v", "//", "y/\\V<c-r>=escape(@\",'/\\')<cr><cr>", add_desc("Search for visually highlighted"))
-map("n", "<leader>dl", "<cmd>lua vim.diagnostic.open_float()<cr>", add_desc("Show a popup window with diagnostics"))
+map("n", "gh", "<cmd>lua vim.diagnostic.open_float()<cr>", add_desc("Show a popup window with diagnostics"))
 
 map("i", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 map("n", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
