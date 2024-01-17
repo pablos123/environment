@@ -1,8 +1,6 @@
 local languages = {
-    "help",
     "bash",
     "c",
-    "c++",
     "html",
     "htmldjango",
     "javascript",
@@ -29,15 +27,17 @@ return {
         build = ":TSUpdate",
         cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
         event = { "BufReadPost", "BufNewFile" },
-        opts = {
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = { enable = true },
-            context_commentstring = { enable = true, enable_autocmd = false },
-            ensure_installed = languages,
-        },
+        config = function(_, options)
+            require "nvim-treesitter.configs".setup {
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                },
+                indent = { enable = true },
+                context_commentstring = { enable = true, enable_autocmd = false },
+                ensure_installed = languages,
+            }
+        end,
     },
     "nvim-treesitter/playground",
 }
