@@ -40,16 +40,16 @@ return {
         config = function(_, _)
             local hipatterns = require "mini.hipatterns"
             hipatterns.setup({
-              highlighters = {
-                -- Highlight standalone "FIXME", "HACK", "TODO", "NOTE"
-                fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-                hack  = { pattern = "%f[%w]()HACK()%f[%W]",  group = "MiniHipatternsHack"  },
-                todo  = { pattern = "%f[%w]()TODO()%f[%W]",  group = "MiniHipatternsTodo"  },
-                note  = { pattern = "%f[%w]()NOTE()%f[%W]",  group = "MiniHipatternsNote"  },
+                highlighters = {
+                    -- Highlight standalone "FIXME", "HACK", "TODO", "NOTE"
+                    fixme     = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+                    hack      = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+                    todo      = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+                    note      = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
 
-                -- Highlight hex color strings (`#rrggbb`) using that color
-                hex_color = hipatterns.gen_highlighter.hex_color(),
-              },
+                    -- Highlight hex color strings (`#rrggbb`) using that color
+                    hex_color = hipatterns.gen_highlighter.hex_color(),
+                },
             })
         end,
     },
@@ -103,6 +103,12 @@ return {
         version = false,
         config = function(_, options)
             require "mini.trailspace".setup(options)
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                desc = "Clean trail space before saving",
+                callback = function(event)
+                    MiniTrailspace.trim()
+                end
+            })
         end,
     },
 
@@ -112,6 +118,15 @@ return {
         version = false,
         config = function(_, options)
             require "mini.cursorword".setup(options)
+        end,
+    },
+
+    -- file system
+    {
+        'echasnovski/mini.files',
+        version = false,
+        config = function(_, options)
+            require "mini.files".setup(options)
         end,
     },
 }
