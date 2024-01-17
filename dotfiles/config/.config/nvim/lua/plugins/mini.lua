@@ -127,6 +127,7 @@ return {
         version = false,
         config = function(_, options)
             require "mini.files".setup(options)
+            vim.keymap.set("n", "gt", "<cmd>lua MiniFiles.open()<cr>", opts)
         end,
     },
 }
