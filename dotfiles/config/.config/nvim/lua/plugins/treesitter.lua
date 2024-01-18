@@ -40,4 +40,5 @@ return {
         end,
     },
     "nvim-treesitter/playground",
+    "JoosepAlviste/nvim-ts-context-commentstring",
 }
