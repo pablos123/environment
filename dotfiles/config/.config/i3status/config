@@ -18,58 +18,43 @@ general {
 order += "wireless _first_"
 order += "ethernet _first_"
 order += "battery all"
-order += "disk /"
-order += "cpu_usage"
-order += "load"
 order += "memory"
 order += "volume master"
 order += "tztime local"
 
 wireless _first_ {
-    format_up = "󰣺 (%quality) %ip"
+    format_up = " 󰣺 (%quality) %ip "
     format_down = ""
 }
 
 ethernet _first_ {
-    format_up = "󰈁 %ip"
-    format_down = "󰈂"
+    format_up = "%ip "
+    format_down = ""
 }
 
 battery all {
-    format = "%status %percentage %remaining"
+    format = "%status %percentage"
     integer_battery_capacity = true
     last_full_capacity = true
     low_threshold = 20
     format_down = ""
-    status_chr = "󰂄"
-    status_bat = "󰂀"
-    status_full = "󰁹"
-    status_unk = "🧙"
-}
-
-disk "/" {
-    format = " %avail"
-}
-
-cpu_usage {
-    format = " %usage"
-}
-
-load {
-    format = " %1min"
+    status_chr = "Chr"
+    status_bat = "Bat"
+    status_full = "Full"
+    status_unk = "Ukn"
 }
 
 memory {
-    format = "󰟆 %used"
+    format = " Mem %used "
     threshold_degraded = "1G"
     format_degraded = "MEMORY < %available"
 }
 
 volume master {
-    format = "󰽶 %volume"
-    format_muted = "󰽺 %volume"
+    format = " Vol %volume "
+    format_muted = " Muted %volume "
 }
 
 tztime local {
-    format = "  %Y-%m-%d |  %H:%M:%S"
+    format = "  %d-%m-%Y |  %H:%M"
 }

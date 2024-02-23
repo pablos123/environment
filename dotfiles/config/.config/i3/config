@@ -14,16 +14,16 @@ font pango: Lilex Nerd Font 10
 
 # WORKSPACES
 #-------------------------------------------------------------------------------
-set $ws1 "1 󰖟 "
-set $ws2 "2 󰨞 "
-set $ws3 "3  "
-set $ws4 "4  "
-set $ws5 "5  "
-set $ws6 "6 󰙅 "
-set $ws7 "7 󰓓 "
-set $ws8 "8  "
-set $ws9 "9  "
-set $ws10 "10  "
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
 
 # WINDOWS
 #-------------------------------------------------------------------------------
@@ -84,8 +84,6 @@ exec --no-startup-id sleep 5 && spotify
 exec --no-startup-id mintupdate-launcher
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
-exec --no-startup-id yad --notification --image="sound" --command="myxer_applet"
-exec --no-startup-id yad --notification --image="calendar" --command="calendar_applet_bash"
 
 exec --no-startup-id sleep 20 && daily_tasks
 
