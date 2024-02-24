@@ -90,7 +90,6 @@ apt_packages=(
 flatpak_packages=(
   io.dbeaver.DBeaverCommunity
   md.obsidian.Obsidian
-  com.spotify.Client
   com.github.tchx84.Flatseal
 )
 

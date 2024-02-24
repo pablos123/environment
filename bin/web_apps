@@ -1,14 +1,7 @@
 #!/bin/bash
 # Open web apps only if there's not another instance of that web app.
-# The web apps are opened in workspace 4 tabbed and are managed with i3.
 
-web_apps=(
-    https://web.whatsapp.com/
-    https://www.instagram.com/
-    https://discord.com/channels/@me
-    https://web.skype.com/
-    https://web.telegram.org/a/
-)
+source "$HOME/.bashrc_variables"
 
 chrome_window_ids=$(xdotool search --class "Google-chrome")
 instances=()
@@ -16,7 +9,7 @@ for id in $chrome_window_ids; do
     instance_name=$(xprop -id "$id" | grep WM_CLASS | awk '{ print $3 }')
     instances+=("$instance_name")
 done
-for app in "${web_apps[@]}"; do
+for app in "${WEB_APPS[@]}"; do
     instance_name=$(echo "$app" | sed -r 's/^https:\/\/([a-zA-Z.]+).*/\1/')
     if [[ ${instances[@]} =~ $instance_name ]]; then continue; fi
         chrome --app="$app"

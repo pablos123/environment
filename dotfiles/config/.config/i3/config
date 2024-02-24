@@ -41,6 +41,7 @@ for_window [instance="mail.google.com"] move container to workspace $ws4, layout
 for_window [instance="web.skype.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="trello.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="web.telegram.org"] move container to workspace $ws4, layout tabbed
+for_window [instance="open.spotify.com"] move container to workspace $ws9
 # Applets
 for_window [title="Tiny Calendar"] move container to output primary, floating enable, sticky enable
 for_window [title="Tiny Bash Calendar"] move container to output primary, floating enable, sticky enable
@@ -51,9 +52,8 @@ for_window [class="DBeaver"] move container to workspace $ws5
 for_window [class="Code"] move container to workspace $ws2
 for_window [class="steam"] move container to workspace $ws7
 for_window [class="obsidian"] move container to workspace $ws8
-for_window [class="Spotify"] move container to workspace $ws9
 
-# I always use nemo for drag and drop if necessary
+# File Manager
 for_window [class="Nemo"] floating enable
 
 
