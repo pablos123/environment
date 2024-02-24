@@ -20,8 +20,9 @@ while read -rsn1 key; do
     elif [[ "$key" == "o" ]]; then
         action="+1 month"
         current_date="$(date --date="$current_date" "+%Y-%m")-15"
-    elif [ "$key" == "" ] ;then
-        echo -n "$current_date" | nohup xclip -selection clipboard # Maintain xclip if the terminal is closed.
+    elif [ "$key" == "" ]; then
+        # Maintain xclip if the terminal is closed.
+        echo -n "$current_date" | nohup xclip -selection clipboard >/dev/null 2>&1
         break
     elif [[ "$key" == $'\e' ]] || [[ $key == "q" ]]; then
         break
