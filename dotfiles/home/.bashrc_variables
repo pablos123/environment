@@ -16,7 +16,6 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 
 export WEB_APPS=(
     https://web.whatsapp.com/
-    https://www.instagram.com/
     https://discord.com/channels/@me
     https://web.telegram.org/a/
     https://open.spotify.com/
