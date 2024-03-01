@@ -37,9 +37,6 @@ for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
 for_window [instance="web.whatsapp.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="instagram.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="discord.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="mail.google.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="web.skype.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="trello.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="web.telegram.org"] move container to workspace $ws4, layout tabbed
 for_window [instance="open.spotify.com"] move container to workspace $ws9
 # Applets
@@ -56,6 +53,11 @@ for_window [class="obsidian"] move container to workspace $ws8
 # File Manager
 for_window [class="Nemo"] floating enable
 
+# Work related
+for_window [instance="app.element.io"] move container to workspace $ws4
+for_window [instance="web.skype.com"] move container to workspace $ws4, layout tabbed
+for_window [instance="mail.google.com"] move container to workspace $ws4, layout tabbed
+for_window [instance="trello.com"] move container to workspace $ws4, layout tabbed
 
 # EXEC, STARTUP
 #-------------------------------------------------------------------------------
