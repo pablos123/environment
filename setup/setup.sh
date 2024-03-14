@@ -20,6 +20,7 @@ source "$HOME/environment/setup/utils/packages.sh"
 sudo apt install -y "${apt_packages[@]}"
 sudo flatpak install -y flathub "${flatpak_packages[@]}"
 pip install "${pip_packages[@]}"
+cargo install "${cargo_packages[@]}"
 
 "$HOME/environment/setup/utils/make_directories.sh"
 

@@ -3,7 +3,7 @@
 # and not in scripts nor dmenu.
 #
 # Common
-alias ls="exa --icons --extended --group-directories-first"
+alias ls="eza --icons --extended --group-directories-first"
 alias l="ls"
 alias sl="ls"
 alias ll="ls -l"

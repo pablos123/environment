@@ -2,7 +2,6 @@
 #
 #
 # DOCS
-# https://github.com/ogham/exa
 # https://github.com/cmus/cmus
 # https://github.com/muesli/duf
 # https://github.com/sharkdp/hyperfine
@@ -15,7 +14,6 @@
 # https://github.com/eradman/entr
 
 apt_packages=(
-  exa
   duf
   entr
   inotify-tools
@@ -91,6 +89,10 @@ flatpak_packages=(
   io.dbeaver.DBeaverCommunity
   md.obsidian.Obsidian
   com.github.tchx84.Flatseal
+)
+
+cargo_packages=(
+  eza
 )
 
 pip_packages=(
