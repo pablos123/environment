@@ -61,7 +61,7 @@ for_window [instance="trello.com"] move container to workspace $ws4, layout tabb
 
 # EXEC, STARTUP
 #-------------------------------------------------------------------------------
-exec_always --no-startup-id sleep 1 && monitors_config
+# exec_always --no-startup-id sleep 1 && monitors_config
 exec_always --no-startup-id keyboard_config
 
 exec_always --no-startup-id set_wallpaper -t steampunk
@@ -237,7 +237,7 @@ bar {
     mode dock
     status_command i3status
     padding 2px
-    tray_output primary
+    # tray_output primary
     tray_padding 4px
     colors {
         background $darkgray
