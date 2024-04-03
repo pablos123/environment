@@ -50,7 +50,6 @@ end
 
 local luasnip = require "luasnip"
 local cmp = require "cmp"
-
 cmp.setup({
     -- add borders to the completion menu
     window = {
@@ -102,16 +101,13 @@ cmp.setup({
     },
 })
 
-
 cmp.setup.cmdline("/", { sources = { { name = "path" } } })
 
-
 local null_ls = require("null-ls")
-
 null_ls.setup({
     sources = {
+        null_ls.builtins.formatting.prettier,
         null_ls.builtins.formatting.djlint,
         null_ls.builtins.diagnostics.djlint,
-        null_ls.builtins.diagnostics.shellcheck,
     },
 })

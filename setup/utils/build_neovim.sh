@@ -35,7 +35,7 @@ git clone https://github.com/neovim/neovim /opt/nvim/repos/neovim/
 cd /opt/nvim/repos/neovim/ || exit 1
 
 echo -e "Making neovim..."
-make CMAKE_BUILD_TYPE=Release
+make CMAKE_BUILD_TYPE=Debug
 
 echo -e "Installing neovim..."
 make install

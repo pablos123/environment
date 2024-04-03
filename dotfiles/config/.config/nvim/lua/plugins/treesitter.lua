@@ -1,4 +1,4 @@
-local languages = {
+local parsers = {
     "bash",
     "c",
     "html",
@@ -6,8 +6,6 @@ local languages = {
     "javascript",
     "json",
     "lua",
-    "luadoc",
-    "luap",
     "markdown",
     "markdown_inline",
     "perl",
@@ -27,18 +25,24 @@ return {
         build = ":TSUpdate",
         cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
         event = { "BufReadPost", "BufNewFile" },
-        config = function(_, options)
+        config = function()
+            vim.g.skip_ts_context_commentstring_module = true
             require "nvim-treesitter.configs".setup {
                 highlight = {
                     enable = true,
                     additional_vim_regex_highlighting = false,
                 },
                 indent = { enable = true },
-                context_commentstring = { enable = true, enable_autocmd = false },
-                ensure_installed = languages,
+                ensure_installed = parsers,
             }
         end,
     },
-    "nvim-treesitter/playground",
-    "JoosepAlviste/nvim-ts-context-commentstring",
+    {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        config = function()
+            require "ts_context_commentstring".setup {
+                enable_autocmd = false,
+            }
+        end
+    }
 }

@@ -16,18 +16,6 @@ return {
     },
     { "nvim-tree/nvim-web-devicons", lazy = true },
     {
-        "nvim-lualine/lualine.nvim",
-        opts = {
-            sections = {
-                lualine_a = { "mode" },
-                lualine_b = { "branch", "diff" },
-                lualine_c = { { "filename", new_file_status = true, path = 1 } },
-                lualine_y = { "progress" },
-                lualine_z = { "location" }
-            },
-        }
-    },
-    {
         "folke/trouble.nvim",
         opts = { use_diagnostic_signs = true },
         keys = {
