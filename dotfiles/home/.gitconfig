@@ -1,7 +1,7 @@
 [user]
-	email = pablosaavedra123@gmail.com
-	name = Pablo
     username = pablos123
+[core]
+    editor = nvim
 [pull]
     rebase = false
 [init]
