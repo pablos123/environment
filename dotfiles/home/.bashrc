@@ -12,8 +12,8 @@ source "$HOME/.bashrc_aliases"
 
 source "$HOME/.bashrc_functions"
 
-if [[ -f "$HOME/.work_bashrc" ]]; then
-    source "$HOME/.work_bashrc"
+if [[ -f "$HOME/.bashrc_work" ]]; then
+    source "$HOME/.bashrc_work"
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
