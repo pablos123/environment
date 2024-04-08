@@ -1,3 +1,0 @@
-*.deb
-bin/Artix_Games_Launcher-x86_64.AppImage
-dotfiles/config/.config/nvim/lazy-lock.json

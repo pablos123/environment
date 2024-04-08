@@ -1,0 +1,35 @@
+# See dunst(5) for all configuration options
+#
+[global]
+    monitor = 0
+    follow = none
+    width = 300
+    height = 600
+    offset = 10x10
+    notification_limit = 5
+    icon_corner_radius = 1
+    indicate_hidden = yes
+    transparency = 10
+    frame_width = 3
+    separator_color= frame
+    gap_size = 4
+    font = Lilex Nerd Font 8
+    show_age_threshold = 3600
+    enable_recursive_icon_lookup = true
+    icon_theme = Papirus-Dark
+    max_icon_size = 64
+    corner_radius = 10
+    frame_color = "FG_COLOR"
+
+[urgency_low]
+    background = "BG_COLOR"
+    foreground = "FG_COLOR"
+
+[urgency_normal]
+    background = "BG_COLOR"
+    foreground = "FG_COLOR"
+
+[urgency_critical]
+    background = "BG_COLOR"
+    foreground = "FG_COLOR"
+    frame_color = "IM_COLOR"

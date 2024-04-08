@@ -1,0 +1,12 @@
+#!/bin/bash
+# Play rain sounds located in $HOME/.media/rain.mp3
+
+pids=$(ps aux | grep myrain | wc -l)
+if [[ $pids -gt 1 ]]; then
+    ps aux | grep myrain | awk '{print $2}' | head -1 | xargs kill -9
+    exit 0
+fi
+
+if [[ -f "$HOME/.rain.mp3" ]]; then
+    bash -c "exec -a myrain mpv $HOME/.rain.mp3 &"
+fi

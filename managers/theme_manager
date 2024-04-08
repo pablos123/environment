@@ -1,0 +1,129 @@
+#!/bin/bash
+set -e
+
+help='
+Options:
+
+[-t <theme dir>] to set a theme
+[-e] explain
+[-h] help
+'
+
+explain='
+Manage what I consider a theme, that is:
+- env (i3, i3status, dmenu, dunst)
+- term (wezterm, nvim)
+- gtk (theme, icons, cursor)
+
+-t:
+A folder containing 3 files:
+- env.json
+- term.json
+- gtk.json
+
+-e:
+This
+
+-h:
+Help
+
+'
+theme=
+if [[ -f "$HOME/.current_theme" ]]; then
+    theme="$(cat "$HOME/.current_theme")"
+fi
+while getopts "het:" opt; do
+	case $opt in
+        t) theme="$(echo "$OPTARG" | sed 's#/##g')";;
+        e) echo "$explain" && exit 0 ;;
+        h) echo "$help" && exit 0 ;;
+	esac
+done
+
+# Check for errors
+if [[ -z "$theme" ]]; then
+	echo "No theme specified!" >&2
+	exit 1
+fi
+
+theme_dir="$HOME/mybash/dotfiles/themes/$theme"
+if [[ ! -d "$theme_dir" ]]; then
+	echo "The theme does not exist!" >&2
+	exit 1
+fi
+
+if [[ ! -f $theme_dir/gtk.json ]] ||
+    [[ ! -f $theme_dir/term.json ]] ||
+    [[ ! -f $theme_dir/env.json ]]; then
+	echo "The theme is not well defined!" >&2
+	exit 1
+fi
+
+wezterm_colorscheme="$(jq -rM .wezterm_colorscheme < "$theme_dir/term.json")"
+nvim_colorscheme="$(jq -rM .nvim_colorscheme < "$theme_dir/term.json")"
+if [[ -z $wezterm_colorscheme ]] ||
+    [[ -z $nvim_colorscheme ]] ||
+    [[ $wezterm_colorscheme = "null" ]] ||
+    [[ $nvim_colorscheme = "null" ]]; then
+    echo "The terminal json is not well defined!" >&2
+    exit 1
+fi
+
+bg="$(jq -rM .bg < "$theme_dir/env.json")"
+fg="$(jq -rM .fg < "$theme_dir/env.json")"
+im="$(jq -rM .im < "$theme_dir/env.json")"
+if [[ -z $bg ]] ||
+    [[ -z $fg ]] ||
+    [[ -z $im ]] ||
+    [[ $bg = "null" ]] ||
+    [[ $fg = "null" ]] ||
+    [[ $im = "null" ]]; then
+    echo "The environment json is not well defined!" >&2
+    exit 1
+fi
+
+# Change gtk
+gtk_manager -t "$theme_dir/gtk.json"
+
+# Create directories
+mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
+
+# Copy the base content
+rm -rf "$HOME/.dotfiles_stow/"*
+cp -r "$HOME/mybash/dotfiles/templates/"* "$HOME/.dotfiles_stow"
+
+# Change terminal colors (neovi3_im and wezterm)
+sed -i "s/COLORSCHEME/$wezterm_colorscheme/" "$HOME/.dotfiles_stow/config/.config/wezterm/wezterm.lua"
+sed -i "s/COLORSCHEME/$nvim_colorscheme/" "$HOME/.dotfiles_stow/config/.config/nvim/init.lua"
+
+# Change i3 colors
+sed -i "s/BG_COLOR/$bg/" "$HOME/.dotfiles_stow/config/.config/i3/config"
+sed -i "s/FG_COLOR/$fg/" "$HOME/.dotfiles_stow/config/.config/i3/config"
+sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/i3/config"
+
+# Change dunst colors
+sed -i "s/BG_COLOR/$bg/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
+sed -i "s/FG_COLOR/$fg/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
+sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
+
+# Stow the new files
+(
+    cd "$HOME/.dotfiles_stow" || exit 1
+    stow --target="$HOME" --restow -- */
+)
+
+#Make dmenu executables
+echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font-14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu"
+echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font-14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu_run"
+chmod 0755 "$HOME/bin/dmenu" "$HOME/bin/dmenu_run"
+
+set_wallpaper -t "$theme"
+
+# Reload
+# Save the current theme, used for reloading and setting a wallpaper
+echo "$theme" >"$HOME/.current_theme"
+
+rm -f "$HOME/.cache/dmenu_run"
+rm -f "$HOME/dmenu_cache"
+i3-msg reload >/dev/null 2>&1
+killall dunst >/dev/null 2>&1

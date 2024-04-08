@@ -1,7 +1,0 @@
-#!/bin/bash
-# Open dmenu and search string in Google.
-
-q_string=$(dmenu_gruvbox < /dev/null)
-if [[ $q_string ]]; then
-     chrome "https://www.google.com/search?q=$q_string"
-fi
