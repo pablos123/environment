@@ -219,7 +219,7 @@ set $fg FG_COLOR
 set $im IM_COLOR
 
 # target                title bg  text indicator border
-client.focused          $key  $bg $im  $fg       $im
+client.focused          $fg   $bg $im  $fg       $im
 client.focused_inactive $bg   $bg $fg  $fg       $bg
 client.unfocused        $bg   $bg $fg  $fg       $bg
 client.urgent           $bg   $bg $fg  $fg       $bg
