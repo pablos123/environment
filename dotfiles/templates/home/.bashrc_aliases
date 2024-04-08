@@ -33,5 +33,3 @@ alias sources="grep --color=always -v -E '^#|^ *$' /etc/apt/sources.list /etc/ap
 alias noneo="noneo -e -c -d -m -s 10000000"
 alias weather="curl wttr.in/rosario"
 alias calendar_fact="calendar | head -n 1 | cowsay -f duck | lolcat"
-alias upgrade_system="\$HOME/environment/setup/utils/upgrade.sh"
-alias build_nvim="\$HOME/environment/setup/utils/build_neovim.sh"

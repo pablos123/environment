@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+#
+set -e
+
+help='
+Options:
+
+[-i] print system info
+[-u] upgrade system
+[-n] compile neovim
+[-e] explain
+[-h] help
+'
+
+info=false
+upgrade=false
+neovim=false
+
+getopts_executed=false
+while getopts "iuenh" opt; do
+	case $opt in
+        i) info=true ;;
+        u) upgrade=true ;;
+        n) neovim=true ;;
+        e) echo "$explain" && exit 0;;
+        h) echo "$help" && exit 0;;
+        *) echo "$help" && exit 1;;
+	esac
+    getopts_executed=true
+done
+
+if ! $getopts_executed; then
+    echo "No option given!" >&2
+    echo "$help"
+    exit 1
+fi
+
+if $upgrade; then
+    sudo apt update
+    sudo apt full-upgrade -y
+    sudo apt autopurge -y
+
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3 get-pip.py --user
+    rm -f ./get-pip.py
+
+    source "$HOME/mybash/managers/lib/sys_packages.sh"
+    sudo apt install -y "${apt_packages[@]}"
+    pip install "${pip_packages[@]}"
+    cargo install "${cargo_packages[@]}"
+
+    mkdir -p "$HOME/images/" "$HOME/projects/" "$HOME/bin/"
+
+    source "$HOME/mybash/managers/lib/sys_installers.sh"
+    for inst_function in "${sys_installers[@]}"; do
+        "$inst_function"
+    done
+
+    sudo apt purge -y steam wine
+    sudo apt autopurge -y
+    sudo flatpak update -y
+
+    rm -f "$HOME/.cache/dmenu_run"
+    rm -f "$HOME/dmenu_cache"
+
+    echo "Done! Remember to reboot your pc!"
+    exit 0
+fi
+
+if $info; then
+    info_manager
+    exit 0
+fi
+
+if $neovim; then
+    bash "$HOME/mybash/managers/lib/build_neovim.sh"
+    exit 0
+fi

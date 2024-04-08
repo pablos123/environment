@@ -4,22 +4,43 @@ set -e
 help='
 Options:
 
-[-t <theme dir>] to set a theme
+[-t <theme name>] to set a theme
+[-l] list themes
 [-e] explain
 [-h] help
 '
 
 explain='
+General:
+
 Manage what I consider a theme, that is:
 - env (i3, i3status, dmenu, dunst)
 - term (wezterm, nvim)
 - gtk (theme, icons, cursor)
 
+If no option is given then reload the current theme.
+The current theme info is inside the $HOME/.current_theme file.
+
+This will not manage things that are not listed before.
+
 -t:
-A folder containing 3 files:
+A directory inside $HOME/mybash/dotfiles/themes/ containing 3 files:
 - env.json
 - term.json
 - gtk.json
+
+To set a theme:
+- Check for errors
+- Set the gtk theme using gtk_manager
+- Copy the files inside $HOME/mybash/dotfiles/templates/ to $HOME/.dotfiles_stow
+- Change the necessary in those files using sed
+- stow the content of $HOME/.dotfiles_stow
+- Create dmenu binaries dinamically
+- Save the current theme name in $HOME/.current_theme
+- reload i3, dunst, and clean dmenu cache
+
+-l:
+ls the content of $HOME/mybash/dotfiles/themes
 
 -e:
 This
@@ -28,17 +49,25 @@ This
 Help
 
 '
+
+list=false
 theme=
 if [[ -f "$HOME/.current_theme" ]]; then
     theme="$(cat "$HOME/.current_theme")"
 fi
-while getopts "het:" opt; do
+while getopts "helt:" opt; do
 	case $opt in
         t) theme="$(echo "$OPTARG" | sed 's#/##g')";;
+        l) list=true;;
         e) echo "$explain" && exit 0 ;;
         h) echo "$help" && exit 0 ;;
 	esac
 done
+
+if $list; then
+    ls -1 "$HOME/mybash/dotfiles/themes"
+    exit 0
+fi
 
 # Check for errors
 if [[ -z "$theme" ]]; then
@@ -92,7 +121,7 @@ mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
 rm -rf "$HOME/.dotfiles_stow/"*
 cp -r "$HOME/mybash/dotfiles/templates/"* "$HOME/.dotfiles_stow"
 
-# Change terminal colors (neovi3_im and wezterm)
+# Change terminal colors (neovim and wezterm)
 sed -i "s/COLORSCHEME/$wezterm_colorscheme/" "$HOME/.dotfiles_stow/config/.config/wezterm/wezterm.lua"
 sed -i "s/COLORSCHEME/$nvim_colorscheme/" "$HOME/.dotfiles_stow/config/.config/nvim/init.lua"
 
@@ -112,7 +141,7 @@ sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
     stow --target="$HOME" --restow -- */
 )
 
-#Make dmenu executables
+# Make dmenu executables
 echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font-14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu"
 echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font-14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu_run"
 chmod 0755 "$HOME/bin/dmenu" "$HOME/bin/dmenu_run"

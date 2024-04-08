@@ -12,8 +12,8 @@ while getopts t:n:c:h o; do
     t) type="${OPTARG}" ;;
     n) name="${OPTARG}" ;;
     c) change="${OPTARG}" ;;
-    h) echo "Usage: set_wallpaper -t '<type(folder inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
-    *) echo "Usage: set_wallpaper -t '<type(folder inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
+    h) echo "Usage: set_wallpaper -t '<type(directory inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
+    *) echo "Usage: set_wallpaper -t '<type(directory inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
     esac
 done
 
@@ -22,12 +22,12 @@ if [[ -z "$type" ]]; then
 	exit 1
 fi
 
-wallpapers_folder="$HOME/.wallpapers/$type/"
+wallpapers_directory="$HOME/.wallpapers/$type/"
 
-cd "$wallpapers_folder" || exit 1
+cd "$wallpapers_directory" || exit 1
 
 if [[ -n "$name" ]]; then
-    hsetroot -cover "$wallpapers_folder/$name" || exit 1
+    hsetroot -cover "$wallpapers_directory/$name" || exit 1
     exit 0
 fi
 

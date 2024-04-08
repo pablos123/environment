@@ -76,7 +76,6 @@ This
 
 -h:
 Help
-
 '
 
 install=false
@@ -109,7 +108,7 @@ fi
 if $install; then
     mkdir -p "$HOME/.icons" "$HOME/.themes"
     source "$HOME/mybash/managers/lib/gtk_installers.sh"
-    for inst_function in "${installers[@]}"; do
+    for inst_function in "${gtk_installers[@]}"; do
         "$inst_function"
     done
     exit 0

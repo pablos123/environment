@@ -12,6 +12,7 @@
 # https://github.com/jarun/nnn
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eradman/entr
+# https://github.com/eza-community/eza
 
 apt_packages=(
   duf
@@ -83,12 +84,6 @@ apt_packages=(
   nload
   virtualbox
   vagrant
-)
-
-flatpak_packages=(
-  io.dbeaver.DBeaverCommunity
-  md.obsidian.Obsidian
-  com.github.tchx84.Flatseal
 )
 
 cargo_packages=(

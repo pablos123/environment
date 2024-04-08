@@ -40,7 +40,7 @@ fausto_themes() {
 	done
 }
 
-installers=(
+gtk_installers=(
     capitaine_cursor
     gruvbox_icons
     suru_icons

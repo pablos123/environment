@@ -1,26 +1,10 @@
 # `#!/bin/bash`
-Pure bash setup.
+Pure bash environment.
 
-My environment is very stable and I used it for almost 3 years now.
-Never the less I'm always changing, adding or optimizing something.
-Before I used Ansible to setup my machine but now I don't think Ansible is the right tool: I want dynamism and I always execute this on one host.
-## Initial Setup
-```
-cd "$HOME/environment/setup"
-sudo ./utils/build_neovim.sh && ./setup.sh
-```
-## Environment
-### Upgrade system
-```
-upgrade_system
-```
-### Build Neovim
-```
-build_nvim
-```
+The most interesting part are the _managers_.
+They do silly but useful operations and make my life easier.
+
 ### Used in
-```
-# Linux Mint 21.2
-
-# Linux Mint 21.1
-```
+- Linux Mint 21.3
+- Linux Mint 21.2
+- Linux Mint 21.1
