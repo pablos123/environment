@@ -13,6 +13,27 @@ Options:
 [-h] help
 '
 
+explain='
+General:
+Common uses that I do with my system.
+
+-i:
+info_manager
+
+-u:
+Upgrade the system: apt, flatpak, pip and independent .deb packages
+
+-n:
+Build neovim nightly
+
+-e
+This
+
+-h
+Help
+
+'
+
 info=false
 upgrade=false
 neovim=false
@@ -74,6 +95,6 @@ if $info; then
 fi
 
 if $neovim; then
-    bash "$HOME/mybash/managers/lib/build_neovim.sh"
+    sudo "$HOME/mybash/managers/lib/sys_neovim.sh"
     exit 0
 fi

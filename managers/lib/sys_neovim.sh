@@ -1,10 +1,6 @@
 #!/bin/bash
 #
 
-if [[ ! $(id -u) == 0 ]]; then
-    echo -e "\e[1;31mRun as root or with sudo!\e[0m" && exit 1
-fi
-
 dependencies=(
     ninja-build
     gettext
@@ -35,7 +31,7 @@ git clone https://github.com/neovim/neovim /opt/nvim/repos/neovim/
 cd /opt/nvim/repos/neovim/ || exit 1
 
 echo -e "Making neovim..."
-make CMAKE_BUILD_TYPE=Debug
+make CMAKE_BUILD_TYPE=RelWithDebInfo
 
 echo -e "Installing neovim..."
 make install
