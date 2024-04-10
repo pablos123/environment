@@ -1,5 +1,14 @@
 #!/bin/bash
 
+help='
+Options:
+
+[-t] tell tux to say the information
+[-p] pretty blank lines between info functions
+[-e] explain
+[-h] help
+'
+
 explain='
 General:
 Print information about your system, this is to not use neofetch and learn something.
@@ -26,18 +35,6 @@ This
 Help
 '
 
-cowsay_exists=$(which cowsay)
-lolcat_exists=$(which lolcat)
-
-help='
-Options:
-
-[-t] tell tux to say the information
-[-p] pretty blank lines between info functions
-[-e] explain
-[-h] help
-'
-
 pretty=false
 tux=false
 while getopts "peth" opt; do
@@ -61,13 +58,14 @@ if $pretty; then
 fi
 
 if $tux; then
-    if [[ -z $(which cowsay) ]]; then
+    if [[ -z "$(which cowsay)" ]]; then
         echo "Install cowsay to have tux telling you the information!" >&2
         exit 1
     fi
 fi
 
 function get_info() {
+    local counter functions_count function
     source "$HOME/mybash/managers/lib/info_functions.sh"
     counter=1
     functions_count=${#info_functions[@]}

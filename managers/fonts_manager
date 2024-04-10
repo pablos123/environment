@@ -1,19 +1,80 @@
 #!/bin/bash
 #
 
-version="v3.0.2"
 
-install_font() {
-    wget -O "$HOME/.local/share/fonts/$1.zip" "https://github.com/ryanoasis/nerd-fonts/releases/download/$version/$1.zip"
-    unzip -o "$HOME/.local/share/fonts/$1.zip" -d "$HOME/.local/share/fonts/$1"
-    rm -f "$HOME/.local/share/fonts/$1.zip"
-}
+help='
+Options:
 
-install_font "SourceCodePro"
-install_font "Cousine"
-install_font "JetBrainsMono"
-install_font "Lilex"
-install_font "DejaVuSansMono"
-install_font "FiraMono"
+[-i] install fonts
+[-l] list installed fonts
+[-e] explain
+[-h] help
+'
+explain='
+General:
 
-fc-cache -fv
+-i:
+Install nerd fonts
+
+-l:
+ls "$HOME/.local/share/fonts/"
+
+-e:
+This
+
+-h:
+Help
+'
+
+install=false
+list=false
+
+getopts_executed=false
+while getopts "ileh" opt; do
+	case $opt in
+        i) install=true ;;
+        l) list=true ;;
+        e) echo "$explain" && exit 0;;
+        h) echo "$help" && exit 0;;
+        *) echo "$help" && exit 1;;
+	esac
+    getopts_executed=true
+done
+
+if ! $getopts_executed; then
+    echo "No option given!" >&2
+    echo "$help"
+    exit 1
+fi
+
+if $install;then
+    install_path="$HOME/.local/share/fonts"
+    mkdir -p "$install_path"
+    install_font() {
+        rm -rf "$install_path/$1"
+        mkdir -p "$install_path/$1"
+        wget -O "$install_path/$1.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$1.tar.xz"
+        tar -xf "$install_path/$1.tar.xz" -C "$install_path/$1"
+        rm -f "$install_path/$1.tar.xz"
+    }
+    fonts=(
+        SourceCodePro
+        Cousine
+        JetBrainsMono
+        Lilex
+        DejaVuSansMono
+        FiraMono
+    )
+
+    for font in "${fonts[@]}"; do
+        install_font $font
+    done
+
+    fc-cache -fv
+    exit 0
+fi
+
+if $list; then
+    ls -1 "$HOME/.local/share/fonts"
+    exit 0
+fi

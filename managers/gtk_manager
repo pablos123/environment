@@ -4,7 +4,7 @@ set -e
 help='
 Options:
 
-[-i] to install themes
+[-i] install themes
 [-t <theme.json>] to set a theme
 [-l] list installed themes
 [-c] current used configs
