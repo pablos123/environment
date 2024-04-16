@@ -1,4 +1,3 @@
-# `#!/bin/bash`
 Pure bash environment.
 
 The most interesting part are the _managers_.
