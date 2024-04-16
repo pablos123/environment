@@ -1,6 +1,7 @@
 return {
     "nvim-lua/plenary.nvim",
     "tpope/vim-fugitive",
+    "nvim-tree/nvim-web-devicons",
     {
         "catppuccin/nvim",
         name = "catppuccin",
@@ -8,10 +9,16 @@ return {
         priority = 1000,
     },
     {
-        'f4z3r/gruvbox-material.nvim',
+        "f4z3r/gruvbox-material.nvim",
         name = 'gruvbox-material',
         lazy = false,
         priority = 1000,
+    },
+    {
+        "neanias/everforest-nvim",
+        version = false,
+        lazy = false,
+        priority = 1000
     },
     {
         "windwp/nvim-spectre",
