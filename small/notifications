@@ -12,10 +12,6 @@ if [[ -n "$(which cinecli)" ]]; then
         local elcairo_delay=3
         ( (echo -e "notify-send --expire-time=60000 '📽️ $2 📽️' '\n$1'") | at "now + $elcairo_delay minutes") >/dev/null 2>&1
     }
-
-    today_movies=$(cinecli shows --reverse --no_separator --no_extra_info today)
-    notify_movies "$today_movies" "El Cairo movies today"
-
     day="$(date +'%A')"
     if [[ "$day" == "Tuesday" ]]; then
         week_movies=$(cinecli shows --reverse --no-separator --no-extra-info week)
