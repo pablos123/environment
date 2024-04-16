@@ -142,8 +142,8 @@ sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 )
 
 # Make dmenu executables
-echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:pixelsize=14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu"
-echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:pixelsize=14' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu_run"
+echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu"
+echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu_run"
 chmod 0755 "$HOME/bin/dmenu" "$HOME/bin/dmenu_run"
 
 set_wallpaper -t "$theme"
