@@ -70,7 +70,7 @@ if $install;then
         install_font $font
     done
 
-    fc-cache -f
+    fc-cache -rf
     exit 0
 fi
 

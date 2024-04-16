@@ -10,7 +10,7 @@ set $mod Mod1
 # set $mod Mod4
 
 # Font
-font pango: Lilex Nerd Font 10
+font pango:Lilex Nerd Font Bold 10
 
 # WORKSPACES
 #-------------------------------------------------------------------------------
