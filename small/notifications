@@ -17,7 +17,7 @@ if [[ -n "$(which cinecli)" ]]; then
     notify_movies "$today_movies" "El Cairo movies today"
 
     day="$(date +'%A')"
-    if [[ "$day" == "Monday" ]]; then
+    if [[ "$day" == "Tuesday" ]]; then
         week_movies=$(cinecli shows --reverse --no-separator --no-extra-info week)
         notify_movies "$week_movies" "El Cairo movies this week"
     elif [[ "$day" == "Friday" ]]; then

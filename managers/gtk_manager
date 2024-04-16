@@ -170,7 +170,7 @@ fi
 if [[ ! -d "$HOME/.themes/$theme" ]] ||
     [[ ! -d "$HOME/.icons/$icons" ]] ||
     [[ ! -d "$HOME/.icons/$cursor" ]]; then
-    echo "Some themes do not exists!" >&2
+    echo "Some themes do not exist!" >&2
     exit 1
 fi
 
