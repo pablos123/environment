@@ -13,7 +13,7 @@
     frame_width = 3
     separator_color= frame
     gap_size = 4
-    font = Lilex Nerd Font 10
+    font = Lilex Nerd Font 8
     show_age_threshold = 3600
     enable_recursive_icon_lookup = true
     icon_theme = Papirus-Dark
