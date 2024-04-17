@@ -28,6 +28,10 @@ export WEB_APPS=(
 
 source "$HOME/.bashrc_colors"
 
+if [[ -f "$HOME/.bashrc_work_variables" ]]; then
+    source "$HOME/.bashrc_work_variables"
+fi
+
 # Others
 #
 # For letterboxd related

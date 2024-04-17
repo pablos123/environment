@@ -13,31 +13,32 @@ gruvbox_icons() {
     if [[ ! -d "/tmp/gruvbox_icons" ]]; then
         git clone "https://github.com/SylEleuth/gruvbox-plus-icon-pack.git" "/tmp/gruvbox_icons"
     fi
-    cp -rv "/tmp/gruvbox_icons/Gruvbox-Plus-Dark" "$HOME/.icons"
+    cp -r "/tmp/gruvbox_icons/Gruvbox-Plus-Dark" "$HOME/.icons"
 }
 suru_icons() {
-    wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh
+	(wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh) > /dev/null
 }
 fausto_themes() {
     local repos
-	install_fausto_theme() {
-		local name repo_dir
-		name="$(echo "$1" | sed 's/.*com\/.*\///g')"
-		repo_dir="/tmp/repos/$name"
-		if [[ ! -d $repo_dir ]]; then
-			git clone "$1" "$repo_dir"
-		fi
-		cp -r "$repo_dir/themes/"* "$HOME/.themes"
-	}
-	mkdir -p "/tmp/repos"
-	repos=(
-		"https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme"
-		"https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
-		"https://github.com/Fausto-Korpsvart/Everforest-GTK-Theme"
-	)
-	for repo in "${repos[@]}"; do
-		install_fausto_theme "$repo"
-	done
+    install_fausto_theme() {
+    	local name repo_dir
+    	name="$(echo "$1" | sed 's/.*com\/.*\///g')"
+    	echo "Installing $name..."
+    	repo_dir="/tmp/repos/$name"
+    	if [[ ! -d $repo_dir ]]; then
+    		git clone "$1" "$repo_dir"
+    	fi
+    	cp -r "$repo_dir/themes/"* "$HOME/.themes"
+    }
+    mkdir -p "/tmp/repos"
+    repos=(
+    	"https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme"
+    	"https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
+    	"https://github.com/Fausto-Korpsvart/Everforest-GTK-Theme"
+    )
+    for repo in "${repos[@]}"; do
+    	install_fausto_theme "$repo"
+    done
 }
 
 gtk_installers=(

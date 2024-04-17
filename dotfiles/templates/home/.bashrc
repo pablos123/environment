@@ -3,6 +3,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+keyboard_config
+
 source "$HOME/.bashrc_variables"
 source "$HOME/.git-prompt.sh" # __git_ps1 command in PS1
 
