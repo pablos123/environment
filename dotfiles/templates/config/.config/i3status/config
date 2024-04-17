@@ -12,22 +12,10 @@ general {
     separator = " "
 }
 
-order += "wireless _first_"
-order += "ethernet _first_"
 order += "battery all"
 order += "memory"
 order += "volume master"
 order += "tztime local"
-
-wireless _first_ {
-    format_up = "(%quality ) %ip"
-    format_down = ""
-}
-
-ethernet _first_ {
-    format_up = "%ip"
-    format_down = ""
-}
 
 battery all {
     format = "%status %percentage"
