@@ -2,14 +2,11 @@
 #
 #
 # DOCS
-# https://github.com/cmus/cmus
 # https://github.com/muesli/duf
 # https://github.com/sharkdp/hyperfine
-# https://github.com/dduan/tre
 # https://github.com/stedolan/jq
 # https://github.com/BurntSushi/ripgrep
 # https://github.com/sharkdp/bat
-# https://github.com/jarun/nnn
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eradman/entr
 # https://github.com/eza-community/eza
@@ -19,18 +16,15 @@ apt_packages=(
   entr
   inotify-tools
   hyperfine
-  tre-command
   ripgrep
   jq
   bat
-  nnn
   firefox
   chromium
   zathura
   zathura-djvu
   xchm
   xdotool
-  cmus
   sqlitebrowser
   git
   d-feet

@@ -52,7 +52,16 @@ config.keys = {
         mods = "SUPER",
         action = wezterm.action.QuickSelectArgs {
             label = "view image",
-            patterns = { "https?://\\S+\\.webp", "https?://\\S+\\.jpg", "https?://\\S+\\.png" },
+            patterns = {
+                "https?://\\S+\\.png",
+                "https?://\\S+\\.jpg",
+                "https?://\\S+\\.jpeg",
+                "https?://\\S+\\.webp",
+                ".*\\.png?",
+                ".*\\.jpg?",
+                ".*\\.jpeg?",
+                ".*\\.webp?",
+            },
             action = wezterm.action_callback(view_img.view_img)
         },
     },
