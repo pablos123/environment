@@ -4,7 +4,7 @@
     monitor = 0
     follow = none
     width = 300
-    height = 600
+    height = (0, 600)
     offset = 10x10
     notification_limit = 5
     icon_corner_radius = 1
