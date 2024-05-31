@@ -1,0 +1,59 @@
+#!/bin/python3
+"""Grep news from debian packages."""
+
+from time import sleep
+from typing import List
+from bs4 import BeautifulSoup
+import requests
+
+NEWS_URL = "https://tracker.debian.org/pkg/{}/news/?page={}"
+
+
+def update_news(package: str) -> None:
+    page_number = 1
+    response = request(NEWS_URL.format(package, page_number))
+    while response.status_code != 404:
+        news = parse_news(response.text)
+        print(news)
+        # for new in news:
+        #     print("Title:", new.strip())
+
+        page_number += 1
+        sleep(0.5)
+        response = request(NEWS_URL.format(package, page_number))
+
+def parse_news(html: str) -> None:
+    soup = BeautifulSoup(html, "html.parser")
+    news = soup.find_all("li", class_="list-group-item")
+    parsed_news = []
+    for new in news:
+        new_soup = BeautifulSoup(new, "html.parser")
+        title = new_soup.find_all("span", class_="news-title")
+        date = new_soup.find_all("span", class_="news-date")
+        signer = new_soup.find_all("span", class_="news-signer")
+        parsed_news.push({"title": title, "date": date, "signer": signer})
+
+    return parsed_news
+
+
+def request(url: str) -> requests.Response:
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+    except (
+        requests.exceptions.HTTPError,
+        requests.exceptions.Timeout,
+        requests.exceptions.TooManyRedirects,
+        requests.exceptions.RequestException,
+    ) as e:
+        print("Mmmm... Something went wrong with the request!")
+        raise e
+
+    return response
+
+def main() -> None:
+    update_news("openssl")
+
+
+if __name__ == "__main__":
+    main()
