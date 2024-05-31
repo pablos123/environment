@@ -32,6 +32,9 @@ This
 -h
 Help
 '
+source "${HOME}/mybash/managers/lib/sys_packages.sh"
+source "${HOME}/mybash/managers/lib/sys_installers.sh"
+source "${HOME}/.bashrc_colors"
 
 info=false
 upgrade=false
@@ -43,48 +46,93 @@ while getopts "iuenh" opt; do
         i) info=true ;;
         u) upgrade=true ;;
         n) neovim=true ;;
-        e) echo "$explain" && exit 0;;
-        h) echo "$help" && exit 0;;
-        *) echo "$help" && exit 1;;
+        e) echo "${explain}" && exit 0;;
+        h) echo "${help}" && exit 0;;
+        *) echo "${help}" && exit 1;;
 	esac
     getopts_executed=true
 done
 
 if ! $getopts_executed; then
-    echo "No option given!" >&2
-    echo "$help"
+    echo "No option given..."
+    echo "${help}"
     exit 1
 fi
 
-if $upgrade; then
-    sudo apt update
-    sudo apt full-upgrade -y
-    sudo apt autopurge -y
+print_green() {
+    echo -e "${GREEN}${1}${CRESET}"
+}
 
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3 get-pip.py --user
+print_separator() {
+    echo -e "${YELLOW}.........................${CRESET}"
+}
+
+get_root_access() {
+    sudo -v
+}
+
+install_apt() {
+    sudo apt-get -qq update
+    sudo apt-get -qq dist-upgrade -y
+    sudo apt-get -qq --with-new-pkgs upgrade -y
+    sudo apt-get -qq install -y "${apt_packages[@]}"
+}
+
+install_flatpak() {
+    sudo flatpak update -y > /dev/null
+}
+
+install_pip() {
+    curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3 get-pip.py --user > /dev/null
+    pip install -q "${pip_packages[@]}"
     rm -f ./get-pip.py
+}
 
-    source "$HOME/mybash/managers/lib/sys_packages.sh"
-    sudo apt install -y "${apt_packages[@]}"
-    pip install "${pip_packages[@]}"
-    cargo install "${cargo_packages[@]}"
+install_cargo() {
+    cargo install "${cargo_packages[@]}" > /dev/null
+}
 
+cleanup() {
+    sudo apt-get -qq remove -y steam wine
+    sudo apt-get -qq autoremove --purge -y
+
+    rm -f "${HOME}/.cache/dmenu_run"
+    rm -f "${HOME}/dmenu_cache"
+}
+
+install_independent() {
+    for inst_function in "${sys_installers[@]}"; do
+        print_green "   Executing ${inst_function}..."
+        "${inst_function}"
+    done
+}
+
+execute_task() {
+    print_green "${1}"
+    "${2}"
+    print_separator
+}
+
+execute_task "Asking for root..." get_root_access
+
+if $upgrade; then
     mkdir -p "$HOME/images/" "$HOME/projects/" "$HOME/bin/"
 
-    source "$HOME/mybash/managers/lib/sys_installers.sh"
-    for inst_function in "${sys_installers[@]}"; do
-        "$inst_function"
-    done
+    execute_task "Updating apt packages..." install_apt
 
-    sudo apt purge -y steam wine
-    sudo apt autopurge -y
-    sudo flatpak update -y
+    execute_task "Updating flatpak packages..." install_flatpak
 
-    rm -f "$HOME/.cache/dmenu_run"
-    rm -f "$HOME/dmenu_cache"
+    execute_task "Updating pip packages..." install_pip
 
-    echo "Done! Remember to reboot your pc!"
+    execute_task "Updating cargo packages..." install_cargo
+
+    execute_task "Updating independent packages..." install_independent
+
+    execute_task "Clening up..." cleanup
+
+    print_green "Done! Remember to reboot your pc!"
+
     exit 0
 fi
 

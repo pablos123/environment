@@ -1,24 +1,27 @@
 chrome_installer() {
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-    sudo apt update
-    sudo apt install -y google-chrome-stable
+    sudo apt-get -qq update
+    sudo apt-get -qq install -y google-chrome-stable
 
     dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
     # Set chrome as the default browser
     xdg-settings set default-web-browser 'google-chrome.desktop'
 }
+
 vscode_installer() {
-    wget -O './vscode.deb' 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
-    sudo apt install -y './vscode.deb'
+    wget -q -O './vscode.deb' 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
+    sudo apt-get -qq install -y './vscode.deb'
     rm -f './vscode.deb'
 }
+
 wezterm_installer() {
     curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-    echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
-    sudo apt update
-    sudo apt install -y wezterm
+    (echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list) > /dev/null
+    sudo apt-get -qq update
+    sudo apt-get -qq install -y wezterm
 }
+
 dunst_installer() {
     local dependencies
     dependencies=(
@@ -34,28 +37,34 @@ dunst_installer() {
       libnotify-dev
     )
 
-    sudo apt install -y "${dependencies[@]}"
+    sudo apt-get -qq install -y "${dependencies[@]}"
 
     rm -rf "$HOME/.dunst"
-    git clone https://github.com/dunst-project/dunst.git "$HOME/.dunst"
-    cd "$HOME/.dunst" || exit 1
-    make
-    sudo make install
+    git clone -q https://github.com/dunst-project/dunst.git "$HOME/.dunst"
+    (
+        cd "$HOME/.dunst" || exit 1
+        make
+        sudo make install
+    ) > /dev/null
 }
+
 # https://github.com/junegunn/fzf
 fzf_installer() {
     rm -rf "$HOME/.fzf"
-    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
-    yes | "$HOME/.fzf/install"
+    git clone -q --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+    (yes | "$HOME/.fzf/install") > /dev/null
 }
+
 # https://i3wm.org/
 i3_installer() {
-    /usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2024.03.04_all.deb keyring.deb SHA256:f9bb4340b5ce0ded29b7e014ee9ce788006e9bbfe31e96c09b2118ab91fca734
-    sudo apt install ./keyring.deb
-    echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list
-    sudo apt update
-    sudo apt install -y i3
+    (/usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2024.03.04_all.deb keyring.deb SHA256:f9bb4340b5ce0ded29b7e014ee9ce788006e9bbfe31e96c09b2118ab91fca734) > /dev/null
+    sudo apt-get -qq install ./keyring.deb
+    (echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list) > /dev/null
+    sudo apt-get -qq update
+    sudo apt-get -qq install -y i3
+    rm -f ./keyring.deb
 }
+
 repos_installer() {
     local repo
     declare -A repos=(
@@ -68,16 +77,14 @@ repos_installer() {
         if [[ -d "${repos[$repo]}" ]]; then
             (
                 cd "${repos[$repo]}" || exit 1
-                git pull
+                git pull -q
             )
             continue
         fi
-        git clone "$repo" "${repos[$repo]}"
+        git clone -q "$repo" "${repos[$repo]}"
     done
-    rm -rf "$HOME/.wallpapers"
-    mkdir "$HOME/.wallpapers"
-    git clone "git@github.com:pablos123/.wallpapers.git" "$HOME/.wallpapers"
 }
+
 sys_installers=(
     chrome_installer
     vscode_installer

@@ -6,6 +6,7 @@ Options:
 
 [-t <theme name>] to set a theme
 [-l] list themes
+[-w] update wallpapers
 [-e] explain
 [-h] help
 '
@@ -42,6 +43,9 @@ To set a theme:
 -l:
 ls the content of $HOME/mybash/dotfiles/themes
 
+-w:
+clone again the wallpapers repo
+
 -e:
 This
 
@@ -51,6 +55,7 @@ Help
 '
 
 list=false
+wallpaper=false
 theme=
 if [[ -f "$HOME/.current_theme" ]]; then
     theme="$(cat "$HOME/.current_theme")"
@@ -59,6 +64,7 @@ while getopts "helt:" opt; do
 	case $opt in
         t) theme="$(echo "$OPTARG" | sed 's#/##g')";;
         l) list=true;;
+        w) wallpaper=true;;
         e) echo "$explain" && exit 0 ;;
         h) echo "$help" && exit 0 ;;
 	esac
@@ -66,6 +72,13 @@ done
 
 if $list; then
     ls -1 "$HOME/mybash/dotfiles/themes"
+    exit 0
+fi
+
+if $wallpaper; then
+    rm -rf "$HOME/.wallpapers"
+    mkdir -p "$HOME/.wallpapers"
+    git clone "git@github.com:pablos123/.wallpapers.git" "$HOME/.wallpapers"
     exit 0
 fi
 
