@@ -114,9 +114,10 @@ execute_task() {
     print_separator
 }
 
-execute_task "Asking for root..." get_root_access
 
 if $upgrade; then
+    execute_task "Asking for root..." get_root_access
+
     mkdir -p "$HOME/images/" "$HOME/projects/" "$HOME/bin/"
 
     execute_task "Updating apt packages..." install_apt
@@ -142,6 +143,7 @@ if $info; then
 fi
 
 if $neovim; then
+    execute_task "Asking for root..." get_root_access
     sudo "$HOME/mybash/managers/lib/sys_neovim.sh"
     exit 0
 fi
