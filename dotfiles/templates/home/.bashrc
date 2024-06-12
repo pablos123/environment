@@ -5,6 +5,9 @@
 
 keyboard_config
 
+shopt -s direxpand
+shopt -s autocd
+
 source "$HOME/.bashrc_variables"
 source "$HOME/.git-prompt.sh" # __git_ps1 command in PS1
 

@@ -80,7 +80,6 @@ def request(url: str) -> requests.Response:
         requests.exceptions.TooManyRedirects,
         requests.exceptions.RequestException,
     ) as e:
-        print("Mmmm... Something went wrong with the request!")
         raise e
 
     return response
@@ -90,6 +89,6 @@ if __name__ == "__main__":
     followers = get_followers()
     following = get_following()
     do_not_follow_you = following.difference(followers)
-    print("These users you follow do not follow you back!")
+    print("These users do not follow you back:")
     for username in do_not_follow_you:
         print(f"https://letterboxd.com/{username}")
