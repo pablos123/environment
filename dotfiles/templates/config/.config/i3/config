@@ -124,7 +124,7 @@ mode "$exit_mode" {
     bindsym l exec i3-msg exit
     bindsym r exec reboot
     bindsym p exec poweroff
-    bindsym k exec xdotool key Escape && locker
+    bindsym k exec xdotool key Escape && screen_lock
 
     bindsym Return mode "default"
     bindsym Escape mode "default"

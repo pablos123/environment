@@ -10,7 +10,7 @@ Others survive but I will not use them any time soon. Those are here https://gis
 
 Probably I am using this on the latest version of **_Linux Mint_**.
 
-\(Although, except for apt operations, this probably is distro agnostic.\)
+\(Although, except for apt operations, this is probably distro agnostic.\)
 
 ## Managers
 
@@ -43,10 +43,10 @@ All have `-e` (explain) and `-h` (help) flags.
 ### Utils
 
 - Calendar applet: `calendar_applet` (Super + Shift + D)
-- Notify if some battery is low: `battery_notify`
+- Notify low batteries: `battery_notify`
 - View batteries status: `battery_status`
 - Clean X urgent windows : `clean_urgent`
-- Lock screen: `locker`
+- Lock screen: `lock_screen`
 - Scan qr: `qr_scanner`
 - Stop notifications: `quiet_mode`
 - Set a video as wallpaper: `videowall`
