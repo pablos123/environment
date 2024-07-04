@@ -2,7 +2,7 @@
 
 I love a fast, simple, clean, robust, versatile, **_that works_** and automatized environment.
 
-I am using this set of tools since a lot of time and I don't think I will change them soon, they work as intended.
+I am using this set of tools since a lot of time and I don't think I will change them soon, they just work.
 
 I code a lot, a lot of that is scripting. Some of those scripts survive the void and are here.
 
