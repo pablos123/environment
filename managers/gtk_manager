@@ -107,7 +107,7 @@ fi
 
 if $install; then
     mkdir -p "$HOME/.icons" "$HOME/.themes"
-    source "$HOME/mybash/managers/lib/gtk_installers.sh"
+    source "$HOME/environment/managers/lib/gtk_installers.sh"
     for inst_function in "${gtk_installers[@]}"; do
         "$inst_function"
     done

@@ -32,10 +32,10 @@ if [ -d "$HOME/go/bin" ]; then
     PATH="$HOME/go/bin:$PATH"
 fi
 
-if [ -d "$HOME/mybash/small" ]; then
-    PATH="$HOME/mybash/small:$PATH"
+if [ -d "$HOME/environment/bin" ]; then
+    PATH="$HOME/environment/bin:$PATH"
 fi
 
-if [ -d "$HOME/mybash/managers" ]; then
-    PATH="$HOME/mybash/managers:$PATH"
+if [ -d "$HOME/environment/managers" ]; then
+    PATH="$HOME/environment/managers:$PATH"
 fi

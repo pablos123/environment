@@ -25,7 +25,7 @@ The current theme info is inside the $HOME/.current_theme file.
 This will not manage things that are not listed before.
 
 -t:
-A directory inside $HOME/mybash/dotfiles/themes/ containing 3 files:
+A directory inside $HOME/environment/dotfiles/themes/ containing 3 files:
 - env.json
 - term.json
 - gtk.json
@@ -33,7 +33,7 @@ A directory inside $HOME/mybash/dotfiles/themes/ containing 3 files:
 To set a theme:
 - Check for errors
 - Set the gtk theme using gtk_manager
-- Copy the files inside $HOME/mybash/dotfiles/templates/ to $HOME/.dotfiles_stow
+- Copy the files inside $HOME/environment/dotfiles/templates/ to $HOME/.dotfiles_stow
 - Change the necessary in those files using sed
 - stow the content of $HOME/.dotfiles_stow
 - Create dmenu binaries dinamically
@@ -41,7 +41,7 @@ To set a theme:
 - reload i3, dunst, and clean dmenu cache
 
 -l:
-ls the content of $HOME/mybash/dotfiles/themes
+ls the content of $HOME/environment/dotfiles/themes
 
 -w:
 clone again the wallpapers repo
@@ -71,7 +71,7 @@ while getopts "helt:" opt; do
 done
 
 if $list; then
-    ls -1 "$HOME/mybash/dotfiles/themes"
+    ls -1 "$HOME/environment/dotfiles/themes"
     exit 0
 fi
 
@@ -88,7 +88,7 @@ if [[ -z "$theme" ]]; then
 	exit 1
 fi
 
-theme_dir="$HOME/mybash/dotfiles/themes/$theme"
+theme_dir="$HOME/environment/dotfiles/themes/$theme"
 if [[ ! -d "$theme_dir" ]]; then
 	echo "The theme does not exist!" >&2
 	exit 1
@@ -132,7 +132,7 @@ mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
 
 # Copy the base content
 rm -rf "$HOME/.dotfiles_stow/"*
-cp -r "$HOME/mybash/dotfiles/templates/"* "$HOME/.dotfiles_stow"
+cp -r "$HOME/environment/dotfiles/templates/"* "$HOME/.dotfiles_stow"
 
 # Change terminal colors (neovim and wezterm)
 sed -i "s/COLORSCHEME/$wezterm_colorscheme/" "$HOME/.dotfiles_stow/config/.config/wezterm/wezterm.lua"

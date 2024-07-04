@@ -32,8 +32,8 @@ This
 -h
 Help
 '
-source "${HOME}/mybash/managers/lib/sys_packages.sh"
-source "${HOME}/mybash/managers/lib/sys_installers.sh"
+source "${HOME}/environment/managers/lib/sys_packages.sh"
+source "${HOME}/environment/managers/lib/sys_installers.sh"
 source "${HOME}/.bashrc_colors"
 
 info=false
@@ -143,6 +143,6 @@ fi
 
 if $neovim; then
     execute_task "Asking for root..." get_root_access
-    sudo "$HOME/mybash/managers/lib/sys_neovim.sh"
+    sudo "$HOME/environment/managers/lib/sys_neovim.sh"
     exit 0
 fi

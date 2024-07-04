@@ -12,7 +12,7 @@ Options:
 explain='
 General:
 Print information about your system, this is to not use neofetch and learn something.
-Execute functions defined in $HOME/mybash/managers/lib/info_functions.sh
+Execute functions defined in $HOME/environment/managers/lib/info_functions.sh
 
 This program will print whatever you want.
 The functions need to send the output to stdout in the form of:
@@ -66,7 +66,7 @@ fi
 
 function get_info() {
     local counter functions_count function
-    source "$HOME/mybash/managers/lib/info_functions.sh"
+    source "$HOME/environment/managers/lib/info_functions.sh"
     counter=1
     functions_count=${#info_functions[@]}
     for function in "${info_functions[@]}"; do
