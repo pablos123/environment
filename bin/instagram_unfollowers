@@ -1,4 +1,5 @@
 #!/bin/python3
+"""List users that do not follow you back on Instagram."""
 
 import os
 import sys
