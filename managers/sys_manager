@@ -129,7 +129,7 @@ if $upgrade; then
 
     execute_task "Updating independent packages..." install_independent
 
-    execute_task "Clening up..." cleanup
+    execute_task "Cleaning up..." cleanup
 
     print_green "Done! Remember to reboot your pc!"
 

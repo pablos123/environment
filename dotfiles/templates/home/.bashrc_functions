@@ -136,12 +136,6 @@ reset_repo() {
     git branch --set-upstream-to=origin/"$branch"
 }
 
-# Print a random number fact.
-cownumber() {
-    local random_number
-    random_number=$((RANDOM % 100)) && curl -s "http://numbersapi.com/$random_number" | cowsay
-}
-
 # All my monitors have full hd (1920x1080) resolution and I do not plan to buy some 4k monitor in the near future.
 # I do not want 4k wallpapers and with this script I have all my wallpapers with (almost) the same resolution.
 # This converts all images to .png and

@@ -6,7 +6,7 @@ Options:
 
 [-i] install themes
 [-t <theme.json>] to set a theme
-[-l] list installed themes
+[-l] list available themes
 [-c] current used configs
 [-f] to set flatpak themes (req sudo)
 [-e] explain
@@ -86,16 +86,16 @@ gtk_theme=
 
 getopts_executed=false
 while getopts "flihcet:" opt; do
-	case $opt in
-        f) flatpak=true ;;
-        l) list=true ;;
-        i) install=true ;;
-        c) config=true ;;
-        t) gtk_theme="$OPTARG" ;;
-        e) echo "$explain" && exit 0;;
-        h) echo "$help" && exit 0;;
-        *) echo "$help" && exit 1;;
-	esac
+    case $opt in
+    f) flatpak=true ;;
+    l) list=true ;;
+    i) install=true ;;
+    c) config=true ;;
+    t) gtk_theme="$OPTARG" ;;
+    e) echo "$explain" && exit 0 ;;
+    h) echo "$help" && exit 0 ;;
+    *) echo "$help" && exit 1 ;;
+    esac
     getopts_executed=true
 done
 
@@ -145,8 +145,8 @@ fi
 
 # Check for errors
 if [[ -z $gtk_theme ]]; then
-	echo "No theme specified!" >&2
-	exit 1
+    echo "No theme specified!" >&2
+    exit 1
 fi
 
 if [[ ! -f "$gtk_theme" ]]; then
@@ -154,9 +154,9 @@ if [[ ! -f "$gtk_theme" ]]; then
     exit 1
 fi
 
-theme="$(jq -rM .theme < "$gtk_theme")"
-icons="$(jq -rM .icons < "$gtk_theme")"
-cursor="$(jq -rM .cursor < "$gtk_theme")"
+theme="$(jq -rM .theme <"$gtk_theme")"
+icons="$(jq -rM .icons <"$gtk_theme")"
+cursor="$(jq -rM .cursor <"$gtk_theme")"
 if [[ -z $theme ]] ||
     [[ -z $icons ]] ||
     [[ -z $cursor ]] ||
@@ -190,9 +190,9 @@ gtk-cursor-theme-name = $cursor
 "
 # Create directories
 mkdir -p "$HOME/.config" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
-echo "$gtk2" > "$HOME/.config/.gtkrc-2.0"
-echo "$gtk34" > "$HOME/.config/gtk-3.0/settings.ini"
-echo "$gtk34" > "$HOME/.config/gtk-4.0/settings.ini"
+echo "$gtk2" >"$HOME/.config/.gtkrc-2.0"
+echo "$gtk34" >"$HOME/.config/gtk-3.0/settings.ini"
+echo "$gtk34" >"$HOME/.config/gtk-4.0/settings.ini"
 
 # Copy the cursor theme to the default directory, first delete the previous one
 mkdir -p "$HOME/.icons/default"
