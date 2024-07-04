@@ -88,7 +88,7 @@ def request(url: str) -> requests.Response:
 if __name__ == "__main__":
     followers = get_followers()
     following = get_following()
-    do_not_follow_you = following.difference(followers)
-    print("These users do not follow you back:")
-    for username in do_not_follow_you:
-        print(f"https://letterboxd.com/{username}")
+    unfollowers = following.difference(followers)
+    print("These users do not follow you back")
+    for username in unfollowers:
+        print(f"https://letterboxd.com/{username}/")
