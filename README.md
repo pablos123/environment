@@ -37,8 +37,8 @@ All managers have the `-e` (explain) and `-h` (help) flags.
 
 ### Social media
 
-- Check letterboxd unfollowers: `letterboxd_unfollowers`
-- Check instagram unfollowers: `instagram_unfollowers`
+- Check Letterboxd unfollowers: `letterboxd_unfollowers`
+- Check Instagram unfollowers: `instagram_unfollowers`
 
 ### Utils
 

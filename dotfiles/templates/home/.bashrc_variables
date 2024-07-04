@@ -34,7 +34,7 @@ fi
 
 # Others
 #
-# For letterboxd related
+# For Letterboxd related
 export LETTERBOXD_USER="pablos123"
 # See what to set here with 'xinput --list'
 export XINPUT_MOUSE_ID=8

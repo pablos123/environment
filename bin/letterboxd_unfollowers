@@ -1,5 +1,5 @@
 #!/bin/python3
-"""List users that do not follow you back on letterboxd."""
+"""List users that do not follow you back on Letterboxd."""
 
 from time import sleep
 from typing import List
