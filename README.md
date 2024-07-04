@@ -25,7 +25,7 @@ Probably I am using this on the latest version of **_Linux Mint_**.
 - List installed fonts: `font_manager -l`
 - System information: `info_manager`
 
-All have `-e` (explain) and `-h` (help) flags.
+All managers have the `-e` (explain) and `-h` (help) flags.
 
 ## Executables
 
@@ -47,8 +47,8 @@ All have `-e` (explain) and `-h` (help) flags.
 - View batteries status: `battery_status`
 - Clean X urgent windows : `clean_urgent`
 - Lock screen: `lock_screen`
-- Scan qr: `qr_scanner`
-- Stop notifications: `quiet_mode`
+- Scan QR: `qr_scanner`
+- Toggle notifications: `quiet_mode`
 - Set a video as wallpaper: `videowall`
 - Set a random wallpaper: `set_wallpaper`
 
