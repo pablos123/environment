@@ -31,7 +31,7 @@ All managers have the `-e` (explain) and `-h` (help) flags.
 
 ### dmenu runners
 
-- Search in google: `dmenu_search` (Super + Shift + s)
+- Search with Google: `dmenu_search` (Super + Shift + s)
 - Connect to host: `dmenu_hosts` (Super + Ctrl + c)
 - Change theme: `dmenu_themes`
 
