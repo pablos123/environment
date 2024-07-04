@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Mondays: Populate the cinecli database
-if [[ -n "$(which cinecli)" ]] && [[ "$(date +'%A')" == "Monday" ]]; then
-    echo "cinecli database --silent populate" | at "now + 4 minutes"
+# Mondays: Populate the elcairo database
+if which elcairo 2>/dev/null && [[ "$(date +'%A')" == "Monday" ]]; then
+    echo "elcairo database --silent populate" | at "now + 4 minutes"
 fi
