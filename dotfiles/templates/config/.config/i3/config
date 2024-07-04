@@ -60,7 +60,7 @@ for_window [instance="trello.com"] move container to workspace $ws4, layout tabb
 
 # EXEC, STARTUP
 #-------------------------------------------------------------------------------
-exec_always --no-startup-id sleep 3 && monitors_config
+exec_always --no-startup-id sleep 1 && monitors_config
 exec_always --no-startup-id keyboard_config
 
 exec_always --no-startup-id set_wallpaper
@@ -79,10 +79,10 @@ exec --no-startup-id wezterm
 # Browser
 exec --no-startup-id sleep 2 && chrome
 # Web Apps, Social
-exec --no-startup-id sleep 5 && web_apps
+exec --no-startup-id sleep 3 && web_apps
 exec --no-startup-id sleep 4 && obsidian
 # Clean apps' attention to not have urgent workspace
-exec --no-startup-id sleep 6 && clean_urgent
+exec --no-startup-id sleep 7 && clean_urgent
 # Daily
 exec --no-startup-id sleep 20 && daily_tasks
 
