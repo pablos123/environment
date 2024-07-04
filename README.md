@@ -1,6 +1,6 @@
 # Environment
 
-I love a fast, simple, clean, robust, versatile, _that works_ and automatized environment.
+I love a fast, simple, clean, robust, versatile, **_that works_** and automatized environment.
 
 I am using this set of tools since a lot of time and I don't think I will change them soon, they work as intended.
 
@@ -8,7 +8,7 @@ I code a lot, a lot of that is scripting. Some of those scripts survive the void
 
 Others survive but I will not use them any time soon. Those are here https://gist.github.com/pablos123
 
-Probably I am using this on the latest version of _Linux Mint_.
+Probably I am using this on the latest version of **_Linux Mint_**.
 
 \(Although, except for apt operations, this probably is distro agnostic.\)
 
@@ -54,10 +54,10 @@ All have `-e` (explain) and `-h` (help) flags.
 
 ## Bash functions
 
-View all escaped colors: `colors`
-Find name in current dir: `nfind`
-Edit crontab but create backup first: `ecrontab`
-List available completions: `list_completions`
-Load completions: `load_completions`
-Reset a repository: `reset_repo`
-Normalize wallpapers: `normalize_wallpapers`
+- View all escaped colors: `colors`
+- Find name in current dir: `nfind`
+- Edit crontab but create backup first: `ecrontab`
+- List available completions: `list_completions`
+- Load completions: `load_completions`
+- Reset a repository: `reset_repo`
+- Normalize wallpapers: `normalize_wallpapers`
