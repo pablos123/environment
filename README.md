@@ -4,8 +4,8 @@ I love a fast, simple, clean, robust, versatile and automatized environment.
 
 I am using this set of tools since a lot of time and I don't think I will change them any time soon. **It just works.**
 
-I code a lot, a lot is scripting.
-Some of that code survive and I use it my environment, other code go to my [https://gist.github.com/pablos123 gits].
+I code a lot and a lot is scripting.
+Some of that code survive and I use it my environment, other go to my [https://gist.github.com/pablos123 gits].
 
 Probably I am using this on the latest version of _Linux Mint_.
 
@@ -30,8 +30,8 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 ### dmenu runners
 
-- Search with Google: `dmenu_search` (Super + Ctrl + s)
-- Connect to host: `dmenu_hosts` (Super + Ctrl + h)
+- Search with Google: `dmenu_search`
+- Connect to host: `dmenu_hosts`
 - Change theme: `dmenu_themes`
 
 ### Social media
@@ -41,7 +41,7 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 ### Utils
 
-- Calendar applet: `calendar_applet` (Super + Ctrl + d)
+- Calendar applet: `calendar_applet`
 - Notify low batteries: `battery_notify`
 - View batteries status: `battery_status`
 - Clean X urgent windows : `clean_urgent`
