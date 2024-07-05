@@ -1,7 +1,5 @@
 return {
     "nvim-lua/plenary.nvim",
-    "tpope/vim-fugitive",
-    "nvim-tree/nvim-web-devicons",
     {
         "catppuccin/nvim",
         name = "catppuccin",
@@ -19,12 +17,6 @@ return {
         version = false,
         lazy = false,
         priority = 1000
-    },
-    {
-        "windwp/nvim-spectre",
-        keys = {
-            { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
-        },
     },
     {
         "nvim-telescope/telescope.nvim",
@@ -52,10 +44,11 @@ return {
             }
         },
         keys = {
-            { "<leader>o",  "<cmd>lua require('telescope.builtin').find_files()<cr>",  desc = "Find files" },
-            { "<leader>b",  "<cmd>lua require('telescope.builtin').buffers()<cr>",     desc = "Find buffers" },
-            { "<leader>fs", "<cmd>lua require('telescope.builtin').live_grep()<cr>",   desc = "Find string" },
+            { "<C-p>",  "<cmd>lua require('telescope.builtin').find_files()<cr>",      desc = "Find files" },
+            { "<leader>o", "<cmd>lua require('telescope.builtin').find_files()<cr>",   desc = "Find files" },
             { "<leader>fu", "<cmd>lua require('telescope.builtin').grep_string()<cr>", desc = "Find word under the cursor" },
+            { "<leader>fs", "<cmd>lua require('telescope.builtin').live_grep()<cr>",   desc = "Find string" },
+            { "<leader>b",  "<cmd>lua require('telescope.builtin').buffers()<cr>",     desc = "Find buffers" },
             { "<leader>fk", "<cmd>lua require('telescope.builtin').keymaps()<cr>",     desc = "Find keymap" },
         },
     },

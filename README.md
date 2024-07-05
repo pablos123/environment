@@ -1,14 +1,13 @@
 # Environment
 
-I love a fast, simple, clean, robust, versatile, **_that works_** and automatized environment.
+I love a fast, simple, clean, robust, versatile and automatized environment.
 
-I am using this set of tools since a lot of time and I don't think I will change them soon, they just work.
+I am using this set of tools since a lot of time and I don't think I will change them any time soon. **It just works.**
 
-I code a lot, a lot of that is scripting. Some of those scripts survive the void and are here.
+I code a lot, a lot is scripting.
+Some of that code survive and I use it my environment, other code go to my [https://gist.github.com/pablos123 gits].
 
-Others survive but I will not use them any time soon. Those are here https://gist.github.com/pablos123
-
-Probably I am using this on the latest version of **_Linux Mint_**.
+Probably I am using this on the latest version of _Linux Mint_.
 
 \(Although, except for apt operations, this is probably distro agnostic.\)
 
@@ -25,14 +24,14 @@ Probably I am using this on the latest version of **_Linux Mint_**.
 - List installed fonts: `font_manager -l`
 - System information: `info_manager`
 
-All managers have the `-e` (explain) and `-h` (help) flags.
+All managers have `-e` (explain) and `-h` (help) flags.
 
 ## Executables
 
 ### dmenu runners
 
-- Search with Google: `dmenu_search` (Super + Shift + s)
-- Connect to host: `dmenu_hosts` (Super + Ctrl + c)
+- Search with Google: `dmenu_search` (Super + Ctrl + s)
+- Connect to host: `dmenu_hosts` (Super + Ctrl + h)
 - Change theme: `dmenu_themes`
 
 ### Social media
@@ -42,7 +41,7 @@ All managers have the `-e` (explain) and `-h` (help) flags.
 
 ### Utils
 
-- Calendar applet: `calendar_applet` (Super + Shift + D)
+- Calendar applet: `calendar_applet` (Super + Ctrl + d)
 - Notify low batteries: `battery_notify`
 - View batteries status: `battery_status`
 - Clean X urgent windows : `clean_urgent`
