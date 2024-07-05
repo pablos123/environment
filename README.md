@@ -4,8 +4,7 @@ I love a fast, simple, clean, robust, versatile and automatized environment.
 
 I am using this set of tools since a lot of time and I don't think I will change them any time soon. **It just works.**
 
-I code a lot and a lot is scripting.
-Some of that code survive and I use it my environment, other go to my [https://gist.github.com/pablos123 gits].
+I code a lot and a lot is scripting. Some of that code survive and I use it in my environment, other go to my [https://gist.github.com/pablos123 gits].
 
 Probably I am using this on the latest version of _Linux Mint_.
 
