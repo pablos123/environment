@@ -7,7 +7,7 @@ if wezterm.config_builder then
 end
 
 config.color_scheme = "COLORSCHEME"
-config.colors = { cursor_fg = "black" }
+config.colors = { cursor_fg = "black", cursor_bg = "white" }
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0", }
 config.use_fancy_tab_bar = false
