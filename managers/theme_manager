@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-
 help='
 Options:
 
@@ -171,4 +169,7 @@ i3-msg reload >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
 killall flameshot >/dev/null 2>&1
 killall picom >/dev/null 2>&1
-picom --daemon >/dev/null 2>&1
+if [[ ! "$theme" =~ "quiet" ]]; then
+    picom --daemon >/dev/null 2>&1
+fi
+

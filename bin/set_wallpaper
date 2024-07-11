@@ -40,13 +40,13 @@ random_index=$((RANDOM % items_count))
 wallpaper="${wallpapers_array[$random_index]}"
 
 if [[ -z "$change" ]]; then
-    hsetroot -cover "$wallpaper"
+    hsetroot -cover "$wallpaper" >/dev/null 2>&1
     exit 0
 fi
 
 while true; do
 
-    hsetroot -cover "$wallpaper"
+    hsetroot -cover "$wallpaper" >/dev/null 2>&1
 
     random_index=$((RANDOM % items_count))
 
