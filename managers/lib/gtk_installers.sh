@@ -4,19 +4,21 @@
 # needs to install the theme in $1
 
 capitaine_cursor() {
-    if [[ ! -f "/tmp/capitaine.zip" ]]; then
+    if [[ ! -d "$HOME/.icons/Capitaine Cursors" ]]; then
         wget -O "/tmp/capitaine.zip" "https://github.com/sainnhe/capitaine-cursors/releases/download/r5/Linux.zip"
+        unzip -o "/tmp/capitaine.zip" -d "$HOME/.icons"
     fi
-    unzip -o "/tmp/capitaine.zip" -d "$HOME/.icons"
 }
 gruvbox_icons() {
-    if [[ ! -d "/tmp/gruvbox_icons" ]]; then
+    if [[ ! -d "$HOME/.icons/Gruvbox-Plus-Dark" ]]; then
         git clone "https://github.com/SylEleuth/gruvbox-plus-icon-pack.git" "/tmp/gruvbox_icons"
+        mv "/tmp/gruvbox_icons/Gruvbox-Plus-Dark" "$HOME/.icons"
     fi
-    cp -r "/tmp/gruvbox_icons/Gruvbox-Plus-Dark" "$HOME/.icons"
 }
 suru_icons() {
-	(wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh) > /dev/null
+    if [[ ! -d "$HOME/.icons/Suru++" ]]; then
+        (wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh) > /dev/null
+    fi
 }
 fausto_themes() {
     local repos
@@ -41,9 +43,29 @@ fausto_themes() {
     done
 }
 
+cinnamon_themes() {
+    local themes icons theme icon
+    themes=(
+        HighContrast
+    )
+    icons=(
+        HighContrast
+        Adwaita
+    )
+
+    for theme in ${themes[@]}; do
+        cp -r "/usr/share/themes/$theme" "$HOME/.themes"
+    done
+
+    for icon in ${icons[@]}; do
+        cp -r "/usr/share/icons/$icon" "$HOME/.icons"
+    done
+}
+
 gtk_installers=(
     capitaine_cursor
     gruvbox_icons
     suru_icons
     fausto_themes
+    cinnamon_themes
 )

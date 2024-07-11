@@ -63,14 +63,12 @@ for_window [instance="trello.com"] move container to workspace $ws4, layout tabb
 exec_always --no-startup-id sleep 1 && monitors_config
 exec_always --no-startup-id keyboard_config
 
-exec_always --no-startup-id set_wallpaper
+exec_always --no-startup-id theme_manager
 
 exec --no-startup-id notifications
 
 # Authentication agent
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
-# Compositor
-exec --no-startup-id picom --daemon
 # Applets
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
