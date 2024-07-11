@@ -169,3 +169,4 @@ rm -f "$HOME/.cache/dmenu_run"
 rm -f "$HOME/dmenu_cache"
 i3-msg reload >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
+killall flameshot >/dev/null 2>&1
