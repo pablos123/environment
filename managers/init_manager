@@ -16,7 +16,7 @@ General:
 Initialize the environment for the first time.
 
 -m:
-Creates the file ~/.minimal_environment. Then execute.
+Create the file ~/.minimal_environment then execute.
 
 -f:
 Does not create a file.

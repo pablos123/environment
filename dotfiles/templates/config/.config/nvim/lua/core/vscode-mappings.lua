@@ -1,6 +1,8 @@
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true, desc = desc }
 
+map("n", "j", "gj", opts)
+map("n", "k", "gk", opts)
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
 map("n", "Y", "y$", opts)
