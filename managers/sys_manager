@@ -137,7 +137,7 @@ if $upgrade; then
 
     execute_task "Updating independent packages..." install_independent
 
-    if "$minimal"; then minimal_environment_tasks; fi
+    if $minimal; then minimal_environment_tasks; fi
 
     execute_task "Updating flatpak packages..." update_flatpak
 

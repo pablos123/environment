@@ -5,6 +5,7 @@
 # Common
 alias ls="eza --icons --extended --group-directories-first"
 alias l="ls"
+alias s="ls"
 alias sl="ls"
 alias ll="ls -l"
 alias la="ls -a"
