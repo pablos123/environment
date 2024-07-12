@@ -1,12 +1,14 @@
 chrome_installer() {
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-    sudo apt-get -qq update
-    sudo apt-get -qq install -y google-chrome-stable
+    if [[ ! -f "$HOME/.minimal_environment" ]]; then
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
+        sudo apt-get -qq update
+        sudo apt-get -qq install -y google-chrome-stable
 
-    dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
-    # Set chrome as the default browser
-    xdg-settings set default-web-browser 'google-chrome.desktop'
+        dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
+        # Set chrome as the default browser
+        xdg-settings set default-web-browser 'google-chrome.desktop'
+    fi
 }
 
 vscode_installer() {
