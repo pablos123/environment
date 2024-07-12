@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Open web apps only if there's not another instance of that web app.
 
 source "$HOME/.bashrc_variables"

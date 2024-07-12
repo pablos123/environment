@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This things were in my .profile but trying to access the display on the
 # battery_notify (because the blacklist logic was bad)
 # and some syntax error because shell != bash caused the GUI (after de DM login) to not load properly.

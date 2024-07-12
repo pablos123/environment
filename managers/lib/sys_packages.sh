@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #
 # DOCS
@@ -8,76 +8,72 @@
 # https://github.com/BurntSushi/ripgrep
 # https://github.com/sharkdp/bat
 # https://github.com/sivel/speedtest-cli
-# https://github.com/eradman/entr
 # https://github.com/eza-community/eza
 
 apt_packages=(
-  duf
-  entr
-  inotify-tools
-  hyperfine
-  ripgrep
-  jq
-  bat
   firefox
-  chromium
-  zathura
-  zathura-djvu
-  xchm
-  xdotool
-  sqlitebrowser
+
+  ripgrep
+  duf
+  jq
   git
-  d-feet
+  bat
+  hyperfine
   yad
   tree
   htop
-  scrot
-  at
-  xclip
-  xsel
-  tmux
   stow
+  at
+  tmux
+  screen
   progress
-  newsboat
-  libnotify-bin
   anacron
   calendar
-  ffmpeg
   imagemagick
+  wmctrl
+
   sxiv
   mpv
-  vlc
-  mypaint
   kolourpaint
+  flameshot
+  scrot
+  gpick
+  zathura
+  zathura-djvu
+  ffmpeg
+  xchm
   unzip
+  7zip
+  cmus
+
   cowsay
   lolcat
   fortune-mod
-  hsetroot
-  neofetch
-  picom
-  flameshot
-  gpick
-  wmctrl
   espeak
   keepassxc
-  flatpak
+
+  picom
+  xdotool
+  xclip
+  xsel
+  lightdm
+  lightdm-gtk-greeter
+  hsetroot
+  gtk2-engines-murrine
+  x11-xserver-utils
+  xdg-utils
+  inotify-tools
+  libnotify-bin
+
+  cbm
+  iftop
+  nload
+
+  python3-venv
   cargo
   golang
   luarocks
   cpanminus
-  python3-venv
-  lightdm
-  lightdm-gtk-greeter
-  gtk2-engines-murrine
-  x11-xserver-utils
-  xdg-utils
-  iftop
-  cbm
-  tcptrack
-  nload
-  virtualbox
-  vagrant
 )
 
 cargo_packages=(

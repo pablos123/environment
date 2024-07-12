@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # After defining the function add it to the installers list
 # Each function has to be idempotent and
 # needs to install the theme in $1
@@ -17,29 +17,29 @@ gruvbox_icons() {
 }
 suru_icons() {
     if [[ ! -d "$HOME/.icons/Suru++" ]]; then
-        (wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh) > /dev/null
+        (wget -qO- https://raw.githubusercontent.com/gusbemacbe/suru-plus/master/install.sh | env DESTDIR="$HOME/.icons" sh) >/dev/null
     fi
 }
 fausto_themes() {
     local repos
     install_fausto_theme() {
-    	local name repo_dir
-    	name="$(echo "$1" | sed 's/.*com\/.*\///g')"
-    	echo "Installing $name..."
-    	repo_dir="/tmp/repos/$name"
-    	if [[ ! -d $repo_dir ]]; then
-    		git clone "$1" "$repo_dir"
-    	fi
-    	cp -r "$repo_dir/themes/"* "$HOME/.themes"
+        local name repo_dir
+        name="$(echo "$1" | sed 's/.*com\/.*\///g')"
+        echo "Installing $name..."
+        repo_dir="/tmp/repos/$name"
+        if [[ ! -d $repo_dir ]]; then
+            git clone "$1" "$repo_dir"
+        fi
+        cp -r "$repo_dir/themes/"* "$HOME/.themes"
     }
     mkdir -p "/tmp/repos"
     repos=(
-    	"https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme"
-    	"https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
-    	"https://github.com/Fausto-Korpsvart/Everforest-GTK-Theme"
+        "https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme"
+        "https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
+        "https://github.com/Fausto-Korpsvart/Everforest-GTK-Theme"
     )
     for repo in "${repos[@]}"; do
-    	install_fausto_theme "$repo"
+        install_fausto_theme "$repo"
     done
 }
 
@@ -53,11 +53,11 @@ cinnamon_themes() {
         Adwaita
     )
 
-    for theme in ${themes[@]}; do
+    for theme in "${themes[@]}"; do
         cp -r "/usr/share/themes/$theme" "$HOME/.themes"
     done
 
-    for icon in ${icons[@]}; do
+    for icon in "${icons[@]}"; do
         cp -r "/usr/share/icons/$icon" "$HOME/.icons"
     done
 }

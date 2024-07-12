@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 setxkbmap eu -option caps:swapescape
 xset r rate 230 50

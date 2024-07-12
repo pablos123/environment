@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+#
+set -e
+
+help='
+Options:
+
+[-m] if you want a minimal install
+[-e] explain
+[-h] help
+'
+
+explain='
+General:
+Initialize the environment for the first time.
+
+-m:
+Creates the file ~/.minimal_environment. Then execute.
+
+-e
+This
+
+-h
+Help
+'
+
+while getopts "meh" opt; do
+    case $opt in
+    m) minimal=true ;;
+    e) echo "${explain}" && exit 0 ;;
+    h) echo "${help}" && exit 0 ;;
+    *) echo "${help}" && exit 1 ;;
+    esac
+done
+
+if $minimal; then
+    touch "$HOME/.minimal_environment"
+fi
+
+(
+    export PATH="$HOME/environment/bin:$HOME/environment/managers:$PATH"
+    sys_manager -u
+    font_manger -i
+    gtk_manager -i
+)
+
+if $minimal; then
+    theme_manager -t quiet
+else
+    theme_manager -t gruvbox
+fi

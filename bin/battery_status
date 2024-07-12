@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Print battery status with colors.
 # Other tools that do this: upower -e <battery> | inxi -Fxxxrz
 

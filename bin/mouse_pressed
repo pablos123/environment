@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Exit if mouse's button is pressed.
 # Checks $XINPUT_MOUSE_ID env variable mouse.

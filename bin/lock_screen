@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Save an image of your current monitors and blur it then, lock your screen.
 
 scrot -o /tmp/lock_screen_screenshot.png

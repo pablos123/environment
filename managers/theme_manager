@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 help='
 Options:
 
@@ -18,12 +18,12 @@ Manage what I consider a theme, that is:
 - gtk (theme, icons, cursor)
 
 If no option is given then reload the current theme.
-The current theme info is inside the $HOME/.current_theme file.
+The current theme info is inside the ~/.current_theme file.
 
 This will not manage things that are not listed before.
 
 -t:
-A directory inside $HOME/environment/dotfiles/themes/ containing 3 files:
+A directory inside ~/environment/dotfiles/themes/ containing 3 files:
 - env.json
 - term.json
 - gtk.json
@@ -31,18 +31,18 @@ A directory inside $HOME/environment/dotfiles/themes/ containing 3 files:
 To set a theme:
 - Check for errors
 - Set the gtk theme using gtk_manager
-- Copy the files inside $HOME/environment/dotfiles/templates/ to $HOME/.dotfiles_stow
+- Copy the files inside ~/environment/dotfiles/templates/ to ~/.dotfiles_stow
 - Change the necessary in those files using sed
-- stow the content of $HOME/.dotfiles_stow
+- stow the content of ~/.dotfiles_stow
 - Create dmenu binaries dinamically
-- Save the current theme name in $HOME/.current_theme
+- Save the current theme name in ~/.current_theme
 - reload i3, dunst, and clean dmenu cache
 
 -l:
-ls the content of $HOME/environment/dotfiles/themes
+ls the content of ~/environment/dotfiles/themes
 
 -w:
-clone again the wallpapers repo
+Clone the wallpapers repo
 
 -e:
 This
@@ -58,14 +58,15 @@ theme=
 if [[ -f "$HOME/.current_theme" ]]; then
     theme="$(cat "$HOME/.current_theme")"
 fi
-while getopts "helt:" opt; do
-	case $opt in
-        t) theme="$(echo "$OPTARG" | sed 's#/##g')";;
-        l) list=true;;
-        w) wallpaper=true;;
-        e) echo "$explain" && exit 0 ;;
-        h) echo "$help" && exit 0 ;;
-	esac
+while getopts "whelt:" opt; do
+    case $opt in
+    t) theme="$(echo "$OPTARG" | sed 's#/##g')" ;;
+    l) list=true ;;
+    w) wallpaper=true ;;
+    e) echo "$explain" && exit 0 ;;
+    h) echo "$help" && exit 0 ;;
+    *) echo "$help" && exit 0 ;;
+    esac
 done
 
 if $list; then
@@ -82,25 +83,25 @@ fi
 
 # Check for errors
 if [[ -z "$theme" ]]; then
-	echo "No theme specified!" >&2
-	exit 1
+    echo "No theme specified!" >&2
+    exit 1
 fi
 
 theme_dir="$HOME/environment/dotfiles/themes/$theme"
 if [[ ! -d "$theme_dir" ]]; then
-	echo "The theme does not exist!" >&2
-	exit 1
+    echo "The theme does not exist!" >&2
+    exit 1
 fi
 
 if [[ ! -f $theme_dir/gtk.json ]] ||
     [[ ! -f $theme_dir/term.json ]] ||
     [[ ! -f $theme_dir/env.json ]]; then
-	echo "The theme is not well defined!" >&2
-	exit 1
+    echo "The theme is not well defined!" >&2
+    exit 1
 fi
 
-wezterm_colorscheme="$(jq -rM .wezterm_colorscheme < "$theme_dir/term.json")"
-nvim_colorscheme="$(jq -rM .nvim_colorscheme < "$theme_dir/term.json")"
+wezterm_colorscheme="$(jq -rM .wezterm_colorscheme <"$theme_dir/term.json")"
+nvim_colorscheme="$(jq -rM .nvim_colorscheme <"$theme_dir/term.json")"
 if [[ -z $wezterm_colorscheme ]] ||
     [[ -z $nvim_colorscheme ]] ||
     [[ $wezterm_colorscheme = "null" ]] ||
@@ -109,9 +110,9 @@ if [[ -z $wezterm_colorscheme ]] ||
     exit 1
 fi
 
-bg="$(jq -rM .bg < "$theme_dir/env.json")"
-fg="$(jq -rM .fg < "$theme_dir/env.json")"
-im="$(jq -rM .im < "$theme_dir/env.json")"
+bg="$(jq -rM .bg <"$theme_dir/env.json")"
+fg="$(jq -rM .fg <"$theme_dir/env.json")"
+im="$(jq -rM .im <"$theme_dir/env.json")"
 if [[ -z $bg ]] ||
     [[ -z $fg ]] ||
     [[ -z $im ]] ||
@@ -153,8 +154,8 @@ sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 )
 
 # Make dmenu executables
-echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu"
-echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" > "$HOME/bin/dmenu_run"
+echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu"
+echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu_run"
 chmod 0755 "$HOME/bin/dmenu" "$HOME/bin/dmenu_run"
 
 set_wallpaper -t "$theme"
@@ -172,4 +173,3 @@ killall picom >/dev/null 2>&1
 if [[ ! "$theme" =~ "quiet" ]]; then
     picom --daemon >/dev/null 2>&1
 fi
-

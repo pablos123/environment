@@ -27,10 +27,11 @@ set $ws10 "10"
 
 # WINDOWS
 #-------------------------------------------------------------------------------
-# View the class name with `xprop WM_CLASS`
+# View the class name with xprop WM_CLASS
 # The first part of the WM_CLASS is the instance, the second part is the class.
 # Browser
 for_window [class="Google-chrome"] move container to workspace $ws1
+for_window [class="firefox"] move container to workspace $ws1
 # Terminal
 for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
 # Web Apps, Social
@@ -45,7 +46,6 @@ for_window [title="Tiny Bash Calendar"] move container to output primary, floati
 # Database
 for_window [class="DBeaver"] move container to workspace $ws5
 
-for_window [class="Code"] move container to workspace $ws2
 for_window [class="steam"] move container to workspace $ws7
 for_window [class="obsidian"] move container to workspace $ws8
 

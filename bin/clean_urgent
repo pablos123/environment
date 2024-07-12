@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Clean demands_attention from apps
 # Mainly for lots or urgent workspaces at startup
 

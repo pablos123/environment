@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #
 set -e
@@ -16,12 +16,13 @@ Options:
 explain='
 General:
 Common uses that I do with my system.
+If you want a minimal environment create the file ~/.minimal_environment.
 
 -i:
 info_manager
 
 -u:
-Upgrade the system: apt, flatpak, pip and independent .deb packages
+Upgrade the system: apt, pip and independent .deb packages
 
 -n:
 Build neovim nightly
@@ -39,6 +40,11 @@ source "${HOME}/.bashrc_colors"
 info=false
 upgrade=false
 neovim=false
+
+minimal=
+if [[ -f "$HOME/.minimal_environment" ]]; then
+    minimal="$(cat "$HOME/.minimal_environment")"
+fi
 
 getopts_executed=false
 while getopts "iuenh" opt; do
@@ -78,10 +84,6 @@ install_apt() {
     sudo apt-get -qq install -y "${apt_packages[@]}"
 }
 
-install_flatpak() {
-    sudo flatpak update -y >/dev/null
-}
-
 install_pip() {
     curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     python3 get-pip.py --user >/dev/null
@@ -93,8 +95,12 @@ install_cargo() {
     cargo install "${cargo_packages[@]}" >/dev/null
 }
 
+install_flatpak() {
+    sudo flatpak update -y >/dev/null
+}
+
 cleanup() {
-    sudo apt-get -qq remove -y steam wine
+    sudo apt-get -qq remove --purge -y steam wine
     sudo apt-get -qq autoremove --purge -y
 
     rm -f "${HOME}/.cache/dmenu_run"
@@ -114,6 +120,16 @@ execute_task() {
     print_separator
 }
 
+minimal_environment_tasks() {
+    sudo apt-get -qq remove --purge -y libreoffice*
+    sudo apt-get -qq remove --purge -y flatpak*
+    sudo apt-get -qq remove --purge -y thunderbird*
+    sudo apt-get -qq remove --purge -y hexchat*
+    sudo apt-get -qq remove --purge -y redshift*
+    sudo apt-get -qq remove --purge -y webapp-manager
+    sudo apt-get -qq remove --purge -y drawing
+}
+
 if $upgrade; then
     execute_task "Asking for root..." get_root_access
 
@@ -121,13 +137,17 @@ if $upgrade; then
 
     execute_task "Updating apt packages..." install_apt
 
-    execute_task "Updating flatpak packages..." install_flatpak
-
     execute_task "Updating pip packages..." install_pip
 
     execute_task "Updating cargo packages..." install_cargo
 
     execute_task "Updating independent packages..." install_independent
+
+    if [[ "$minimal" ]]; then minimal_environment; fi
+
+    if which flatpak >/dev/null 2>&1; then
+        execute_task "Updating flatpak packages..." install_flatpak
+    fi
 
     execute_task "Cleaning up..." cleanup
 

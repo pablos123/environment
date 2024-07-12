@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Play rain sounds located in $HOME/.media/rain.mp3
 
 pids=$(ps aux | grep myrain | wc -l)

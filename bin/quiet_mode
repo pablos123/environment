@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # I don't want any notifications when I share my screen.
 # Disable/Enable notifications for a while, indicate this with an icon in the status bar.
 

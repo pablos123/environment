@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # If the terminal is not working normally,
 # maybe if because TERM is not xterm-256color
 # (i.e. kitty has this problem)

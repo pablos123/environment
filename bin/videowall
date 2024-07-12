@@ -1,5 +1,5 @@
-#!/bin/bash
-# Show a video as wallpaper. 
+#!/usr/bin/env bash
+# Show a video as wallpaper.
 # Prepare a video: videowall -p <video> [-t <limit video to some second>] (this sets the video too)
 # Set the video: videowall
 # Quit: videowall -q
