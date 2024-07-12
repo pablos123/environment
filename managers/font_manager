@@ -16,7 +16,7 @@ General:
 Install nerd fonts
 
 -l:
-ls "$HOME/.local/share/fonts/"
+ls ~/.local/share/fonts/
 
 -e:
 This
