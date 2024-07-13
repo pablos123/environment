@@ -3,11 +3,15 @@ return {
         "echasnovski/mini.nvim",
         version = false,
         config = function()
-            local fh=io.open(os.getenv("HOME") .. "/.minimal_environment", "r")
-            if fh ~= nil then
-                io.close(fh)
+           function file_exists(name)
+               local f=io.open(name,"r")
+               if f~=nil then io.close(f) return true else return false end
+            end
+            if file_exists(os.getenv("HOME") .. "/.minimal_environment") then
+                require "mini.icons".setup { style="ascii" }
+            else
                 require "mini.icons".setup {}
-            fi
+            end
             require "mini.surround".setup {}
             require "mini.operators".setup {}
             require "mini.ai".setup {}
@@ -21,7 +25,7 @@ return {
                 },
             }
             require "mini.trailspace".setup {}
-            require "mini.statusline".setup {}
+            require "mini.statusline".setup { use_icons= false }
             require "mini.files".setup {}
             require "mini.notify".setup {}
             require "mini.completion".setup {
