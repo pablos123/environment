@@ -124,7 +124,9 @@ if [[ -z $bg ]] ||
 fi
 
 # Change gtk
-gtk_manager -t "$theme_dir/gtk.json"
+if [[ ! "$theme" =~ "quiet" ]]; then
+    gtk_manager -t "$theme_dir/gtk.json"
+fi
 
 # Create directories
 mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"

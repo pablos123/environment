@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -f "$HOME/.minimal_environment" ]]; then
-    xterm
+    xterm -fg white -bg black
     exit 0
 fi
 

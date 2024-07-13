@@ -76,14 +76,19 @@ install_apt() {
     sudo apt-get -qq update
     sudo apt-get -qq dist-upgrade -y
     sudo apt-get -qq --with-new-pkgs upgrade -y
-    sudo apt-get -qq install -y "${apt_packages[@]}"
+    sudo apt-get -qq install -y "${apt_common_packages[@]}"
 }
 
 install_pip() {
-    curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3 get-pip.py --user >/dev/null
-    pip install -q "${pip_packages[@]}"
-    rm -f ./get-pip.py
+    if ! $minimal; then
+        curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+        python3 get-pip.py --user >/dev/null
+        pip install -q "${pip_packages[@]}"
+        rm -f ./get-pip.py
+    else
+        sudo apt-get -qq install pipx
+        pipx install "${pip_packages[@]}"
+    fi
 }
 
 install_cargo() {
@@ -125,11 +130,14 @@ if $upgrade; then
     execute_task "Updating pip packages..." install_pip
 
     if ! $minimal; then
+        sudo apt-get -qq install -y "${apt_full_packages[@]}"
         execute_task "Updating flatpak packages..." update_flatpak
         execute_task "Updating independent packages..." install_independent
         execute_task "Updating cargo packages..." install_cargo
     else
-        sudo apt-get install i3-wm
+        sudo apt-get -qq install -y "${apt_minimal_packages[@]}"
+        echo "Installing dunst"
+        dunst_installer
     fi
 
     execute_task "Cleaning up..." cleanup
