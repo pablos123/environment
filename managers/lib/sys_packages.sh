@@ -56,8 +56,6 @@ apt_packages=(
   xdotool
   xclip
   xsel
-  lightdm
-  lightdm-gtk-greeter
   hsetroot
   gtk2-engines-murrine
   x11-xserver-utils
