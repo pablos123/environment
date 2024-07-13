@@ -115,15 +115,6 @@ execute_task() {
     print_separator
 }
 
-minimal_environment_tasks() {
-    sudo apt-get -qq remove --purge -y libreoffice*
-    sudo apt-get -qq remove --purge -y thunderbird*
-    sudo apt-get -qq remove --purge -y hexchat*
-    sudo apt-get -qq remove --purge -y redshift*
-    sudo apt-get -qq remove --purge -y webapp-manager
-    sudo apt-get -qq remove --purge -y drawing
-}
-
 if $upgrade; then
     execute_task "Asking for root..." get_root_access
 
@@ -133,13 +124,13 @@ if $upgrade; then
 
     execute_task "Updating pip packages..." install_pip
 
-    execute_task "Updating cargo packages..." install_cargo
-
-    execute_task "Updating independent packages..." install_independent
-
-    if $minimal; then minimal_environment_tasks; fi
-
-    execute_task "Updating flatpak packages..." update_flatpak
+    if ! $minimal; then
+        execute_task "Updating flatpak packages..." update_flatpak
+        execute_task "Updating independent packages..." install_independent
+        execute_task "Updating cargo packages..." install_cargo
+    else
+        sudo apt-get install i3-wm
+    fi
 
     execute_task "Cleaning up..." cleanup
 

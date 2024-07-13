@@ -30,7 +30,7 @@ fausto_themes() {
         if [[ ! -d $repo_dir ]]; then
             git clone "$1" "$repo_dir"
         fi
-        cp -r "$repo_dir/themes/"* "$HOME/.themes"
+        cp -r "$repo_dir" "$HOME/.themes"
     }
     mkdir -p "/tmp/repos"
     repos=(

@@ -160,12 +160,12 @@ if [[ -z $theme ]] ||
     exit 1
 fi
 
-if [[ ! -d "$HOME/.themes/$theme" ]] ||
-    [[ ! -d "$HOME/.icons/$icons" ]] ||
-    [[ ! -d "$HOME/.icons/$cursor" ]]; then
-    echo "Some themes do not exist!" >&2
-    exit 1
-fi
+# if [[ ! -d "$HOME/.themes/$theme" ]] ||
+#     [[ ! -d "$HOME/.icons/$icons" ]] ||
+#     [[ ! -d "$HOME/.icons/$cursor" ]]; then
+#     echo "Some themes do not exist!" >&2
+#     exit 1
+# fi
 
 # Define the new gtks files
 gtk2="

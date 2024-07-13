@@ -34,6 +34,7 @@ for_window [class="Google-chrome"] move container to workspace $ws1
 for_window [class="firefox"] move container to workspace $ws1
 # Terminal
 for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
+for_window [class="XTerm"] move container to workspace $ws3
 # Web Apps, Social
 for_window [instance="web.whatsapp.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="instagram.com"] move container to workspace $ws4, layout tabbed
@@ -73,9 +74,9 @@ exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agen
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 # Terminal
-exec --no-startup-id wezterm
+exec --no-startup-id open_terminal
 # Browser
-exec --no-startup-id sleep 2 && chrome
+exec --no-startup-id sleep 2 && open_browser
 # Web Apps, Social
 exec --no-startup-id sleep 3 && web_apps
 exec --no-startup-id sleep 4 && obsidian
@@ -88,7 +89,7 @@ exec --no-startup-id sleep 20 && daily_tasks
 #-------------------------------------------------------------------------------
 # Comments in the same line as the binding will break
 # Terminal
-bindsym $mod+Return exec --no-startup-id wezterm
+bindsym $mod+Return exec --no-startup-id open_terminal
 # Screenshots
 bindsym $mod+p exec --no-startup-id flameshot gui
 # Program Laucher

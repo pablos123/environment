@@ -3,7 +3,12 @@
 # and not in scripts nor dmenu.
 #
 # Common
-alias ls="eza --icons --extended --group-directories-first"
+if [[ -f "$HOME/.minimal_environment" ]]; then
+    alias ls="ls --color=always -F"
+else
+    alias ls="eza --icons --extended --group-directories-first"
+fi
+
 alias l="ls"
 alias s="ls"
 alias sl="ls"
@@ -23,7 +28,7 @@ alias vim="nvim"
 alias bat="batcat"
 alias df="duf"
 # Git
-alias genc="git add . && git commit -m '🍂'"
+alias genc="git add . && git commit -m 'generic'"
 alias ga="git add"
 alias gs="git status"
 alias gl="git log"

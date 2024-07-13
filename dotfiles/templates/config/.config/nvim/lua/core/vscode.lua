@@ -1,3 +1,22 @@
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
+vim.opt.undofile = true
+vim.opt.updatetime = 400
+vim.opt.mouse = "a"
+vim.opt.clipboard = "unnamedplus"
+vim.opt.completeopt = { "menuone", "noselect", "preview" }
+vim.opt.wildmenu = true
+vim.opt.hidden = true
+vim.opt.wrap = false
+vim.opt.timeoutlen = 850
+vim.opt.smartindent = true
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+vim.opt.hlsearch = false
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true, desc = desc }
 

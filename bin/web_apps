@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Open web apps only if there's not another instance of that web app.
 
-source "$HOME/.bashrc_variables"
+source "$HOME/.bash_variables"
 
 chrome_window_ids=$(xdotool search --class "Google-chrome")
 instances=()

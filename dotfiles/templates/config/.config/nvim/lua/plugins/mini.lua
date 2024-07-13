@@ -3,7 +3,11 @@ return {
         "echasnovski/mini.nvim",
         version = false,
         config = function()
-            require "mini.icons".setup {}
+            local fh=io.open(os.getenv("HOME") .. "/.minimal_environment", "r")
+            if fh ~= nil then
+                io.close(fh)
+                require "mini.icons".setup {}
+            fi
             require "mini.surround".setup {}
             require "mini.operators".setup {}
             require "mini.ai".setup {}
