@@ -3,7 +3,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-keyboard_config
+if xset -b off &>>/dev/null; then
+    "$HOME"/environment/bin/keyboard_config
+fi
 
 shopt -s direxpand
 shopt -s autocd
