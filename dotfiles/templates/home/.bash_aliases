@@ -28,7 +28,7 @@ alias vim="nvim"
 alias bat="batcat"
 alias df="duf"
 # Git
-alias genc="git add . && git commit -m 'generic'"
+alias genc="git add . && git commit -m 'genc'"
 alias ga="git add"
 alias gs="git status"
 alias gl="git log"
