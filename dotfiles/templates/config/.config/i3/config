@@ -68,7 +68,7 @@ exec_always --no-startup-id keyboard_config
 
 exec_always --no-startup-id theme_manager
 
-exec --no-startup-id dunst && sleep 1
+exec --no-startup-id minimal_startup
 exec --no-startup-id notifications
 
 # Authentication agent

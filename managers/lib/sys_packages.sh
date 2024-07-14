@@ -76,10 +76,13 @@ apt_minimal_packages=(
   upower
   terminator
   network-manager
+  nm-tray
+  libasound2
+  libasound2-plugins
+  apulse
+  pulseaudio
 )
 apt_full_packages=(
-  lightdm
-  lightdm-gtk-greeter
   gtk2-engines-murrine
   firefox
 )
