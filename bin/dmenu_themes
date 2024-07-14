@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Open dmenu with available themes in ssh config and connect when selected.
-
-change_to=$(theme_manager -l | dmenu)
-if [[ $change_to ]]; then
-    theme_manager -t "$change_to"
-fi

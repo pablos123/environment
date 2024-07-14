@@ -27,12 +27,6 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 ## Executables
 
-### dmenu runners
-
-- Search with Google: `dmenu_search`
-- Connect to host: `dmenu_hosts`
-- Change theme: `dmenu_themes`
-
 ### Social media
 
 - Check Letterboxd unfollowers: `letterboxd_unfollowers`
