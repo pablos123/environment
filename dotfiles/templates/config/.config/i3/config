@@ -36,6 +36,7 @@ for_window [class="Firefox-esr"] move container to workspace $ws1
 # Terminal
 for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
 for_window [class="XTerm"] move container to workspace $ws3
+for_window [class="Terminator"] move container to workspace $ws3
 # Web Apps, Social
 for_window [instance="web.whatsapp.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="instagram.com"] move container to workspace $ws4, layout tabbed

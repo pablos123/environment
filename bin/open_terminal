@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -f "$HOME/.minimal_environment" ]]; then
-    xterm -fg white -bg black -fs 12 -fa 'JetBrainsMono'
+    terminator
     exit 0
 fi
 

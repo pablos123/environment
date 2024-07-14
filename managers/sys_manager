@@ -136,8 +136,8 @@ if $upgrade; then
         execute_task "Updating cargo packages..." install_cargo
     else
         sudo apt-get -qq install -y "${apt_minimal_packages[@]}"
-        echo "Installing dunst"
         dunst_installer
+        fzf_installer
     fi
 
     execute_task "Cleaning up..." cleanup

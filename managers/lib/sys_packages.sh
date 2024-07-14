@@ -74,6 +74,7 @@ apt_minimal_packages=(
   ntfs-3g
   ncal
   upower
+  terminator
   network-manager
 )
 apt_full_packages=(
