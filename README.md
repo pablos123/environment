@@ -48,7 +48,7 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 - View all escaped colors: `colors`
 - Find name in current dir: `nfind`
-- Edit crontab but create backup first: `ecrontab`
+- Edit crontab but create a backup first: `ecrontab`
 - List available completions: `list_completions`
 - Load completions: `load_completions`
 - Reset a repository: `reset_repo`
