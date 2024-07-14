@@ -46,15 +46,21 @@ if ! $getopts_executed; then
     exit 1
 fi
 
-if $install; then
-    install_path="$HOME/.local/share/fonts"
+minimal=false
+if [[ -f "$HOME/.minimal_environment" ]]; then
+    minimal=true
+fi
+
+install_path="$HOME/.local/share/fonts"
+
+install_nerd_fonts() {
     mkdir -p "$install_path"
-    install_font() {
-        rm -rf "$install_path/$1"
-        mkdir -p "$install_path/$1"
-        wget -O "$install_path/$1.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$1.tar.xz"
-        tar -xf "$install_path/$1.tar.xz" -C "$install_path/$1"
-        rm -f "$install_path/$1.tar.xz"
+    install_nerd_font() {
+        rm -rf "$install_path/${1}Nerd"
+        mkdir -p "$install_path/${1}Nerd"
+        wget -O "$install_path/${1}Nerd.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$1.tar.xz"
+        tar -xf "$install_path/${1}Nerd.tar.xz" -C "$install_path/${1}Nerd"
+        rm -f "$install_path/${1}Nerd.tar.xz"
     }
     fonts=(
         SourceCodePro
@@ -66,8 +72,26 @@ if $install; then
     )
 
     for font in "${fonts[@]}"; do
-        install_font "$font"
+        install_nerd_font "$font"
     done
+}
+
+install_normal_fonts() {
+    mkdir -p "$install_path"
+
+    rm -rf "$install_path/JetBrainsMono"
+    mkdir -p "$install_path/JetBrainsMono"
+    wget -O "$install_path/JetBrainsMono.zip" 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
+    unzip -d "$install_path/JetBrainsMono" "$install_path/JetBrainsMono.zip"
+    rm -f "$install_path/JetBrainsMono.zip"
+}
+
+if $install; then
+    if ! $minimal; then
+        install_nerd_fonts
+    else
+        install_normal_fonts
+    fi
 
     fc-cache -rf
     exit 0

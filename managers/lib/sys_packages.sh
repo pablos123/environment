@@ -12,6 +12,7 @@
 
 apt_common_packages=(
   ripgrep
+  vim
   duf
   jq
   git
@@ -67,18 +68,9 @@ apt_common_packages=(
   cpanminus
 )
 
-cargo_packages=(
-  eza
-)
-
-pip_packages=(
-  speedtest-cli
-)
-
 apt_minimal_packages=(
   python3-full
   firefox-esr
-  vim
   ntfs-3g
   ncal
   upower
@@ -89,3 +81,12 @@ apt_full_packages=(
   gtk2-engines-murrine
   firefox
 )
+
+cargo_packages=(
+  eza
+)
+
+pip_packages=(
+  speedtest-cli
+)
+
