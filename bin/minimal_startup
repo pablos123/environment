@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ ! -f "$HOME/.minimal_environment" ]]; then
-    exit 0
-fi
-
-dunst &
-pulseaudio &
-nm-tray &

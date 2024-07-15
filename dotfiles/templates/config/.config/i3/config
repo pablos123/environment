@@ -50,7 +50,6 @@ for_window [title="Tiny Bash Calendar"] move container to output primary, floati
 for_window [class="DBeaver"] move container to workspace $ws5
 
 for_window [class="steam"] move container to workspace $ws7
-for_window [class="obsidian"] move container to workspace $ws8
 
 # File Manager
 for_window [class="Nemo"] floating enable
@@ -68,21 +67,18 @@ exec_always --no-startup-id keyboard_config
 
 exec_always --no-startup-id theme_manager
 
-exec --no-startup-id minimal_startup
+exec --no-startup-id sleep 1 && start_daemons
+
 exec --no-startup-id notifications
 
 # Authentication agent
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 # Applets
-exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
 # Terminal
 exec --no-startup-id open_terminal
 # Browser
 exec --no-startup-id sleep 2 && open_browser
 # Web Apps, Social
 exec --no-startup-id sleep 3 && web_apps
-exec --no-startup-id sleep 4 && obsidian
 # Clean apps' attention to not have urgent workspace
 exec --no-startup-id sleep 7 && clean_urgent
 # Daily

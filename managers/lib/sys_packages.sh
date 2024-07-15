@@ -81,6 +81,7 @@ apt_minimal_packages=(
   libasound2-plugins
   apulse
   pulseaudio
+  i3
 )
 apt_full_packages=(
   gtk2-engines-murrine

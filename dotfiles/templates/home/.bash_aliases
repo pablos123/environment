@@ -4,7 +4,7 @@
 #
 # Common
 if [[ -f "$HOME/.minimal_environment" ]]; then
-    alias ls="ls --color=always -F"
+    alias ls="ls --group-directories-first --color=always -F"
 else
     alias ls="eza --icons --extended --group-directories-first"
 fi

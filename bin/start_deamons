@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ ! -f "$HOME/.minimal_environment" ]]; then
+    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & disown
+    nm-applet & disown
+    blueman-applet & disown
+    exit 0
+fi
+
+dunst & disown
+pulseaudio & disown
+nm-tray & disown
+exit 0
