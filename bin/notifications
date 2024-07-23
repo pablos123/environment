@@ -14,10 +14,10 @@ if which elcairo 2>/dev/null; then
     }
     day="$(date +'%A')"
     if [[ "$day" == "Tuesday" ]]; then
-        week_movies=$(elcairo shows --reverse --no-separator --no-extra-info week)
+        week_movies=$(elcairo shows --reverse --no-separator --no-extra-info --no-urls week)
         send_notification "$week_movies" "El Cairo movies this week"
     elif [[ "$day" == "Friday" ]]; then
-        weekend_movies=$(elcairo shows --reverse --no-separator --no-extra-info weekend)
+        weekend_movies=$(elcairo shows --reverse --no-separator --no-extra-info --no-urls weekend)
         send_notification "$weekend_movies" "El Cairo movies this weekend"
     fi
 fi
