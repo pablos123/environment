@@ -70,7 +70,7 @@ colors() {
 
 # Edit the crontab but before create a backup file
 ecrontab() {
-    crontab -l >"$HOME/crontab.$USER.backup~"
+    crontab -l >"$HOME/crontab.old"
     crontab -e
 }
 

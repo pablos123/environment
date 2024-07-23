@@ -35,15 +35,14 @@ Help
 '
 source "${HOME}/environment/managers/lib/sys_packages.sh"
 source "${HOME}/environment/managers/lib/sys_installers.sh"
-source "${HOME}/.bashrc_colors"
 
 info=false
 upgrade=false
 neovim=false
 
-minimal=
+minimal=false
 if [[ -f "$HOME/.minimal_environment" ]]; then
-    minimal="$(cat "$HOME/.minimal_environment")"
+    minimal=true
 fi
 
 getopts_executed=false
@@ -65,12 +64,8 @@ if ! $getopts_executed; then
     exit 1
 fi
 
-print_green() {
-    echo -e "${GREEN}${1}${CRESET}"
-}
-
 print_separator() {
-    echo -e "${YELLOW}.........................${CRESET}"
+    echo -e "........................."
 }
 
 get_root_access() {
@@ -81,21 +76,26 @@ install_apt() {
     sudo apt-get -qq update
     sudo apt-get -qq dist-upgrade -y
     sudo apt-get -qq --with-new-pkgs upgrade -y
-    sudo apt-get -qq install -y "${apt_packages[@]}"
+    sudo apt-get -qq install -y "${apt_common_packages[@]}"
 }
 
 install_pip() {
-    curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3 get-pip.py --user >/dev/null
-    pip install -q "${pip_packages[@]}"
-    rm -f ./get-pip.py
+    if ! $minimal; then
+        curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+        python3 get-pip.py --user >/dev/null
+        pip install -q "${pip_packages[@]}"
+        rm -f ./get-pip.py
+    else
+        sudo apt-get -qq install pipx
+        pipx install "${pip_packages[@]}"
+    fi
 }
 
 install_cargo() {
     cargo install "${cargo_packages[@]}" >/dev/null
 }
 
-install_flatpak() {
+update_flatpak() {
     sudo flatpak update -y >/dev/null
 }
 
@@ -109,25 +109,15 @@ cleanup() {
 
 install_independent() {
     for inst_function in "${sys_installers[@]}"; do
-        print_green "   Executing ${inst_function}..."
+        echo "   Executing ${inst_function}..."
         "${inst_function}"
     done
 }
 
 execute_task() {
-    print_green "${1}"
+    echo "${1}"
     "${2}"
     print_separator
-}
-
-minimal_environment_tasks() {
-    sudo apt-get -qq remove --purge -y libreoffice*
-    sudo apt-get -qq remove --purge -y flatpak*
-    sudo apt-get -qq remove --purge -y thunderbird*
-    sudo apt-get -qq remove --purge -y hexchat*
-    sudo apt-get -qq remove --purge -y redshift*
-    sudo apt-get -qq remove --purge -y webapp-manager
-    sudo apt-get -qq remove --purge -y drawing
 }
 
 if $upgrade; then
@@ -139,19 +129,20 @@ if $upgrade; then
 
     execute_task "Updating pip packages..." install_pip
 
-    execute_task "Updating cargo packages..." install_cargo
-
-    execute_task "Updating independent packages..." install_independent
-
-    if [[ "$minimal" ]]; then minimal_environment; fi
-
-    if which flatpak >/dev/null 2>&1; then
-        execute_task "Updating flatpak packages..." install_flatpak
+    if ! $minimal; then
+        sudo apt-get -qq install -y "${apt_full_packages[@]}"
+        execute_task "Updating flatpak packages..." update_flatpak
+        execute_task "Updating independent packages..." install_independent
+        execute_task "Updating cargo packages..." install_cargo
+    else
+        sudo apt-get -qq install -y "${apt_minimal_packages[@]}"
+        dunst_installer
+        fzf_installer
     fi
 
     execute_task "Cleaning up..." cleanup
 
-    print_green "Done! Remember to reboot your pc!"
+    echo "Done! Remember to reboot your pc!"
 
     exit 0
 fi

@@ -10,6 +10,9 @@ map("", "<space>", "<nop>", add_desc("Leader"))
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+map("n", "j", "gj", add_desc("To go down just one line if line is wrapped."))
+map("n", "k", "gk", add_desc("To go up just one line if line is wrapped."))
+
 map("v", "<", "<gv", add_desc("To keep selected when pressing tab on selected lines"))
 map("v", ">", ">gv", add_desc("To keep selected when pressing tab on selected lines"))
 

@@ -10,10 +10,9 @@
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eza-community/eza
 
-apt_packages=(
-  firefox
-
+apt_common_packages=(
   ripgrep
+  vim
   duf
   jq
   git
@@ -31,7 +30,6 @@ apt_packages=(
   calendar
   imagemagick
   wmctrl
-
   sxiv
   mpv
   kolourpaint
@@ -45,35 +43,49 @@ apt_packages=(
   unzip
   7zip
   cmus
-
+  xterm
   cowsay
   lolcat
   fortune-mod
   espeak
   keepassxc
-
   picom
   xdotool
   xclip
   xsel
-  lightdm
-  lightdm-gtk-greeter
   hsetroot
-  gtk2-engines-murrine
   x11-xserver-utils
   xdg-utils
   inotify-tools
   libnotify-bin
-
   cbm
   iftop
   nload
-
   python3-venv
   cargo
   golang
   luarocks
   cpanminus
+)
+
+apt_minimal_packages=(
+  python3-full
+  firefox-esr
+  ntfs-3g
+  ncal
+  upower
+  terminator
+  network-manager
+  nm-tray
+  libasound2
+  libasound2-plugins
+  apulse
+  pulseaudio
+  i3
+)
+apt_full_packages=(
+  gtk2-engines-murrine
+  firefox
 )
 
 cargo_packages=(
@@ -83,3 +95,4 @@ cargo_packages=(
 pip_packages=(
   speedtest-cli
 )
+

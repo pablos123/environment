@@ -10,7 +10,7 @@ set $mod Mod1
 # set $mod Mod4
 
 # Font
-font pango:Lilex Nerd Font Bold 10
+font pango:FONT
 
 # WORKSPACES
 #-------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10"
+set $ws10 "0"
 
 # WINDOWS
 #-------------------------------------------------------------------------------
@@ -32,8 +32,11 @@ set $ws10 "10"
 # Browser
 for_window [class="Google-chrome"] move container to workspace $ws1
 for_window [class="firefox"] move container to workspace $ws1
+for_window [class="Firefox-esr"] move container to workspace $ws1
 # Terminal
 for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
+for_window [class="XTerm"] move container to workspace $ws3
+for_window [class="Terminator"] move container to workspace $ws3
 # Web Apps, Social
 for_window [instance="web.whatsapp.com"] move container to workspace $ws4, layout tabbed
 for_window [instance="instagram.com"] move container to workspace $ws4, layout tabbed
@@ -47,7 +50,6 @@ for_window [title="Tiny Bash Calendar"] move container to output primary, floati
 for_window [class="DBeaver"] move container to workspace $ws5
 
 for_window [class="steam"] move container to workspace $ws7
-for_window [class="obsidian"] move container to workspace $ws8
 
 # File Manager
 for_window [class="Nemo"] floating enable
@@ -65,20 +67,18 @@ exec_always --no-startup-id keyboard_config
 
 exec_always --no-startup-id theme_manager
 
+exec --no-startup-id sleep 1 && start_daemons
+
 exec --no-startup-id notifications
 
 # Authentication agent
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 # Applets
-exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
 # Terminal
-exec --no-startup-id wezterm
+exec --no-startup-id open_terminal
 # Browser
-exec --no-startup-id sleep 2 && chrome
+exec --no-startup-id sleep 2 && open_browser
 # Web Apps, Social
 exec --no-startup-id sleep 3 && web_apps
-exec --no-startup-id sleep 4 && obsidian
 # Clean apps' attention to not have urgent workspace
 exec --no-startup-id sleep 7 && clean_urgent
 # Daily
@@ -88,7 +88,7 @@ exec --no-startup-id sleep 20 && daily_tasks
 #-------------------------------------------------------------------------------
 # Comments in the same line as the binding will break
 # Terminal
-bindsym $mod+Return exec --no-startup-id wezterm
+bindsym $mod+Return exec --no-startup-id open_terminal
 # Screenshots
 bindsym $mod+p exec --no-startup-id flameshot gui
 # Program Laucher

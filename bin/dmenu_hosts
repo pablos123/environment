@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Open dmenu with available hosts in ssh config and connect when selected.
-
-connect_to=$( (grep 'Host ' | awk '{print $2}') <"$HOME/.ssh/config" | dmenu)
-if [[ $connect_to ]]; then
-    wezterm start -- ssh "$connect_to"
-fi

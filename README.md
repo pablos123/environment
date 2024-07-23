@@ -27,12 +27,6 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 ## Executables
 
-### dmenu runners
-
-- Search with Google: `dmenu_search`
-- Connect to host: `dmenu_hosts`
-- Change theme: `dmenu_themes`
-
 ### Social media
 
 - Check Letterboxd unfollowers: `letterboxd_unfollowers`
@@ -54,7 +48,7 @@ All managers have `-e` (explain) and `-h` (help) flags.
 
 - View all escaped colors: `colors`
 - Find name in current dir: `nfind`
-- Edit crontab but create backup first: `ecrontab`
+- Edit crontab but create a backup first: `ecrontab`
 - List available completions: `list_completions`
 - Load completions: `load_completions`
 - Reset a repository: `reset_repo`

@@ -87,6 +87,11 @@ if [[ -z "$theme" ]]; then
     exit 1
 fi
 
+minimal=false
+if [[ -f "$HOME/.minimal_environment" ]]; then
+    minimal=true
+fi
+
 theme_dir="$HOME/environment/dotfiles/themes/$theme"
 if [[ ! -d "$theme_dir" ]]; then
     echo "The theme does not exist!" >&2
@@ -124,7 +129,9 @@ if [[ -z $bg ]] ||
 fi
 
 # Change gtk
-gtk_manager -t "$theme_dir/gtk.json"
+if ! $minimal; then
+    gtk_manager -t "$theme_dir/gtk.json"
+fi
 
 # Create directories
 mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
@@ -147,6 +154,15 @@ sed -i "s/BG_COLOR/$bg/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 sed -i "s/FG_COLOR/$fg/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 
+# Change fonts
+if ! $minimal; then
+    sed -i "s/FONT/Lilex Nerd Font Bold 10/" "$HOME/.dotfiles_stow/config/.config/i3/config"
+    sed -i "s/FONT/Lilex Nerd Font 8/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
+else
+    sed -i "s/FONT/DejaVuSans 10/" "$HOME/.dotfiles_stow/config/.config/i3/config"
+    sed -i "s/FONT/DejaVuSans 8/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
+fi
+
 # Stow the new files
 (
     cd "$HOME/.dotfiles_stow" || exit 1
@@ -154,9 +170,16 @@ sed -i "s/IM_COLOR/$im/" "$HOME/.dotfiles_stow/config/.config/dunst/dunstrc"
 )
 
 # Make dmenu executables
-echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu"
-echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu_run"
+if ! $minimal; then
+    echo "/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu"
+    echo "/usr/bin/dmenu_run -b -i -fn 'Lilex Nerd Font:bold:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu_run"
+else
+    echo "/usr/bin/dmenu -b -i -fn 'DejaVuSans:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu"
+    echo "/usr/bin/dmenu_run -b -i -fn 'DejaVuSans:size=10' -nb '$bg' -nf '$fg' -sb '$im' -sf '$bg'" >"$HOME/bin/dmenu_run"
+fi
+
 chmod 0755 "$HOME/bin/dmenu" "$HOME/bin/dmenu_run"
+
 
 set_wallpaper -t "$theme"
 
