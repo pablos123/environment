@@ -22,7 +22,7 @@ If you want a minimal environment create the file ~/.minimal_environment.
 info_manager
 
 -u:
-Upgrade the system: apt, pip and independent .deb packages
+Upgrade the system: apt, pip, flatpak and independent .deb packages
 
 -n:
 Build neovim nightly
