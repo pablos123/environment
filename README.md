@@ -35,7 +35,7 @@ Probably I am using this on the latest version of _Linux Mint_.
 - Toggle notifications: `quiet_mode`
 - Set a video as wallpaper: `videowall`
 - Set a random wallpaper: `set_wallpaper`
-- View kernel versions releases: `linux_kernels_versions`
+- View kernel versions releases: `kernel_versions`
 
 ## Bash functions
 
