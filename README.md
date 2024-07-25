@@ -12,18 +12,10 @@ Probably I am using this on the latest version of _Linux Mint_.
 
 ## Managers
 
-- Upgrade system: `sys_manager -u`
-- Compile neovim: `sys_manager -n`
-- Reload current theme: `theme_manager`
-- Set theme: `theme_manager -t <theme>`
-- List available themes: `theme_manager -l`
-- Install gtk themes: `gtk_manager -i`
-- List gtk themes: `gtk_manager -l`
-- Install fonts: `font_manager -i`
-- List installed fonts: `font_manager -l`
-- System information: `info_manager`
-
-All managers have `-e` (explain) and `-h` (help) flags.
+- System manager: `sys_manager -h`
+- Theme manager: `theme_manager -h`
+- GTK manager: `gtk_manager -h`
+- Fonts manager: `font_manager -h`
 
 ## Executables
 
@@ -43,6 +35,7 @@ All managers have `-e` (explain) and `-h` (help) flags.
 - Toggle notifications: `quiet_mode`
 - Set a video as wallpaper: `videowall`
 - Set a random wallpaper: `set_wallpaper`
+- View kernel versions releases: `linux_kernels_versions`
 
 ## Bash functions
 
