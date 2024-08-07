@@ -2,64 +2,12 @@
 #
 #
 
-help='
-Options:
-
-[-f] if you want a full install
-[-m] if you want a minimal install
-[-e] explain
-[-h] help
-'
-
-explain='
-General:
-Initialize the environment for the first time.
-
--m:
-Create the file ~/.minimal_environment then execute.
-
--f:
-Does not create a file.
-
--e
-This
-
--h
-Help
-'
-
-minimal=false
-full=false
-while getopts "mefh" opt; do
-    case $opt in
-    m) minimal=true ;;
-    f) full=true ;;
-    e) echo "${explain}" && exit 0 ;;
-    h) echo "${help}" && exit 0 ;;
-    *) echo "${help}" && exit 1 ;;
-    esac
-done
-
-if ! $minimal && ! $full; then
-	echo "You need to specified full or minimal init."
-	exit 1
-fi
-
-if $minimal; then
-    touch "$HOME/.minimal_environment"
-fi
-
 export PATH="$HOME/environment/bin:$HOME/environment/managers:$PATH:$HOME/.local/bin"
 sys_manager -n
 sys_manager -u
 
 rm -rf "$HOME/.config/i3" "$HOME/.bashrc" "$HOME/.profile"
 theme_manager -w
-if $minimal; then
-    theme_manager -t quiet
-else
-    font_manager -i
-    gtk_manager -i
-    theme_manager -t gruvbox
-fi
+font_manager -i
+theme_manager
 

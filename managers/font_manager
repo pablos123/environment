@@ -46,11 +46,6 @@ if ! $getopts_executed; then
     exit 1
 fi
 
-minimal=false
-if [[ -f "$HOME/.minimal_environment" ]]; then
-    minimal=true
-fi
-
 install_path="$HOME/.local/share/fonts"
 
 install_nerd_fonts() {
@@ -68,7 +63,6 @@ install_nerd_fonts() {
         JetBrainsMono
         Lilex
         DejaVuSansMono
-        FiraMono
     )
 
     for font in "${fonts[@]}"; do
@@ -76,23 +70,8 @@ install_nerd_fonts() {
     done
 }
 
-install_normal_fonts() {
-    mkdir -p "$install_path"
-
-    rm -rf "$install_path/JetBrainsMono"
-    mkdir -p "$install_path/JetBrainsMono"
-    wget -O "$install_path/JetBrainsMono.zip" 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-    unzip -d "$install_path/JetBrainsMono" "$install_path/JetBrainsMono.zip"
-    rm -f "$install_path/JetBrainsMono.zip"
-}
-
 if $install; then
-    if ! $minimal; then
-        install_nerd_fonts
-    else
-        install_normal_fonts
-    fi
-
+    install_nerd_fonts
     fc-cache -rf
     exit 0
 fi

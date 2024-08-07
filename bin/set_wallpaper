@@ -1,35 +1,8 @@
 #!/usr/bin/env bash
 
-unset -v name
-unset -v change
-
-type=
-if [[ -f "$HOME/.current_theme" ]]; then
-    type="$(cat "$HOME/.current_theme")"
-fi
-while getopts t:n:c:h o; do
-    case "${o}" in
-    t) type="${OPTARG}" ;;
-    n) name="${OPTARG}" ;;
-    c) change="${OPTARG}" ;;
-    h) echo "Usage: set_wallpaper -t '<type(directory inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
-    *) echo "Usage: set_wallpaper -t '<type(directory inside \$HOME/.wallpapers)>' -n '<name of a particular wallpaper>' -c '<change over time>'" && exit 1 ;;
-    esac
-done
-
-if [[ -z "$type" ]]; then
-    echo "No type specified!" >&2
-    exit 1
-fi
-
-wallpapers_directory="$HOME/.wallpapers/$type/"
+wallpapers_directory="$HOME/.wallpapers/$type"
 
 cd "$wallpapers_directory" || exit 1
-
-if [[ -n "$name" ]]; then
-    hsetroot -cover "$wallpapers_directory/$name" || exit 1
-    exit 0
-fi
 
 wallpapers_array=(*)
 
@@ -39,19 +12,4 @@ random_index=$((RANDOM % items_count))
 
 wallpaper="${wallpapers_array[$random_index]}"
 
-if [[ -z "$change" ]]; then
-    hsetroot -cover "$wallpaper" >/dev/null 2>&1
-    exit 0
-fi
-
-while true; do
-
-    hsetroot -cover "$wallpaper" >/dev/null 2>&1
-
-    random_index=$((RANDOM % items_count))
-
-    wallpaper="${wallpapers_array[$random_index]}"
-
-    sleep 300
-
-done
+hsetroot -cover "$wallpaper" >/dev/null 2>&1

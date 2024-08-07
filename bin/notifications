@@ -7,7 +7,6 @@
 # .profile will still be loaded with errors.
 #
 # My custom notifications.
-if [[ -f "$HOME/.minimal_environment" ]]; then exit 0; fi
 
 if which elcairo 2>/dev/null; then
     send_notification() {

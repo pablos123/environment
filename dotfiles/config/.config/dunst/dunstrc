@@ -13,23 +13,23 @@
     frame_width = 3
     separator_color= frame
     gap_size = 4
-    font = FONT
+    font = Lilex Nerd Font 8
     show_age_threshold = 3600
     enable_recursive_icon_lookup = true
     icon_theme = Papirus-Dark
     max_icon_size = 64
     corner_radius = 10
-    frame_color = "FG_COLOR"
+    frame_color = "#DDDDDD"
 
 [urgency_low]
-    background = "BG_COLOR"
-    foreground = "FG_COLOR"
+    background = "#000000"
+    foreground = "#DDDDDD"
 
 [urgency_normal]
-    background = "BG_COLOR"
-    foreground = "FG_COLOR"
+    background = "#000000"
+    foreground = "#DDDDDD"
 
 [urgency_critical]
-    background = "BG_COLOR"
-    foreground = "FG_COLOR"
-    frame_color = "IM_COLOR"
+    background = "#000000"
+    foreground = "#DDDDDD"
+    frame_color = "#FFFFFF"

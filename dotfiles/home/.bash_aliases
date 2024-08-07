@@ -3,12 +3,7 @@
 # and not in scripts nor dmenu.
 #
 # Common
-if [[ -f "$HOME/.minimal_environment" ]]; then
-    alias ls="ls --group-directories-first --color=always -F"
-else
-    alias ls="eza --icons --extended --group-directories-first"
-fi
-
+alias ls="eza --icons --extended --group-directories-first"
 alias l="ls"
 alias s="ls"
 alias sl="ls"

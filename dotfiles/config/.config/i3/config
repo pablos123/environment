@@ -10,7 +10,7 @@ set $mod Mod1
 # set $mod Mod4
 
 # Font
-font pango:FONT
+font pango:Lilex Nerd Font Bold 10
 
 # WORKSPACES
 #-------------------------------------------------------------------------------
@@ -199,33 +199,10 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-set $bg BG_COLOR
-set $fg FG_COLOR
-set $im IM_COLOR
-
-# target                title bg  text indicator border
-client.focused          $fg   $bg $im  $fg       $im
-client.focused_inactive $bg   $bg $fg  $fg       $bg
-client.unfocused        $bg   $bg $fg  $fg       $bg
-client.urgent           $bg   $bg $fg  $fg       $bg
-client.placeholder      $bg   $bg $fg  $fg       $bg
-client.background       $bg
-
 bar {
     position bottom
     mode dock
     status_command i3status
-    colors {
-        background         $bg
-        statusline         $fg
-        focused_statusline $fg
-        focused_separator  $bg
-        focused_workspace  $bg $bg $im
-        inactive_workspace $bg $bg $fg
-        active_workspace   $bg $bg $fg
-        urgent_workspace   $bg $bg $fg
-        binding_mode       $bg $bg $fg
-    }
 }
 
 gaps inner 10px

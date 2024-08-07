@@ -66,26 +66,18 @@ apt_common_packages=(
   golang
   luarocks
   cpanminus
-)
-
-apt_minimal_packages=(
-  python3-full
-  firefox-esr
-  ntfs-3g
-  ncal
-  upower
-  terminator
-  network-manager
-  nm-tray
-  libasound2
-  libasound2-plugins
-  apulse
-  pulseaudio
+  lsb-release
+  nemo
   i3
-)
-apt_full_packages=(
+  pulseaudio
+  apulse
+  terminator
+  upower
+  network-manager
+  ncal
   gtk2-engines-murrine
   firefox
+  cinnamon
 )
 
 cargo_packages=(

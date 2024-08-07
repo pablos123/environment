@@ -6,7 +6,6 @@ set -e
 help='
 Options:
 
-[-i] print system info
 [-u] upgrade system
 [-n] compile neovim
 [-e] explain
@@ -16,13 +15,9 @@ Options:
 explain='
 General:
 Common uses that I do with my system.
-If you want a minimal environment create the file ~/.minimal_environment.
-
--i:
-info_manager
 
 -u:
-Upgrade the system: apt, pip, flatpak and independent .deb packages
+Upgrade the system: apt, pip, flatpak packages
 
 -n:
 Build neovim nightly
@@ -36,19 +31,12 @@ Help
 source "${HOME}/environment/managers/lib/sys_packages.sh"
 source "${HOME}/environment/managers/lib/sys_installers.sh"
 
-info=false
 upgrade=false
 neovim=false
 
-minimal=false
-if [[ -f "$HOME/.minimal_environment" ]]; then
-    minimal=true
-fi
-
 getopts_executed=false
-while getopts "iuenh" opt; do
+while getopts "uenh" opt; do
     case $opt in
-    i) info=true ;;
     u) upgrade=true ;;
     n) neovim=true ;;
     e) echo "${explain}" && exit 0 ;;
@@ -80,15 +68,8 @@ install_apt() {
 }
 
 install_pip() {
-    if ! $minimal; then
-        curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-        python3 get-pip.py --user >/dev/null
-        pip install -q "${pip_packages[@]}"
-        rm -f ./get-pip.py
-    else
-        sudo apt-get -qq install pipx
-        pipx install "${pip_packages[@]}"
-    fi
+    sudo apt-get -qq install pipx
+    pipx install -U "${pip_packages[@]}"
 }
 
 install_cargo() {
@@ -107,13 +88,6 @@ cleanup() {
     rm -f "${HOME}/dmenu_cache"
 }
 
-install_independent() {
-    for inst_function in "${sys_installers[@]}"; do
-        echo "   Executing ${inst_function}..."
-        "${inst_function}"
-    done
-}
-
 execute_task() {
     echo "${1}"
     "${2}"
@@ -129,26 +103,17 @@ if $upgrade; then
 
     execute_task "Updating pip packages..." install_pip
 
-    if ! $minimal; then
-        sudo apt-get -qq install -y "${apt_full_packages[@]}"
-        execute_task "Updating flatpak packages..." update_flatpak
-        execute_task "Updating independent packages..." install_independent
-        execute_task "Updating cargo packages..." install_cargo
-    else
-        sudo apt-get -qq install -y "${apt_minimal_packages[@]}"
-        dunst_installer
-        fzf_installer
-    fi
+    execute_task "Updating flatpak packages..." update_flatpak
+    execute_task "Updating cargo packages..." install_cargo
+
+    for independent_installer in "${independent_installers[@]}"; do
+        execute_task "$independent_installer" "$independent_installer"
+    done
 
     execute_task "Cleaning up..." cleanup
 
     echo "Done! Remember to reboot your pc!"
 
-    exit 0
-fi
-
-if $info; then
-    info_manager
     exit 0
 fi
 

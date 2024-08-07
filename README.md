@@ -2,19 +2,22 @@
 
 I love a fast, simple, clean, robust, versatile and automatized environment.
 
-I am using this set of tools since a lot of time and I don't think I will change them any time soon. **It just works.**
-
-I code a lot and a lot is scripting. Some of that code survives and I use it in my environment, other goes to my [gits](https://gist.github.com/pablos123).
-
 Probably I am using this on the latest version of _Linux Mint_.
 
-\(Although, except for apt operations, this is probably distro agnostic.\)
+I am using this set of tools since a lot of time and I don't think I will change them any time soon.
+
+I resigned a long time ago the battle for visual consistency on Linux, it not worth it, at all.
+
+So I'm using default themes or just some sober theme that fits well with that particular application.
+
+I came to the conclussion that defaults in general are better than anything else.
+
+I code a lot and a lot is scripting. Some of that code survives and I use it in my environment, other goes to my [gits](https://gist.github.com/pablos123).
 
 ## Managers
 
 - System manager: `sys_manager -h`
 - Theme manager: `theme_manager -h`
-- GTK manager: `gtk_manager -h`
 - Fonts manager: `font_manager -h`
 
 ## Executables
@@ -46,3 +49,10 @@ Probably I am using this on the latest version of _Linux Mint_.
 - Load completions: `load_completions`
 - Reset a repository: `reset_repo`
 - Normalize wallpapers: `normalize_wallpapers`
+
+# New machine
+
+```bash
+git clone <this> "$HOME/environment"
+"$HOME/environment/managers/init_manager"
+```

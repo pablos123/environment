@@ -1,14 +1,12 @@
 chrome_installer() {
-    if [[ ! -f "$HOME/.minimal_environment" ]]; then
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-        sudo apt-get -qq update
-        sudo apt-get -qq install -y google-chrome-stable
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
+    sudo apt-get -qq update
+    sudo apt-get -qq install -y google-chrome-stable
 
-        dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
-        # Set chrome as the default browser
-        xdg-settings set default-web-browser 'google-chrome.desktop'
-    fi
+    dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
+    # Set chrome as the default browser
+    xdg-settings set default-web-browser 'google-chrome.desktop'
 }
 
 vscode_installer() {
@@ -57,42 +55,11 @@ fzf_installer() {
     (yes | "$HOME/.fzf/install") > /dev/null
 }
 
-# https://i3wm.org/
-i3_installer() {
-    (/usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2024.03.04_all.deb keyring.deb SHA256:f9bb4340b5ce0ded29b7e014ee9ce788006e9bbfe31e96c09b2118ab91fca734) > /dev/null
-    sudo apt-get -qq install ./keyring.deb
-    (echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list) > /dev/null
-    sudo apt-get -qq update
-    sudo apt-get -qq install -y i3
-    rm -f ./keyring.deb
-}
 
-repos_installer() {
-    local repo
-    declare -A repos=(
-        ["git@github.com:pablos123/notes.git"]="$HOME/notes"
-        ["git@github.com:pablos123/dump.git"]="$HOME/projects/dump"
-        ["git@github.com:pablos123/pablos123.github.io.git"]="$HOME/projects/pablos123.github.io"
-    )
-
-    for repo in "${!repos[@]}"; do
-        if [[ -d "${repos[$repo]}" ]]; then
-            (
-                cd "${repos[$repo]}" || exit 1
-                git pull -q
-            )
-            continue
-        fi
-        git clone -q "$repo" "${repos[$repo]}"
-    done
-}
-
-sys_installers=(
+independent_installers=(
+    dunst_installer
+    fzf_installer
     chrome_installer
     vscode_installer
     wezterm_installer
-    dunst_installer
-    fzf_installer
-    i3_installer
-    repos_installer
 )

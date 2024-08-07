@@ -18,6 +18,12 @@ if [[ $monitors_count -eq 2 ]]; then
         xrandr --output "eDP-1" --off
         exit 0
     fi
+    # Desk with TV
+    # I will use the TV with Cinnamon for gaming and kodi
+    if [[ "${monitors[*]}" =~ "HDMI-A-0" ]] && [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
+        xrandr --output "HDMI-A-0" --off
+        exit 0
+    fi
 fi
 
 # Not recognized... skipping.
