@@ -6,7 +6,7 @@ Probably I am using this on the latest version of _Linux Mint_.
 
 I am using this set of tools since a lot of time and I don't think I will change them any time soon.
 
-I resigned a long time ago the battle for visual consistency on Linux, it not worth it, at all.
+I resigned a long time ago the battle for visual consistency on Linux, it is not worth it, at all.
 
 So I'm using default themes or just some sober theme that fits well with that particular application.
 
