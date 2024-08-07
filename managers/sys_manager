@@ -64,7 +64,7 @@ install_apt() {
     sudo apt-get -qq update
     sudo apt-get -qq dist-upgrade -y
     sudo apt-get -qq --with-new-pkgs upgrade -y
-    sudo apt-get -qq install -y "${apt_common_packages[@]}"
+    sudo apt-get -qq install -y "${apt_packages[@]}"
 }
 
 install_pip() {

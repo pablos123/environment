@@ -69,8 +69,6 @@ exec_always --no-startup-id theme_manager
 
 exec --no-startup-id sleep 1 && start_daemons
 
-exec --no-startup-id notifications
-
 # Authentication agent
 # Applets
 # Terminal
@@ -81,8 +79,6 @@ exec --no-startup-id sleep 2 && open_browser
 exec --no-startup-id sleep 3 && web_apps
 # Clean apps' attention to not have urgent workspace
 exec --no-startup-id sleep 7 && clean_urgent
-# Daily
-exec --no-startup-id sleep 20 && daily_tasks
 
 # MAPPINGS
 #-------------------------------------------------------------------------------

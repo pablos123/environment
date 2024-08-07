@@ -10,7 +10,7 @@
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eza-community/eza
 
-apt_common_packages=(
+apt_packages=(
   ripgrep
   vim
   duf
@@ -78,6 +78,7 @@ apt_common_packages=(
   gtk2-engines-murrine
   firefox
   cinnamon
+  mintupgrade
 )
 
 cargo_packages=(

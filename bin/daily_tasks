@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Mondays: Populate the elcairo database
-if which elcairo 2>/dev/null && [[ "$(date +'%A')" == "Monday" ]]; then
-    echo "elcairo database --silent populate" | at "now + 4 minutes"
-fi
