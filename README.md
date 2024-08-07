@@ -12,7 +12,7 @@ So I'm using default themes or just some sober theme that fits well with that pa
 
 I came to the conclussion that defaults in general are better than anything else.
 
-I code a lot and a lot is scripting. Some of that code survives and I use it in my environment, other goes to my [gits](https://gist.github.com/pablos123).
+I code a lot, some of that code survives and I use it in my environment, other goes to my [gits](https://gist.github.com/pablos123).
 
 ## Managers
 
