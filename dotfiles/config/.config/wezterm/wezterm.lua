@@ -6,7 +6,7 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
-config.color_scheme = "FirefoxDev"
+config.color_scheme = "Hurtado (Gogh)"
 config.colors = { cursor_fg = "black", cursor_bg = "white", cursor_border = "white" }
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0", }
