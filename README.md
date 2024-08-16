@@ -4,15 +4,15 @@ I love a fast, simple, clean, robust, versatile and automatized environment.
 
 Probably I am using this on the latest version of _Linux Mint_.
 
-I am using this set of tools since a lot of time and I don't think I will change them any time soon.
+I'm using this set of tools since a lot of time and I don't think I will change them any time soon.
 
-I resigned a long time ago the battle for visual consistency on Linux, it is not worth it, at all.
+I resigned from the battle for visual consistency on Linux a long time ago, it is not worth it, at all.
 
-So I'm using default themes or just some sober theme that fits well with that particular application.
+I'm using default themes or just some sober theme that fits well with that particular application.
 
 I came to the conclussion that defaults in general are better than anything else.
 
-I code a lot, some of that code survives and I use it in my environment, other goes to my [gits](https://gist.github.com/pablos123).
+I code a lot, some of that code survives and I use it in my environment, while the rest goes to my [gits](https://gist.github.com/pablos123).
 
 ## Managers
 
