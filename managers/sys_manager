@@ -70,6 +70,7 @@ install_apt() {
 install_pip() {
     sudo apt-get -qq install pipx
     pipx install "${pip_packages[@]}"
+    pipx upgrade-all
 }
 
 install_cargo() {
