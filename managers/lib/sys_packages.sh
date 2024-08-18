@@ -79,6 +79,7 @@ apt_packages=(
   firefox
   cinnamon
   mintupgrade
+  anki
 )
 
 cargo_packages=(
