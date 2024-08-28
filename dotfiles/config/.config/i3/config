@@ -70,7 +70,6 @@ exec_always --no-startup-id theme_manager
 exec --no-startup-id sleep 1 && start_daemons
 
 # Authentication agent
-# Applets
 # Terminal
 exec --no-startup-id open_terminal
 # Browser

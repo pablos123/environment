@@ -79,7 +79,7 @@ apt_packages=(
   firefox
   cinnamon
   mintupgrade
-  anki
+  solaar
 )
 
 cargo_packages=(

@@ -3,4 +3,5 @@
 /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & disown
 nm-applet & disown
 blueman-applet & disown
+solaar -w hide & disown
 exit 0
