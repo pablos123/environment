@@ -10,7 +10,7 @@ xset dpms 0 0 3600
 # Give cmd altgr behaviour and opt ctrl.
 # Che posta literalmente tres líneas de código me ahorraron ~50 dólares.
 # Ni nos vi
-if upower --dump | grep -q 'MX MCHNCL M'; then
+if lsusb | grep -q 'Inc. Logi Bolt Receiver'; then
     setxkbmap eu -option altwin:swap_lalt_lwin
     setxkbmap eu -option ctrl:ralt_rctrl
     setxkbmap eu -option lv3:rwin_switch
