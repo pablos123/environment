@@ -53,3 +53,5 @@ map("i", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 map("n", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 map("v", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 map("s", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
+
+map("t", "<Esc>", "<C-\\><C-n>", add_desc("Escape to go to normal mode in terminal mode"))
