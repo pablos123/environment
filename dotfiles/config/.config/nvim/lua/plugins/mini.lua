@@ -18,7 +18,6 @@ return {
             }
             require "mini.trailspace".setup {}
             require "mini.statusline".setup { use_icons= false }
-            require "mini.files".setup {}
             require "mini.notify".setup {}
             require "mini.completion".setup {
                 delay = { completion = 50, info = 50, signature = 25 },
@@ -58,7 +57,6 @@ return {
                     MiniTrailspace.trim()
                 end
             })
-            vim.keymap.set("n", "gt", "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<cr>", opts)
             vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
             vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
             local keys = {
