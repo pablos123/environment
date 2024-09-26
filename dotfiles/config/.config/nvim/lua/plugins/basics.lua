@@ -1,27 +1,6 @@
 return {
     "nvim-lua/plenary.nvim",
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        version = false,
-        lazy = false,
-        priority = 1000,
-    },
-    {
-        "f4z3r/gruvbox-material.nvim",
-        name = "gruvbox-material",
-        version = false,
-        lazy = false,
-        priority = 1000,
-    },
-    {
-        "neanias/everforest-nvim",
-        name = "everforest",
-        version = false,
-        lazy = false,
-        priority = 1000
-    },
-    {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
         opts = {
