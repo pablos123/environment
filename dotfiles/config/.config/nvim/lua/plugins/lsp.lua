@@ -16,6 +16,7 @@ return {
         config = function()
             require("lspconfig").bashls.setup {}
             require("lspconfig").ansiblels.setup {}
+            require("lspconfig").ts_ls.setup {}
         end
     },
 }
