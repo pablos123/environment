@@ -53,4 +53,10 @@ return {
             { "gt", "<cmd>NvimTreeToggle<cr>", desc = "Open NvimTree" },
         },
     },
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require("gitsigns").setup {}
+        end,
+    }
 }

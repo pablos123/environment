@@ -16,6 +16,7 @@ return {
         config = function()
             require("lspconfig").ansiblels.setup {}
             require("lspconfig").ts_ls.setup {}
+            require("lspconfig").ruff_lsp.setup {}
         end
     },
 }

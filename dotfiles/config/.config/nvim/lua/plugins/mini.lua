@@ -17,8 +17,7 @@ return {
                 },
             }
             require "mini.trailspace".setup {}
-            require "mini.statusline".setup { use_icons= false }
-            require "mini.notify".setup {}
+            require "mini.statusline".setup {}
             require "mini.completion".setup {
                 delay = { completion = 50, info = 50, signature = 25 },
             }
