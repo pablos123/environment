@@ -6,17 +6,25 @@ return {
         end
     },
     {
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require("mason-lspconfig").setup {}
-        end
-    },
-    {
         "neovim/nvim-lspconfig",
         config = function()
-            require("lspconfig").ansiblels.setup {}
-            require("lspconfig").ts_ls.setup {}
-            require("lspconfig").ruff_lsp.setup {}
+            local language_servers = {
+                "pyright",
+                "ruff_lsp",
+                "ansiblels",
+                "ts_ls",
+                "html",
+                "lua_ls",
+                "perlnavigator",
+            }
+
+            local function setup_server(ls_name)
+                require("lspconfig")[ls_name].setup {}
+            end
+
+            for _, ls_name in ipairs(language_servers) do
+                setup_server(ls_name)
+            end
         end
     },
 }

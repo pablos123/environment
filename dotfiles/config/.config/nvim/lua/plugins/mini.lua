@@ -5,7 +5,6 @@ return {
         config = function()
             require "mini.icons".setup {}
             require "mini.surround".setup {}
-            require "mini.operators".setup {}
             require "mini.ai".setup {}
             require "mini.cursorword".setup {}
             local indentscope = require "mini.indentscope"
