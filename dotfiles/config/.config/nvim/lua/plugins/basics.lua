@@ -58,5 +58,11 @@ return {
         config = function()
             require("gitsigns").setup {}
         end,
+    },
+    {
+        "nvim-pack/nvim-spectre",
+        config = function()
+            require("spectre").setup {}
+        end,
     }
 }
