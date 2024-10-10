@@ -11,7 +11,6 @@ return {
             local language_servers = {
                 "pyright",
                 "ruff_lsp",
-                "ansiblels",
                 "ts_ls",
                 "html",
                 "lua_ls",
