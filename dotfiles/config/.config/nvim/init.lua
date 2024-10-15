@@ -6,6 +6,7 @@ end
 require "core/base"
 require "core/mappings"
 require "core/autocmd"
+require "core/shellcheck-nvim"
 
 -- Faster startup
 vim.loader.enable()
