@@ -1,17 +1,16 @@
 -- Set .yml and .yaml to yaml.ansible
-local autocmd_ansible = vim.api.nvim_create_autocmd
-local au_ansible = vim.api.nvim_create_augroup
+local create_autocmd = vim.api.nvim_create_autocmd
+local ansible_autogroup = vim.api.nvim_create_augroup("ansible_autogroup", {})
 
-local file_types_au = au_ansible("file_types", {})
-autocmd_ansible("BufEnter", {
+create_autocmd("BufEnter", {
     pattern = { "*.yml", "*.yaml" },
     command = "setl ft=yaml.ansible",
-    group = file_types_au
+    group = ansible_autogroup
 })
-autocmd_ansible("FileType", {
+create_autocmd("FileType", {
     pattern = "yaml.ansible",
     command = "setl tabstop=2 shiftwidth=2 softtabstop=2",
-    group = file_types_au
+    group = ansible_autogroup
 })
 
 return {
