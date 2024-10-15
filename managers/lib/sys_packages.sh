@@ -9,6 +9,9 @@
 # https://github.com/sharkdp/bat
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eza-community/eza
+# https://github.com/sharkdp/fd
+# https://github.com/junegunn/fzf
+# https://github.com/zellij-org/zellij
 
 apt_packages=(
   ripgrep
@@ -84,6 +87,8 @@ apt_packages=(
 
 cargo_packages=(
   eza
+  fd-find
+  zellij
 )
 
 pip_packages=(
