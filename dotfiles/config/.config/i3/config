@@ -4,7 +4,8 @@
 # DOCS
 # https://i3wm.org/docs/userguide.html
 
-# mod, Super, Alt Key
+# mod, Super
+# Alt Key
 set $mod Mod1
 # Windows Key
 # set $mod Mod4

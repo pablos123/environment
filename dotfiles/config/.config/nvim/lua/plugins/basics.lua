@@ -6,14 +6,14 @@ return {
       lazy = false,
       priority = 1000,
       config = function()
-        require("github-theme").setup {}
+        require "github-theme".setup {}
         vim.cmd("colorscheme github_dark_default")
       end,
     },
     {
         "nvim-tree/nvim-tree.lua",
         config = function()
-            require("nvim-tree").setup {}
+            require "nvim-tree".setup {}
         end,
         keys = {
             { "gt", "<cmd>NvimTreeToggle<cr>", desc = "Open NvimTree" },
@@ -22,13 +22,15 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         config = function()
-            require("gitsigns").setup {}
+            require "gitsigns".setup {}
         end,
     },
     {
-        "ndelucca/chunks.nvim",
-        config = function()
-            require("chunks").setup {}
-        end,
-    },
+        "pablos123/shellcheck.nvim",
+        config = function ()
+            require "shellcheck-nvim".setup {
+                extras = '--enable=all -x',
+            }
+        end
+    }
 }
