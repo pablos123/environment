@@ -22,23 +22,34 @@ config.scrollback_lines = 10000
 -- Just run bash:
 config.default_prog = { "/bin/bash" }
 
-local view_img = require "view_img"
 
+config.disable_default_mouse_bindings = true
+config.disable_default_key_bindings = true
 config.keys = {
-    {
-        key = "h",
-        mods = "SUPER",
-        action = wezterm.action.ActivateTabRelative(-1)
-    },
-    {
-        key = "l",
-        mods = "SUPER",
-        action = wezterm.action.ActivateTabRelative(1)
-    },
     {
       key = 'p',
       mods = 'SUPER',
       action = wezterm.action.ActivateCommandPalette,
+    },
+    -- {
+    --   key = 'c',
+    --   mods = 'CTRL|SHIFT',
+    --   action = wezterm.action.CopyTo "Clipboard",
+    -- },
+    -- {
+    --   key = 'v',
+    --   mods = 'CTRL|SHIFT',
+    --   action = wezterm.action.PasteFrom "Clipboard",
+    -- },
+    {
+      key = '=',
+      mods = 'SUPER',
+      action = wezterm.action.IncreaseFontSize,
+    },
+    {
+      key = '-',
+      mods = 'SUPER',
+      action = wezterm.action.DecreaseFontSize,
     },
     {
         key = "o",
@@ -50,24 +61,6 @@ config.keys = {
                 local url = window:get_selection_text_for_pane(pane)
                 os.execute("chrome " .. url)
             end)
-        },
-    },
-    {
-        key = "i",
-        mods = "SUPER",
-        action = wezterm.action.QuickSelectArgs {
-            label = "view image",
-            patterns = {
-                "https?://\\S+\\.png",
-                "https?://\\S+\\.jpg",
-                "https?://\\S+\\.jpeg",
-                "https?://\\S+\\.webp",
-                ".*\\.png",
-                ".*\\.jpg",
-                ".*\\.jpeg",
-                ".*\\.webp",
-            },
-            action = wezterm.action_callback(view_img.view_img)
         },
     },
 }
