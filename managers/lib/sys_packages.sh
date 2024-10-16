@@ -10,7 +10,6 @@
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eza-community/eza
 # https://github.com/sharkdp/fd
-# https://github.com/junegunn/fzf
 # https://github.com/zellij-org/zellij
 
 apt_packages=(
@@ -83,11 +82,11 @@ apt_packages=(
   cinnamon
   mintupgrade
   solaar
+  fd-find
 )
 
 cargo_packages=(
   eza
-  fd-find
   zellij
 )
 

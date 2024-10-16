@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 chrome_installer() {
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
@@ -7,12 +9,6 @@ chrome_installer() {
     dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
     # Set chrome as the default browser
     xdg-settings set default-web-browser 'google-chrome.desktop'
-}
-
-vscode_installer() {
-    wget -q -O './vscode.deb' 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
-    sudo apt-get -qq install -y './vscode.deb'
-    rm -f './vscode.deb'
 }
 
 wezterm_installer() {
@@ -60,6 +56,5 @@ independent_installers=(
     dunst_installer
     fzf_installer
     chrome_installer
-    vscode_installer
     wezterm_installer
 )

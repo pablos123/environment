@@ -12,7 +12,7 @@ config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0", }
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
-config.scrollback_lines = 5000
+config.scrollback_lines = 10000
 
 -- https://wezfurlong.org/wezterm/config/launch.html#launching-programs
 -- wezterm default is a login shell, the shell used is the one defined
@@ -34,6 +34,11 @@ config.keys = {
         key = "l",
         mods = "SUPER",
         action = wezterm.action.ActivateTabRelative(1)
+    },
+    {
+      key = 'p',
+      mods = 'SUPER',
+      action = wezterm.action.ActivateCommandPalette,
     },
     {
         key = "o",
