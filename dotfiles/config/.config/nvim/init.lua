@@ -1,8 +1,3 @@
-if vim.g.vscode then -- VSCode extension
-    require "core/vscode"
-    return
-end
-
 require "core/base"
 require "core/mappings"
 require "core/autocmd"
