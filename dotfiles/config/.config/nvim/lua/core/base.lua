@@ -38,7 +38,6 @@ opts.undodir = os.getenv("HOME") .. "/.nvim/undodir"
 opts.undofile = true
 opts.updatetime = 400
 opts.mouse = "a"
-opts.clipboard = "unnamedplus"
 opts.completeopt = { "menuone", "noselect", "preview" }
 opts.wildmenu = true
 opts.hidden = true

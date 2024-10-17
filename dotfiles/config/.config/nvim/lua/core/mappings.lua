@@ -55,3 +55,13 @@ map("v", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 map("s", "<c-s>", "<cmd>w<cr><esc>", add_desc("Save file"))
 
 map("t", "<Esc>", "<C-\\><C-n>", add_desc("Escape to go to normal mode in terminal mode"))
+
+-- System clipboard
+map("v", "<leader>y", '"+y', add_desc(""))
+map("n", "<leader>Y", '"+y$', add_desc(""))
+map("n", "<leader>yy",'"+yy', add_desc(""))
+
+map("v", "<leader>p", '"+p', add_desc(""))
+map("v", "<leader>P", '"+P', add_desc(""))
+map("n", "<leader>p", '"+p', add_desc(""))
+map("n", "<leader>P",'"+P', add_desc(""))

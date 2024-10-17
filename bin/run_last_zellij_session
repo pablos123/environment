@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if ! which zellij; then /bin/bash; fi
+
+if ! zellij ls; then zellij; fi
+
+last_session=$(zellij ls --no-formatting --reverse | head -1 | sed 's/\(.*\) \[.*/\1/')
+
+if [[ -n "$last_session" ]]; then zellij attach "$last_session"; fi
