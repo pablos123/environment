@@ -1,5 +1,5 @@
 keybinds clear-defaults=true {
-    normal {
+    shared {
         bind "Ctrl x" { Copy; }
     }
     search {
@@ -17,12 +17,10 @@ keybinds clear-defaults=true {
         bind "w" { SearchToggleOption "Wrap"; }
         bind "o" { SearchToggleOption "WholeWord"; }
         bind "/" { SwitchToMode "EnterSearch"; SearchInput 0; }
-        bind "Ctrl x" { Copy; }
     }
     entersearch {
         bind "Ctrl c" "Esc" { SwitchToMode "Search"; }
         bind "Enter" { SwitchToMode "Search"; }
-        bind "Ctrl x" { Copy; }
     }
     tmux {
         bind "[" { SwitchToMode "Search"; }
@@ -81,15 +79,15 @@ keybinds clear-defaults=true {
     }
 }
 
+// The name of the default layout to load on startup
+// default_layout "disable-status-bar"
+default_layout "compact"
+
 //  Send a request for a simplified ui (without arrow fonts) to plugins
 simplified_ui true
 
 // Toggle between having pane frames around the panes
 pane_frames false
-
-// The name of the default layout to load on startup
-// Default: "default"
-default_layout "disable-status-bar"
 
 // Toggle enabling the mouse mode.
 // On certain configurations, or terminals this could
