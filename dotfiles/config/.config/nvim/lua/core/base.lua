@@ -3,7 +3,7 @@ local opts = vim.opt
 -- visuals
 opts.termguicolors = true
 opts.colorcolumn = { 80, 100, 120 }
-opts.signcolumn = "yes"
+opts.signcolumn = 'yes'
 opts.showmatch = true
 opts.number = true
 opts.relativenumber = true
@@ -34,11 +34,11 @@ vim.diagnostic.config {
 -- handy
 opts.backup = false
 opts.swapfile = false
-opts.undodir = os.getenv("HOME") .. "/.nvim/undodir"
+opts.undodir = os.getenv('HOME') .. '/.nvim/undodir'
 opts.undofile = true
 opts.updatetime = 400
-opts.mouse = "a"
-opts.completeopt = { "menuone", "noselect", "preview" }
+opts.mouse = 'a'
+opts.completeopt = { 'menuone', 'noselect', 'preview' }
 opts.wildmenu = true
 opts.hidden = true
 opts.timeoutlen = 850

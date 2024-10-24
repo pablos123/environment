@@ -1,36 +1,36 @@
 return {
     {
-        "echasnovski/mini.nvim",
+        'echasnovski/mini.nvim',
         version = false,
         config = function()
-            require "mini.icons".setup {}
-            require "mini.surround".setup {}
-            require "mini.ai".setup {}
-            require "mini.cursorword".setup {}
-            local indentscope = require "mini.indentscope"
+            require 'mini.icons'.setup {}
+            require 'mini.surround'.setup {}
+            require 'mini.ai'.setup {}
+            require 'mini.cursorword'.setup {}
+            local indentscope = require 'mini.indentscope'
             indentscope.setup {
-                symbol = "│",
+                symbol = '│',
                 draw = {
                     delay = 50,
                     animation = indentscope.gen_animation.none(),
                 },
             }
-            require "mini.trailspace".setup {}
-            require "mini.statusline".setup {}
-            require "mini.completion".setup {
+            require 'mini.trailspace'.setup {}
+            require 'mini.statusline'.setup {}
+            require 'mini.completion'.setup {
                 delay = { completion = 50, info = 50, signature = 25 },
             }
-            local hipatterns = require "mini.hipatterns"
+            local hipatterns = require 'mini.hipatterns'
             hipatterns.setup {
                 highlighters = {
-                    fixme     = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-                    hack      = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-                    todo      = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-                    note      = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+                    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+                    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+                    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+                    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
                     hex_color = hipatterns.gen_highlighter.hex_color(),
                 },
             }
-            require "mini.move".setup {
+            require 'mini.move'.setup {
                 mappings = {
                     left = '<C-h>',
                     right = '<C-l>',
@@ -42,21 +42,21 @@ return {
                     line_up = '<C-k>',
                 },
             }
-            require "mini.comment".setup {
+            require 'mini.comment'.setup {
                 options = {
                     custom_commentstring = function()
-                        return require "ts_context_commentstring".calculate_commentstring() or vim.bo.commentstring
+                        return require 'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
                     end,
                 },
             }
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                desc = "Clean trail space before saving",
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                desc = 'Clean trail space before saving',
                 callback = function()
                     MiniTrailspace.trim()
                 end
             })
-            vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
-            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+            vim.keymap.set('i', '<Tab>', [[pumvisible() ? '\<C-n>' : '\<Tab>']], { expr = true })
+            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? '\<C-p>' : '\<S-Tab>']], { expr = true })
             local keys = {
                 ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
                 ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),

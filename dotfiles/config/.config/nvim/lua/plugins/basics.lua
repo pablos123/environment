@@ -1,35 +1,39 @@
 return {
-    "nvim-lua/plenary.nvim",
+    'nvim-lua/plenary.nvim',
     {
-      "projekt0n/github-nvim-theme",
-      name = "github-theme",
+      'projekt0n/github-nvim-theme',
+      name = 'github-theme',
       lazy = false,
       priority = 1000,
       config = function()
-        require "github-theme".setup {}
-        vim.cmd("colorscheme github_dark_default")
+        require 'github-theme'.setup {}
+        vim.cmd('colorscheme github_dark_default')
       end,
     },
     {
-        "nvim-tree/nvim-tree.lua",
+        'nvim-tree/nvim-tree.lua',
         config = function()
-            require "nvim-tree".setup {}
+            require 'nvim-tree'.setup {}
         end,
         keys = {
-            { "gt", "<cmd>NvimTreeToggle<cr>", desc = "Open NvimTree" },
+            { 'gt', '<cmd>NvimTreeToggle<cr>', desc = 'Open NvimTree' },
         },
     },
     {
-        "lewis6991/gitsigns.nvim",
+        'lewis6991/gitsigns.nvim',
         config = function()
-            require "gitsigns".setup {}
+            require 'gitsigns'.setup {}
         end,
     },
     {
-        "pablos123/shellcheck.nvim",
+        'pablos123/shellcheck.nvim',
         config = function ()
-            require "shellcheck-nvim".setup {
-                extras = '--enable=all -x',
+            require 'shellcheck-nvim'.setup {
+                extras = {
+                    '-x',
+                    '--enable=all',
+                    '--format=json1',
+                }
             }
         end
     }

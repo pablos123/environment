@@ -1,15 +1,15 @@
 return {
     {
-        "williamboman/mason.nvim",
+        'williamboman/mason.nvim',
         config = function()
-            require("mason").setup {}
+            require('mason').setup {}
         end
     },
     {
-        "neovim/nvim-lspconfig",
+        'neovim/nvim-lspconfig',
         config = function()
             -- lua_ls for neovim
-            require"lspconfig".lua_ls.setup {
+            require'lspconfig'.lua_ls.setup {
               on_init = function(client)
                 if client.workspace_folders then
                   local path = client.workspace_folders[1].name
@@ -30,11 +30,11 @@ return {
                     library = {
                       vim.env.VIMRUNTIME
                       -- Depending on the usage, you might want to add additional paths here.
-                      -- "${3rd}/luv/library"
-                      -- "${3rd}/busted/library",
+                      -- '${3rd}/luv/library'
+                      -- '${3rd}/busted/library',
                     }
                     -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                    -- library = vim.api.nvim_get_runtime_file("", true)
+                    -- library = vim.api.nvim_get_runtime_file('', true)
                   }
                 })
               end,
@@ -44,15 +44,15 @@ return {
             }
 
             local language_servers = {
-                "pyright",
-                "ruff_lsp",
-                "ts_ls",
-                "html",
-                "perlnavigator",
+                'pyright',
+                'ruff_lsp',
+                'ts_ls',
+                'html',
+                'perlnavigator',
             }
 
             local function setup_server(ls_name)
-                require"lspconfig"[ls_name].setup {}
+                require'lspconfig'[ls_name].setup {}
             end
 
             for _, ls_name in ipairs(language_servers) do
