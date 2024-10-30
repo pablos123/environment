@@ -55,8 +55,8 @@ return {
                     MiniTrailspace.trim()
                 end
             })
-            vim.keymap.set('i', '<Tab>', [[pumvisible() ? '\<C-n>' : '\<Tab>']], { expr = true })
-            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? '\<C-p>' : '\<S-Tab>']], { expr = true })
+            vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
+            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
             local keys = {
                 ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
                 ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),

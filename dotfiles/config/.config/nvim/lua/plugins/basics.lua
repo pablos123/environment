@@ -29,11 +29,7 @@ return {
         'pablos123/shellcheck.nvim',
         config = function ()
             require 'shellcheck-nvim'.setup {
-                extras = {
-                    '-x',
-                    '--enable=all',
-                    '--format=json1',
-                }
+                extras = { '-x', '--enable=all' }
             }
         end
     }
