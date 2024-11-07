@@ -49,6 +49,7 @@ return {
                 'ts_ls',
                 'html',
                 'perlnavigator',
+                'sourcekit',
             }
 
             local function setup_server(ls_name)
