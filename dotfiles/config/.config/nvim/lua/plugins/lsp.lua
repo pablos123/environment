@@ -45,7 +45,7 @@ return {
 
             local language_servers = {
                 'pyright',
-                'ruff_lsp',
+                'ruff',
                 'ts_ls',
                 'html',
                 'perlnavigator',
