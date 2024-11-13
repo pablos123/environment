@@ -19,8 +19,6 @@ config.disable_default_key_bindings = true
 
 local actions = wezterm.action
 config.keys = {
-    { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
-
     { key = 'c', mods = 'CTRL|SHIFT',  action = actions.CopyTo 'Clipboard', },
     { key = 'v', mods = 'CTRL|SHIFT',  action = actions.PasteFrom 'Clipboard', },
 
@@ -63,7 +61,7 @@ config.keys = {
     { key = '=', mods = 'SUPER', action = actions.IncreaseFontSize, },
     { key = '-', mods = 'SUPER', action = actions.DecreaseFontSize, },
 
-    -- Open urls
+    -- Others
     {
         key = 'o',
         mods = 'SUPER',
@@ -76,6 +74,7 @@ config.keys = {
             end)
         },
     },
+    { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
 }
 
 return config
