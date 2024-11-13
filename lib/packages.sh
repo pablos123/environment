@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #
-#
 # DOCS
 # https://github.com/muesli/duf
 # https://github.com/sharkdp/hyperfine

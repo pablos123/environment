@@ -1,16 +1,12 @@
 return {
-    'nvim-telescope/telescope-file-browser.nvim',
     {
         'nvim-telescope/telescope.nvim',
 
         branch = '0.1.x',
         keys = {
-            { '<C-p>',  '<cmd>lua require("telescope.builtin").find_files()<cr>',      desc = 'Find files' },
-            { '<leader>o', '<cmd>lua require("telescope.builtin").find_files()<cr>',   desc = 'Find files' },
-            { '<leader>fu', '<cmd>lua require("telescope.builtin").grep_string()<cr>', desc = 'Find word under the cursor' },
-            { '<leader>fs', '<cmd>lua require("telescope.builtin").live_grep()<cr>',   desc = 'Find string' },
-            { '<leader>b',  '<cmd>lua require("telescope.builtin").buffers()<cr>',     desc = 'Find buffers' },
-            { '<leader>fk', '<cmd>lua require("telescope.builtin").keymaps()<cr>',     desc = 'Find keymap' },
+            { '<leader>o',  '<cmd>lua require("telescope.builtin").find_files()<cr>', desc = 'Find files' },
+            { '<leader>f', '<cmd>lua require("telescope.builtin").live_grep()<cr>',  desc = 'Find string' },
+            { '<leader>b',  '<cmd>lua require("telescope.builtin").buffers()<cr>',    desc = 'Find buffers' },
         },
         config = function()
             require 'telescope'.setup {
@@ -35,7 +31,6 @@ return {
                     }
                 },
             }
-            require('telescope').load_extension 'file_browser'
         end
     },
     {

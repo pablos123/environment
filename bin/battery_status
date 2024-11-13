@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Print battery status with colors.
 # Other tools that do this: upower -e <battery> | inxi -Fxxxrz
-#
-# Colors
+
 RED="\e[0;31m"
 GREEN="\e[0;32m"
 YELLOW="\e[0;33m"

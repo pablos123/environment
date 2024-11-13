@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-#
 
 export PATH="${PATH}:${HOME}/environment/bin:${HOME}/.local/bin"
 
