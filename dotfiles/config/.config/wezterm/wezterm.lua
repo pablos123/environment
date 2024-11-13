@@ -14,7 +14,7 @@ config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
 config.scrollback_lines = 10000
 
-config.default_prog = { 'run_last_zellij_session' }
+config.default_prog = { '/bin/bash' }
 
 config.disable_default_key_bindings = true
 config.keys = {

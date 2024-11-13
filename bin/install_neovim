@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#
 
 dependencies=(
     ninja-build
@@ -36,5 +35,5 @@ make CMAKE_BUILD_TYPE=RelWithDebInfo
 echo -e "Installing neovim..."
 make install
 
-echo -e "All done! Neovim installed..."
+echo -e "All done! Neovim installed!"
 nvim --version

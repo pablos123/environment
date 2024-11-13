@@ -10,7 +10,6 @@
 # https://github.com/sivel/speedtest-cli
 # https://github.com/eza-community/eza
 # https://github.com/sharkdp/fd
-# https://github.com/zellij-org/zellij
 
 apt_packages=(
   ripgrep
@@ -87,7 +86,6 @@ apt_packages=(
 
 cargo_packages=(
   eza
-  zellij
 )
 
 pip_packages=(

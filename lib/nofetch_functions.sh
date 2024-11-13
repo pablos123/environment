@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function user_info() {
     echo "User: $(id | awk '{print $1" "$2}')"
 }
@@ -23,13 +25,10 @@ function mem_info() {
 }
 
 function wmctrl_info() {
-    wmctrl_exists="$(which wmctrl)"
-    if [[ -n $wmctrl_exists ]]; then
-        wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}'
-    fi
+    wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}'
 }
 
-info_functions=(
+nofetch_functions=(
     user_info
     hostname_info
     uname_info

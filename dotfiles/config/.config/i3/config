@@ -66,7 +66,7 @@ for_window [instance="trello.com"] move container to workspace $ws4, layout tabb
 exec_always --no-startup-id sleep 1 && monitors_config
 exec_always --no-startup-id keyboard_config
 
-exec_always --no-startup-id theme_manager
+exec_always --no-startup-id reload_environment
 
 exec --no-startup-id sleep 1 && start_daemons
 

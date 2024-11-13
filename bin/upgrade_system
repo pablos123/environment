@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+#
+#
+set -e
+
+source "${HOME}/environment/lib/packages.sh"
+source "${HOME}/environment/lib/installers.sh"
+
+function print_separator() {
+    echo -e "........................."
+}
+
+function get_root_access() {
+    sudo -v
+}
+
+function install_apt() {
+    sudo apt-get -qq update
+    sudo apt-get -qq dist-upgrade -y
+    sudo apt-get -qq --with-new-pkgs upgrade -y
+    sudo apt-get -qq install -y "${apt_packages[@]}"
+}
+
+function install_pip() {
+    sudo apt-get -qq install pipx
+    pipx install "${pip_packages[@]}"
+    pipx upgrade-all
+}
+
+function install_cargo() {
+    cargo install --locked "${cargo_packages[@]}" >/dev/null
+}
+
+function update_flatpak() {
+    sudo flatpak update -y >/dev/null
+}
+
+function cleanup() {
+    sudo apt-get -qq remove --purge -y steam wine
+    sudo apt-get -qq autoremove --purge -y
+
+    rm -f "${HOME}/.cache/dmenu_run"
+    rm -f "${HOME}/dmenu_cache"
+}
+
+function execute_task() {
+    echo "${1}"
+    "${2}"
+    print_separator
+}
+
+execute_task "Asking for root..." get_root_access
+
+mkdir -p "${HOME}/images/" "${HOME}/projects/" "${HOME}/bin/"
+
+execute_task "Updating apt packages..." install_apt
+
+execute_task "Updating pip packages..." install_pip
+
+execute_task "Updating flatpak packages..." update_flatpak
+execute_task "Updating cargo packages..." install_cargo
+
+for independent_installer in "${independent_installers[@]}"; do
+    execute_task "${independent_installer}" "${independent_installer}"
+done
+
+execute_task "Cleaning up..." cleanup
+
+echo "Done! Remember to reboot your pc!"

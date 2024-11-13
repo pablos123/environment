@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-wallpapers_directory="$HOME/.wallpapers/$type"
+wallpapers_directory="${HOME}/.wallpapers"
 
-cd "$wallpapers_directory" || exit 1
+cd "${wallpapers_directory}" || exit 1
 
 wallpapers_array=(*)
 
@@ -10,6 +10,6 @@ items_count="${#wallpapers_array[@]}"
 
 random_index=$((RANDOM % items_count))
 
-wallpaper="${wallpapers_array[$random_index]}"
+wallpaper="${wallpapers_array[${random_index}]}"
 
-hsetroot -cover "$wallpaper" >/dev/null 2>&1
+hsetroot -cover "${wallpaper}" >/dev/null 2>&1
