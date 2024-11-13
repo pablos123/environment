@@ -53,6 +53,7 @@ execute_task "Asking for root..." get_root_access
 mkdir -p "${HOME}/images/" "${HOME}/projects/" "${HOME}/bin/"
 
 execute_task "Updating apt packages..." install_apt
+ln -fs "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 
 execute_task "Updating pip packages..." install_pip
 

@@ -32,12 +32,12 @@ return {
             }
             require 'mini.move'.setup {
                 mappings = {
-                    left = '<C-h>',
-                    right = '<C-l>',
+                    left = '<',
+                    right = '>',
                     down = '<C-j>',
                     up = '<C-k>',
-                    line_left = '<C-h>',
-                    line_right = '<C-l>',
+                    line_left = '<',
+                    line_right = '>',
                     line_down = '<C-j>',
                     line_up = '<C-k>',
                 },
@@ -45,7 +45,8 @@ return {
             require 'mini.comment'.setup {
                 options = {
                     custom_commentstring = function()
-                        return require 'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
+                        return require 'ts_context_commentstring.internal'.calculate_commentstring() or
+                        vim.bo.commentstring
                     end,
                 },
             }
