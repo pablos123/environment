@@ -19,17 +19,15 @@ config.disable_default_key_bindings = true
 
 local actions = wezterm.action
 config.keys = {
-    -- Conventions
     -- Copy|Paste
     { key = 'c', mods = 'CTRL|SHIFT', action = actions.CopyTo 'Clipboard', },
     { key = 'v', mods = 'CTRL|SHIFT', action = actions.PasteFrom 'Clipboard', },
 
-    -- Tabs
-    { key = 't', mods = 'SUPER',       action = actions.SpawnTab 'CurrentPaneDomain', },
-    { key = 'w', mods = 'SUPER',       action = actions.CloseCurrentTab { confirm = true }, },
-
     -- Tabs|Sessions
-    { key = 'o', mods = 'SUPER', action = actions.ShowLauncherArgs { flags = 'TABS' }, },
+    { key = 'T', mods = 'SUPER|SHIFT',       action = actions.SpawnTab 'CurrentPaneDomain', },
+    { key = 'W', mods = 'SUPER|SHIFT',       action = actions.CloseCurrentTab { confirm = true }, },
+
+    { key = 'O', mods = 'SUPER|SHIFT', action = actions.ShowLauncherArgs { flags = 'TABS' }, },
 
     { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(-1), },
     { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(1), },
