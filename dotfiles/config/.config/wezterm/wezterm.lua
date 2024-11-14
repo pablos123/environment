@@ -32,6 +32,19 @@ config.keys = {
     { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(-1), },
     { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(1), },
 
+    {
+        key = 'N',
+        mods = 'SUPER|SHIFT',
+        action = actions.PromptInputLine {
+            description = 'Set name to:',
+            action = wezterm.action_callback(function(window, _, line)
+                if line and line ~= '' then
+                    window:active_tab():set_title(line)
+                end
+            end),
+        },
+    },
+
     -- Panes
     { key = 'h', mods = 'SUPER',      action = actions.ActivatePaneDirection 'Left' },
     { key = 'l', mods = 'SUPER',      action = actions.ActivatePaneDirection 'Right' },
@@ -63,19 +76,6 @@ config.keys = {
                 local url = window:get_selection_text_for_pane(pane)
                 os.execute('chrome ' .. url)
             end)
-        },
-    },
-    -- Change tab name
-    {
-        key = 'r',
-        mods = 'CTRL|SHIFT',
-        action = actions.PromptInputLine {
-            description = 'Set name to:',
-            action = wezterm.action_callback(function(window, _, line)
-                if line and line ~= '' then
-                    window:active_tab():set_title(line)
-                end
-            end),
         },
     },
     -- All commands
