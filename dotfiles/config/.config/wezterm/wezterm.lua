@@ -25,14 +25,14 @@ config.keys = {
     { key = 'v', mods = 'CTRL|SHIFT', action = actions.PasteFrom 'Clipboard', },
 
     -- Tabs
-    { key = 't', mods = 'CTRL',       action = actions.SpawnTab 'CurrentPaneDomain', },
-    { key = 'w', mods = 'CTRL',       action = actions.CloseCurrentTab { confirm = true }, },
+    { key = 't', mods = 'SUPER',       action = actions.SpawnTab 'CurrentPaneDomain', },
+    { key = 'w', mods = 'SUPER',       action = actions.CloseCurrentTab { confirm = true }, },
 
     -- Tabs|Sessions
-    { key = 'O', mods = 'CTRL|SHIFT', action = actions.ShowLauncherArgs { flags = 'TABS' }, },
+    { key = 'o', mods = 'SUPER', action = actions.ShowLauncherArgs { flags = 'TABS' }, },
 
-    { key = 'H', mods = 'CTRL|SHIFT', action = actions.ActivateTabRelative(-1), },
-    { key = 'L', mods = 'CTRL|SHIFT', action = actions.ActivateTabRelative(1), },
+    { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(-1), },
+    { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(1), },
 
     -- Panes
     { key = 'h', mods = 'SUPER',      action = actions.ActivatePaneDirection 'Left' },
