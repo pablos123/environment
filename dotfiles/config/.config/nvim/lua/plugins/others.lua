@@ -32,5 +32,11 @@ return {
                 extras = { '-x', '--enable=all' }
             }
         end
-    }
+    },
+    {
+        "nvim-pack/nvim-spectre",
+        config = function()
+            require "spectre".setup {}
+        end,
+    },
 }
