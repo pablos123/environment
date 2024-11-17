@@ -28,7 +28,7 @@ return {
                     buffers = {
                         theme = 'dropdown',
                         previewer = false,
-                        file_ignore_patterns = { '^%[No Name]%$', '^%.$' }
+                        file_ignore_patterns = { '^%[No Name%]$', '^%.$' }
                     }
                 },
             }
