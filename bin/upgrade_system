@@ -14,10 +14,10 @@ function get_root_access() {
 }
 
 function install_apt() {
-    sudo apt-get -qq update
-    sudo apt-get -qq dist-upgrade -y
-    sudo apt-get -qq --with-new-pkgs upgrade -y
-    sudo apt-get -qq install -y "${apt_packages[@]}"
+    sudo apt-get update
+    sudo apt-get dist-upgrade -y
+    sudo apt-get --with-new-pkgs upgrade -y
+    sudo apt-get install -y "${apt_packages[@]}"
 }
 
 function install_pip() {
@@ -27,16 +27,16 @@ function install_pip() {
 }
 
 function install_cargo() {
-    cargo install --locked "${cargo_packages[@]}" >/dev/null
+    cargo install --locked "${cargo_packages[@]}"
 }
 
 function update_flatpak() {
-    sudo flatpak update -y >/dev/null
+    sudo flatpak update -y
 }
 
 function cleanup() {
-    sudo apt-get -qq remove --purge -y steam wine
-    sudo apt-get -qq autoremove --purge -y
+    sudo apt-get remove --purge -y steam wine
+    sudo apt-get autoremove --purge -y
 
     rm -f "${HOME}/.cache/dmenu_run"
     rm -f "${HOME}/dmenu_cache"

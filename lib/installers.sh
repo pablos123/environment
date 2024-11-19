@@ -3,8 +3,8 @@
 chrome_installer() {
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-    sudo apt-get -qq update
-    sudo apt-get -qq install -y google-chrome-stable
+    sudo apt-get update
+    sudo apt-get install -y google-chrome-stable
 
     dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
     # Set chrome as the default browser
@@ -14,8 +14,8 @@ chrome_installer() {
 wezterm_installer() {
     curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
     (echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list) > /dev/null
-    sudo apt-get -qq update
-    sudo apt-get -qq install -y wezterm
+    sudo apt-get update
+    sudo apt-get install -y wezterm
 }
 
 dunst_installer() {
@@ -33,10 +33,10 @@ dunst_installer() {
       libnotify-dev
     )
 
-    sudo apt-get -qq install -y "${dependencies[@]}"
+    sudo apt-get install -y "${dependencies[@]}"
 
     rm -rf "$HOME/.dunst"
-    git clone -q https://github.com/dunst-project/dunst.git "$HOME/.dunst"
+    git clone https://github.com/dunst-project/dunst.git "$HOME/.dunst"
     (
         cd "$HOME/.dunst" || exit 1
         make
@@ -47,7 +47,7 @@ dunst_installer() {
 # https://github.com/junegunn/fzf
 fzf_installer() {
     rm -rf "$HOME/.fzf"
-    git clone -q --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
     (yes | "$HOME/.fzf/install") > /dev/null
 }
 
