@@ -6,7 +6,7 @@ source "${HOME}/environment/lib/packages.sh"
 source "${HOME}/environment/lib/installers.sh"
 
 function print_separator() {
-    echo -e "........................."
+    echo "........................."
 }
 
 function get_root_access() {
@@ -21,7 +21,7 @@ function install_apt() {
 }
 
 function install_pip() {
-    sudo apt-get -qq install pipx
+    sudo apt-get install pipx
     pipx install "${pip_packages[@]}"
     pipx upgrade-all
 }
@@ -56,7 +56,6 @@ execute_task "Updating apt packages..." install_apt
 ln -fs "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 
 execute_task "Updating pip packages..." install_pip
-
 execute_task "Updating flatpak packages..." update_flatpak
 execute_task "Updating cargo packages..." install_cargo
 
