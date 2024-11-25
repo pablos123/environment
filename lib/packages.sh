@@ -38,6 +38,8 @@ apt_packages=(
   gpick
   zathura
   zathura-djvu
+  zathura-ps
+  zathura-cb
   ffmpeg
   xchm
   unzip

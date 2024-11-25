@@ -1,0 +1,25 @@
+[manager]
+show_hidden = true
+
+[opener]
+play = [
+    { run = 'mpv "$@"', orphan = true, for = "unix" },
+]
+edit = [
+	{ run = '$EDITOR "$@"', block = true, for = "unix" },
+]
+open = [
+    { name = "*.png", run = 'sxiv "$@"' },
+    { name = "*.jpeg", run = 'sxiv "$@"' },
+    { name = "*.jpg", run = 'sxiv "$@"' },
+    { name = "*.webp", run = 'sxiv "$@"' },
+    { name = "*.gif", run = 'sxiv "$@"' },
+    { name = "*.svg", run = 'sxiv "$@"' },
+
+    { name = "*.pdf", run = 'zathura "$@"' },
+    { name = "*.ps", run = 'zathura "$@"' },
+    { name = "*.cbz", run = 'zathura "$@"' },
+    { name = "*.cbr", run = 'zathura "$@"' },
+    { name = "*.djvu", run = 'zathura "$@"' },
+]
+
