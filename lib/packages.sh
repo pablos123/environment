@@ -62,7 +62,6 @@ apt_packages=(
   iftop
   nload
   python3-venv
-  cargo
   golang
   luarocks
   cpanminus
@@ -85,6 +84,8 @@ apt_packages=(
 
 cargo_packages=(
   eza
+  yazi-fm
+  yazi-cli
 )
 
 pip_packages=(

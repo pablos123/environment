@@ -27,6 +27,7 @@ function install_pip() {
 }
 
 function install_cargo() {
+    rustup update
     cargo install --locked "${cargo_packages[@]}"
 }
 
@@ -35,7 +36,6 @@ function update_flatpak() {
 }
 
 function cleanup() {
-    sudo apt-get remove --purge -y steam wine
     sudo apt-get autoremove --purge -y
 
     rm -f "${HOME}/.cache/dmenu_run"
@@ -64,5 +64,7 @@ for independent_installer in "${independent_installers[@]}"; do
 done
 
 execute_task "Cleaning up..." cleanup
+
+reload_environment
 
 echo "Done! Remember to reboot your pc!"
