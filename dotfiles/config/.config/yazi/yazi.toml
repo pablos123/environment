@@ -2,24 +2,35 @@
 show_hidden = true
 
 [opener]
-play = [
+nvim = [
+	{ run = 'nvim "$@"', block = true, for = "unix" },
+]
+mpv = [
     { run = 'mpv "$@"', orphan = true, for = "unix" },
 ]
-edit = [
-	{ run = '$EDITOR "$@"', block = true, for = "unix" },
+zathura = [
+    { run = 'zathura "$@"', orphan = true, for = "unix" },
 ]
-open = [
-    { name = "*.png", run = 'sxiv "$@"' },
-    { name = "*.jpeg", run = 'sxiv "$@"' },
-    { name = "*.jpg", run = 'sxiv "$@"' },
-    { name = "*.webp", run = 'sxiv "$@"' },
-    { name = "*.gif", run = 'sxiv "$@"' },
-    { name = "*.svg", run = 'sxiv "$@"' },
+sxiv = [
+    { run = 'sxiv "$@"', orphan = true, for = "unix" },
+]
 
-    { name = "*.pdf", run = 'zathura "$@"' },
-    { name = "*.ps", run = 'zathura "$@"' },
-    { name = "*.cbz", run = 'zathura "$@"' },
-    { name = "*.cbr", run = 'zathura "$@"' },
-    { name = "*.djvu", run = 'zathura "$@"' },
+[open]
+rules = [
+	{ mime = "text/*", use = "nvim" },
+	{ mime = "video/*", use = "mpv" },
+
+    { name = "*.pdf", use = "zathura" },
+    { name = "*.ps", use = "zathura" },
+    { name = "*.cbz", use = "zathura" },
+    { name = "*.cbr", use = "zathura" },
+    { name = "*.djvu", use = "zathura" },
+
+    { name = "*.png", use = "sxiv" },
+    { name = "*.jpeg", use = "sxiv" },
+    { name = "*.jpg", use = "sxiv" },
+    { name = "*.webp", use = "sxiv" },
+    { name = "*.gif", use = "sxiv" },
+    { name = "*.svg", use = "sxiv" },
 ]
 
