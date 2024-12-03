@@ -17,8 +17,8 @@ sxiv = [
 
 [open]
 rules = [
-	{ mime = "text/*", use = "nvim" },
-	{ mime = "video/*", use = "mpv" },
+    { mime = "text/*", use = "nvim" },
+    { mime = "video/*", use = "mpv" },
 
     { name = "*.pdf", use = "zathura" },
     { name = "*.ps", use = "zathura" },

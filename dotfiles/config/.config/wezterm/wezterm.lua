@@ -28,11 +28,11 @@ config.keys = {
     { key = 'v', mods = 'CTRL|SHIFT',  action = actions.PasteFrom 'Clipboard', },
 
     -- Workspaces
-    { key = 'O', mods = 'SUPER|SHIFT', action = actions.ShowLauncherArgs { flags = 'WORKSPACES' }, },
+    { key = 'o', mods = 'SUPER', action = actions.ShowLauncherArgs { flags = 'WORKSPACES' }, },
 
     -- Tabs
-    { key = 'T', mods = 'SUPER|SHIFT', action = actions.SpawnTab 'CurrentPaneDomain', },
-    { key = 'W', mods = 'SUPER|SHIFT', action = actions.CloseCurrentTab { confirm = true }, },
+    { key = 't', mods = 'SUPER', action = actions.SpawnTab 'CurrentPaneDomain', },
+    { key = 'w', mods = 'SUPER', action = actions.CloseCurrentTab { confirm = true }, },
 
     { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(-1), },
     { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(1), },
@@ -49,8 +49,8 @@ config.keys = {
     { key = '0', mods = 'SUPER', action = actions.ActivateTab(9), },
 
     {
-        key = 'N',
-        mods = 'SUPER|SHIFT',
+        key = 'n',
+        mods = 'SUPER',
         action = actions.PromptInputLine {
             description = 'Set tab name to:',
             action = wezterm.action_callback(function(window, _, line)
