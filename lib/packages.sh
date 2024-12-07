@@ -81,6 +81,7 @@ apt_packages=(
   cinnamon
   mintupgrade
   solaar
+  valgrind
   fd-find
 )
 

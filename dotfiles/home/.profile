@@ -23,3 +23,7 @@ fi
 if [ -d "$HOME/environment/bin" ]; then
     PATH="$HOME/environment/bin:$PATH"
 fi
+
+if [ -d "$HOME/.pyenv" ]; then
+    PATH="$HOME/.pyenv:$PATH"
+fi

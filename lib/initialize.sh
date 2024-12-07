@@ -8,12 +8,19 @@ function remove_conflicting_pkgs() {
 }
 
 function install_rustup() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup_installer.sh
+    sh /tmp/rustup_installer.sh -y
+}
+
+function install_pyenv() {
+    curl https://pyenv.run | bash
 }
 
 remove_conflicting_pkgs
 
 install_rustup
+
+install_pyenv
 
 upgrade_system
 

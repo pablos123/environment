@@ -26,3 +26,5 @@ export NVM_DIR="${HOME}/.nvm"
 [[ -s "${NVM_DIR}/bash_completion" ]] && source "${NVM_DIR}/bash_completion"
 
 [[ -s "${HOME}/.cargo/env" ]] && source "${HOME}/.cargo/env"
+
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
