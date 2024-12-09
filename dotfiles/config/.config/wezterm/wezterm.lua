@@ -28,7 +28,7 @@ config.keys = {
     { key = 'v', mods = 'CTRL|SHIFT',  action = actions.PasteFrom 'Clipboard', },
 
     -- Workspaces
-    { key = 'o', mods = 'SUPER', action = actions.ShowLauncherArgs { flags = 'WORKSPACES' }, },
+    { key = 'o', mods = 'SUPER', action = actions.ShowLauncher, },
 
     -- Tabs
     { key = 't', mods = 'SUPER', action = actions.SpawnTab 'CurrentPaneDomain', },
@@ -96,6 +96,13 @@ config.keys = {
     },
     -- All commands
     { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
+}
+
+config.launch_menu = {
+    {
+        label = 'Devops',
+        args = { 'wezterm_template' },
+    },
 }
 
 return config

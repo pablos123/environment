@@ -8,7 +8,7 @@ end
 
 map('', '<space>', '<nop>', add_desc('Leader'))
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.maplocalleader = ','
 
 -- Basics
 map('n', 'j', 'gj', add_desc('To go down just one line if line is wrapped.'))

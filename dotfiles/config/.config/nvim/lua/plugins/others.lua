@@ -33,10 +33,13 @@ return {
             }
         end
     },
-    {
-        "nvim-pack/nvim-spectre",
-        config = function()
-            require "spectre".setup {}
-        end,
+      {
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      require('grug-far').setup{}
+    end,
+    keys = {
+        { '<leader>s', '<cmd>GrugFar<cr>', desc = 'Open GrugFar' },
     },
+  },
 }
