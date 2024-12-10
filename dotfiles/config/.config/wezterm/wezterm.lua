@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local mux = wezterm.mux
 
 local config = {}
 
@@ -98,11 +99,29 @@ config.keys = {
     { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
 }
 
-config.launch_menu = {
-    {
-        label = 'Devops',
-        args = { 'wezterm_template' },
-    },
-}
+wezterm.on('gui-startup', function(cmd)
+    local first_tab, _, first_window = mux.spawn_window {
+        workspace = ' SYSTEM  ',
+        args = { 'yazi', '~' },
+    }
+    first_tab:set_title 'YAZI  '
+
+    local second_tab = first_window:spawn_tab {  args = { 'htop' } }
+    second_tab:set_title 'HTOP  '
+
+    local third_tab = first_window:spawn_tab {
+        args = { 'nvim', '--cmd', 'cd ~/environment' },
+    }
+    third_tab:set_title 'DOTFILES  '
+
+    local fourth_tab = first_window:spawn_tab { }
+    fourth_tab:set_title 'BASH '
+
+    first_tab:activate {}
+
+    mux.spawn_window { workspace = ' BASH  ' }
+
+    mux.set_active_workspace ' BASH  '
+end)
 
 return config
