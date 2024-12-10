@@ -99,7 +99,7 @@ config.keys = {
     { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
 }
 
-wezterm.on('gui-startup', function(cmd)
+wezterm.on('gui-startup', function(_)
     local first_tab, _, first_window = mux.spawn_window {
         workspace = ' SYSTEM  ',
         args = { 'yazi', '~' },
