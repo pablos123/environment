@@ -11,15 +11,6 @@ return {
         end,
     },
     {
-        'nvim-tree/nvim-tree.lua',
-        config = function()
-            require 'nvim-tree'.setup { actions = { open_file = { window_picker = { enable = false } } } }
-        end,
-        keys = {
-            { '<leader>t', '<cmd>NvimTreeFindFile<cr>', desc = 'Open NvimTree' },
-        },
-    },
-    {
         'lewis6991/gitsigns.nvim',
         config = function()
             require 'gitsigns'.setup {}
@@ -33,13 +24,4 @@ return {
             }
         end
     },
-      {
-    'MagicDuck/grug-far.nvim',
-    config = function()
-      require('grug-far').setup{}
-    end,
-    keys = {
-        { '<leader>s', '<cmd>GrugFar<cr>', desc = 'Open GrugFar' },
-    },
-  },
 }

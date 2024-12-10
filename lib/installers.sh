@@ -50,7 +50,6 @@ fzf_installer() {
     (yes | "$HOME/.fzf/install") > /dev/null
 }
 
-
 independent_installers=(
     dunst_installer
     fzf_installer

@@ -32,11 +32,11 @@ config.keys = {
     { key = 'o', mods = 'SUPER', action = actions.ShowLauncher, },
 
     -- Tabs
-    { key = 't', mods = 'SUPER', action = actions.SpawnTab 'CurrentPaneDomain', },
-    { key = 'w', mods = 'SUPER', action = actions.CloseCurrentTab { confirm = true }, },
+    { key = 'n', mods = 'SUPER', action = actions.SpawnTab 'CurrentPaneDomain', },
+    { key = 'c', mods = 'SUPER', action = actions.CloseCurrentTab { confirm = true }, },
 
-    { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(-1), },
-    { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivateTabRelative(1), },
+    { key = 'h', mods = 'SUPER', action = actions.ActivateTabRelative(-1), },
+    { key = 'l', mods = 'SUPER', action = actions.ActivateTabRelative(1), },
 
     { key = '1', mods = 'SUPER', action = actions.ActivateTab(0), },
     { key = '2', mods = 'SUPER', action = actions.ActivateTab(1), },
@@ -50,7 +50,7 @@ config.keys = {
     { key = '0', mods = 'SUPER', action = actions.ActivateTab(9), },
 
     {
-        key = 'n',
+        key = 'r',
         mods = 'SUPER',
         action = actions.PromptInputLine {
             description = 'Set tab name to:',
@@ -63,16 +63,16 @@ config.keys = {
     },
 
     -- Panes
-    { key = 'h', mods = 'SUPER', action = actions.ActivatePaneDirection 'Left' },
-    { key = 'l', mods = 'SUPER', action = actions.ActivatePaneDirection 'Right' },
-    { key = 'k', mods = 'SUPER', action = actions.ActivatePaneDirection 'Up' },
-    { key = 'j', mods = 'SUPER', action = actions.ActivatePaneDirection 'Down' },
+    { key = 'H', mods = 'SUPER|SHIFT', action = actions.ActivatePaneDirection 'Left' },
+    { key = 'L', mods = 'SUPER|SHIFT', action = actions.ActivatePaneDirection 'Right' },
+    { key = 'K', mods = 'SUPER|SHIFT', action = actions.ActivatePaneDirection 'Up' },
+    { key = 'J', mods = 'SUPER|SHIFT', action = actions.ActivatePaneDirection 'Down' },
 
     { key = '|', mods = 'SUPER|SHIFT', action = actions.SplitHorizontal { domain = "CurrentPaneDomain" }, },
     { key = '_', mods = 'SUPER|SHIFT', action = actions.SplitVertical { domain = "CurrentPaneDomain" }, },
 
-    { key = 'z', mods = 'SUPER', action = actions.TogglePaneZoomState, },
-    { key = 'c', mods = 'SUPER', action = actions.CloseCurrentPane { confirm = true }, },
+    { key = 'Z', mods = 'SUPER|SHIFT', action = actions.TogglePaneZoomState, },
+    { key = 'C', mods = 'SUPER|SHIFT', action = actions.CloseCurrentPane { confirm = true }, },
 
     -- Font size
     { key = '=', mods = 'SUPER', action = actions.IncreaseFontSize, },
