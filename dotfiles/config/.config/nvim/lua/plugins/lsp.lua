@@ -52,13 +52,9 @@ return {
             }
 
             -- local file_operations = require 'lsp-file-operations'.default_capabilities()
-            local capabilities = require 'cmp_nvim_lsp'.default_capabilities()
-            local function setup_server(ls_name)
-                require 'lspconfig'[ls_name].setup { capabilities = capabilities }
-            end
-
+            local capabilities = require 'blink.cmp'.get_lsp_capabilities()
             for _, ls_name in ipairs(language_servers) do
-                setup_server(ls_name)
+                require 'lspconfig'[ls_name].setup { capabilities = capabilities }
             end
         end
     },

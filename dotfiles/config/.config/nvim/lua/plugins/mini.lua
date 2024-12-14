@@ -43,12 +43,11 @@ return {
                 options = {
                     custom_commentstring = function()
                         return require 'ts_context_commentstring.internal'.calculate_commentstring() or
-                        vim.bo.commentstring
+                            vim.bo.commentstring
                     end,
                 },
             }
             vim.api.nvim_create_autocmd('BufWritePre', {
-                desc = 'Clean trail space before saving',
                 callback = function()
                     MiniTrailspace.trim()
                 end

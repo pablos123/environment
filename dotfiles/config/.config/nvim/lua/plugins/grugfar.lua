@@ -3,9 +3,7 @@ return {
         'MagicDuck/grug-far.nvim',
         config = function()
             require('grug-far').setup {
-                -- help line config
                 helpLine = {
-                    -- whether to show the help line at the top of the buffer
                     enabled = false,
                 },
                 startInInsertMode = false,
