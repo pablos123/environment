@@ -11,6 +11,12 @@ return {
         end,
     },
     {
+        'fenetikm/falcon',
+        name = 'falcon',
+        lazy = false,
+        priority = 1000,
+    },
+    {
         'lewis6991/gitsigns.nvim',
         config = function()
             require 'gitsigns'.setup {}
