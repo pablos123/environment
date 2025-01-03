@@ -13,6 +13,9 @@ return {
                 ['<CR>'] = { 'accept', 'fallback' },
             },
             signature = { enabled = true },
+            sources = {
+                cmdline = {},
+            },
         },
     },
     'rafamadriz/friendly-snippets',
