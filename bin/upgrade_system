@@ -21,6 +21,7 @@ function install_apt() {
 }
 
 function install_pip() {
+    pip install --upgrade pip
     sudo apt-get install pipx
     pipx install "${pip_packages[@]}"
     pipx upgrade-all

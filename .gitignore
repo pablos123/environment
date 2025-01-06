@@ -1,1 +1,3 @@
 lazy-lock.json
+/.downloads/*
+!/.downloads/.persist
