@@ -18,6 +18,9 @@ return {
         'pearofducks/ansible-vim', -- Install Ansible syntax
         lazy = false, -- Force load
         config = function()
+            -- Disable auto unindent
+            vim.g.ansible_unindent_after_newline = 0
+
             -- Set dim and more colors
             vim.g.ansible_name_highlight = 'd'
             vim.g.ansible_extra_keywords_highlight = 1
