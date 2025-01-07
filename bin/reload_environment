@@ -20,7 +20,5 @@ rm -f "$HOME/dmenu_cache"
 i3-msg reload >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
 killall flameshot >/dev/null 2>&1
-killall picom >/dev/null 2>&1
 sleep 0.5
-picom --daemon >/dev/null 2>&1
 

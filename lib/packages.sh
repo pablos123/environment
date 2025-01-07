@@ -51,7 +51,6 @@ apt_packages=(
   fortune-mod
   espeak
   keepassxc
-  picom
   xdotool
   xclip
   xsel
