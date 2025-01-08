@@ -12,4 +12,4 @@ random_index=$((RANDOM % items_count))
 
 wallpaper="${wallpapers_array[${random_index}]}"
 
-# hsetroot -cover "${wallpaper}" >/dev/null 2>&1
+hsetroot -cover "${wallpaper}" >/dev/null 2>&1
