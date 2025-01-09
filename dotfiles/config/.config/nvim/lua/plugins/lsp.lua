@@ -8,7 +8,6 @@ return {
     {
         'neovim/nvim-lspconfig',
         config = function()
-            -- lua_ls for neovim
             require 'lspconfig'.lua_ls.setup {
                 on_init = function(client)
                     if client.workspace_folders then
@@ -20,20 +19,14 @@ return {
 
                     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
                         runtime = {
-                            -- Tell the language server which version of Lua you're using
-                            -- (most likely LuaJIT in the case of Neovim)
                             version = 'LuaJIT'
                         },
-                        -- Make the server aware of Neovim runtime files
                         workspace = {
                             checkThirdParty = false,
                             library = {
                                 vim.env.VIMRUNTIME,
                                 '${3rd}/luv/library',
-                                -- '${3rd}/busted/library',
                             }
-                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                            -- library = vim.api.nvim_get_runtime_file('', true)
                         }
                     })
                 end,
@@ -51,10 +44,8 @@ return {
                 'clangd',
             }
 
-            -- local file_operations = require 'lsp-file-operations'.default_capabilities()
-            local capabilities = require 'blink.cmp'.get_lsp_capabilities()
             for _, ls_name in ipairs(language_servers) do
-                require 'lspconfig'[ls_name].setup { capabilities = capabilities }
+                require 'lspconfig'[ls_name].setup {}
             end
         end
     },
