@@ -3,7 +3,15 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if xset -b b off &>>/dev/null; then keyboard_config; fi
+if command -v tmux &> /dev/null &&
+    [[ -n "$PS1" ]] &&
+    [[ ! "$TERM" =~ screen ]] &&
+    [[ ! "$TERM" =~ tmux ]] &&
+    [[ -z "$TMUX" ]]; then
+  exec tmux
+fi
+
+if xset -b b off &> /dev/null; then keyboard_config; fi
 
 shopt -s direxpand
 shopt -s autocd
@@ -28,3 +36,4 @@ export NVM_DIR="${HOME}/.nvm"
 [[ -s "${HOME}/.cargo/env" ]] && source "${HOME}/.cargo/env"
 
 command -v pyenv >/dev/null && eval "$(pyenv init -)"
+

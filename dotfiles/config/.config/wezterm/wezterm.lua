@@ -27,6 +27,10 @@ config.keys = {
     -- Copy|Paste
     { key = 'c', mods = 'CTRL|SHIFT',  action = actions.CopyTo 'Clipboard', },
     { key = 'v', mods = 'CTRL|SHIFT',  action = actions.PasteFrom 'Clipboard', },
+
+    -- Font size
+    { key = '=', mods = 'SUPER', action = actions.IncreaseFontSize, },
+    { key = '-', mods = 'SUPER', action = actions.DecreaseFontSize, },
 }
 
 return config
