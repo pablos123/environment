@@ -3,11 +3,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if command -v tmux &> /dev/null && [[ -z "$TMUX" ]]; then
+if command -v tmux >/dev/null && [[ -z "${TMUX}" ]]; then
   exec tmux
 fi
 
-if xset -b b off &> /dev/null; then keyboard_config; fi
+if xset -b b off >/dev/null; then keyboard_config; fi
 
 shopt -s direxpand
 shopt -s autocd
