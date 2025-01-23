@@ -152,7 +152,7 @@ normalize_wallpapers() {
             continue
         fi
 
-        convert "$image" -resize '1920x1080>' "$converted_image"
+        convert "$image" -depth 8 -resize '1920x1080!' rgb32:"$converted_image"
         new_sum=$(md5sum "$converted_image" | awk '{print $1}')
         mv "$converted_image" "$image_dirname/$new_sum.png"
 
