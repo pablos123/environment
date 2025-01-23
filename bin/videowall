@@ -40,6 +40,7 @@ if [[ -n $video ]]; then
     rm -rf "$HOME/.videowall"
     mkdir -p "$HOME/.videowall"
     eval "(ffmpeg -y -ss 00:00:00.000 $limit -i '$video' '$HOME/.videowall/%d.png' > /dev/null 2>&1) || echo 'Error! Check options and run again'"
+    find /home/pab/.videowall/ -type f | xargs -I{} convert {} -resize '1920x1080!' png32:{}
 fi
 
 if [[ -d "$HOME/.videowall" ]]; then
@@ -50,9 +51,9 @@ if [[ -d "$HOME/.videowall" ]]; then
     fi
     iterator=1
     (while true; do
-        hsetroot -cover "$HOME/.videowall/${iterator}.png" >/dev/null 2>&1
-        iterator=$((iterator + 1))
-        if [[ $iterator -gt $total_files ]]; then
+        /home/pab/projects/dump/playground/wallpaper_manager/build/pngswall "$HOME/.videowall/${iterator}.png" >/dev/null 2>&1
+        (( iterator += 1 ))
+        if (( $iterator > $total_files )); then
             iterator=1
         fi
     done) &
