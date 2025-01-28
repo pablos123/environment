@@ -10,7 +10,7 @@ opts.relativenumber = true
 opts.cursorline = true
 opts.scrolloff = 10
 opts.sidescroll = 10
-vim.cmd('colorscheme retrobox')
+vim.cmd('colorscheme murphy')
 
 -- text display
 opts.tabstop = 4
