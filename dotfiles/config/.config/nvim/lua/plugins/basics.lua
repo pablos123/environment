@@ -1,11 +1,12 @@
 return {
     'nvim-lua/plenary.nvim',
     {
-        'RRethy/base16-nvim',
+        "rose-pine/neovim",
         lazy = false,
+        name = "rose-pine",
         config = function()
-            vim.cmd('colorscheme base16-black-metal-dark-funeral')
-        end,
+            vim.cmd("colorscheme rose-pine")
+        end
     },
     {
         'lewis6991/gitsigns.nvim',
