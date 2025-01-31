@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/usr/bin/dmenu -b -i -fn 'Lilex Nerd Font:bold'
