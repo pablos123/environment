@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -f "$HOME/.minimal_environment" ]]; then
-    terminator
+    st
     exit 0
 fi
 

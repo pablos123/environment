@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 
-mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
+# .bashrc and .profile maybe belong to the system. Delete theme
+rm -rf "${HOME}/.dotfiles_stow/" "${HOME}/.bashrc" "${HOME}/.profile"
 
 # Copy the base content
-rm -rf "$HOME/.dotfiles_stow/"*
-cp -r "$HOME/environment/dotfiles/"* "$HOME/.dotfiles_stow"
-
+cp -r "${HOME}/environment/dotfiles/" "${HOME}/.dotfiles_stow/"
 
 # Stow the new files
 (
-    cd "$HOME/.dotfiles_stow" || exit 1
+    cd "${HOME}/.dotfiles_stow/" || exit 1
     stow --target="$HOME" --restow -- */
 )
 
-set_wallpaper
+fc-cache -rf
+rm -f "$HOME/.cache/dmenu_run" "$HOME/dmenu_cache"
 
-rm -f "$HOME/.cache/dmenu_run"
-rm -f "$HOME/dmenu_cache"
-i3-msg reload >/dev/null 2>&1
+sleep 0.5
 killall dunst >/dev/null 2>&1
+sleep 0.5
 killall flameshot >/dev/null 2>&1
 sleep 0.5
+systemctl --user restart pipewire.service
+
 
