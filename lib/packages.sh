@@ -12,7 +12,11 @@
 apt_packages=(
     xorg
     pipewire-audio
+    pavucontrol
     network-manager
+    network-manager-applet
+    blueman
+    i3
     vim
     duf
     jq
