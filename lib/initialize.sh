@@ -27,6 +27,7 @@ function install_cargo() {
 }
 
 function install_pyenv() {
+    rm -rf "${HOME}/.pyenv"
     curl https://pyenv.run | bash
 }
 
