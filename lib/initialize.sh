@@ -21,6 +21,7 @@ function install_cargo() {
     sudo apt autopurge -y
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup_installer.sh
     sh /tmp/rustup_installer.sh -y
+    source "${HOME}/.cargo/env"
     rustup update
     cargo install --locked "${cargo_packages[@]}"
 }
