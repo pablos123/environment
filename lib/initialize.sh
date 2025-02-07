@@ -1,60 +1,37 @@
 #!/usr/bin/env bash
 
+source "${HOME}/environment/lib/packages.sh"
+
+set -e -x
+
 original_path="$(pwd)"
 
-repos_path="${HOME}/repos"
-mkdir -p "${repos_path}"
+function cwd_on_exit() {
+    cd "${original_path}"
+    echo "Done! Remember to reboot your pc!"
+}
 
-function install_rustup() {
+trap cwd_on_exit EXIT ERR SIGINT SIGTERM SIGKILL
+
+repos_path="${HOME}/repos"
+mkdir -p "${repos_path}" "${HOME}/screenshots" "${HOME}/projects" "${HOME}/bin"
+
+function install_cargo() {
     sudo apt purge -y rustc cargo
     sudo apt autopurge -y
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup_installer.sh
     sh /tmp/rustup_installer.sh -y
+    rustup update
+    cargo install --locked "${cargo_packages[@]}"
 }
 
 function install_pyenv() {
     curl https://pyenv.run | bash
 }
 
-function install_suckless() {
-    local tool tool_path tool_version current_tool_version repo_tool_version dependencies
-    dependencies=(
-        make
-        build-essential
-        libx11-dev
-        libxinerama-dev
-        libxft-dev
-    )
-    sudo apt install -y "${dependencies[@]}"
-    for tool in dwm dmenu st; do
-        tool_path="${repos_path}/${tool}"
-
-        [[ ! -d "${tool_path}" ]] && \
-            git clone "https://git.suckless.org/${tool}" "${tool_path}"
-
-        cd "${tool_path}"
-
-        git pull
-
-        repo_tool_version=$(grep 'VERSION =' config.mk | sed 's/VERSION = //')
-        if which "${tool}" >/dev/null; then
-            current_tool_version="$("${tool}" -v 2>&1 | sed "s/${tool}[\- ]//")"
-            if [[ "${repo_tool_version}" == "${current_tool_version}" ]]; then
-                echo "${tool} is in the last available version."
-                continue
-            fi
-        fi
-
-        make
-        sudo make install
-        make clean
-        git add .
-        git reset --hard
-    done
-}
-
 function install_neovim() {
     local dependencies neovim_path
+
     dependencies=(
         ninja-build
         gettext
@@ -69,6 +46,7 @@ function install_neovim() {
         curl
         doxygen
     )
+
     sudo apt install -y "${dependencies[@]}"
 
     neovim_path="${repos_path}/neovim"
@@ -78,18 +56,88 @@ function install_neovim() {
 
     cd "${neovim_path}"
 
+    git add .
+    git reset --hard
     git pull
+
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
     make clean
-    git add .
-    git reset --hard
 
     nvim --version
 }
 
+function install_dunst() {
+    local dependencies dunst_path
+
+    dependencies=(
+      libdbus-1-dev
+      libx11-dev
+      libxinerama-dev
+      libxrandr-dev
+      libxss-dev
+      libglib2.0-dev
+      libpango1.0-dev
+      libgtk-3-dev
+      libxdg-basedir-dev
+      libnotify-dev
+    )
+
+    sudo apt install -y "${dependencies[@]}"
+
+    dunst_path="${repos_path}/dunst"
+
+    [[ ! -d "${dunst_path}" ]] && \
+        git clone https://github.com/dunst-project/dunst.git "${dunst_path}"
+
+    cd "${dunst_path}"
+
+    git add .
+    git reset --hard
+    git pull
+
+    make
+    sudo make install
+    make clean
+}
+
+function install_fzf() {
+    local fzf_path
+
+    fzf_path="${repos_path}/fzf"
+
+    [[ ! -d "${fzf_path}" ]] && \
+        git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_path}"
+
+    cd "${fzf_path}"
+
+    git add .
+    git reset --hard
+    git pull
+
+    (yes | ./install) >/dev/null 2>&1
+}
+
+function install_chrome() {
+    curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo gpg --yes --dearmor -o /usr/share/keyrings/google-chrome.gpg
+    (echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list) > /dev/null
+    sudo apt update
+    sudo apt install -y google-chrome-stable
+
+    dconf write /org/gnome/desktop/interface/color-scheme \'prefer-dark\'
+    xdg-settings set default-web-browser 'google-chrome.desktop'
+}
+
+function install_wezterm() {
+    curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+    (echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list) > /dev/null
+    sudo apt update
+    sudo apt install -y wezterm
+}
+
 function install_fonts() {
     local font fonts fonts_path
+
     fonts=(
         SourceCodePro
         JetBrainsMono
@@ -106,18 +154,46 @@ function install_fonts() {
         tar -xf "${fonts_path}/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
         rm -f "${fonts_path}/${font}Nerd.tar.xz"
     done
-
-    fc-cache -rf
 }
 
-install_rustup
+function install_apt() {
+    sudo apt update
+    sudo apt full-upgrade
+    sudo apt install -y "${apt_packages[@]}"
+}
+
+function install_pip() {
+    pip install --upgrade pip
+    sudo apt install -y pipx
+    pipx upgrade-all
+}
+
+function make_symbolic_links() {
+    ln -fs "$(command -v fdfind)" "${HOME}/.local/bin/fd"
+}
+
+function cleanup() {
+    sudo apt-get autoremove --purge -y
+}
+
+install_apt
+
+install_cargo
 
 install_pyenv
 
-install_suckless
-
 install_neovim
+
+install_dunst
+
+install_fzf
+
+install_chrome
+
+install_wezterm
 
 install_fonts
 
-cd "${original_path}"
+cleanup
+
+reload_environment

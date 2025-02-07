@@ -75,11 +75,10 @@ apt_packages=(
     golang
     luarocks
     cpanminus
+    yad
     keepassxc
 )
 
 cargo_packages=(
     eza
-    yazi-fm
-    yazi-cli
 )
