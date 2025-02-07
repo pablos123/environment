@@ -14,7 +14,7 @@ apt_packages=(
     pipewire-audio
     pavucontrol
     network-manager
-    network-manager-applet
+    network-manager-gnome
     blueman
     i3
     vim
