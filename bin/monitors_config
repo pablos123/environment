@@ -1,30 +1,23 @@
 #!/usr/bin/env bash
-# Guess what pc I'm using and configure the monitors. If the pc it's not recognized do nothing.
-#
-# monitors=($(xrandr | grep " connected" | awk '{print $1}'))
-# monitors_count="${#monitors[@]}"
-#
-# if [[ $monitors_count -eq 1 ]]; then
-#     # Desk
-#     if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
-#         xrandr --output "HDMI-A-0" --primary
-#         exit 0
-#     fi
-# fi
-#
-# if [[ $monitors_count -eq 2 ]]; then
-#     # Notebook
-#     if [[ "${monitors[*]}" =~ "HDMI-1" ]] && [[ "${monitors[*]}" =~ "eDP-1" ]]; then
-#         xrandr --output "eDP-1" --off
-#         exit 0
-#     fi
-#     # Desk with TV
-#     # I will use the TV with Cinnamon for gaming and kodi
-#     if [[ "${monitors[*]}" =~ "HDMI-A-0" ]] && [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
-#         xrandr --output "HDMI-A-0" --off
-#         exit 0
-#     fi
-# fi
-#
-# # Not recognized... skipping.
-# exit 0
+
+mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+
+# Notebook
+if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
+    if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
+        xrandr --output "eDP-1" --auto --left-of "HDMI-1"
+        xrandr --output "HDMI-1" --auto --primary
+    else
+        xrandr --output "eDP-1" --auto --primary
+    fi
+fi
+
+# Desk
+if [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
+    if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
+        xrandr --output "HDMI-A-0" --auto --left-of "DisplayPort-2"
+        xrandr --output "DisplayPort-2" --auto --primary
+    else
+        xrandr --output "DisplayPort-2" --auto --primary
+    fi
+fi
