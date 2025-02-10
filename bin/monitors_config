@@ -5,19 +5,17 @@ mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 # Notebook
 if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
     if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
-        xrandr --output "eDP-1" --auto --left-of "HDMI-1"
-        xrandr --output "HDMI-1" --auto --primary
+        xrandr --output HDMI-1 --right-of eDP-1 --primary --auto
     else
-        xrandr --output "eDP-1" --auto --primary
+        xrandr --output eDP-1 --primary --auto
     fi
 fi
 
 # Desk
 if [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
     if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
-        xrandr --output "HDMI-A-0" --auto --left-of "DisplayPort-2"
-        xrandr --output "DisplayPort-2" --auto --primary
+        xrandr --output DisplayPort-2 --auto --right-of HDMI-A-0 --primary
     else
-        xrandr --output "DisplayPort-2" --auto --primary
+        xrandr --output DisplayPort-2 --primary --auto
     fi
 fi
