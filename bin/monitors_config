@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-tmp_connected_file=/tmp/monitors_connected
-
 function configure_monitors() {
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
@@ -22,8 +20,10 @@ function configure_monitors() {
     fi
 }
 
+mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 configure_monitors
 
+tmp_connected_file=/tmp/monitors_connected
 while true; do
     mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
     [[ ! -f "${tmp_connected_file}" ]] && \
@@ -31,6 +31,7 @@ while true; do
 
     if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
         configure_monitors
+        i3-msg reload >/dev/null 2>&1
         echo -n "${monitors[*]}" > "${tmp_connected_file}"
     fi
 

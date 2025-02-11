@@ -14,5 +14,6 @@ while true; do
         setxkbmap eu -option ctrl:ralt_rctrl
         setxkbmap eu -option lv3:rwin_switch
     fi
-    sleep 5
+
+    sleep 60
 done
