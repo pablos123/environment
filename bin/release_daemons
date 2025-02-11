@@ -3,5 +3,4 @@
 nm-applet & disown
 blueman-applet & disown
 solaar -w hide & disown
-keyboard_config & disown
 monitors_config & disown
