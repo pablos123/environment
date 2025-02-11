@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+# This file is sourced by .xprofile
+# That is why is /bin/sh instead of bash.
 
 setxkbmap eu -option caps:swapescape
 xset r rate 230 50
