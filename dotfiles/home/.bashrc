@@ -3,8 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-xset -b b off >/dev/null && keyboard_config
-
 shopt -s direxpand
 shopt -s autocd
 
