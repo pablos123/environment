@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 
-# .bashrc and .profile maybe belong to the system
-# before I stow for the first time
-rm -rf "${HOME}/.dotfiles_stow" "${HOME}/.bashrc" "${HOME}/.profile"
+files_to_remove=(
+    "${HOME}/.dotfiles_stow"
+    "${HOME}/.bashrc"
+    "${HOME}/.profile"
+    "${HOME}/.xinitrc"
+    "${HOME}/.xprofile"
+    "${HOME}/.xresources"
+)
+
+for file in "${files_to_remove[@]}"; do
+    rm -rf "${file}"
+done
 
 # Copy the base content
 cp -r "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
