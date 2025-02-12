@@ -17,7 +17,8 @@ workspace 7 output primary
 workspace 8 output primary
 workspace 9 output primary
 # i3 cannot have a monitor without a workspace
-workspace 0 output HDMI-A-0 eDP-1 DisplayPort-2 HDMI-1
+#
+workspace 0 output eDP-1 HDMI-A-0 DisplayPort-2 HDMI-1
 
 # View the class name with xprop WM_CLASS
 # The first part of the WM_CLASS is the instance, the second part is the class.
