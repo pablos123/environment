@@ -4,7 +4,7 @@ function configure_monitors() {
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
-            xrandr --output HDMI-1 --right-of eDP-1 --primary --auto
+            xrandr --output HDMI-1 --left-of eDP-1 --primary --auto
         else
             xrandr --output eDP-1 --primary --auto
         fi
