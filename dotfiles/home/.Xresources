@@ -3,5 +3,6 @@ Xcursor.size: 20
 *.vt100.locale: true
 *.vt100.metaSendsEscape: true
 *.vt100.saveLines: 4096
-*.vt100.reverseVideo: true
+*.vt100.foreground: white
+*.vt100.background: black
 

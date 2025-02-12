@@ -17,8 +17,7 @@ workspace 7 output primary
 workspace 8 output primary
 workspace 9 output primary
 # i3 cannot have a monitor without a workspace
-#
-workspace 0 output eDP-1 HDMI-A-0 DisplayPort-2 HDMI-1
+workspace 0 output "eDP-1" "HDMI-A-0" "DisplayPort-2" "HDMI-1"
 
 # View the class name with xprop WM_CLASS
 # The first part of the WM_CLASS is the instance, the second part is the class.
@@ -54,13 +53,11 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-set $exit_mode [l]ogout [r]eboot [p]oweroff loc[k]
+set $exit_mode [e]xit [l]ock
 bindsym $mod+Shift+e mode "$exit_mode"
 mode "$exit_mode" {
-    bindsym l exec i3-msg exit
-    bindsym r exec reboot
-    bindsym p exec poweroff
-    bindsym k exec xdotool key Escape && lock_screen
+    bindsym e exec pkill -u pab
+    bindsym l exec xdotool key Escape && lock_screen
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
