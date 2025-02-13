@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+previous_pavu="$(xdotool search --onlyvisible --class "Pavucontrol")"
+if [[ "${previous_pavu}" ]]; then
+    xdotool windowclose "${previous_pavu}"
+    exit 0
+fi
+
 x_size=600
 y_size=400
 

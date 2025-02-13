@@ -25,13 +25,14 @@ for_window [class="Google-chrome"] move container to workspace 1
 for_window [class="org.wezfurlong.wezterm"] move container to workspace 3
 for_window [class="DBeaver"] move container to workspace 4
 for_window [class="steam"] move container to workspace 7
-for_window [class="Nemo"] floating enable
+for_window [class="Nemo"] floating enable sticky enable focus
 for_window [instance="web.whatsapp.com"] move container to workspace 4, layout tabbed
 for_window [instance="discord.com"] move container to workspace 4, layout tabbed
 for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
 for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
 for_window [instance="open.spotify.com"] move container to workspace 9
-for_window [class="Pavucontrol"] floating enable focus
+for_window [class="Pavucontrol"] floating enable sticky enable focus
+for_window [class="Yad"] floating enable sticky enable focus
 
 exec --no-startup-id sleep 1 && release_daemons
 

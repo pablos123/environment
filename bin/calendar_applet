@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# I'm using a lot the 'cal' command to check for a next X day date, then writing the date one character at the time.
+# Use yad to open a calendar applet.
+# The applets are always in the primary monitor and I control this with i3.
+
+previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar")
+if [[ "${previous_calendar}" ]]; then
+    xdotool windowclose "${previous_calendar}"
+    exit 0
+fi
+
+source "${HOME}/environment/lib/helper_functions.sh"
+
+x_size=304
+y_size=208
+
+mapfile -t position < <(echo "$(calculate_applet_position "${x_size}" "${y_size}")" | tr ' ' '\n')
+
+
+selected_date=$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${x_size}" --height="${y_size}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null)
+[[ -n "${selected_date}" ]] &&
+    echo "${selected_date}" | xclip
