@@ -53,7 +53,7 @@ function install_neovim() {
 
     neovim_path="${repos_path}/neovim"
 
-    [[ ! -d "${neovim_path}" ]] && \
+    [[ ! -d "${neovim_path}" ]] &&
         git clone https://github.com/neovim/neovim "${neovim_path}"
 
     cd "${neovim_path}"
@@ -89,7 +89,7 @@ function install_dunst() {
 
     dunst_path="${repos_path}/dunst"
 
-    [[ ! -d "${dunst_path}" ]] && \
+    [[ ! -d "${dunst_path}" ]] &&
         git clone https://github.com/dunst-project/dunst.git "${dunst_path}"
 
     cd "${dunst_path}"
@@ -108,7 +108,7 @@ function install_fzf() {
 
     fzf_path="${repos_path}/fzf"
 
-    [[ ! -d "${fzf_path}" ]] && \
+    [[ ! -d "${fzf_path}" ]] &&
         git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_path}"
 
     cd "${fzf_path}"

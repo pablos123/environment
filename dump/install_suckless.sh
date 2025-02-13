@@ -18,7 +18,7 @@ function install_suckless() {
     for tool in dwm dmenu st; do
         tool_path="${repos_path}/${tool}"
 
-        [[ ! -d "${tool_path}" ]] && \
+        [[ ! -d "${tool_path}" ]] &&
             git clone "https://git.suckless.org/${tool}" "${tool_path}"
 
         cd "${tool_path}" || exit 1

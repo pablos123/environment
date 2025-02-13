@@ -26,7 +26,7 @@ configure_monitors
 tmp_connected_file=/tmp/monitors_connected
 while true; do
     mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
-    [[ ! -f "${tmp_connected_file}" ]] && \
+    [[ ! -f "${tmp_connected_file}" ]] &&
         echo -n "${monitors[*]}" > "${tmp_connected_file}"
 
     if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
