@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+x_size=600
+y_size=400
+
+source "${HOME}/environment/lib/helper_functions.sh"
+
+pavucontrol -t 3 & disown
+
+sleep 0.1
+
+xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
+
