@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import random
 
+# This is not it. The <p> tag has not a fixed size in the page.
+# I just did it by hand.
 web_bio_len = 26
 level_len = web_bio_len * 4
 space="⠀"
@@ -16,7 +18,7 @@ columns3 = ["░", "▒", "▓", "■", "▀", "▁", "▂", "▃", "▄", "▅"
 
 def sea_to_chaos():
     bio = "...﹏𓊝﹏𓂁﹏...\n"
-    for _ in range(10):
+    for _ in range(7):
         for _ in range(web_bio_len):
             bio=f"{bio}{space} "
 
@@ -42,47 +44,32 @@ def sea_to_chaos():
         char = random.choice(chaos)
         bio=f"{bio}{char}"
 
-    left = bio.__len__() % level_len
-    for _ in range(left):
-        char = random.choice(chaos)
-        bio=f"{bio}{char}"
-
     print(f"{bio}", end="")
 
 def columns():
     bio = "░"
-    for _ in range(10):
-        for _ in range(web_bio_len):
+    for _ in range(7):
+        for _ in range(int(web_bio_len / 2) - 1):
             bio=f"{bio}{space} "
+        bio=f"{bio}{space} \n"
 
-        bio=f"{bio}{space}\n"
-
-    for _ in range(level_len * 7 * 2):
+    for _ in range(level_len * 14):
         char = random.choice(columns3)
         bio=f"{bio}{char}"
 
-    left = bio.__len__() % level_len
-    for _ in range(left):
-        char = random.choice(columns3)
-        bio=f"{bio}{char}"
     print(bio, end="")
 
 def columns_with_spaces():
     bio = "░"
-    for _ in range(10):
+    for _ in range(7):
         for _ in range(web_bio_len):
             bio=f"{bio}{space} "
-
         bio=f"{bio}{space}\n"
 
-    for _ in range(level_len * 7 * 2):
+    for _ in range(level_len * 14):
         char = random.choice(columns3)
         bio=f"{bio}{char}{space}"
 
-    left = bio.__len__() % level_len
-    for _ in range(left):
-        char = random.choice(columns3)
-        bio=f"{bio}{char}"
     print(bio, end="")
 
 
