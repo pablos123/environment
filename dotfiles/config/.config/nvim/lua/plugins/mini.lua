@@ -5,8 +5,8 @@ return {
         config = function()
             require 'mini.icons'.setup {}
             require 'mini.surround'.setup {}
-            require 'mini.ai'.setup {}
             require 'mini.cursorword'.setup {}
+            require 'mini.pick'.setup {}
             local indentscope = require 'mini.indentscope'
             indentscope.setup {
                 symbol = '│',
