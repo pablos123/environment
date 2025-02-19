@@ -7,8 +7,6 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
-config.color_scheme = 'rose-pine'
--- Black Metal (Burzum) (base16)
 config.window_background_opacity = 0.8
 config.colors = { cursor_fg = 'black', cursor_bg = 'white', cursor_border = 'white' }
 config.font = wezterm.font 'JetBrainsMono Nerd Font'

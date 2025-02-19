@@ -74,6 +74,7 @@ apt_packages=(
     python3-venv
     golang
     luarocks
+    flatpak
     cpanminus
     yad
     keepassxc

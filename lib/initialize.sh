@@ -8,7 +8,6 @@ original_path="$(pwd)"
 
 function cwd_on_exit() {
     cd "${original_path}"
-    echo "Done! Remember to reboot your pc!"
 }
 
 trap cwd_on_exit EXIT ERR SIGINT SIGTERM SIGKILL
@@ -173,7 +172,7 @@ function make_symbolic_links() {
 }
 
 function cleanup() {
-    sudo apt-get autoremove --purge -y
+    sudo apt autopurge -y
 }
 
 install_apt
@@ -197,3 +196,5 @@ install_fonts
 cleanup
 
 reload_environment
+
+echo "Done! Remember to reboot your pc!"
