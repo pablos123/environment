@@ -1,10 +1,10 @@
 return {
     'nvim-lua/plenary.nvim',
     {
-        'lewis6991/gitsigns.nvim',
+        "EdenEast/nightfox.nvim",
         config = function()
-            require 'gitsigns'.setup {}
-        end,
+            vim.cmd('colorscheme carbonfox')
+        end
     },
     {
         'pablos123/shellcheck.nvim',
