@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ -f "$HOME/.minimal_environment" ]]; then
-    xterm
+[[ -f "$HOME/.minimal_environment" ]] &&
     exit 0
-fi
 
 wezterm
 

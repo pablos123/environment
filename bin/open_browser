@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -f "$HOME/.minimal_environment" ]]; then
+[[ -f "$HOME/.minimal_environment" ]] &&
     exit 0
-fi
 
 chrome

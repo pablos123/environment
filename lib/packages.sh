@@ -77,6 +77,7 @@ apt_packages=(
     cpanminus
     yad
     keepassxc
+    picom
 )
 
 cargo_packages=(
