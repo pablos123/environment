@@ -42,7 +42,6 @@ map('n', '=', '<cmd>5winc ><cr>', add_desc('Increase window width'))
 -- Others
 map('n', 'gdi', '<cmd>lua vim.diagnostic.open_float()<cr>', add_desc('Show a popup window with diagnostics'))
 map("v", '//', "y/\\V<c-r>=escape(@\",'/\\')<cr><cr>", add_desc("Search for visually highlighted"))
-map('t', '<Esc>', '<C-\\><C-n>', add_desc('Escape to go to normal mode in terminal mode'))
 
 -- System clipboard
 map('v', '<leader>y', '"+y', add_desc(''))
