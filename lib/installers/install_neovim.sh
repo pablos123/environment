@@ -18,7 +18,7 @@ function install_neovim() {
         doxygen
     )
 
-    sudo apt install -y "${dependencies[@]}"
+    sudo apt-get install --yes "${dependencies[@]}"
 
     neovim_path="${REPOS_PATH}/neovim"
 

@@ -12,11 +12,11 @@ trap cwd_on_exit EXIT ERR SIGINT SIGTERM SIGKILL
 
 mkdir -p "${REPOS_PATH}" "${HOME}/screenshots" "${HOME}/projects" "${HOME}/bin"
 
-for installer in "${HOME}/environment/lib/installers/install_"*; do
+for installer in "${HOME}/environment/lib/installers/"*; do
     bash "${installer}"
 done
 
-sudo apt autopurge -y
+sudo apt-get autoremove --purge --yes
 
 bash "${HOME}/environment/bin/reload_environment"
 

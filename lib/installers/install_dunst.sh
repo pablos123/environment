@@ -16,7 +16,7 @@ function install_dunst() {
       libnotify-dev
     )
 
-    sudo apt install -y "${dependencies[@]}"
+    sudo apt-get install --yes "${dependencies[@]}"
 
     dunst_path="${REPOS_PATH}/dunst"
 

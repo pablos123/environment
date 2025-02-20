@@ -9,7 +9,7 @@ function install_suckless() {
         libxinerama-dev
         libxft-dev
     )
-    sudo apt install -y "${dependencies[@]}"
+    sudo apt-get install --yes "${dependencies[@]}"
     for tool in dwm dmenu st; do
         tool_path="${REPOS_PATH}/${tool}"
 

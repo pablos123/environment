@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function install_rustup() {
-    sudo apt purge -y rustc cargo
-    sudo apt autopurge -y
+    sudo apt-get purge --yes rustc cargo
+    sudo apt-get autoremove --purge --yes
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup_installer.sh
     sh /tmp/rustup_installer.sh -y
     source "${HOME}/.cargo/env"

@@ -5,6 +5,6 @@ if [[ "$(whoami)" != "root" ]]; then
     exit 1
 fi
 
-apt install -y sudo
+apt-get install --yes sudo
 usermod -aG sudo pab
 
