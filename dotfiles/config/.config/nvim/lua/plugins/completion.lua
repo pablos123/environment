@@ -16,10 +16,7 @@ return {
             sources = {
                 providers = {
                     cmdline = {
-                        -- Do not complete when pressing :q :w
-                        enabled = function()
-                            return not vim.fn.getcmdline():match("^[wq].*")
-                        end
+                        enabled = false
                     },
                 },
             },

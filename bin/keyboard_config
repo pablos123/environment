@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # This file is sourced by .xprofile
-# That is why is /bin/sh instead of bash.
+# That is why it needs to be POSIX.
 
 setxkbmap eu -option caps:swapescape
 xset r rate 230 50

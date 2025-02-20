@@ -17,3 +17,4 @@
 
 [ -d "${HOME}/environment/bin" ] &&
     PATH="${HOME}/environment/bin:${PATH}"
+

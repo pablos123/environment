@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
-repos_path="${HOME}/repos"
-mkdir -p "${repos_path}"
-
 function install_suckless() {
     local tool tool_path current_tool_version current_tool_version repo_tool_version dependencies
     dependencies=(
@@ -16,7 +11,7 @@ function install_suckless() {
     )
     sudo apt install -y "${dependencies[@]}"
     for tool in dwm dmenu st; do
-        tool_path="${repos_path}/${tool}"
+        tool_path="${REPOS_PATH}/${tool}"
 
         [[ ! -d "${tool_path}" ]] &&
             git clone "https://git.suckless.org/${tool}" "${tool_path}"

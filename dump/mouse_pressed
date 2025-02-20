@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Exit if mouse's button is pressed.
-# Checks $XINPUT_MOUSE_ID env variable mouse.
 # Usage: mouse_pressed [left:default|right|wheel]
 
 button=1
@@ -17,6 +16,8 @@ if [[ -n $1 ]]; then
     fi
 fi
 
+# See what to set here with 'xinput --list'
+XINPUT_MOUSE_ID=8
 state="$(xinput --query-state "$XINPUT_MOUSE_ID" | grep "\[$button\]=")"
 if [[ $state =~ "down" ]]; then
     exit 0
