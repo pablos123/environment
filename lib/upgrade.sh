@@ -8,7 +8,9 @@ function cwd_on_exit() {
     cd "${original_path}"
 }
 
-trap cwd_on_exit EXIT ERR SIGINT SIGTERM SIGKILL
+trap cwd_on_exit EXIT ERR SIGINT SIGTERM
+
+source "${HOME}/environment/lib/env_variables.sh"
 
 mkdir -p "${REPOS_PATH}" "${HOME}/screenshots" "${HOME}/projects" "${HOME}/bin"
 
