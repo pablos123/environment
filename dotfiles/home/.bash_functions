@@ -1,40 +1,5 @@
 #!/usr/bin/env bash
 
-# Load completions
-load_completions() {
-    # Load bash completions capabilities
-    source /usr/share/bash-completion/bash_completion
-    local wanted_completions
-    wanted_completions=(
-        man git gitk ssh ssh-add sshfs su sudo scp pkill apt fdisk
-        grub curl tar mount umount hugo perl mpv vagrant crontab wget
-        useradd usermod userdel python3 kill pgrep xrandr
-    )
-    local completions_dir="/usr/share/bash-completion/completions/"
-    if [ -d "$completions_dir" ]; then
-        for completion in "${wanted_completions[@]}"; do
-            if [[ -f "$completions_dir/$completion" ]] && [[ -r "$completions_dir/$completion" ]]; then
-                # 'command' built-in to avoid alias lookups to reduce overheads
-                command source "/usr/share/bash-completion/completions/$completion" >/dev/null
-            fi
-        done
-    fi
-}
-
-# List all available completions
-# Load all completions in bash-completion/completions
-list_completions() {
-    local completions_dir="/usr/share/bash-completion/completions/"
-    echo "Listing completions in $completions_dir:"
-    if [ -d "$completions_dir" ]; then
-        for completion in "$completions_dir"*; do
-            if [[ -f "$completion" ]] && [[ -r "$completion" ]]; then
-                echo "$completion"
-            fi
-        done
-    fi
-}
-
 # Naza find
 # Usage: nfind <name> to not type -name every time
 nfind() {
@@ -46,7 +11,7 @@ nfind() {
 }
 
 # Print all escape terminal colors
-colors() {
+print_color_codes() {
     for x in {0..8}; do
         echo -ne "\e[$x""m\\\e[$x""m\e[0m "
         echo
