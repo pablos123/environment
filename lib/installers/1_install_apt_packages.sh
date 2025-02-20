@@ -75,7 +75,7 @@ function install_apt_packages() {
         pipx
     )
     sudo apt-get update
-    sudo apt-get dist-upgrade
+    sudo apt-get dist-upgrade --yes
     sudo apt-get install --yes "${apt_packages[@]}"
 
     ln -fs "$(command -v fdfind)" "${HOME}/.local/bin/fd"
