@@ -11,19 +11,22 @@ source "${HOME}/.bash_variables"
 source "${HOME}/.git-prompt.sh"
 source "${HOME}/.bash_aliases"
 
-[[ -s "${HOME}/.fzf.bash" ]] &&
+[[ -f /usr/share/bash-completion/bash_completion ]] &&
+    source /usr/share/bash-completion/bash_completion
+
+[[ -f "${HOME}/.fzf.bash" ]] &&
     source ${HOME}/.fzf.bash
 
 [[ -f "${HOME}/.bashrc_custom" ]] &&
     source "${HOME}/.bashrc_custom"
 
 export NVM_DIR="${HOME}/.nvm"
-[[ -s "${NVM_DIR}/nvm.sh" ]] &&
+[[ -f "${NVM_DIR}/nvm.sh" ]] &&
     source "${NVM_DIR}/nvm.sh"
-[[ -s "${NVM_DIR}/bash_completion" ]] &&
+[[ -f "${NVM_DIR}/bash_completion" ]] &&
     source "${NVM_DIR}/bash_completion"
 
-[[ -s "${HOME}/.cargo/env" ]] &&
+[[ -f "${HOME}/.cargo/env" ]] &&
     source "${HOME}/.cargo/env"
 
 export PYENV_ROOT="${HOME}/.pyenv"

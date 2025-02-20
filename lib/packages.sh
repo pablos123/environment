@@ -78,6 +78,7 @@ apt_packages=(
     yad
     keepassxc
     picom
+    bash-completion
 )
 
 cargo_packages=(

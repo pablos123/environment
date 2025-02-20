@@ -21,7 +21,3 @@
 
 [ -d "${HOME}/.pyenv" ] &&
     PATH="${HOME}/.pyenv:${PATH}"
-
-[ -f /usr/share/bash-completion/bash_completion ] &&
-    . /usr/share/bash-completion/bash_completion
-
