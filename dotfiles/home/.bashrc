@@ -21,8 +21,10 @@ source "${HOME}/.bash_aliases"
     source "${HOME}/.bashrc_custom"
 
 export NVM_DIR="${HOME}/.nvm"
+
 [[ -f "${NVM_DIR}/nvm.sh" ]] &&
     source "${NVM_DIR}/nvm.sh"
+
 [[ -f "${NVM_DIR}/bash_completion" ]] &&
     source "${NVM_DIR}/bash_completion"
 
@@ -30,8 +32,11 @@ export NVM_DIR="${HOME}/.nvm"
     source "${HOME}/.cargo/env"
 
 export PYENV_ROOT="${HOME}/.pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
-if command -v pyenv >/dev/null; then
+
+[[ -d ${PYENV_ROOT}/bin ]] &&
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+
+if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
