@@ -1,30 +1,39 @@
 #!/usr/bin/env bash
-# Guess what pc I'm using and configure the monitors. If the pc it's not recognized do nothing.
 
-monitors=($(xrandr | grep " connected" | awk '{print $1}'))
-monitors_count="${#monitors[@]}"
-
-if [[ $monitors_count -eq 1 ]]; then
-    # Desk
-    if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
-        xrandr --output "HDMI-A-0" --primary
-        exit 0
-    fi
-fi
-
-if [[ $monitors_count -eq 2 ]]; then
+function configure_monitors() {
     # Notebook
-    if [[ "${monitors[*]}" =~ "HDMI-1" ]] && [[ "${monitors[*]}" =~ "eDP-1" ]]; then
-        xrandr --output "eDP-1" --off
-        exit 0
+    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
+        if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
+            xrandr --output "HDMI-1" --left-of "eDP-1" --primary --auto
+        else
+            xrandr --output "eDP-1" --primary --auto
+        fi
     fi
-    # Desk with TV
-    # I will use the TV with Cinnamon for gaming and kodi
-    if [[ "${monitors[*]}" =~ "HDMI-A-0" ]] && [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
-        xrandr --output "HDMI-A-0" --off
-        exit 0
-    fi
-fi
 
-# Not recognized... skipping.
-exit 0
+    # Desk
+    if [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
+        if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
+            xrandr --output "DisplayPort-2" --auto --right-of "HDMI-A-0" --primary
+        else
+            xrandr --output "DisplayPort-2" --primary --auto
+        fi
+    fi
+}
+
+mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+configure_monitors
+
+tmp_connected_file=/tmp/monitors_connected
+while true; do
+    mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+    [[ ! -f "${tmp_connected_file}" ]] &&
+        echo -n "${monitors[*]}" > "${tmp_connected_file}"
+
+    if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
+        configure_monitors
+        i3-msg reload >/dev/null 2>&1
+        echo -n "${monitors[*]}" > "${tmp_connected_file}"
+    fi
+
+    sleep 10
+done

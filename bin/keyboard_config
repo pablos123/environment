@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# This file is sourced by .xprofile
+# That is why it needs to be POSIX.
 
 setxkbmap eu -option caps:swapescape
 xset r rate 230 50
@@ -8,8 +11,6 @@ xset dpms 0 0 3600
 # I bought a keyboard with mac's layout (Estaba 60 lucas menos, olvidate)
 # Swap cmd and opt if the keyboard is connected.
 # Give cmd altgr behaviour and opt ctrl.
-# Che posta literalmente tres líneas de código me ahorraron ~50 dólares.
-# Ni nos vi
 if lsusb | grep -q 'Inc. Logi Bolt Receiver'; then
     setxkbmap eu -option altwin:swap_lalt_lwin
     setxkbmap eu -option ctrl:ralt_rctrl

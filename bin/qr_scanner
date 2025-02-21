@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 # Scan qr showed on the screen and copy the content to the clipboard (works for multiple qrs)
 
-(scrot -s '/tmp/pablito_qr_scan.png' -e 'zbarimg --raw --quiet $f && rm -f $f') 2>/dev/null | xclip
+file_name="/tmp/qr_scanner.tmp.png"
+flameshot gui -p "${file_name}" >/dev/null 2>&1
+qr_content="$(zbarimg --raw --quiet "${file_name}")"
+echo "${qr_content}" | xclip
+[[ -n "${qr_content}" ]] && notify-send "${qr_content}"
+rm -f "${file_name}"

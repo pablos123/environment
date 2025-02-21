@@ -1,6 +1,7 @@
 require 'core/base'
 require 'core/mappings'
 require 'core/autocmd'
+require 'core/terminal'
 
 -- Faster startup
 vim.loader.enable()

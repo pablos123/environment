@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
-# Open web apps only if there's not another instance of that web app.
+# Create web apps executables only if there's not another instance of that web app.
 
-source "$HOME/.bash_variables"
+web_apps=(
+    https://web.whatsapp.com/
+    https://discord.com/channels/@me
+    https://web.telegram.org/a/
+    https://open.spotify.com/
+)
 
 chrome_window_ids=$(xdotool search --class "Google-chrome")
 instances=()

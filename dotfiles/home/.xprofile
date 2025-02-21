@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+. "${HOME}/environment/bin/keyboard_config"

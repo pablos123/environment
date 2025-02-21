@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
+# Install Flatseal for giving flatpak Steam more permission to access the
+# file system if you want to use, for example, another drive to save your games.
+
 flatpak run com.valvesoftware.Steam

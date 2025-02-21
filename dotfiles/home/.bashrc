@@ -1,35 +1,43 @@
 #!/usr/bin/env bash
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
-if xset -b b off >/dev/null; then keyboard_config; fi
+[[ $- != *i* ]] &&
+    return
 
 shopt -s direxpand
 shopt -s autocd
 
-source "${HOME}/.bash_variables"
+source "${HOME}/environment/lib/env_variables.sh"
+source "${HOME}/environment/lib/aliases.sh"
+
 source "${HOME}/.git-prompt.sh"
-source "${HOME}/.bash_aliases"
-source "${HOME}/.bash_functions"
 
-[[ -s ${HOME}/.fzf.bash ]] && source ${HOME}/.fzf.bash
+[[ -f /usr/share/bash-completion/bash_completion ]] &&
+    source /usr/share/bash-completion/bash_completion
 
-load_completions
+[[ -f "${HOME}/.fzf.bash" ]] &&
+    source ${HOME}/.fzf.bash
 
-if [[ -f "${HOME}/.bashrc_custom" ]]; then
+[[ -f "${HOME}/.bashrc_custom" ]] &&
     source "${HOME}/.bashrc_custom"
-fi
 
 export NVM_DIR="${HOME}/.nvm"
-[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"
-[[ -s "${NVM_DIR}/bash_completion" ]] && source "${NVM_DIR}/bash_completion"
 
-[[ -s "${HOME}/.cargo/env" ]] && source "${HOME}/.cargo/env"
+[[ -f "${NVM_DIR}/nvm.sh" ]] &&
+    source "${NVM_DIR}/nvm.sh"
+
+[[ -f "${NVM_DIR}/bash_completion" ]] &&
+    source "${NVM_DIR}/bash_completion"
+
+[[ -f "${HOME}/.cargo/env" ]] &&
+    source "${HOME}/.cargo/env"
 
 export PYENV_ROOT="${HOME}/.pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
-if command -v pyenv >/dev/null; then
+
+[[ -d ${PYENV_ROOT}/bin ]] &&
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+
+if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi

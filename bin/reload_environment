@@ -1,24 +1,29 @@
 #!/usr/bin/env bash
 
-mkdir -p "$HOME/.dotfiles_stow" "$HOME/bin"
+files_to_remove=(
+    "${HOME}/.dotfiles_stow"
+    "${HOME}/.bashrc"
+    "${HOME}/.profile"
+    "${HOME}/.xinitrc"
+    "${HOME}/.xprofile"
+    "${HOME}/.xresources"
+)
+
+for file in "${files_to_remove[@]}"; do
+    rm -rf "${file}"
+done
 
 # Copy the base content
-rm -rf "$HOME/.dotfiles_stow/"*
-cp -r "$HOME/environment/dotfiles/"* "$HOME/.dotfiles_stow"
-
+cp -r "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
 # Stow the new files
 (
-    cd "$HOME/.dotfiles_stow" || exit 1
+    cd "${HOME}/.dotfiles_stow"
     stow --target="$HOME" --restow -- */
 )
 
-set_wallpaper
-
-rm -f "$HOME/.cache/dmenu_run"
-rm -f "$HOME/dmenu_cache"
-i3-msg reload >/dev/null 2>&1
+rm -f "$HOME/.cache/dmenu_run" "$HOME/dmenu_cache"
+fc-cache -rf >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
 killall flameshot >/dev/null 2>&1
-sleep 0.5
-
+i3-msg reload >/dev/null 2>&1

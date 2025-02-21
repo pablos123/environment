@@ -1,29 +1,20 @@
 #!/usr/bin/env sh
 
-if [ -n "${BASH_VERSION}" ]; then
-    [ -f "${HOME}/.bashrc" ] && . "${HOME}/.bashrc"
-fi
+[ -n "${BASH_VERSION}" ] && [ -f "${HOME}/.bashrc" ] &&
+    . "${HOME}/.bashrc"
 
-if [ -d "${HOME}/bin" ]; then
-    PATH="${HOME}/bin:${PATH}"
-fi
+[ -d "${HOME}/bin" ] &&
+   PATH="${HOME}/bin:${PATH}"
 
-if [ -d "${HOME}/.local/bin" ]; then
-    PATH="${HOME}/.local/bin:${PATH}"
-fi
+[ -d "${HOME}/.local/bin" ] &&
+  PATH="${HOME}/.local/bin:${PATH}"
 
-if [ -d "${HOME}/.cargo/bin" ]; then
+[ -d "${HOME}/.cargo/bin" ] &&
     PATH="${HOME}/.cargo/bin:${PATH}"
-fi
 
-if [ -d "${HOME}/go/bin" ]; then
+[ -d "${HOME}/go/bin" ] &&
     PATH="${HOME}/go/bin:${PATH}"
-fi
 
-if [ -d "${HOME}/environment/bin" ]; then
+[ -d "${HOME}/environment/bin" ] &&
     PATH="${HOME}/environment/bin:${PATH}"
-fi
 
-if [ -d "${HOME}/.pyenv" ]; then
-    PATH="${HOME}/.pyenv:${PATH}"
-fi

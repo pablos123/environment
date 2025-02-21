@@ -10,5 +10,5 @@ Probably I am using this on the latest version of _Linux Mint_.
 # New machine
 ```bash
 git clone 'https://github.com/pablos123/environment' "${HOME}/environment"
-bash "${HOME}/environment/lib/initialize.sh"
+bash "${HOME}/environment/lib/upgrade.sh"
 ```

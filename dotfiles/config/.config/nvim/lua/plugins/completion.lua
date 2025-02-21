@@ -14,7 +14,11 @@ return {
             },
             signature = { enabled = true },
             sources = {
-                cmdline = {},
+                providers = {
+                    cmdline = {
+                        enabled = false
+                    },
+                },
             },
         },
     },

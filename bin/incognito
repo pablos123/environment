@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Google Chrome does not send notifications to dunst https://github.com/dunst-project/dunst/issues/375
+
+google-chrome  --incognito --enable-features=EnableNativeNotifications

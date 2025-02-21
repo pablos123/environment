@@ -1,222 +1,135 @@
-#-------------------------------------------------------------------------------
-# Comments are there mostly for finding the configurations quicker.
-
-# DOCS
 # https://i3wm.org/docs/userguide.html
+# To generate the defaults run i3-config-wizard
+# Do not do inline comments the configurations will break
 
-# mod, Super
-# Alt Key
 set $mod Mod1
-# Windows Key
-# set $mod Mod4
 
-# Font
 font pango:Lilex Nerd Font Bold 10
 
-# WORKSPACES
-#-------------------------------------------------------------------------------
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "0"
+# Desk Notebook
+workspace 1 output primary
+workspace 2 output primary
+workspace 3 output primary
+workspace 4 output primary
+workspace 5 output primary
+workspace 6 output primary
+workspace 7 output primary
+workspace 8 output primary
+workspace 9 output primary
+# i3 cannot have a monitor without a workspace
+workspace 0 output "eDP-1" "HDMI-A-0" "DisplayPort-2" "HDMI-1"
 
-# WINDOWS
-#-------------------------------------------------------------------------------
 # View the class name with xprop WM_CLASS
 # The first part of the WM_CLASS is the instance, the second part is the class.
-# Browser
-for_window [class="Google-chrome"] move container to workspace $ws1
-for_window [class="firefox"] move container to workspace $ws1
-for_window [class="Firefox-esr"] move container to workspace $ws1
-# Terminal
-for_window [class="org.wezfurlong.wezterm"] move container to workspace $ws3
-for_window [class="XTerm"] move container to workspace $ws3
-for_window [class="Terminator"] move container to workspace $ws3
-# Web Apps, Social
-for_window [instance="web.whatsapp.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="instagram.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="discord.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="web.telegram.org"] move container to workspace $ws4, layout tabbed
-for_window [instance="open.spotify.com"] move container to workspace $ws9
-# Applets
-for_window [title="Tiny Calendar"] move container to output primary, floating enable, sticky enable
-for_window [title="Tiny Bash Calendar"] move container to output primary, floating enable, sticky enable
-# Database
-for_window [class="DBeaver"] move container to workspace $ws5
+for_window [class="Google-chrome"] move container to workspace 1
+for_window [class="org.wezfurlong.wezterm"] move container to workspace 3
 
-for_window [class="steam"] move container to workspace $ws7
+for_window [class="obsidian"] move container to workspace 2
 
-# File Manager
-for_window [class="Nemo"] floating enable
+for_window [class="Nemo"] floating enable sticky enable focus
+for_window [class="Pavucontrol"] floating enable sticky enable focus
+for_window [class="Yad"] floating enable sticky enable focus
 
-# Work related
-for_window [instance="app.element.io"] move container to workspace $ws4
-for_window [instance="web.skype.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="mail.google.com"] move container to workspace $ws4, layout tabbed
-for_window [instance="trello.com"] move container to workspace $ws4, layout tabbed
+for_window [instance="web.whatsapp.com"] move container to workspace 4, layout tabbed
+for_window [instance="discord.com"] move container to workspace 4, layout tabbed
+for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
+for_window [instance="open.spotify.com"] move container to workspace 9
 
-# EXEC, STARTUP
-#-------------------------------------------------------------------------------
-exec_always --no-startup-id sleep 1 && monitors_config
-exec_always --no-startup-id keyboard_config
+for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
+for_window [class="DBeaver"] move container to workspace 5
 
-exec_always --no-startup-id reload_environment
+for_window [class="steam"] move container to workspace 7
 
-exec --no-startup-id sleep 1 && start_daemons
+exec --no-startup-id sleep 1 && release_daemons
 
-# Authentication agent
-# Terminal
-exec --no-startup-id open_terminal
-# Browser
+exec --no-startup-id sleep 1 && open_terminal
 exec --no-startup-id sleep 2 && open_browser
-# Web Apps, Social
 exec --no-startup-id sleep 3 && web_apps
-# Clean apps' attention to not have urgent workspace
 exec --no-startup-id sleep 7 && clean_urgent
 
-# MAPPINGS
-#-------------------------------------------------------------------------------
-# Comments in the same line as the binding will break
-# Terminal
 bindsym $mod+Return exec --no-startup-id open_terminal
-# Screenshots
 bindsym $mod+p exec --no-startup-id flameshot gui
-# Program Laucher
 bindsym $mod+o exec --no-startup-id dmenu_run
-# Close Window
 bindsym $mod+Shift+c kill
 
-# VIM mappings
-#--------------------------------
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-#--------------------------------
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-set $exit_mode [l]ogout [r]eboot [p]oweroff loc[k]
+set $exit_mode [e]xit [l]ock
 bindsym $mod+Shift+e mode "$exit_mode"
 mode "$exit_mode" {
-    bindsym l exec i3-msg exit
-    bindsym r exec reboot
-    bindsym p exec poweroff
-    bindsym k exec xdotool key Escape && lock_screen
+    bindsym e exec pkill -u pab
+    bindsym l exec xdotool key Escape && lock_screen
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
     bindsym $mod+Shift+e mode "default"
 }
 
-# reload the configuration file
-bindsym $mod+Shift+q reload
+bindsym $mod+Shift+r exec --no-startup-id reload_environment
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-
-# Audio
-set $refresh_i3status killall -SIGUSR1 i3status
 # https://wiki.linuxquestions.org/wiki/XF86_keyboard_symbols
+set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86Sleep exec --no-startup-id lock_screen
 
-# use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-
-# split in vertical orientation
-bindsym $mod+v split v
-
-# split in horizontal orientation
-bindsym $mod+ntilde split h
-
-# enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 0
 
-# focus the child container
-bindsym $mod+d focus child
-
-# switch to workspace
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
-
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
-
-# focus with Cursor Keys
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-# move windows with Cursor Keys
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 0
 
 bar {
     position bottom
     mode dock
     status_command i3status
+    output primary
 }
 
-gaps inner 10px
-gaps outer 5px
-gaps horizontal 5px
-gaps vertical 5px
-gaps top 5px
-gaps left 5px
-gaps bottom 5px
-gaps right 5px
-
-# No gaps will be shown when there is precisely one window or split ocntainer on the workspace.
+# No gaps will be shown when there is precisely one window or
+# split container on the workspace.
 smart_gaps on
+gaps inner 10
+gaps outer 5
+gaps horizontal 5
+gaps vertical 5
+gaps top 5
+gaps left 5
+gaps bottom 5
+gaps right 5
 
-# Window borders
+# Hides edge-specific borders of a container if the container
+# is the only container on its workspace and the gaps to the screen edge are 0.
+hide_edge_borders smart_no_gaps
 default_border pixel 3
 default_floating_border pixel 2
-smart_borders no_gaps
 
-# Should you change your keyboard layout some time, delete
-# this file and re-run i3-config-wizard(1).
