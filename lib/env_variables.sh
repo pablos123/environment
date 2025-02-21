@@ -15,8 +15,7 @@ export GIT_COMMITTER_EMAIL="pablosaavedra123@gmail.com"
 
 export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
 
-export LETTERBOXD_USER="pablos123"
-
+# Used for all installers
 export REPOS_PATH="${HOME}/repos"
 
 [ -f "${HOME}/.custom_env_variables" ] &&

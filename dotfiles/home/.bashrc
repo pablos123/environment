@@ -9,8 +9,7 @@ shopt -s autocd
 
 source "${HOME}/environment/lib/env_variables.sh"
 source "${HOME}/environment/lib/aliases.sh"
-
-source "${HOME}/.git-prompt.sh"
+source "${HOME}/environment/lib/git-prompt.sh"
 
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
     source /usr/share/bash-completion/bash_completion
