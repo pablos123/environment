@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e -x
+set -x
 
 original_path="$(pwd)"
 
@@ -15,7 +15,7 @@ source "${HOME}/environment/lib/env_variables.sh"
 mkdir -p "${REPOS_PATH}" "${HOME}/screenshots" "${HOME}/projects" "${HOME}/bin"
 
 for installer in "${HOME}/environment/lib/installers/"*; do
-    bash "${installer}"
+    source "${installer}"
 done
 
 sudo apt-get autoremove --purge --yes
