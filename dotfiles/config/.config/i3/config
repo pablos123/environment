@@ -44,8 +44,7 @@ exec --no-startup-id sleep 1 && release_daemons
 
 exec --no-startup-id sleep 1 && open_terminal
 exec --no-startup-id sleep 2 && open_browser
-exec --no-startup-id sleep 3 && web_apps
-exec --no-startup-id sleep 7 && clean_urgent
+exec --no-startup-id sleep 5 && clean_urgent
 
 bindsym $mod+Return exec --no-startup-id open_terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
