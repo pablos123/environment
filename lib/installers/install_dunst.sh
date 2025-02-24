@@ -31,7 +31,7 @@ function install_dunst() {
 
     make
     sudo make install
-    make clean
+    sudo make clean
 }
 
 install_dunst
