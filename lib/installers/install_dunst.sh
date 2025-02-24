@@ -25,6 +25,7 @@ function install_dunst() {
 
     cd "${dunst_path}"
 
+    sudo make clean
     git add .
     git reset --hard
     git pull

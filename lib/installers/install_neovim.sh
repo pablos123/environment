@@ -27,6 +27,8 @@ function install_neovim() {
 
     cd "${neovim_path}"
 
+    sudo make clean
+    sudo rm -rf .deps build
     git add .
     git reset --hard
     git pull

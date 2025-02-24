@@ -73,6 +73,7 @@ function install_apt_packages() {
         picom
         bash-completion
         pipx
+        zenity
     )
     sudo apt-get update
     sudo apt-get dist-upgrade --yes
