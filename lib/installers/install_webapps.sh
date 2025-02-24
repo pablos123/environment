@@ -6,6 +6,9 @@ declare -rA web_apps=(
     ["discord"]="https://discord.com/channels/@me"
     ["telegram"]="https://web.telegram.org/a/"
     ["spotify"]="https://open.spotify.com/"
+    ["skype"]="https://web.skype.com/"
+    ["excalidraw"]="https://excalidraw.com/"
+    ["chatgpt"]="https://chatgpt.com/"
 )
 
 # 1: name

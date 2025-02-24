@@ -34,10 +34,12 @@ for_window [instance="web.whatsapp.com"] move container to workspace 4, layout t
 for_window [instance="discord.com"] move container to workspace 4, layout tabbed
 for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
 for_window [instance="open.spotify.com"] move container to workspace 9
-
 for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
-for_window [class="DBeaver"] move container to workspace 5
 
+for_window [instance="chatgpt.com"] floating enable sticky enable focus
+for_window [instance="excalidraw.com"] floating enable sticky enable focus
+
+for_window [class="DBeaver"] move container to workspace 5
 for_window [class="steam"] move container to workspace 7
 
 exec --no-startup-id sleep 1 && release_daemons
