@@ -22,31 +22,32 @@ workspace 0 output "eDP-1" "HDMI-A-0" "DisplayPort-2" "HDMI-1"
 # View the class name with xprop WM_CLASS
 # The first part of the WM_CLASS is the instance, the second part is the class.
 for_window [class="Google-chrome"] move container to workspace 1
+
+for_window [class="obsidian"] move container to workspace 2, layout tabbed
+for_window [instance="chatgpt.com"] move container to workspace 2, layout tabbed
+for_window [instance="excalidraw.com"] move container to workspace 2, layout tabbed
+
 for_window [class="org.wezfurlong.wezterm"] move container to workspace 3
 
-for_window [class="obsidian"] move container to workspace 2
+for_window [instance="web.whatsapp.com"] move container to workspace 4, layout tabbed
+for_window [instance="discord.com"] move container to workspace 4, layout tabbed
+for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
+for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
+
+for_window [class="DBeaver"] move container to workspace 5
+
+for_window [class="steam"] move container to workspace 7
+
+for_window [instance="open.spotify.com"] move container to workspace 9
 
 for_window [class="Nemo"] floating enable sticky enable focus
 for_window [class="Pavucontrol"] floating enable sticky enable focus
 for_window [class="Yad"] floating enable sticky enable focus
 
-for_window [instance="web.whatsapp.com"] move container to workspace 4, layout tabbed
-for_window [instance="discord.com"] move container to workspace 4, layout tabbed
-for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
-for_window [instance="open.spotify.com"] move container to workspace 9
-for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
-
-for_window [instance="chatgpt.com"] move container to workspace 2
-for_window [instance="excalidraw.com"] move container to workspace 2
-
-for_window [class="DBeaver"] move container to workspace 5
-for_window [class="steam"] move container to workspace 7
-
 exec --no-startup-id sleep 1 && release_daemons
-
-exec --no-startup-id sleep 1 && open_terminal
-exec --no-startup-id sleep 2 && open_browser
-exec --no-startup-id sleep 5 && clean_urgent
+exec --no-startup-id sleep 3 && open_terminal
+exec --no-startup-id sleep 6 && open_browser
+exec --no-startup-id sleep 10 && clean_urgent
 
 bindsym $mod+Return exec --no-startup-id open_terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
