@@ -4,7 +4,7 @@ function configure_monitors() {
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
-            xrandr --output "HDMI-1" --left-of "eDP-1" --primary --auto
+            xrandr --output "HDMI-1" --primary --auto --left-of "eDP-1"
         else
             xrandr --output "eDP-1" --primary --auto
         fi
@@ -13,7 +13,7 @@ function configure_monitors() {
     # Desk
     if [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
-            xrandr --output "DisplayPort-2" --auto --right-of "HDMI-A-0" --primary
+            xrandr --output "DisplayPort-2" --primary --auto --right-of "HDMI-A-0"
         else
             xrandr --output "DisplayPort-2" --primary --auto
         fi
