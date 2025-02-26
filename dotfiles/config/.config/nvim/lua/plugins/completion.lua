@@ -13,12 +13,8 @@ return {
                 ['<CR>'] = { 'accept', 'fallback' },
             },
             signature = { enabled = true },
-            sources = {
-                providers = {
-                    cmdline = {
-                        enabled = false
-                    },
-                },
+            cmdline = {
+                enabled = false,
             },
         },
     },
