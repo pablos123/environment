@@ -31,7 +31,7 @@ while true; do
 
     if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
         configure_monitors
-        i3-msg reload >/dev/null 2>&1
+        i3-msg restart >/dev/null 2>&1
         echo -n "${monitors[*]}" > "${tmp_connected_file}"
     fi
 

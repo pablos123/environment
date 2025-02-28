@@ -26,4 +26,4 @@ rm -f "$HOME/.cache/dmenu_run" "$HOME/dmenu_cache"
 fc-cache -rf >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
 killall flameshot >/dev/null 2>&1
-i3-msg reload >/dev/null 2>&1
+i3-msg restart >/dev/null 2>&1
