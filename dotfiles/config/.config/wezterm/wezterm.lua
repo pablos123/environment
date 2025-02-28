@@ -1,5 +1,4 @@
 local wezterm = require 'wezterm'
-local mux = wezterm.mux
 
 local config = {}
 
@@ -7,15 +6,13 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
-config.window_background_opacity = 0.8
 config.colors = { cursor_fg = 'black', cursor_bg = 'white', cursor_border = 'white' }
 config.font = wezterm.font 'JetBrainsMono Nerd Font'
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0', }
-config.scrollback_lines = 10000
 
-config.tab_bar_at_bottom = true
-config.use_fancy_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
+config.enable_tab_bar = false
+
+config.scrollback_lines = 10000
 
 config.default_prog = { '/bin/bash' }
 
