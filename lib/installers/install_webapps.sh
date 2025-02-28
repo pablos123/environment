@@ -27,10 +27,10 @@ function create_web_app() {
 app_url="${app_url}"
 app_instance="${app_instance}"
 
-mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome" | tr '\n' ' ')
+mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome")
 for id in "\${chrome_window_ids[@]}"; do
-    instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print $3 }')"
-    [[ "\${instance_name}" == "\${app_name}" ]] &&
+    instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print \$3 }' | tr -d ' \n",')"
+    [[ "\${app_instance}" == "\${instance_name}" ]] &&
         exit 0
 done
 
