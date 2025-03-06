@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+
 function configure_monitors() {
+
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
@@ -18,23 +21,24 @@ function configure_monitors() {
             xrandr --output "DisplayPort-2" --primary --auto
         fi
     fi
+
+    i3-msg restart >/dev/null 2>&1
 }
 
-mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
-configure_monitors
-i3-msg restart >/dev/null 2>&1
+if [[ "${1}" == "-d" ]]; then
+    tmp_connected_file=/tmp/monitors_connected
+    echo -n "${monitors[*]}" > "${tmp_connected_file}"
 
-tmp_connected_file=/tmp/monitors_connected
-while true; do
-    mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
-    [[ ! -f "${tmp_connected_file}" ]] &&
-        echo -n "${monitors[*]}" > "${tmp_connected_file}"
+    while true; do
+        mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
-    if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
-        configure_monitors
-        i3-msg restart >/dev/null 2>&1
-        echo -n "${monitors[*]}" > "${tmp_connected_file}"
-    fi
+        if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
+            configure_monitors
+            echo -n "${monitors[*]}" > "${tmp_connected_file}"
+        fi
 
-    sleep 10
-done
+        sleep 10
+    done
+else
+    configure_monitors
+fi

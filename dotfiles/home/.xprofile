@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-. "${HOME}/environment/bin/keyboard_config"
+/usr/bin/env bash "${HOME}/environment/bin/monitors_config"
+
+/usr/bin/env bash "${HOME}/environment/bin/keyboard_config"

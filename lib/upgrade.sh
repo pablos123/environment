@@ -20,6 +20,6 @@ done
 
 sudo apt-get autoremove --purge --yes
 
-bash "${HOME}/environment/bin/reload_environment"
+/usr/bin/env bash "${HOME}/environment/bin/reload_environment"
 
 echo "Done! Remember to reboot your pc!"
