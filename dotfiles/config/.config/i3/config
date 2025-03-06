@@ -47,6 +47,7 @@ for_window [class="Yad"] floating enable sticky enable focus
 exec --no-startup-id sleep 1 && release_daemons
 exec --no-startup-id sleep 3 && open_terminal
 exec --no-startup-id sleep 6 && open_browser
+exec --no-startup-id sleep 8 && reload_environment
 exec --no-startup-id sleep 10 && clean_urgent
 
 bindsym $mod+Return exec --no-startup-id open_terminal
