@@ -22,6 +22,7 @@ function configure_monitors() {
 
 mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 configure_monitors
+i3-msg restart >/dev/null 2>&1
 
 tmp_connected_file=/tmp/monitors_connected
 while true; do

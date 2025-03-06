@@ -20,16 +20,11 @@ config.disable_default_key_bindings = true
 
 local actions = wezterm.action
 config.keys = {
-    -- Copy|Paste
     { key = 'c', mods = 'CTRL|SHIFT',  action = actions.CopyTo 'Clipboard', },
     { key = 'v', mods = 'CTRL|SHIFT',  action = actions.PasteFrom 'Clipboard', },
 
-    -- Font size
-    { key = '=', mods = 'SUPER',       action = actions.IncreaseFontSize, },
-    { key = '-', mods = 'SUPER',       action = actions.DecreaseFontSize, },
-
-    -- All commands
-    { key = '?', mods = 'SUPER|SHIFT', action = actions.ActivateCommandPalette, },
+    { key = '+', mods = 'CTRL|SHIFT',       action = actions.IncreaseFontSize, },
+    { key = '_', mods = 'CTRL|SHIFT',       action = actions.DecreaseFontSize, },
 }
 
 return config
