@@ -25,17 +25,19 @@ function install_neovim() {
     [[ ! -d "${neovim_path}" ]] &&
         git clone https://github.com/neovim/neovim "${neovim_path}"
 
-    cd "${neovim_path}"
+    (
+        cd "${neovim_path}"
 
-    sudo make clean
-    sudo rm -rf .deps build
-    git add .
-    git reset --hard
-    git pull
+        sudo make clean
+        sudo rm -rf .deps build
+        git add .
+        git reset --hard
+        git pull
 
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
-    sudo make clean
+        make CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make install
+        sudo make clean
+    )
 
     nvim --version
 }

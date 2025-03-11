@@ -23,16 +23,18 @@ function install_dunst() {
     [[ ! -d "${dunst_path}" ]] &&
         git clone https://github.com/dunst-project/dunst.git "${dunst_path}"
 
-    cd "${dunst_path}"
+    (
+        cd "${dunst_path}"
 
-    sudo make clean
-    git add .
-    git reset --hard
-    git pull
+        sudo make clean
+        git add .
+        git reset --hard
+        git pull
 
-    make
-    sudo make install
-    sudo make clean
+        make
+        sudo make install
+        sudo make clean
+    )
 }
 
 install_dunst
