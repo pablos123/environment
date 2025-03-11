@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-picom >/dev/null 2>&1 & disown
-nm-applet >/dev/null 2>&1 & disown
-blueman-applet >/dev/null 2>&1 & disown
-solaar -w hide >/dev/null 2>&1 & disown
-monitors_config -d >/dev/null 2>&1 & disown
