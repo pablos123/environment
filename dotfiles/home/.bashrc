@@ -4,13 +4,6 @@
 [[ $- != *i* ]] &&
     return
 
-# # Bootstrap tmux
-# command -v tmux >/dev/null 2>&1 &&
-#     [[ ! "${TERM}" =~ screen ]] &&
-#     [[ ! "${TERM}" =~ tmux ]] &&
-#     [[ -z "${TMUX}" ]] &&
-#   exec tmux
-
 shopt -s direxpand
 shopt -s autocd
 

@@ -31,7 +31,6 @@ function install_apt_packages() {
         solaar
         ncal
         valgrind
-        tmux
         zathura
         zathura-djvu
         zathura-ps
