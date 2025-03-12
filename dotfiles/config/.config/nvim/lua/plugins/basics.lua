@@ -1,9 +1,11 @@
 return {
     'nvim-lua/plenary.nvim',
     {
-        "EdenEast/nightfox.nvim",
+        'catppuccin/nvim',
+        name = "catppuccin",
+        priority = 1000,
         config = function()
-            vim.cmd('colorscheme carbonfox')
+            vim.cmd 'colorscheme catppuccin-mocha'
         end
     },
     {

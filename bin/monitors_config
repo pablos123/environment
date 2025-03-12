@@ -25,20 +25,20 @@ function configure_monitors() {
     i3-msg restart >/dev/null 2>&1
 }
 
+configure_monitors
+
 if [[ "${1}" == "-d" ]]; then
     tmp_connected_file=/tmp/monitors_connected
     echo -n "${monitors[*]}" > "${tmp_connected_file}"
 
     while true; do
+        sleep 10
+
         mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
         if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
             configure_monitors
             echo -n "${monitors[*]}" > "${tmp_connected_file}"
         fi
-
-        sleep 10
     done
-else
-    configure_monitors
 fi
