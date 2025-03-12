@@ -31,6 +31,7 @@ config.keys = {
     { key = '_', mods = 'CTRL|SHIFT', action = actions.DecreaseFontSize, },
 
     { key = 'T', mods = 'CTRL|SHIFT', action = actions.SpawnTab 'CurrentPaneDomain', },
+    { key = 'W', mods = 'CTRL|SHIFT', action = actions.CloseCurrentTab { confirm = true }, },
     { key = 'P', mods = 'CTRL|SHIFT', action = actions.ActivateTabRelative(-1) },
     { key = 'N', mods = 'CTRL|SHIFT', action = actions.ActivateTabRelative(1) },
 }
