@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-wallpapers_directory="${HOME}/.wallpapers"
-
-cd "${wallpapers_directory}" || exit 1
+cd "${HOME}/images/wallpapers"
 
 wallpapers_array=(*)
 

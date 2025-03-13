@@ -14,7 +14,6 @@ trap cwd_on_exit EXIT ERR SIGINT SIGTERM
 
 directories=(
     "${REPOS_PATH}"
-    "${HOME}/screenshots"
     "${HOME}/bin"
     "${HOME}/desktop"
     "${HOME}/downloads"
@@ -24,6 +23,7 @@ directories=(
     "${HOME}/music"
     "${HOME}/images"
     "${HOME}/videos"
+    "${HOME}/testing"
 )
 
 mkdir -p "${directories[@]}"
