@@ -61,6 +61,7 @@ function install_apt_packages() {
         xterm
         x11-xserver-utils
         xdg-utils
+        xdg-user-dirs
         inotify-tools
         libnotify-bin
         python3-venv

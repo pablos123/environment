@@ -1,8 +1,1 @@
 Xcursor.size: 20
-*.termName: xterm-256color
-*.vt100.locale: true
-*.vt100.metaSendsEscape: true
-*.vt100.saveLines: 4096
-*.vt100.foreground: white
-*.vt100.background: black
-

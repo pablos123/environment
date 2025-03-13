@@ -10,9 +10,23 @@ function cwd_on_exit() {
 
 trap cwd_on_exit EXIT ERR SIGINT SIGTERM
 
-source "${HOME}/environment/lib/env_variables.sh"
+. "${HOME}/environment/lib/env_variables.sh"
 
-mkdir -p "${REPOS_PATH}" "${HOME}/screenshots" "${HOME}/projects" "${HOME}/bin"
+directories=(
+    "${REPOS_PATH}"
+    "${HOME}/screenshots"
+    "${HOME}/bin"
+    "${HOME}/desktop"
+    "${HOME}/downloads"
+    "${HOME}/templates"
+    "${HOME}/public"
+    "${HOME}/documents"
+    "${HOME}/music"
+    "${HOME}/images"
+    "${HOME}/videos"
+)
+
+mkdir -p "${directories[@]}"
 
 for installer in "${HOME}/environment/lib/installers/"*; do
     source "${installer}"

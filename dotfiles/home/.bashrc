@@ -7,7 +7,7 @@
 shopt -s direxpand
 shopt -s autocd
 
-source "${HOME}/environment/lib/env_variables.sh"
+. "${HOME}/environment/lib/env_variables.sh"
 source "${HOME}/environment/lib/aliases.sh"
 source "${HOME}/environment/lib/bash_functions.sh"
 source "${HOME}/environment/lib/git_prompt.sh"
@@ -21,8 +21,6 @@ source "${HOME}/environment/lib/git_prompt.sh"
 [[ -f "${HOME}/.bashrc_custom" ]] &&
     source "${HOME}/.bashrc_custom"
 
-export NVM_DIR="${HOME}/.nvm"
-
 [[ -f "${NVM_DIR}/nvm.sh" ]] &&
     source "${NVM_DIR}/nvm.sh"
 
@@ -31,11 +29,6 @@ export NVM_DIR="${HOME}/.nvm"
 
 [[ -f "${HOME}/.cargo/env" ]] &&
     source "${HOME}/.cargo/env"
-
-export PYENV_ROOT="${HOME}/.pyenv"
-
-[[ -d ${PYENV_ROOT}/bin ]] &&
-    export PATH="${PYENV_ROOT}/bin:${PATH}"
 
 if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"

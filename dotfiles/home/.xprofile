@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-# Daemons
 nohup picom >/dev/null 2>&1 &
 nohup nm-applet >/dev/null 2>&1 &
 nohup blueman-applet >/dev/null 2>&1 &

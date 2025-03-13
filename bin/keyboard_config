@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 function configure_keyboard() {
+    local options
+    options=caps:swapescape
     xset r rate 230 50
     xset s 900
     xset dpms 0 0 3600
@@ -10,11 +12,10 @@ function configure_keyboard() {
     # Give cmd altgr behaviour and opt ctrl.
     # The -option "" at the beginning is for not stacking up the same options
     # for obvious reasons.
-    if lsusb | grep -q 'Inc. Logi Bolt Receiver'; then
-        setxkbmap -layout eu -option "" -option "altwin:swap_lalt_lwin,ctrl:ralt_rctrl,lv3:rwin_switch,caps:swapescape"
-    else
-        setxkbmap -layout eu -option "" -option "caps:swapescape"
-    fi
+    lsusb | grep -q 'Inc. Logi Bolt Receiver' &&
+        options="${options},altwin:swap_lalt_lwin,ctrl:ralt_rctrl,lv3:rwin_switch"
+
+    setxkbmap -layout eu -option "" -option "'${options}'"
 }
 
 configure_keyboard
