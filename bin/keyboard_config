@@ -3,6 +3,7 @@
 function configure_keyboard() {
     local options
     options=caps:swapescape
+
     xset r rate 230 50
     xset s 900
     xset dpms 0 0 3600
@@ -15,7 +16,7 @@ function configure_keyboard() {
     lsusb | grep -q 'Inc. Logi Bolt Receiver' &&
         options="${options},altwin:swap_lalt_lwin,ctrl:ralt_rctrl,lv3:rwin_switch"
 
-    setxkbmap -layout eu -option "" -option "'${options}'"
+    setxkbmap -layout eu -option "" -option "${options}"
 }
 
 configure_keyboard
