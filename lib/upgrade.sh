@@ -35,7 +35,7 @@ done
 sudo apt-get autoremove --purge --yes
 
 command -v flatpak &&
-    flatpak update
+    flatpak update -y
 
 /usr/bin/env bash "${HOME}/environment/bin/reload_environment"
 
