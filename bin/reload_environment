@@ -8,21 +8,22 @@ files_to_remove=(
     "${HOME}/.xprofile"
     "${HOME}/.xresources"
     "${HOME}/.config/user-dirs.dirs"
+    "${HOME}/.config/user-dirs.locale"
 )
 
-for file in "${files_to_remove[@]}"; do
-    rm -rf "${file}"
-done
+rm -rf -- "${files_to_remove[@]}"
 
 # Copy the base content
-cp -r "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
+rm -rf -- "${HOME}/.dotfiles_stow"
+cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
 # Stow the new files
 (
-    cd "${HOME}/.dotfiles_stow"
+    cd "${HOME}/.dotfiles_stow" || exit 1
     stow --target="${HOME}" --restow -- */
 )
 
+xdg-user-dirs-update --force
 rm -f "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
 fc-cache -rf >/dev/null 2>&1
 killall dunst >/dev/null 2>&1

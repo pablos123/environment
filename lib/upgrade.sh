@@ -5,7 +5,7 @@ set -x
 original_path="$(pwd)"
 
 function cwd_on_exit() {
-    cd "${original_path}"
+    cd "${original_path}" || exit 1
 }
 
 trap cwd_on_exit EXIT ERR SIGINT SIGTERM
@@ -15,6 +15,9 @@ trap cwd_on_exit EXIT ERR SIGINT SIGTERM
 directories=(
     "${REPOS_PATH}"
     "${HOME}/bin"
+    "${HOME}/downloads"
+    "${HOME}/playground"
+
     "${HOME}/desktop"
     "${HOME}/downloads"
     "${HOME}/templates"
@@ -23,13 +26,25 @@ directories=(
     "${HOME}/music"
     "${HOME}/images"
     "${HOME}/videos"
-    "${HOME}/testing"
 )
 
 mkdir -p "${directories[@]}"
 
+default_xdg_directories=(
+    "${HOME}/Desktop"
+    "${HOME}/Downloads"
+    "${HOME}/Templates"
+    "${HOME}/Public"
+    "${HOME}/Documents"
+    "${HOME}/Music"
+    "${HOME}/Pictures"
+    "${HOME}/Videos"
+)
+
+rmdir "${default_xdg_directories[@]}"
+
 for installer in "${HOME}/environment/lib/installers/"*; do
-    source "${installer}"
+    command source "${installer}"
 done
 
 sudo apt-get autoremove --purge --yes
