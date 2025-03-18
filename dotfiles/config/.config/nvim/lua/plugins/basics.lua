@@ -12,7 +12,7 @@ return {
         'pablos123/shellcheck.nvim',
         config = function()
             require 'shellcheck-nvim'.setup {
-                extras = { '-x', '--enable=all' }
+                shellcheck_options = { '-x', '--enable=all' }
             }
         end
     },
