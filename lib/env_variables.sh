@@ -20,7 +20,3 @@ export REPOS_PATH="${HOME}/repos"
 export PYENV_ROOT="${HOME}/.pyenv"
 
 export NVM_DIR="${HOME}/.nvm"
-
-[ -f "${HOME}/.custom_env_variables" ] &&
-    . "${HOME}/.custom_env_variables"
-
