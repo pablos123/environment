@@ -4,11 +4,18 @@ set -x
 
 original_path="$(pwd)"
 
-function cwd_on_exit() {
+function cwd_on_exit_err() {
     cd "${original_path}" || exit 1
+    exit 1
 }
 
-trap cwd_on_exit EXIT ERR SIGINT SIGTERM
+function cwd_on_exit() {
+    cd "${original_path}" || exit 1
+    exit 0
+}
+
+trap cwd_on_exit EXIT
+trap cwd_on_exit_err ERR SIGINT SIGTERM
 
 . "${HOME}/environment/lib/env_variables.sh"
 
