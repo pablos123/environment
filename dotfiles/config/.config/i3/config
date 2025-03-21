@@ -33,6 +33,7 @@ for_window [instance="web.whatsapp.com"] move container to workspace 4, layout t
 for_window [instance="discord.com"] move container to workspace 4, layout tabbed
 for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
 for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
+for_window [instance="teams.live.com__v2"] move container to workspace 4, layout tabbed
 
 for_window [class="DBeaver"] move container to workspace 5
 

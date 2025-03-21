@@ -9,6 +9,7 @@ declare -rA web_apps=(
     ["skype"]="https://web.skype.com/"
     ["excalidraw"]="https://excalidraw.com/"
     ["chatgpt"]="https://chatgpt.com/"
+    ["teams"]="https://teams.live.com/v2"
 )
 
 # 1: name
