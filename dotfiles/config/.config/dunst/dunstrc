@@ -5,7 +5,7 @@
     follow = none
     width = 300
     height = (0, 600)
-    offset = 10x10
+    offset = (10, 10)
     notification_limit = 5
     icon_corner_radius = 1
     indicate_hidden = yes
@@ -15,8 +15,6 @@
     gap_size = 4
     font = Lilex Nerd Font 8
     show_age_threshold = 3600
-    enable_recursive_icon_lookup = true
-    icon_theme = Papirus-Dark
     max_icon_size = 64
     corner_radius = 10
     frame_color = "#DDDDDD"
