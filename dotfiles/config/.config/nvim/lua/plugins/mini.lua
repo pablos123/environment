@@ -6,8 +6,22 @@ return {
             require 'mini.icons'.setup {}
             require 'mini.surround'.setup {}
             require 'mini.cursorword'.setup {}
-            require 'mini.git'.setup {}
             require 'mini.pick'.setup {}
+            require 'mini.statusline'.setup {}
+
+            local mini_files = require 'mini.files'
+            mini_files.setup {}
+            vim.keymap.set("n", "-", function()
+                if mini_files.close() then return end
+
+                local buf_name = vim.api.nvim_buf_get_name(0)
+                local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
+                vim.schedule(function()
+                    mini_files.open(path)
+                    mini_files.reveal_cwd()
+                end)
+            end, { desc = "Open Mini Files" })
+
             local indentscope = require 'mini.indentscope'
             indentscope.setup {
                 symbol = '│',
@@ -16,8 +30,7 @@ return {
                     animation = indentscope.gen_animation.none(),
                 },
             }
-            require 'mini.trailspace'.setup {}
-            require 'mini.statusline'.setup {}
+
             local hipatterns = require 'mini.hipatterns'
             hipatterns.setup {
                 highlighters = {
@@ -28,6 +41,7 @@ return {
                     hex_color = hipatterns.gen_highlighter.hex_color(),
                 },
             }
+
             require 'mini.move'.setup {
                 mappings = {
                     left = '<',
@@ -40,6 +54,7 @@ return {
                     line_up = '<C-k>',
                 },
             }
+
             require 'mini.comment'.setup {
                 options = {
                     custom_commentstring = function()
@@ -48,10 +63,11 @@ return {
                     end,
                 },
             }
+
+            local mini_trailspace = require 'mini.trailspace'
+            mini_trailspace.setup {}
             vim.api.nvim_create_autocmd('BufWritePre', {
-                callback = function()
-                    MiniTrailspace.trim()
-                end
+                callback = function() mini_trailspace.trim() end
             })
         end,
     },
