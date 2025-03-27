@@ -26,7 +26,6 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- Diagnostics
-set_keymap('n', 'gdi', function() vim.diagnostic.open_float() end)
 vim.diagnostic.config {
     -- Disable underline
     underline = false,
@@ -134,6 +133,11 @@ set_keymap('n', 'gt', function()
   vim.cmd.term()
   vim.api.nvim_feedkeys('i', 'n', false)
 end)
+
+set_keymap('n', 'gd', function() vim.diagnostic.open_float() end)
+
+-- This overwrites 'goto files' I do not use it.
+set_keymap('n', 'gf', function() vim.lsp.buf.format() end)
 
 return {
     {

@@ -11,9 +11,9 @@ return {
             table.insert(vimgrep_arguments, '--hidden')
             table.insert(vimgrep_arguments, '--fixed-strings')
 
-            set_keymap('n', '<leader>o', function () telescope_builtin.find_files() end)
-            set_keymap('n', '<leader>f', function () telescope_builtin.live_grep() end)
-            set_keymap('n', '<leader>b', function () telescope_builtin.buffers() end)
+            set_keymap('n', '<leader>o', function() telescope_builtin.find_files() end)
+            set_keymap('n', '<leader>f', function() telescope_builtin.live_grep() end)
+            set_keymap('n', '<leader>b', function() telescope_builtin.buffers() end)
 
             require 'telescope'.setup {
                 defaults = {
