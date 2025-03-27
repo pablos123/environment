@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
-
 function configure_monitors() {
 
     # Notebook
@@ -25,6 +23,7 @@ function configure_monitors() {
     i3-msg restart >/dev/null 2>&1
 }
 
+mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 configure_monitors
 
 if [[ "${1}" == "-d" ]]; then

@@ -6,7 +6,6 @@ return {
                 helpLine = {
                     enabled = false,
                 },
-                startInInsertMode = false,
                 transient = true,
                 extraArgs = "--hidden -g '!{.git,.svn,.hg}'",
                 keymaps = {

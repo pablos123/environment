@@ -2,19 +2,21 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         branch = '0.1.x',
-        keys = {
-            { '<leader>o', '<cmd>lua require("telescope.builtin").find_files()<cr>', desc = 'Find files' },
-            { '<leader>f', '<cmd>lua require("telescope.builtin").live_grep()<cr>',  desc = 'Find string' },
-            { '<leader>b', '<cmd>lua require("telescope.builtin").buffers()<cr>',    desc = 'Find buffers' },
-        },
         config = function()
-            local telescopeConfig = require("telescope.config")
+            local telescope = require 'telescope'
+            local telescope_builtin = telescope.builtin
 
-            local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-            table.insert(vimgrep_arguments, "--hidden")
-            table.insert(vimgrep_arguments, "--fixed-strings")
+            local vimgrep_arguments = { unpack(telescope.config.values.vimgrep_arguments) }
+            table.insert(vimgrep_arguments, '--hidden')
+            table.insert(vimgrep_arguments, '--fixed-strings')
 
-            require 'telescope'.setup {
+
+            local set_keymap = vim.keymap.set
+            set_keymap('n', '<leader>o', function () telescope_builtin.find_files() end)
+            set_keymap('n', '<leader>f', function () telescope_builtin.live_grep() end)
+            set_keymap('n', '<leader>b', function () telescope_builtin.buffers() end)
+
+            telescope.setup {
                 defaults = {
                     file_ignore_patterns = { '%.git/' },
                     vimgrep_arguments = vimgrep_arguments,

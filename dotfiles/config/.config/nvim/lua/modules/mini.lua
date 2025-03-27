@@ -1,3 +1,4 @@
+
 return {
     {
         'echasnovski/mini.nvim',
@@ -6,12 +7,11 @@ return {
             require 'mini.icons'.setup {}
             require 'mini.surround'.setup {}
             require 'mini.cursorword'.setup {}
-            require 'mini.pick'.setup {}
             require 'mini.statusline'.setup {}
 
             local mini_files = require 'mini.files'
             mini_files.setup {}
-            vim.keymap.set("n", "-", function()
+            vim.keymap.set('n', '-', function()
                 if mini_files.close() then return end
 
                 local buf_name = vim.api.nvim_buf_get_name(0)
@@ -20,7 +20,7 @@ return {
                     mini_files.open(path)
                     mini_files.reveal_cwd()
                 end)
-            end, { desc = "Open Mini Files" })
+            end)
 
             local indentscope = require 'mini.indentscope'
             indentscope.setup {
