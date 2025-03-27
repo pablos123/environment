@@ -111,14 +111,14 @@ create_autocmd('FileType', {
 
 -- Set local settings for terminal buffers
 create_autocmd("TermOpen", {
-  group = vim.api.nvim_create_augroup("custom-term-open", {}),
-  callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-    vim.opt_local.scrolloff = 0
+    group = vim.api.nvim_create_augroup("custom-term-open", {}),
+    callback = function()
+        vim.opt_local.number = false
+        vim.opt_local.relativenumber = false
+        vim.opt_local.scrolloff = 0
 
-    vim.bo.filetype = "terminal"
-  end,
+        vim.bo.filetype = "terminal"
+    end,
 })
 
 -- Easily hit escape in terminal mode.
@@ -126,12 +126,12 @@ set_keymap('t', '<esc>', '<c-\\><c-n>')
 
 -- Open a terminal at the bottom of the screen with a fixed height.
 set_keymap('n', 'gt', function()
-  vim.cmd.new()
-  vim.cmd.wincmd 'J'
-  vim.api.nvim_win_set_height(0, 12)
-  vim.wo.winfixheight = true
-  vim.cmd.term()
-  vim.api.nvim_feedkeys('i', 'n', false)
+    vim.cmd.new()
+    vim.cmd.wincmd 'J'
+    vim.api.nvim_win_set_height(0, 12)
+    vim.wo.winfixheight = true
+    vim.cmd.term()
+    vim.api.nvim_feedkeys('i', 'n', false)
 end)
 
 set_keymap('n', 'gd', function() vim.diagnostic.open_float() end)
