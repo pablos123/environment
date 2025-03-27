@@ -4,6 +4,8 @@ return {
         'echasnovski/mini.nvim',
         version = false,
         config = function()
+            local set_keymap = vim.keymap.set
+
             require 'mini.icons'.setup {}
             require 'mini.surround'.setup {}
             require 'mini.cursorword'.setup {}
@@ -11,7 +13,7 @@ return {
 
             local mini_files = require 'mini.files'
             mini_files.setup {}
-            vim.keymap.set('n', '-', function()
+            set_keymap('n', '-', function()
                 if mini_files.close() then return end
 
                 local buf_name = vim.api.nvim_buf_get_name(0)
