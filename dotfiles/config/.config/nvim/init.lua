@@ -1,8 +1,3 @@
-require 'core/base'
-require 'core/mappings'
-require 'core/autocmd'
-require 'core/terminal'
-
 -- Faster startup
 vim.loader.enable()
 -- Bootstrap lazy.nvim
@@ -15,4 +10,4 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require 'lazy'.setup 'plugins'
+require 'lazy'.setup 'modules'

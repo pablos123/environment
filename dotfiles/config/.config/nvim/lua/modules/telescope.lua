@@ -34,4 +34,5 @@ return {
             }
         end
     },
+    'nvim-lua/plenary.nvim',
 }
