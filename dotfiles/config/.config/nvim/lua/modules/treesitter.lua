@@ -1,23 +1,3 @@
-local ensure_installed = {
-    'bash',
-    'c',
-    'html',
-    'htmldjango',
-    'javascript',
-    'json',
-    'lua',
-    'markdown',
-    'markdown_inline',
-    'perl',
-    'python',
-    'query',
-    'regex',
-    'tsx',
-    'typescript',
-    'vim',
-    'yaml',
-}
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -26,6 +6,26 @@ return {
         cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
         event = { 'BufReadPost', 'BufNewFile' },
         config = function()
+            local ensure_installed = {
+                'bash',
+                'c',
+                'html',
+                'htmldjango',
+                'javascript',
+                'json',
+                'lua',
+                'markdown',
+                'markdown_inline',
+                'perl',
+                'python',
+                'query',
+                'regex',
+                'tsx',
+                'typescript',
+                'vim',
+                'yaml',
+            }
+
             vim.g.skip_ts_context_commentstring_module = true
             require 'nvim-treesitter.configs'.setup {
                 highlight = {
@@ -47,8 +47,6 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter-context',
-        config = function()
-            require 'treesitter-context'.setup {}
-        end
+        config = function() require 'treesitter-context'.setup {} end
     }
 }

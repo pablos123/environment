@@ -1,11 +1,5 @@
 return {
     {
-        'williamboman/mason.nvim',
-        config = function()
-            require('mason').setup {}
-        end
-    },
-    {
         'neovim/nvim-lspconfig',
         config = function()
             require 'lspconfig'.lua_ls.setup {
@@ -97,6 +91,18 @@ return {
             end
         end,
         ft = 'yaml.ansible',
+    },
+    {
+        'williamboman/mason.nvim',
+        config = function()
+            require('mason').setup {}
+        end
+    },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        config = function()
+            require 'render-markdown'.setup{}
+        end
     },
     {
         'pablos123/shellcheck.nvim',
