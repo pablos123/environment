@@ -139,29 +139,15 @@ set_keymap('n', 'gd', function() vim.diagnostic.open_float() end)
 -- This overwrites 'goto files' I do not use it.
 set_keymap('n', 'gf', function() vim.lsp.buf.format() end)
 
-function make_presentation()
-    -- local buffer_n = vim.api.nvim_buf_get_name(0)
-    local c_abs_path = vim.fn.expand('%:p')
-    local files = vim.split(vim.fn.glob(c_abs_path .. '/*'), '\n', { trimempty = true })
-
-    vim.api.nvim_command('tabnew')
-
-    local counter = 1
-
-    -- for _, file in ipairs(files) do
-    -- end
-    --
-    --
-    -- vim.api.nvim_command('set readonly')
-end
-
 return {
     {
         'catppuccin/nvim',
         name = "catppuccin",
         priority = 1000,
-        config = function()
-            vim.cmd 'colorscheme catppuccin-mocha'
-        end
+        config = function() vim.cmd 'colorscheme catppuccin-mocha' end
+    },
+    {
+        dir = "/home/pab/repos/dump/playground/present.nvim",
+        config = function() require 'present-nvim'.setup {} end
     },
 }
