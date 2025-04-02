@@ -146,8 +146,4 @@ return {
         priority = 1000,
         config = function() vim.cmd 'colorscheme catppuccin-mocha' end
     },
-    {
-        dir = "/home/pab/repos/dump/playground/present.nvim",
-        config = function() require 'present-nvim'.setup {} end
-    },
 }
