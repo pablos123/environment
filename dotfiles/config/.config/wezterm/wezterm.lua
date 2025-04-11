@@ -9,7 +9,9 @@ end
 config.color_scheme = 'Catppuccin Mocha'
 config.colors = { cursor_fg = 'black', cursor_bg = 'white', cursor_border = 'white' }
 config.font = wezterm.font 'JetBrainsMono Nerd Font'
-config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0', }
+
+-- Going to test ligatures for a while
+-- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0', }
 
 config.enable_tab_bar = true
 config.tab_bar_at_bottom = true
@@ -19,6 +21,7 @@ config.hide_tab_bar_if_only_one_tab = true
 
 config.scrollback_lines = 10000
 
+-- Don't make a login shell every time
 config.default_prog = { '/bin/bash' }
 
 config.disable_default_key_bindings = true

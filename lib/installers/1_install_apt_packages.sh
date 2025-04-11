@@ -59,6 +59,7 @@ function install_apt_packages() {
         xclip
         xsel
         xterm
+        papirus-icon-theme
         x11-xserver-utils
         xdg-utils
         xdg-user-dirs
