@@ -14,7 +14,6 @@ files_to_remove=(
 rm -rf -- "${files_to_remove[@]}"
 
 # Copy the base content
-rm -rf -- "${HOME}/.dotfiles_stow"
 cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
 # Stow the new files
