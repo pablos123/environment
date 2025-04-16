@@ -2,6 +2,7 @@ return {
     {
         'MagicDuck/grug-far.nvim',
         config = function()
+            vim.keymap.set('n', '<leader>s', '<cmd>GrugFar<cr>')
             require('grug-far').setup {
                 helpLine = {
                     enabled = false,
@@ -33,8 +34,5 @@ return {
                 },
             }
         end,
-        keys = {
-            { '<leader>s', '<cmd>GrugFar<cr>', desc = 'Open GrugFar' },
-        },
     },
 }
