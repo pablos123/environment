@@ -8,6 +8,8 @@ function install_apt_packages() {
         pavucontrol
         network-manager
         network-manager-gnome
+        gnome-terminal
+        gnome-calculator
         blueman
         i3
         vim
@@ -58,11 +60,8 @@ function install_apt_packages() {
         xdotool
         xclip
         xsel
-        xterm
-        papirus-icon-theme
         x11-xserver-utils
         xdg-utils
-        xdg-user-dirs
         inotify-tools
         libnotify-bin
         python3-venv
@@ -75,6 +74,8 @@ function install_apt_packages() {
         bash-completion
         pipx
         zenity
+        papirus-icon-theme
+        libreoffice
     )
     sudo apt-get update
     sudo apt-get dist-upgrade --yes
