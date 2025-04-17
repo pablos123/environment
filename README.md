@@ -26,22 +26,23 @@ Things I tried (used a considerable amount of time) but I do not use anymore. Ju
 |wezterm|Incredible, but being gpu accelerated makes it incredible slow in potatoes|terminator|
 |alacrity|I like wezterm|terminator|
 |ghostty|I like wezterm|terminator|
-|xterm|Incredible but I like to customize (a little bit) things|terminator|
+|xterm|Incredible but I like to easy customize things if I want|terminator|
 |gnome-terminal|Does not store configs in ~/.config|terminator|
-|dwm|My first WM. I love it, but i3 is a lot more handy and I been using it for a lot of years now|i3|
+|dwm|My first WM. I love it. I been using i3 it for a lot of years now|i3|
 |sway|I like xorg|i3|
 |gnome|I do not like DE's also I am using a computer not a smartphone|i3|
 |cinnamon|I do not like DE's. Best DE out there|i3|
+|kde|I do not like DE's|i3|
 |nemo|Great but creates directories in my home|xfe|
 |nautilus|It is not my thing|xfe|
-|firefox|Same as chrome but worse|chrome|
 |obsidian|Incredible, but I like being in the terminal|nvim|
 |vscode|Incredible, but I like being in the terminal|nvim|
+|firefox|Same as chrome but worse|chrome|
 |zellij|I really do not need a terminal multiplexer|none|
 |tmux|I really do not need a terminal multiplexer|none|
 
 
-Distributions I tried (used a considerable amount of time). Just to remember.
+Distributions I tried. Just to remember.
 |Distribution|
 |-|
 |Debian|
@@ -56,4 +57,3 @@ Distributions I tried (used a considerable amount of time). Just to remember.
 |Bodhi|
 |TinyCore|
 |Puppy|
-|TinyCore|
