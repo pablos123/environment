@@ -51,7 +51,6 @@ function install_apt_packages() {
         scrot
         hsetroot
         eza
-        nemo
         cowsay
         lolcat
         calendar
@@ -61,23 +60,24 @@ function install_apt_packages() {
         xdotool
         xclip
         xsel
+        xfe
         x11-xserver-utils
         xdg-utils
+        pkexec
         inotify-tools
         libnotify-bin
         python3-venv
-        golang
         luarocks
         yad
         keepassxc
         picom
         bash-completion
         pipx
-	curl
+        curl
         zenity
-	build-essential
+        build-essential
         papirus-icon-theme
-	shellcheck
+        shellcheck
         libreoffice
     )
     sudo apt-get update

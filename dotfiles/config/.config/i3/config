@@ -42,7 +42,7 @@ for_window [class="steam"] move container to workspace 7
 
 for_window [instance="open.spotify.com"] move container to workspace 9
 
-for_window [class="Nemo"] floating enable sticky enable focus
+for_window [class="Xfe"] floating enable sticky enable focus
 for_window [class="Pavucontrol"] floating enable sticky enable focus
 for_window [class="Yad"] floating enable sticky enable focus
 
