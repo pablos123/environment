@@ -23,9 +23,7 @@ directories=(
     "${REPOS_PATH}"
     "${HOME}/bin"
     "${HOME}/.local/bin/"
-    "${HOME}/downloads"
     "${HOME}/playground"
-    "${HOME}/images"
     "${HOME}/images/wallpapers"
 )
 mkdir -p "${directories[@]}"

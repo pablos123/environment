@@ -25,4 +25,5 @@ function install_obsidian() {
     chmod +x "${latest_version_path}"
 }
 
-install_obsidian
+# Using nvim for a while
+# install_obsidian
