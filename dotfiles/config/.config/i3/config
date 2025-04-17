@@ -46,7 +46,6 @@ for_window [class="(?i)xfe"] floating enable sticky enable focus
 for_window [class="(?i)pavucontrol"] floating enable sticky enable focus
 for_window [class="(?i)yad"] floating enable sticky enable focus
 
-exec --no-startup-id sleep 1 && wallpaper_config -d
 exec --no-startup-id sleep 3 && terminator
 exec --no-startup-id sleep 6 && open_browser
 exec --no-startup-id sleep 10 && clean_urgent
