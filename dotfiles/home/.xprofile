@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-nohup picom >/dev/null 2>&1 &
-nohup nm-applet >/dev/null 2>&1 &
-nohup blueman-applet >/dev/null 2>&1 &
-nohup solaar -w hide >/dev/null 2>&1 &
-nohup dunst >/dev/null 2>&1 &
-nohup monitors_config -d >/dev/null 2>&1 &
-nohup keyboard_config -d >/dev/null 2>&1 &
