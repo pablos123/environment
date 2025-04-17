@@ -7,9 +7,9 @@
 shopt -s direxpand
 shopt -s autocd
 
-. "${HOME}/environment/lib/env_variables.sh"
+source "${HOME}/environment/lib/env_variables.sh"
 source "${HOME}/environment/lib/aliases.sh"
-source "${HOME}/environment/lib/bash_functions.sh"
+source "${HOME}/environment/lib/functions.sh"
 source "${HOME}/environment/lib/git_prompt.sh"
 
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
