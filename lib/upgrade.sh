@@ -24,31 +24,10 @@ directories=(
     "${HOME}/bin"
     "${HOME}/downloads"
     "${HOME}/playground"
-
-    "${HOME}/desktop"
-    "${HOME}/downloads"
-    "${HOME}/templates"
-    "${HOME}/public"
-    "${HOME}/documents"
-    "${HOME}/music"
     "${HOME}/images"
-    "${HOME}/videos"
+    "${HOME}/images/wallpapers"
 )
-
 mkdir -p "${directories[@]}"
-
-default_xdg_directories=(
-    "${HOME}/Desktop"
-    "${HOME}/Downloads"
-    "${HOME}/Templates"
-    "${HOME}/Public"
-    "${HOME}/Documents"
-    "${HOME}/Music"
-    "${HOME}/Pictures"
-    "${HOME}/Videos"
-)
-
-rmdir "${default_xdg_directories[@]}"
 
 for installer in "${HOME}/environment/lib/installers/"*; do
     command source "${installer}"

@@ -68,7 +68,6 @@ function install_apt_packages() {
         python3-venv
         golang
         luarocks
-        cpanminus
         yad
         keepassxc
         picom

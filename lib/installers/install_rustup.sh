@@ -9,4 +9,5 @@ function install_rustup() {
     rustup update
 }
 
-install_rustup
+# Nothing for now. I'm not using rust
+# install_rustup

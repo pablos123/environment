@@ -6,9 +6,7 @@ files_to_remove=(
     "${HOME}/.profile"
     "${HOME}/.xinitrc"
     "${HOME}/.xprofile"
-    "${HOME}/.xresources"
-    "${HOME}/.config/user-dirs.dirs"
-    "${HOME}/.config/user-dirs.locale"
+    "${HOME}/.Xresources"
 )
 
 rm -rf -- "${files_to_remove[@]}"
@@ -22,7 +20,6 @@ cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
     stow --target="${HOME}" --restow -- */
 )
 
-xdg-user-dirs-update --force
 rm -f "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
 fc-cache -rf >/dev/null 2>&1
 killall dunst >/dev/null 2>&1
