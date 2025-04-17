@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-[[ -f "$HOME/.minimal_environment" ]] &&
-    exit 0
-
-wezterm
-

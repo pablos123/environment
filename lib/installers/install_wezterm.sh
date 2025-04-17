@@ -7,4 +7,5 @@ function install_wezterm() {
     sudo apt-get install --yes wezterm
 }
 
-install_wezterm
+# Maybe the solution was gnome-terminal all along
+# install_wezterm

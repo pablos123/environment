@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[[ -f "$HOME/.minimal_environment" ]] &&
-    exit 0
+total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
 
-chrome
+(( total_memory > 10000000 )) &&
+    chrome
