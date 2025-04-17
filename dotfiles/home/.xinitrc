@@ -6,5 +6,6 @@ dunst &
 
 monitors_config -d &
 keyboard_config -d &
+wallpaper_config -d &
 
 exec dbus-launch --exit-with-session i3

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function set_wallpaper() {
+    wallpapers_array=("${HOME}/images/wallpapers/"*)
+    items_count="${#wallpapers_array[@]}"
+    random_index=$((RANDOM % items_count))
+    wallpaper="${wallpapers_array[${random_index}]}"
+
+    hsetroot -cover "${wallpaper}" >/dev/null 2>&1
+}
+
+set_wallpaper
+
+if [[ "${1}" == "-d" ]]; then
+    while true; do
+        sleep 600
+        set_wallpaper
+    done
+fi
