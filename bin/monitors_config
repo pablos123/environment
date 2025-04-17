@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 function configure_monitors() {
-
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
