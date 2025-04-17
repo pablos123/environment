@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-previous_pavu="$(xdotool search --onlyvisible --class "Pavucontrol")"
-if [[ "${previous_pavu}" ]]; then
+previous_pavu="$(xdotool search --onlyvisible --class "pavucontrol")" || "$(xdotool search --onlyvisible --class "Pavucontrol")"
+if [[ -n "${previous_pavu}" ]]; then
     xdotool windowclose "${previous_pavu}"
     exit 0
 fi
@@ -13,7 +13,11 @@ source "${HOME}/environment/lib/helper_functions.sh"
 
 pavucontrol -t 3 & disown
 
-sleep 0.1
+while ! xdotool search --onlyvisible --class "pavucontrol" && ! xdotool search --onlyvisible --class "Pavucontrol"; do
+    sleep 0.3
+done
 
-xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
+xdotool search --onlyvisible --class "pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}") ||
+xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}") || echo asdfasdf
+
 

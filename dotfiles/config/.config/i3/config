@@ -22,31 +22,30 @@ workspace 0 output nonprimary primary
 
 # View the class name with xprop. WM_CLASS is the key.
 # The first part of the WM_CLASS is the instance, the second part is the class.
-for_window [class="Google-chrome"] move container to workspace 1
+for_window [class="(?i)google-chrome"] move container to workspace 1
 
-for_window [class="obsidian"] move container to workspace 2, layout tabbed
-for_window [instance="chatgpt.com"] move container to workspace 2, layout tabbed
-for_window [instance="excalidraw.com"] move container to workspace 2, layout tabbed
+for_window [class="(?i)obsidian"] move container to workspace 2, layout tabbed
+for_window [instance="(?i)chatgpt.com"] move container to workspace 2, layout tabbed
+for_window [instance="(?i)excalidraw.com"] move container to workspace 2, layout tabbed
 
-for_window [class="Terminator"] move container to workspace 3
+for_window [class="(?i)terminator"] move container to workspace 3
 
-for_window [instance="web.whatsapp.com"] move container to workspace 4, layout tabbed
-for_window [instance="discord.com"] move container to workspace 4, layout tabbed
-for_window [instance="web.telegram.org"] move container to workspace 4, layout tabbed
-for_window [instance="web.skype.com"] move container to workspace 4, layout tabbed
-for_window [instance="teams.live.com__v2"] move container to workspace 4, layout tabbed
+for_window [instance="(?i)web.whatsapp.com"] move container to workspace 4, layout tabbed
+for_window [instance="(?i)discord.com"] move container to workspace 4, layout tabbed
+for_window [instance="(?i)web.telegram.org"] move container to workspace 4, layout tabbed
+for_window [instance="(?i)web.skype.com"] move container to workspace 4, layout tabbed
+for_window [instance="(?i)teams.live.com__v2"] move container to workspace 4, layout tabbed
 
-for_window [class="DBeaver"] move container to workspace 5
+for_window [class="(?i)dbeaver"] move container to workspace 5
 
-for_window [class="steam"] move container to workspace 7
+for_window [class="(?i)steam"] move container to workspace 7
 
-for_window [instance="open.spotify.com"] move container to workspace 9
+for_window [instance="(?i)open.spotify.com"] move container to workspace 9
 
-for_window [class="Xfe"] floating enable sticky enable focus
-for_window [class="pavucontrol"] floating enable sticky enable focus
-for_window [class="Yad"] floating enable sticky enable focus
+for_window [class="(?i)xfe"] floating enable sticky enable focus
+for_window [class="(?i)pavucontrol"] floating enable sticky enable focus
+for_window [class="(?i)yad"] floating enable sticky enable focus
 
-exec --no-startup-id sleep 1 && set_wallpaper
 exec --no-startup-id sleep 3 && terminator
 exec --no-startup-id sleep 6 && open_browser
 exec --no-startup-id sleep 10 && clean_urgent
