@@ -4,6 +4,7 @@ function install_apt_packages() {
     local apt_packages
     apt_packages=(
         xorg
+        i3
         pipewire-audio
         pavucontrol
         network-manager
@@ -11,7 +12,6 @@ function install_apt_packages() {
         gnome-terminal
         gnome-calculator
         blueman
-        i3
         vim
         duf
         jq
@@ -50,6 +50,7 @@ function install_apt_packages() {
         zbar-tools
         scrot
         hsetroot
+        eza
         nemo
         cowsay
         lolcat
