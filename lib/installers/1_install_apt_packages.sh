@@ -9,7 +9,7 @@ function install_apt_packages() {
         pavucontrol
         network-manager
         network-manager-gnome
-        gnome-calculator
+        dbus-x11
         terminator
         blueman
         vim

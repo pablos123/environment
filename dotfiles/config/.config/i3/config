@@ -43,9 +43,10 @@ for_window [class="steam"] move container to workspace 7
 for_window [instance="open.spotify.com"] move container to workspace 9
 
 for_window [class="Xfe"] floating enable sticky enable focus
-for_window [class="Pavucontrol"] floating enable sticky enable focus
+for_window [class="pavucontrol"] floating enable sticky enable focus
 for_window [class="Yad"] floating enable sticky enable focus
 
+exec --no-startup-id sleep 1 && set_wallpaper
 exec --no-startup-id sleep 3 && terminator
 exec --no-startup-id sleep 6 && open_browser
 exec --no-startup-id sleep 10 && clean_urgent
