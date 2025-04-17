@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 #
 # Common
 alias ls="eza --icons --extended --group-directories-first"
