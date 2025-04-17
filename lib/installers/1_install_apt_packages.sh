@@ -43,7 +43,7 @@ function install_apt_packages() {
         imagemagick
         zip
         unzip
-        unrar
+        unrar-free
         7zip
         tar
         flameshot
@@ -73,8 +73,11 @@ function install_apt_packages() {
         picom
         bash-completion
         pipx
+	curl
         zenity
+	build-essential
         papirus-icon-theme
+	shellcheck
         libreoffice
     )
     sudo apt-get update

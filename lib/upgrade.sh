@@ -22,6 +22,7 @@ trap cwd_on_exit_err ERR SIGINT SIGTERM
 directories=(
     "${REPOS_PATH}"
     "${HOME}/bin"
+    "${HOME}/.local/bin/"
     "${HOME}/downloads"
     "${HOME}/playground"
     "${HOME}/images"

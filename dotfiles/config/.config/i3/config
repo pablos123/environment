@@ -46,11 +46,11 @@ for_window [class="Nemo"] floating enable sticky enable focus
 for_window [class="Pavucontrol"] floating enable sticky enable focus
 for_window [class="Yad"] floating enable sticky enable focus
 
-exec --no-startup-id sleep 3 && gnome-terminal
+exec --no-startup-id sleep 3 && open_terminal
 exec --no-startup-id sleep 6 && open_browser
 exec --no-startup-id sleep 10 && clean_urgent
 
-bindsym $mod+Return exec --no-startup-id gnome-terminal
+bindsym $mod+Return exec --no-startup-id open_terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
 bindsym $mod+o exec --no-startup-id dmenu_run
 bindsym $mod+Shift+c kill

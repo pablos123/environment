@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Aliases and functions are reserved for things that I'll use in the terminal emulator
-# and not in scripts nor dmenu.
 #
 # Common
 alias ls="eza --icons --extended --group-directories-first"
