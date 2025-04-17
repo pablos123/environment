@@ -1,5 +1,5 @@
 # Necessary
-export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export XDG_SESSION_TYPE=x11
 xrdb -load ~/.Xresources &
 
@@ -18,4 +18,4 @@ monitors_config -d &
 sleep 1
 wallpaper_config -d &
 
-exec i3
+exec dbus-launch --exit-with-session i3
