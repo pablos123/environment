@@ -16,7 +16,6 @@ y_size=208
 
 mapfile -t position < <(echo "$(calculate_applet_position "${x_size}" "${y_size}")" | tr ' ' '\n')
 
-
 selected_date=$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${x_size}" --height="${y_size}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null)
 [[ -n "${selected_date}" ]] &&
     echo "${selected_date}" | xclip
