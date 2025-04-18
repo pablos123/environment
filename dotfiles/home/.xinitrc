@@ -1,6 +1,5 @@
 # Necessary
-export XDG_RUNTIME_DIR="/run/user/$(id -u)"
-export XDG_SESSION_TYPE=x11
+[ -z "$XDG_RUNTIME_DIR" ] && export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 xrdb -load ~/.Xresources &
 
 # Other daemons
