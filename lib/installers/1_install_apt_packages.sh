@@ -6,6 +6,7 @@ function install_apt_packages() {
         xorg
         i3
         pipewire-audio
+        pulseaudio-utils
         pavucontrol
         network-manager
         network-manager-gnome
