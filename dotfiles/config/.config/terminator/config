@@ -1,6 +1,46 @@
 [global_config]
   borderless = True
 [keybindings]
+  zoom_out = <Primary>underscore
+  cycle_next = ""
+  cycle_prev = ""
+  go_next = ""
+  go_prev = ""
+  go_up = ""
+  go_down = ""
+  go_left = ""
+  go_right = ""
+  rotate_cw = ""
+  rotate_ccw = ""
+  split_auto = ""
+  split_horiz = ""
+  split_vert = ""
+  resize_up = ""
+  resize_down = ""
+  resize_left = ""
+  resize_right = ""
+  move_tab_right = <Primary><Shift>l
+  move_tab_left = <Primary><Shift>h
+  toggle_zoom = ""
+  next_tab = <Primary><Shift>n
+  prev_tab = <Primary><Shift>p
+  reset = ""
+  reset_clear = ""
+  hide_window = ""
+  group_all = ""
+  ungroup_all = ""
+  ungroup_win = ""
+  group_tab = ""
+  ungroup_tab = ""
+  new_window = ""
+  new_terminator = ""
+  insert_number = ""
+  insert_padded = ""
+  edit_window_title = ""
+  edit_tab_title = <Primary><Shift>r
+  edit_terminal_title = ""
+  layout_launcher = ""
+  preferences_keybindings = ""
 [profiles]
   [[default]]
     background_color = "#282828"
