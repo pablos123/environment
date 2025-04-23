@@ -1,4 +1,6 @@
 # Necessary
+# The XDG_ variable set is managed by pam service.
+# But in Mint this is not happening.
 [ -z "$XDG_RUNTIME_DIR" ] && export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 xrdb -load ~/.Xresources &
 
@@ -13,7 +15,7 @@ dunst &
 keyboard_config -d &
 monitors_config -d &
 
-# Depends of monitors_config
+# Depends on monitors_config
 sleep 1
 wallpaper_config -d &
 

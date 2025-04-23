@@ -1,86 +1,48 @@
 #!/usr/bin/env bash
 
-help='
-Options:
-
-[-t] tell tux to say the information
-[-p] pretty blank lines between info functions
-[-i] information
-[-h] this
-'
-
-information='
-▗▖  ▗▖ ▗▄▖ ▗▄▄▄▖▗▄▄▄▖▗▄▄▄▖ ▗▄▄▖▗▖ ▗▖
-▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌     █  ▐▌   ▐▌ ▐▌
-▐▌ ▝▜▌▐▌ ▐▌▐▛▀▀▘▐▛▀▀▘  █  ▐▌   ▐▛▀▜▌
-▐▌  ▐▌▝▚▄▞▘▐▌   ▐▙▄▄▖  █  ▝▚▄▄▖▐▌ ▐▌
-
-Print information about your system.
-
-This program will print whatever you want.
-
-The functions are in in ~/environment/lib/nofetch_functions.sh
-
-The functions need to send the output to stdout in the form of:
-<column1>    :    <column2>
-(The spaces are not necessary)
-For example, write the function as:
-print_me() {
-  echo "hello : world!"
+function user_info() {
+    echo "User: $(id | awk '{print $1" "$2}')"
 }
-nofetch_functions=( print_me )
-And there you have it! Nothing more is required.
-'
 
-pretty=false
-tux=false
-while getopts "pith" opt; do
-    case $opt in
-    p) pretty=true ;;
-    t) tux=true ;;
-    i) echo "$information" && exit 0 ;;
-    h) echo "$help" && exit 0 ;;
-    *) echo "$help" && exit 1 ;;
-    esac
-done
+function hostname_info() {
+    echo "Hostname: $(hostname)"
+}
 
-empty_lines=
-if $pretty; then
-    util_linux_version=$(column --version | awk '{print $4}')
-    if [[ "$util_linux_version" < "2.37.2" ]]; then
-        echo "You have an old version of the column command. You need at least util-linux version 2.37.x" && exit 1
-        exit 1
-    fi
-    empty_lines="--keep-empty-lines"
-fi
+function uname_info() {
+    echo "Kernel release: $(uname --kernel-release)"
+}
 
-if $tux; then
-    if ! which cowsay; then
-        echo "Install cowsay to have tux telling you the information!" >&2
-        exit 1
-    fi
-fi
+function cpu_info() {
+    lscpu | awk -F ':' '/^Architecture|^CPU\(s\):|^Model name/ {print $1":"$2}'
+}
+
+function lsb_info() {
+    lsb_release -a 2>/dev/null | awk -F ':' '/^Distributor ID|^Description|^Release|^Codename/ {print $1":"$2}'
+}
+
+function mem_info() {
+    free -h | awk '/^Mem/ {print $1" "$2}'
+}
+
+function wmctrl_info() {
+    wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}'
+}
+
+# -----------------------------------------------------------------------------
 
 function get_info() {
-    local counter functions_count function
-    source "$HOME/environment/lib/nofetch_functions.sh"
-    counter=1
-    functions_count=${#nofetch_functions[@]}
-    for function in "${nofetch_functions[@]}"; do
-        "$function"
-        if $pretty && ((counter < functions_count)); then
-            echo
-        fi
-        counter=$((counter + 1))
-    done
+    local funcs f
+    funcs=(
+        user_info
+        hostname_info
+        uname_info
+        cpu_info
+        lsb_info
+        mem_info
+        wmctrl_info
+    )
+
+    for f in "${funcs[@]}"; do "${f}"; done
 }
 
-information="$(get_info | sed --expression="s/\(.*:\)\s*/\1 /g" | column $empty_lines --table --separator ':')"
-
-if $tux; then
-    echo "$information" | cowsay -f tux -n
-    exit 0
-fi
-
-echo "$information"
-exit 0
+get_info | sed 's/\(.*:\)\s*/\1/g' | column --table --separator ':'

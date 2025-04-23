@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+# Case insensitive windows class searching is a pain.
+# Maybe I'm missing something.
 
 if xdotool search --onlyvisible --class "pavucontrol" || xdotool search --onlyvisible --class "Pavucontrol"; then
     xdotool search --onlyvisible --class "pavucontrol" windowclose ||
-    xdotool search --onlyvisible --class "Pavucontrol" windowclose
+        xdotool search --onlyvisible --class "Pavucontrol" windowclose
     exit 0
 fi
 
@@ -13,11 +15,8 @@ source "${HOME}/environment/lib/helper_functions.sh"
 
 pavucontrol -t 3 & disown
 
-while ! xdotool search --onlyvisible --class "pavucontrol" && ! xdotool search --onlyvisible --class "Pavucontrol"; do
-    sleep 0.3
-done
+while ! xdotool search --onlyvisible --class "pavucontrol" && ! xdotool search --onlyvisible --class "Pavucontrol"; do sleep 0.3; done
 
 xdotool search --onlyvisible --class "pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}") ||
-xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
-
+    xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
 
