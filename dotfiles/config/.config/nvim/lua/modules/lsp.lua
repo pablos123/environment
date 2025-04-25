@@ -38,6 +38,7 @@ return {
                 'html',
                 'perlnavigator',
                 'clangd',
+                'texlab',
             }
 
             for _, ls_name in ipairs(language_servers) do
