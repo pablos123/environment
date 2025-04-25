@@ -24,11 +24,11 @@ workspace 0 output nonprimary primary
 # The first part of the WM_CLASS is the instance, the second part is the class.
 for_window [class="(?i)google-chrome"] move container to workspace 1
 
-for_window [class="(?i)obsidian"] move container to workspace 2, layout tabbed
-for_window [instance="(?i)chatgpt.com"] move container to workspace 2, layout tabbed
-for_window [instance="(?i)excalidraw.com"] move container to workspace 2, layout tabbed
+for_window [class="(?i)terminator"] move container to workspace 2
 
-for_window [class="(?i)terminator"] move container to workspace 3
+for_window [class="(?i)obsidian"] move container to workspace 3, layout tabbed
+for_window [instance="(?i)chatgpt.com"] move container to workspace 3, layout tabbed
+for_window [instance="(?i)excalidraw.com"] move container to workspace 3, layout tabbed
 
 for_window [instance="(?i)web.whatsapp.com"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)discord.com"] move container to workspace 4, layout tabbed
