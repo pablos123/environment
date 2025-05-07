@@ -104,9 +104,9 @@ set_keymap('v', '<c-s>', '<cmd>w<cr><esc>')
 set_keymap('s', '<c-s>', '<cmd>w<cr><esc>')
 
 create_autocmd('FileType', {
-    pattern = 'c',
+    pattern = {'c', 'html'},
     command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
-    group = vim.api.nvim_create_augroup('c-indent', {}),
+    group = vim.api.nvim_create_augroup('2-indentation', {}),
 })
 
 -- Set local settings for terminal buffers
