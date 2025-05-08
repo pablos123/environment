@@ -110,7 +110,7 @@ create_autocmd('FileType', {
 })
 
 create_autocmd('FileType', {
-    pattern = 'md',
+    pattern = 'markdown',
     command = 'setl wrap',
     group = vim.api.nvim_create_augroup('wrapped-ft', { clear = true }),
 })
