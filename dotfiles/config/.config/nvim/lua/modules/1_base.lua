@@ -104,14 +104,19 @@ set_keymap('v', '<c-s>', '<cmd>w<cr><esc>')
 set_keymap('s', '<c-s>', '<cmd>w<cr><esc>')
 
 create_autocmd('FileType', {
-    pattern = {'c', 'html'},
+    pattern = {'c', 'html', 'css'},
     command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
-    group = vim.api.nvim_create_augroup('2-indentation', {}),
+    group = vim.api.nvim_create_augroup('2-indent-ft', { clear = true}),
+})
+
+create_autocmd('FileType', {
+    pattern = 'md',
+    command = 'setl wrap',
+    group = vim.api.nvim_create_augroup('wrapped-ft', { clear = true }),
 })
 
 -- Set local settings for terminal buffers
 create_autocmd("TermOpen", {
-    group = vim.api.nvim_create_augroup("custom-term-open", {}),
     callback = function()
         vim.opt_local.number = false
         vim.opt_local.relativenumber = false
@@ -119,6 +124,7 @@ create_autocmd("TermOpen", {
 
         vim.bo.filetype = "terminal"
     end,
+    group = vim.api.nvim_create_augroup("terminal-ft", { clear = true }),
 })
 
 -- Easily hit escape in terminal mode.
