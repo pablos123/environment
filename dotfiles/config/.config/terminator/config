@@ -45,7 +45,7 @@
   [[default]]
     background_color = "#282828"
     cursor_blink = False
-    font = JetBrainsMonoNL Nerd Font Propo 10
+    font = JetBrainsMonoNL Nerd Font Propo 15
     foreground_color = "#ebdbb2"
     show_titlebar = False
     scrollback_infinite = True

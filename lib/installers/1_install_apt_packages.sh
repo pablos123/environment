@@ -79,6 +79,7 @@ function install_apt_packages() {
         build-essential
         papirus-icon-theme
         shellcheck
+        entr
         libreoffice
     )
     sudo apt-get update
