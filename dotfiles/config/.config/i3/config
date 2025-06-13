@@ -25,6 +25,7 @@ workspace 0 output nonprimary primary
 for_window [class="(?i)google-chrome"] move container to workspace 1
 
 for_window [class="(?i)terminator"] move container to workspace 2
+for_window [class="(?i)org.wezfurlong.wezterm"] move container to workspace 2
 
 for_window [class="(?i)obsidian"] move container to workspace 3, layout tabbed
 for_window [instance="(?i)chatgpt.com"] move container to workspace 3, layout tabbed
@@ -46,11 +47,11 @@ for_window [class="(?i)xfe"] floating enable sticky enable focus
 for_window [class="(?i)pavucontrol"] floating enable sticky enable focus
 for_window [class="(?i)yad"] floating enable sticky enable focus
 
-exec --no-startup-id sleep 3 && terminator
+exec --no-startup-id sleep 3 && open_terminal
 exec --no-startup-id sleep 6 && open_browser
 exec --no-startup-id sleep 10 && clean_urgent
 
-bindsym $mod+Return exec --no-startup-id terminator
+bindsym $mod+Return exec --no-startup-id open_terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
 bindsym $mod+o exec --no-startup-id dmenu_run
 bindsym $mod+Shift+c kill

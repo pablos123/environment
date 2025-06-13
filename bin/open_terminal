@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+
+if (( total_memory > 10000000 )); then
+    wezterm
+else
+    terminator
+fi

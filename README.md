@@ -23,10 +23,9 @@ Things I tried (used a considerable amount of time) but I do not use anymore. Ju
 
 |Tool|Reason|Alternative|
 |-|-|-|
-|wezterm|Incredible, but being gpu accelerated makes it incredible slow in potatoes|terminator|
-|alacrity|I like wezterm|terminator|
-|ghostty|I like wezterm|terminator|
-|xterm|Incredible but I like to easy customize things if I want|terminator|
+|alacrity|I like wezterm|wezterm|
+|ghostty|I like wezterm|wezterm|
+|xterm|Incredible but I like to easy customize things if I want|wezterm|
 |gnome-terminal|Does not store configs in ~/.config|terminator|
 |dwm|My first WM. I love it but I been using i3 it for a lot of years now|i3|
 |sway|I like xorg|i3|
