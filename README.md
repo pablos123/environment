@@ -5,7 +5,7 @@ I am using this set of tools since a lot of time and I do not think I will chang
 
 I resigned from the battle for visual consistency a long time ago, it is not worth it.
 
-I am using this on the latest version of _Debian_ (headless).
+I use the latest stable release of headless Debian.
 
 # New machine
 ```bash
@@ -17,19 +17,3 @@ usermod -aG sudo pab
 git clone 'https://github.com/pablos123/environment' "${HOME}/environment"
 bash "${HOME}/environment/lib/upgrade.sh"
 ```
-
-Distributions I tried. Just to remember.
-|Distribution|
-|-|
-|Debian|
-|Mint|
-|Ubuntu|
-|Lubuntu|
-|Xubuntu|
-|Kubuntu|
-|Arch|
-|Artix|
-|Fedora|
-|Bodhi|
-|TinyCore|
-|Puppy|
