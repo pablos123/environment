@@ -22,6 +22,8 @@ function install_apt_packages() {
         stow
         at
         fd-find
+	    gpg
+        direnv
         ripgrep
         hyperfine
         progress
@@ -51,7 +53,6 @@ function install_apt_packages() {
         zbar-tools
         scrot
         hsetroot
-        eza
         cowsay
         lolcat
         calendar
