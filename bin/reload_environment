@@ -7,6 +7,7 @@ files_to_remove=(
     "${HOME}/.xinitrc"
     "${HOME}/.xprofile"
     "${HOME}/.Xresources"
+    "${HOME}/.config/gtk-3.0"
 )
 
 rm -rf -- "${files_to_remove[@]}"
