@@ -25,6 +25,7 @@ directories=(
     "${HOME}/.local/bin/"
     "${HOME}/playground"
     "${HOME}/images/wallpapers"
+    "${HOME}/images/screenshots"
 )
 mkdir -p "${directories[@]}"
 
