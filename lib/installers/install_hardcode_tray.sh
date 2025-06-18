@@ -24,7 +24,7 @@ function install_hardcode_tray() {
     )
 
     # To fix for papirus run
-    # sudo -E hardcode-tray --conversion-tool RSVGConvert --size 22 --theme Papirus
+    # sudo -E hardcode-tray --apply --conversion-tool RSVGConvert --size 22 --theme Papirus
 }
 
 # install_hardcode_tray
