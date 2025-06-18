@@ -14,7 +14,7 @@ function install_apt_packages() {
         bluetooth
         bluez
         bluez-firmware
-        pulseaudio-module-bluetooth
+        firmware-iwlwifi
         blueman
 
         i3
