@@ -4,15 +4,21 @@ function install_apt_packages() {
     local apt_packages
     apt_packages=(
         xorg
-        i3
+
         pipewire-audio
         pulseaudio-utils
         pavucontrol
         network-manager
         network-manager-gnome
         dbus-x11
-        terminator
+        bluetooth
+        bluez
+        bluez-firmware
+        pulseaudio-module-bluetooth
         blueman
+
+        i3
+        terminator
         vim
         duf
         jq
