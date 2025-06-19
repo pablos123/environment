@@ -21,7 +21,7 @@ function install_dunst() {
     dunst_path="${HOME}/.base_repos/dunst"
 
     [[ ! -d "${dunst_path}" ]] &&
-        git clone https://github.com/dunst-project/dunst.git "${dunst_path}"
+        git clone --depth 1 https://github.com/dunst-project/dunst.git "${dunst_path}"
 
     (
         cd "${dunst_path}"

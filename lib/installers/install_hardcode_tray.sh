@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function install_hardcode_tray() {
-    local dependencies
+    local dependencies hardcode_tray_path
     dependencies=(
         build-essential
         meson
@@ -15,11 +15,19 @@ function install_hardcode_tray() {
     )
     sudo apt-get install --yes "${dependencies[@]}"
 
-    git clone https://github.com/bil-elmoussaoui/Hardcode-Tray "${HOME}/.base_repos/Hardcode-Tray"
+    hardcode_tray_path="${HOME}/.base_repos/Hardcode-Tray"
+
+    [[ ! -d "${hardcode_tray_path}" ]] &&
+        git clone --depth 1 https://github.com/bil-elmoussaoui/Hardcode-Tray "${hardcode_tray_path}"
 
     (
-        cd "${HOME}/.base_repos/Hardcode-Tray"
-        meson builddir --prefix=/usr
+        cd "${hardcode_tray_path}"
+
+        git add .
+        git reset --hard
+        git pull
+
+        meson setup --reconfigure builddir --prefix=/usr
         sudo ninja -C builddir install
     )
 

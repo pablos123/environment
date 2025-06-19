@@ -14,7 +14,7 @@ function install_suckless() {
         tool_path="${HOME}/.base_repos/${tool}"
 
         [[ ! -d "${tool_path}" ]] &&
-            git clone "https://git.suckless.org/${tool}" "${tool_path}"
+            git clone --depth 1 "https://git.suckless.org/${tool}" "${tool_path}"
 
         (
             cd "${tool_path}" || exit 1

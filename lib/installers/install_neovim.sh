@@ -23,7 +23,7 @@ function install_neovim() {
     neovim_path="${HOME}/.base_repos/neovim"
 
     [[ ! -d "${neovim_path}" ]] &&
-        git clone https://github.com/neovim/neovim "${neovim_path}"
+        git clone --depth 1 https://github.com/neovim/neovim "${neovim_path}"
 
     (
         cd "${neovim_path}"
