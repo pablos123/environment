@@ -3,7 +3,7 @@
 function install_fzf() {
     local fzf_path
 
-    fzf_path="${REPOS_PATH}/fzf"
+    fzf_path="${HOME}/.base_repos/fzf"
 
     [[ ! -d "${fzf_path}" ]] &&
         git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_path}"

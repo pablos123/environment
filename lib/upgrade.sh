@@ -17,10 +17,11 @@ function cwd_on_exit() {
 trap cwd_on_exit EXIT
 trap cwd_on_exit_err ERR SIGINT SIGTERM
 
-. "${HOME}/environment/lib/env_variables.sh"
+source "${HOME}/environment/lib/env_variables.sh"
 
 directories=(
-    "${REPOS_PATH}"
+    "${HOME}/repos"
+    "${HOME}/.base_repos"
     "${HOME}/bin"
     "${HOME}/.local/bin/"
     "${HOME}/playground"

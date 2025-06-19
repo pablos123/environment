@@ -18,7 +18,7 @@ function install_dunst() {
 
     sudo apt-get install --yes "${dependencies[@]}"
 
-    dunst_path="${REPOS_PATH}/dunst"
+    dunst_path="${HOME}/.base_repos/dunst"
 
     [[ ! -d "${dunst_path}" ]] &&
         git clone https://github.com/dunst-project/dunst.git "${dunst_path}"

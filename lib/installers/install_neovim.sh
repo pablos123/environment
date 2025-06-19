@@ -20,7 +20,7 @@ function install_neovim() {
 
     sudo apt-get install --yes "${dependencies[@]}"
 
-    neovim_path="${REPOS_PATH}/neovim"
+    neovim_path="${HOME}/.base_repos/neovim"
 
     [[ ! -d "${neovim_path}" ]] &&
         git clone https://github.com/neovim/neovim "${neovim_path}"

@@ -15,10 +15,10 @@ function install_hardcode_tray() {
     )
     sudo apt-get install --yes "${dependencies[@]}"
 
-    git clone https://github.com/bil-elmoussaoui/Hardcode-Tray "${REPOS_PATH}/Hardcode-Tray"
+    git clone https://github.com/bil-elmoussaoui/Hardcode-Tray "${HOME}/.base_repos/Hardcode-Tray"
 
     (
-        cd "${REPOS_PATH}/Hardcode-Tray"
+        cd "${HOME}/.base_repos/Hardcode-Tray"
         meson builddir --prefix=/usr
         sudo ninja -C builddir install
     )

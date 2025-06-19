@@ -11,7 +11,7 @@ function install_suckless() {
     )
     sudo apt-get install --yes "${dependencies[@]}"
     for tool in dwm dmenu st; do
-        tool_path="${REPOS_PATH}/${tool}"
+        tool_path="${HOME}/.base_repos/${tool}"
 
         [[ ! -d "${tool_path}" ]] &&
             git clone "https://git.suckless.org/${tool}" "${tool_path}"
