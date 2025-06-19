@@ -19,3 +19,6 @@
 
 [ -d "${PYENV_ROOT}/bin" ] &&
     PATH="${PYENV_ROOT}/bin:${PATH}"
+
+[ "$(tty)" = "/dev/tty1" ] && command -v startx &&
+    startx

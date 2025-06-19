@@ -17,9 +17,13 @@ function install_apt_packages() {
         firmware-iwlwifi
         blueman
 
+        x11-xserver-utils
+        xdg-utils
+
+        build-essential
         i3
-        terminator
         vim
+        terminator
         duf
         jq
         git
@@ -69,8 +73,6 @@ function install_apt_packages() {
         xclip
         xsel
         xfe
-        x11-xserver-utils
-        xdg-utils
         pkexec
         inotify-tools
         libnotify-bin
@@ -83,11 +85,12 @@ function install_apt_packages() {
         pipx
         curl
         zenity
-        build-essential
-        papirus-icon-theme
         shellcheck
         entr
         libreoffice
+
+        papirus-icon-theme
+        fonts-noto-color-emoji
     )
     sudo apt-get update
     sudo apt-get dist-upgrade --yes
