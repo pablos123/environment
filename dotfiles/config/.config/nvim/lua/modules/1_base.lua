@@ -104,15 +104,19 @@ set_keymap('v', '<c-s>', '<cmd>w<cr><esc>')
 set_keymap('s', '<c-s>', '<cmd>w<cr><esc>')
 
 create_autocmd('FileType', {
-    pattern = {'c', 'html', 'css'},
+    pattern = { 'c', 'html', 'css' },
     command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
-    group = vim.api.nvim_create_augroup('2-indent-ft', { clear = true}),
+    group = vim.api.nvim_create_augroup('2-indent-ft', { clear = true }),
 })
 
 create_autocmd('FileType', {
     pattern = 'markdown',
-    command = 'setl wrap',
-    group = vim.api.nvim_create_augroup('wrapped-ft', { clear = true }),
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.colorcolumn = {}
+        set_keymap('n', 'gf', '<cmd>!mdformat %<cr>', { buffer = true })
+    end,
+    group = vim.api.nvim_create_augroup('clean-markdown', { clear = true }),
 })
 
 -- Set local settings for terminal buffers
@@ -153,12 +157,5 @@ return {
             vim.cmd 'set background=dark'
             vim.cmd 'colorscheme gruvbox'
         end
-    },
-
-    {
-        'catppuccin/nvim',
-        name = "catppuccin",
-        priority = 1000,
-        -- config = function() vim.cmd 'colorscheme catppuccin-mocha' end
     },
 }
