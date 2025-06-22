@@ -48,7 +48,7 @@ return {
     },
     {
         'pearofducks/ansible-vim', -- Install Ansible syntax
-        lazy = false, -- Force load
+        lazy = false,              -- Force load
         config = function()
             -- Set .yml and .yaml to yaml.ansible
             local create_autocmd = vim.api.nvim_create_autocmd
@@ -102,7 +102,7 @@ return {
     {
         'MeanderingProgrammer/render-markdown.nvim',
         config = function()
-            require 'render-markdown'.setup{}
+            require 'render-markdown'.setup {}
         end
     },
 }
