@@ -88,6 +88,7 @@ function install_apt_packages() {
         shellcheck
         entr
         libreoffice
+        pandoc
 
         papirus-icon-theme
         fonts-noto-color-emoji
