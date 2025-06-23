@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+# Print basic escape terminal colors
 
-# Print all escape terminal colors
 print_color_codes() {
     for x in {0..8}; do
         echo -ne "\e[$x""m\\\e[$x""m\e[0m "
@@ -22,3 +22,5 @@ print_color_codes() {
     done
     echo -ne "\e[0m"
 }
+
+print_color_codes
