@@ -21,10 +21,6 @@ opts.expandtab = true
 opts.smartindent = true
 opts.wrap = false
 
--- Disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 -- Diagnostics
 vim.diagnostic.config {
     -- Disable underline
@@ -114,7 +110,7 @@ create_autocmd('FileType', {
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.colorcolumn = {}
-        set_keymap('n', 'gf', '<cmd>!mdformat %<cr>', { buffer = true })
+        set_keymap('n', 'gf', '<cmd>!mdformat %<cr><cr>', { buffer = true })
     end,
     group = vim.api.nvim_create_augroup('clean-markdown', { clear = true }),
 })
