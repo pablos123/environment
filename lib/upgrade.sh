@@ -17,8 +17,6 @@ function cwd_on_exit() {
 trap cwd_on_exit EXIT
 trap cwd_on_exit_err ERR SIGINT SIGTERM
 
-source "${HOME}/environment/lib/env_variables.sh"
-
 directories=(
     "${HOME}/repos"
     "${HOME}/.base_repos"

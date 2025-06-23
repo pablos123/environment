@@ -31,8 +31,8 @@ function install_hardcode_tray() {
         sudo ninja -C builddir install
     )
 
-    # To fix for papirus run
-    # sudo -E hardcode-tray --apply --conversion-tool RSVGConvert --size 22 --theme Papirus
+    # Fix for papirus
+    sudo -E hardcode-tray --apply --conversion-tool RSVGConvert --size 22 --theme Papirus
 }
 
-# install_hardcode_tray
+install_hardcode_tray

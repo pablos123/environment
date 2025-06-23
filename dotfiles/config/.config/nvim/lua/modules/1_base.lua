@@ -110,7 +110,7 @@ create_autocmd('FileType', {
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.colorcolumn = {}
-        set_keymap('n', 'gf', '<cmd>!mdformat %<cr><cr>', { buffer = true })
+        set_keymap('n', 'gf', '<cmd>!mdformat "%"<cr><cr>', { buffer = true })
     end,
     group = vim.api.nvim_create_augroup('clean-markdown', { clear = true }),
 })

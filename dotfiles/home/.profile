@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-. "${HOME}/environment/lib/env_variables.sh"
-
 [ -d "${HOME}/bin" ] &&
    PATH="${HOME}/bin:${PATH}"
 
@@ -20,5 +18,4 @@
 [ -d "${PYENV_ROOT}/bin" ] &&
     PATH="${PYENV_ROOT}/bin:${PATH}"
 
-[ "$(tty)" = "/dev/tty1" ] && command -v startx &&
-    startx
+[ "$(tty)" = "/dev/tty1" ] && command -v startx && startx
