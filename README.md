@@ -12,10 +12,8 @@ I use the latest stable release of headless Debian.
 
 ```bash
 # root
-apt-get install --yes git sudo ntfs-3g
-usermod -aG sudo pab
+apt-get install --yes git sudo ntfs-3g rfkill && usermod -aG sudo pab
 
 # pab
-git clone 'https://github.com/pablos123/environment' "${HOME}/environment"
-"${HOME}/environment/bin/setup_machine"
+git clone 'https://github.com/pablos123/environment' "${HOME}/environment" && "${HOME}/environment/bin/setup_machine"
 ```
