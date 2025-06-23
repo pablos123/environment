@@ -7,6 +7,9 @@
 shopt -s direxpand
 shopt -s autocd
 
+source "${HOME}/environment/lib/aliases.sh"
+source "${HOME}/environment/lib/git_prompt.sh"
+
 export VISUAL=/usr/local/bin/nvim
 export EDITOR=/usr/local/bin/nvim
 
@@ -21,11 +24,6 @@ export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
-
-
-source "${HOME}/environment/lib/aliases.sh"
-source "${HOME}/environment/lib/functions.sh"
-source "${HOME}/environment/lib/git_prompt.sh"
 
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
     source /usr/share/bash-completion/bash_completion
