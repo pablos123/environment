@@ -21,12 +21,6 @@ source "${HOME}/environment/lib/git_prompt.sh"
 [[ -f "${HOME}/.bashrc_custom" ]] &&
     source "${HOME}/.bashrc_custom"
 
-[[ -f "${NVM_DIR}/nvm.sh" ]] &&
-    source "${NVM_DIR}/nvm.sh"
-
-[[ -f "${NVM_DIR}/bash_completion" ]] &&
-    source "${NVM_DIR}/bash_completion"
-
 [[ -f "${HOME}/.cargo/env" ]] &&
     source "${HOME}/.cargo/env"
 
@@ -35,3 +29,7 @@ if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
+# Managed by npm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

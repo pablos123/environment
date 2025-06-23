@@ -16,5 +16,3 @@ export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
 
 export PYENV_ROOT="${HOME}/.pyenv"
-
-export NVM_DIR="${HOME}/.nvm"
