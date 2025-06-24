@@ -32,7 +32,7 @@ function install_apt_packages() {
         stow
         at
         fd-find
-	    gpg
+        gpg
         direnv
         ripgrep
         hyperfine
