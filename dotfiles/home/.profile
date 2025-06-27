@@ -17,7 +17,5 @@
 
 export PATH
 
-if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    command -v startx
+[ "$(tty)" = "/dev/tty1" ] && [ -z "${DISPLAY}" ] && command -v startx &&
     startx
-fi
