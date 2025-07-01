@@ -10,6 +10,7 @@ shopt -s autocd
 source "${HOME}/environment/lib/aliases.sh"
 source "${HOME}/environment/lib/git_prompt.sh"
 
+# Env
 export VISUAL=/usr/local/bin/nvim
 export EDITOR=/usr/local/bin/nvim
 
@@ -25,6 +26,10 @@ export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
 
+export PYENV_ROOT="${HOME}/.pyenv"
+
+export NVM_DIR="${HOME}/.nvm"
+
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
     source /usr/share/bash-completion/bash_completion
 
@@ -37,14 +42,14 @@ export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][
 [[ -f "${HOME}/.cargo/env" ]] &&
     source "${HOME}/.cargo/env"
 
-# pyenv
-export PYENV_ROOT="${HOME}/.pyenv"
-if command -v pyenv >/dev/null 2>&1; then
+[[ -d "${PYENV_ROOT}"/bin ]] && [[ ":${PATH}:" != *":${PYENV_ROOT}/bin:"* ]] &&
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+if command -v pyenv &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[[ -s "${NVM_DIR}/nvm.sh" ]] &&
+    source "${NVM_DIR}/nvm.sh"
+[[ -s "${NVM_DIR}/bash_completion" ]] &&
+    source "${NVM_DIR}/bash_completion"

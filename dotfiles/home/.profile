@@ -15,7 +15,7 @@
 [ -d "${HOME}/environment/bin" ] &&
     PATH="${HOME}/environment/bin:${PATH}"
 
-[ -d "${PYENV_ROOT}/bin" ] &&
-    PATH="${PYENV_ROOT}/bin:${PATH}"
+export PATH
 
-[ "$(tty)" = "/dev/tty1" ] && command -v startx && startx
+[ "$(tty)" = "/dev/tty1" ] && [ -z "${DISPLAY}" ] && command -v startx &&
+    startx

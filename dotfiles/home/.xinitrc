@@ -1,3 +1,5 @@
+export $(dbus-launch)
+
 xrdb -load ~/.Xresources &
 
 # Other daemons
@@ -15,4 +17,5 @@ monitors_config -d &
 sleep 1
 wallpaper_config -d &
 
-exec dbus-launch --exit-with-session i3
+exec i3
+
