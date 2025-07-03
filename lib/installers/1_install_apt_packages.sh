@@ -91,7 +91,6 @@ function install_apt_packages() {
         pandoc
 
         papirus-icon-theme
-        fonts-noto-color-emoji
     )
     sudo apt-get update
     sudo apt-get dist-upgrade --yes
