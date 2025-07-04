@@ -21,9 +21,9 @@ serve() {
     python3 -m http.server 7392 -d "docs" & spid=$!
     sleep 2
 
-    lso=$(command ls -l --time=mtime --full-time page/*)
+    lso=$(command ls -l --time=atime --full-time page/*)
     while true; do
-        lso_check="$(command ls -l --time=mtime --full-time page/*)"
+        lso_check="$(command ls -l --time=atime --full-time page/*)"
         if [ ! "${lso}" = "${lso_check}" ]; then
             echo "Files modified..."
             build
