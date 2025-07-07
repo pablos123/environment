@@ -32,7 +32,7 @@ return {
             }
 
             local language_servers = {
-                'pyright',
+                'basedpyright',
                 'ruff',
                 'ts_ls',
                 'html',
