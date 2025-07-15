@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+mapfile -t releases_table < <(curl https://www.debian.org/releases/ 2>/dev/null | pup | sed -n '/<table border="1" summary="">/,/<\/table>/p')
+
+regex="<table|</table>|<tbody>|</tbody>|<td>|<th>|</td>|</th>"
+for l in "${releases_table[@]}"; do
+    [[ ${l} =~ ${regex} ]] && continue
+    [[ ${l} =~ "<tr>" ]] && result="${result}\n${row}" && row= && echo && continue
+    row="${row};${l}"
+done
+
+echo -e "${result}" | column -s ';'
+
+

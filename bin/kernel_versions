@@ -2,12 +2,12 @@
 
 kernel_org_url='https://www.kernel.org'
 tmp_file="/tmp/kernel_org_releases.json"
-wget -O  "$tmp_file" "$kernel_org_url/releases.json" &>>/dev/null
+wget -O  "${tmp_file}" "${kernel_org_url}/releases.json" &>>/dev/null
 
-echo -e "\n\e[1;32mLatest Stable:\e[0m\e[1;33m" "$(jq -rM .latest_stable.version "$tmp_file")\e[0m\n"
+echo -e "\n\e[1;32mLatest Stable:\e[0m\e[1;33m" "$(jq -rM .latest_stable.version "${tmp_file}")\e[0m\n"
 
-columns=$(jq -rM '.releases | map(.moniker + "  " + .version  + "  " + .released.isodate) | .[]' "$tmp_file")
+columns=$(jq -rM '.releases | map(.moniker + "  " + .version  + "  " + .released.isodate) | .[]' "${tmp_file}")
 
-echo -e "\e[4;35mMoniker\e[0m  \e[4;35mVersion\e[0m  \e[4;35mDate\e[0m\n$columns" | column --table
+echo -e "\e[4;35mMoniker\e[0m  \e[4;35mVersion\e[0m  \e[4;35mDate\e[0m\n${columns}" | column --table
 
-echo -e "\n$kernel_org_url\n"
+echo -e "\n${kernel_org_url}\n"
