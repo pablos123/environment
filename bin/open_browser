@@ -3,4 +3,4 @@
 total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
 
 (( total_memory > 10000000 )) &&
-    chrome
+    exec chrome
