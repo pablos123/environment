@@ -89,6 +89,7 @@ function install_apt_packages() {
         entr
         libreoffice
         pandoc
+        meld
 
         papirus-icon-theme
     )
