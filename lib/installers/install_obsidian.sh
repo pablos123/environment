@@ -16,8 +16,9 @@ function install_obsidian() {
     latest_version_path="${obsidian_path}/obsidian_v${latest_version}"
 
     if [[ -z "${current_version}" ]] || [[ "${latest_version}" > "${current_version}" ]]; then
-        rm -f "${current_version_path}"
         wget -O "${latest_version_path}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
+        [[ -s "${latest_version_path}" ]] && [[ -s "${current_version_path}" ]] &&
+            rm -f "${current_version_path}"
     else
         echo "Obsidian is in the latest version: ${latest_version}"
     fi
@@ -25,5 +26,4 @@ function install_obsidian() {
     chmod +x "${latest_version_path}"
 }
 
-# Using nvim for a while
-# install_obsidian
+install_obsidian

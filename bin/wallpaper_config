@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 function set_wallpaper() {
+    local wallpapers_array items_count random_index wallpaper
+
     wallpapers_array=("${HOME}/images/wallpapers/"*)
     items_count="${#wallpapers_array[@]}"
     random_index=$((RANDOM % items_count))
     wallpaper="${wallpapers_array[${random_index}]}"
 
-    hsetroot -cover "${wallpaper}" >/dev/null 2>&1
+    hsetroot -cover "${wallpaper}" &>>/dev/null
 }
 
 set_wallpaper

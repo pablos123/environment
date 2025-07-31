@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 # Scan qr showed on the screen and copy the content to the clipboard (works for multiple qrs)
 
-file_name="/tmp/qr_scanner.tmp.png"
-flameshot gui -p "${file_name}" >/dev/null 2>&1
-qr_content="$(zbarimg --raw --quiet "${file_name}")"
-echo "${qr_content}" | xclip
-[[ -n "${qr_content}" ]] && notify-send "${qr_content}"
-rm -f "${file_name}"
+function qr_scanner() {
+    local tmp_file qr_content
+    tmp_file="/tmp/qr_scanner.tmp.png"
+
+    flameshot gui -p "${tmp_file}" &>>/dev/null
+    qr_content="$(zbarimg --raw --quiet "${tmp_file}")"
+
+    echo "${qr_content}" | xclip
+    [[ -n "${qr_content}" ]] &&
+        notify-send "${qr_content}"
+
+    rm -f "${tmp_file}"
+}
+
+qr_scanner

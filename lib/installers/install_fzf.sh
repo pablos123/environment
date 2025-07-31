@@ -9,13 +9,13 @@ function install_fzf() {
         git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_path}"
 
     (
-        cd "${fzf_path}"
+        cd "${fzf_path}" || exit 1
 
         git add .
         git reset --hard
         git pull
 
-        (yes | ./install) >/dev/null 2>&1
+        (yes | ./install) &>>/dev/null
     )
 }
 

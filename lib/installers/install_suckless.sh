@@ -21,20 +21,22 @@ function install_suckless() {
 
             git pull
 
-            repo_tool_version=$(grep 'VERSION =' config.mk | sed 's/VERSION = //')
-            if which "${tool}" >/dev/null; then
+            current_tool_version=
+            if command -v "${tool}" >/dev/null; then
                 current_tool_version="$("${tool}" -v 2>&1 | sed "s/${tool}[\- ]//")"
-                if [[ "${repo_tool_version}" == "${current_tool_version}" ]]; then
-                    echo "${tool} is in the last available version."
-                    continue
-                fi
             fi
 
-            make
-            sudo make install
-            make clean
-            git add .
-            git reset --hard
+            repo_tool_version=$(grep 'VERSION =' config.mk | sed 's/VERSION = //')
+
+            if [[ "${repo_tool_version}" == "${current_tool_version}" ]]; then
+                echo "${tool} is in the last available version."
+            else
+                make
+                sudo make install
+                make clean
+                git add .
+                git reset --hard
+            fi
         )
     done
 }

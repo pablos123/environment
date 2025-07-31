@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 # Save an image of your current monitors and blur it then, lock your screen.
 
-scrot -o /tmp/lock_screen_screenshot.png
-convert -blur 0x20 /tmp/lock_screen_screenshot.png /tmp/lock_screen_screenshot_blur.png
-rm -f /tmp/lock_screen_screenshot.png
-i3lock --no-unlock-indicator --nofork --ignore-empty-password -i /tmp/lock_screen_screenshot_blur.png
+function lock_screen() {
+    local tmp_file tmp_file_blur
+    tmp_file="/tmp/lock_screen_screenshot.tmp.png"
+    tmp_file_blur="/tmp/lock_screen_screenshot_blur.tmp.png"
+
+    scrot -o "${tmp_file}"
+    convert -blur 0x20 "${tmp_file}" "${tmp_file_blur}"
+
+    i3lock --no-unlock-indicator --nofork --ignore-empty-password -i "${tmp_file_blur}"
+
+    rm -f "${tmp_file}" "${tmp_file_blur}"
+}
+
+lock_screen
