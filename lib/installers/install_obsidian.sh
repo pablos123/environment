@@ -15,13 +15,14 @@ function install_obsidian() {
     current_version_path="${obsidian_path}/obsidian_v${current_version}"
     latest_version_path="${obsidian_path}/obsidian_v${latest_version}"
 
-    if [[ -z "${current_version}" ]] || [[ "${latest_version}" > "${current_version}" ]]; then
-        wget -O "${latest_version_path}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
-        [[ -s "${latest_version_path}" ]] && [[ -s "${current_version_path}" ]] &&
-            rm -f "${current_version_path}"
-    else
+    if [[ "${latest_version}" == "${current_version}" ]]; then
         echo "Obsidian is in the latest version: ${latest_version}"
+        exit 1
     fi
+
+    wget -O "${latest_version_path}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
+    [[ -s "${latest_version_path}" ]] && [[ -s "${current_version_path}" ]] &&
+        rm -f "${current_version_path}"
 
     chmod +x "${latest_version_path}"
 }
