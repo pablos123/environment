@@ -3,17 +3,19 @@
 # Notify if a battery is low.
 
 function battery_notify() {
-    local black_list state model percentage data
-    black_list=(
-        DisplayDevice
-        line_power_ADP0
-    )
+    local state model percentage is_battery data
 
     for battery in $(upower -e); do
-        [[ "${black_list[*]}" =~ ${battery} ]] || [[ ! "${battery}" =~ battery ]] &&
+
+        mapfile -t is_battery < <(upower -i "${battery}" | awk '/present:|model:|rechargeable:|voltage:/{print $2}' | tr -d %)
+
+        [[ -z "${is_battery[0]}" ]] ||
+        [[ -z "${is_battery[1]}" ]] ||
+        [[ -z "${is_battery[2]}" ]] ||
+        [[ -z "${is_battery[3]}" ]] &&
             continue
 
-        mapfile -t data < <(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/model:|state:|percentage:/{print $2}' | tr -d %)
+        mapfile -t data < <(upower -i "${battery}" | awk '/model:|state:|percentage:/{print $2}' | tr -d %)
 
         state="${data[1]}"
         [[ "${state}" != "discharging" ]] &&

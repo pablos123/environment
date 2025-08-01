@@ -32,4 +32,4 @@
 [urgency_critical]
     background = "#000000"
     foreground = "#DDDDDD"
-    frame_color = "#FFFFFF"
+    frame_color = "#CC241D"
