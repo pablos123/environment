@@ -37,22 +37,20 @@ function move_workspaces_to_primary() {
 }
 
 function configure_monitors() {
-    # Notebook
-    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
+    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then # Notebook
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
             xrandr --output "HDMI-1" --primary --auto --left-of "eDP-1"
         else
             xrandr --output "eDP-1" --primary --auto
         fi
-    fi
-
-    # Desk
-    if [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
+    elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then # Desk
         if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
             xrandr --output "DisplayPort-2" --primary --auto --right-of "HDMI-A-0"
         else
             xrandr --output "DisplayPort-2" --primary --auto
         fi
+    else
+        i3-nagbar -m 'Monitors configuration not recognized.' -t warning
     fi
 
     move_workspaces_to_primary &>> /dev/null
