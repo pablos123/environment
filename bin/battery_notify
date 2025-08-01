@@ -2,31 +2,36 @@
 # I don't watch all the time my status bar, sometimes I don't see the battery is low and the pc shuts down.
 # Notify if a battery is low.
 
-black_list="DisplayDevice"
+function battery_notify() {
+    local black_list state model percentage data
+    black_list=(
+        DisplayDevice
+        line_power_ADP0
+    )
 
-batteries=$(upower -e)
-for battery in $batteries; do
-    if [[ $battery =~ $black_list ]]; then continue; fi
+    for battery in $(upower -e); do
+        [[ "${black_list[*]}" =~ ${battery} ]] || [[ ! "${battery}" =~ battery ]] &&
+            continue
 
-    is_battery=$(upower -i "$battery" | grep battery)
-    if [[ ! $is_battery ]]; then continue; fi
+        mapfile -t data < <(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/model:|state:|percentage:/{print $2}' | tr -d %)
 
-    state=$(upower -i "$battery" | grep state | awk '{print $2}' | sed s/%//)
-    if [[ "$state" != "discharging" ]]; then continue; fi
+        state="${data[1]}"
+        [[ "${state}" != "discharging" ]] &&
+            continue
 
-    name=$(upower -i "$battery" | grep model | sed "s/.*:\s*\(.*\)/\1/g")
-    percentage=$(upower -i "$battery" | grep percentage | awk '{print $2}' | sed s/%//)
+        percentage="${data[2]}"
+        if [[ ${percentage} -lt 16 ]]; then
+            model="${data[0]}"
+            notify-send --urgency "critical" --expire-time=600000 "LOW BATTERY" "\n${model}: ${percentage}%"
+        fi
+    done
+}
 
-    urgency=
-    if [[ $percentage -lt 11 ]]; then
-        urgency="critical"
-    elif [[ $percentage -lt 16 ]]; then
-        urgency="normal"
-    elif [[ $percentage -lt 21 ]]; then
-        urgency="low"
-    fi
+battery_notify
 
-    if [[ $urgency ]]; then
-        notify-send --urgency "$urgency" --expire-time=600000 "🪫 Low battery! 🪫" "\n$name: $percentage%"
-    fi
-done
+if [[ "${1}" == "-d" ]]; then
+    while true; do
+        sleep 10
+        battery_notify
+    done
+fi

@@ -12,6 +12,7 @@ dunst &
 # My daemons
 keyboard_config -d &
 monitors_config -d &
+battery_notify -d &
 
 # Depends on monitors_config
 sleep 1
