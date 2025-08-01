@@ -1,5 +1,41 @@
 #!/usr/bin/env bash
 
+function get_curent_workspace() {
+    local w oifs name_focused
+    oifs="${IFS}"
+
+    IFS=$'\n'
+    for w in $(i3-msg -t get_workspaces | jq -r '.[] | "\(.name)::\(.focused)"'); do
+        mapfile -t name_focused < <(echo -e "${w//::/\\n}")
+        if [[ "${name_focused[1]}" == "true" ]]; then
+            echo "${name_focused[0]}"
+            break
+        fi
+    done
+    IFS="${oifs}"
+}
+
+function move_workspaces_to_primary() {
+    local w oifs current_workspace
+    oifs="${IFS}"
+    current_workspace="$(get_curent_workspace)"
+
+    IFS=$'\n'
+    for w in $(i3-msg -t get_workspaces | jq -r .[].name); do
+        if [[ "${w}" == 0 ]]; then
+            i3-msg -- workspace "${w}"
+            i3-msg -- move workspace to output nonprimary
+            continue
+        fi
+
+        i3-msg -- workspace "${w}"
+        i3-msg -- move workspace to output primary
+    done
+    IFS="${oifs}"
+
+    i3-msg -- workspace "${current_workspace}"
+}
+
 function configure_monitors() {
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
@@ -19,6 +55,7 @@ function configure_monitors() {
         fi
     fi
 
+    move_workspaces_to_primary &>> /dev/null
     i3-msg restart &>>/dev/null
 }
 
