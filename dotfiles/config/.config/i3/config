@@ -70,6 +70,7 @@ bindsym $mod+Shift+e mode "$exit_mode"
 mode "$exit_mode" {
     bindsym e exec pkill -u pab
     bindsym l exec xdotool key Escape && lock_screen
+    bindsym s exec shutdown_machine
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
