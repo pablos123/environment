@@ -65,7 +65,7 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-set $exit_mode [e]xit [l]ock
+set $exit_mode [e]xit [l]ock [s]hutdown
 bindsym $mod+Shift+e mode "$exit_mode"
 mode "$exit_mode" {
     bindsym e exec pkill -u pab
