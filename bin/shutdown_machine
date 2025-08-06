@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+sudo_password="$(zenity --password)" || exit 1
+
+if ! yes "${sudo_password}" | sudo -Sv; then
+    echo "Bad password. Aborting."
+    exit 1
+fi
+
+sudo shutdown now
