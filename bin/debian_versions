@@ -1,9 +1,30 @@
 #!/usr/bin/env bash
 
-function debian_versions() {
-    local curl_response_md old_ifs response_lines show_old releases_url l
+function get_headers() {
+    local header_name header_names result
+    header_names=(
+        "Version"
+        "Code Name"
+        "Release Date"
+        "End of Life"
+        "End of LTS"
+        "End of ELTS"
+        "Status"
+    )
+    readonly header_names
 
-    releases_url=https://www.debian.org/releases/
+    result=""
+    for header_name in "${header_names[@]}"; do
+        result+="\e[1;35m${header_name}\e[0m,"
+    done
+
+    echo -e "${result}"
+}
+
+function debian_versions() {
+    local curl_response_md old_ifs releases_url release_table_md
+
+    releases_url='https://www.debian.org/releases/'
     readonly releases_url
 
     old_ifs="${IFS}" && IFS=$'\n'
@@ -12,29 +33,29 @@ function debian_versions() {
     curl_response_md="$(pandoc -f html -t markdown <(curl "${releases_url}" 2>/dev/null))"
     readonly curl_response_md
 
-    mapfile -t response_lines < <(echo "${curl_response_md}" | sed -En '/^\s+Version\s+Code Name\s+Release Date\s+End of Life/,/^$/p' | tr -d '\\')
-    readonly response_lines
+    release_table_md="$(
+        sed -En '
+            /^\s+Version\s+Code Name\s+Release Date\s+End of Life\s+/,/^$/ {p; /^$/q}; # Get the line and quit after the first empty line.
+        ' <<< "${curl_response_md}")"
+    readonly release_table_md
 
-    show_old=false
-    [[ $1 == '-o' ]] &&
-        show_old=true
+    sanitized_table="$(
+      sed -E '
+            s/^\s+//;
+            /^$/d;
+            s/.*Version.*//;
+            s/.*-----.*//;
+            s/\(.*\/\)//;
+            s/\s{2,}/\t/g;
+        ' <<< "${release_table_md}"
+    )"
+    readonly sanitized_table
 
-    echo -e '\n\e[1;4;32mINDEX OF RELEASES\e[0m\n'
-
-    for l in "${response_lines[@]}"; do
-        echo "${l}" | sed -E 's/^\s+//'
-        if [[ -z "${l}" ]]; then
-            ! "${show_old}" &&
-                break
-
-            show_old=false
-            echo -e '\e[1;4;32mHISTORIC RELEASES\e[0m\n'
-        fi
-    done
-
-    IFS="${old_ifs}"
+    column --table --separator $'\t' --table-columns "$(get_headers)" <<< "${sanitized_table}"
 
     echo -e "\n${releases_url}\n"
+
+    IFS="${old_ifs}"
 }
 
 debian_versions "$@"
