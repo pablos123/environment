@@ -35,7 +35,7 @@ function debian_versions() {
 
     release_table_md="$(
         sed -En '
-            /^\s+Version\s+Code Name\s+Release Date\s+End of Life\s+/,/^$/ {p; /^$/q}; # Get the line and quit after the first empty line.
+            /^\s+Version\s+Code Name\s+Release Date\s+End of Life\s+/,/^$/ {p; /^$/q}; # Print lines and quit after the first empty line.
         ' <<< "${curl_response_md}")"
     readonly release_table_md
 
