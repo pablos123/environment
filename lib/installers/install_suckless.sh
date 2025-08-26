@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function install_suckless() {
-    local tool tool_path current_tool_version current_tool_version repo_tool_version dependencies
+    local tool tool_path tool_bin current_tool_version repo_tool_version dependencies
     dependencies=(
         make
         build-essential
@@ -10,11 +10,13 @@ function install_suckless() {
         libxft-dev
     )
     sudo apt-get install --yes "${dependencies[@]}"
-    for tool in dwm dmenu st; do
+    for tool in st dwm dmenu; do
         tool_path="${HOME}/.base_repos/${tool}"
+        tool_bin="/usr/local/bin/${tool}"
 
         [[ ! -d "${tool_path}" ]] &&
             git clone --depth 1 "https://git.suckless.org/${tool}" "${tool_path}"
+
 
         (
             cd "${tool_path}" || exit 1
@@ -22,8 +24,8 @@ function install_suckless() {
             git pull
 
             current_tool_version=
-            if command -v "${tool}" >/dev/null; then
-                current_tool_version="$("${tool}" -v 2>&1 | sed "s/${tool}[\- ]//")"
+            if command -v "${tool_bin}" >/dev/null; then
+                current_tool_version="$("${tool_bin}" -v 2>&1 | sed "s/${tool}[\- ]//")"
             fi
 
             repo_tool_version=$(grep 'VERSION =' config.mk | sed 's/VERSION = //')
@@ -41,4 +43,4 @@ function install_suckless() {
     done
 }
 
-# install_suckless
+install_suckless
