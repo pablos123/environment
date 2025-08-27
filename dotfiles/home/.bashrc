@@ -8,7 +8,7 @@ command -v tmux >/dev/null 2>&1 &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]] &&
-  exec tmux
+  exec tmux -2 # Tell tmux to assume 256 colors
 
 shopt -s direxpand
 shopt -s autocd

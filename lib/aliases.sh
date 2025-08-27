@@ -32,3 +32,4 @@ alias myip="printf 'External: ' && curl -s ifconfig.me && echo && printf 'Local:
 alias sources="grep --color=always -v -E '^#|^ *$' /etc/apt/sources.list /etc/apt/sources.list.d/*"
 alias weather="curl wttr.in/rosario"
 alias calendar_fact="calendar | head -n 1 | cowsay -f duck | lolcat"
+alias tmux="tmux -2" # Tell tmux to assume 256 colors
