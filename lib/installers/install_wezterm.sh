@@ -9,4 +9,4 @@ function install_wezterm() {
     sudo apt-get install --yes wezterm
 }
 
-install_wezterm
+# install_wezterm

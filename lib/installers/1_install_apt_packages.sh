@@ -23,7 +23,6 @@ function install_apt_packages() {
         build-essential
         i3
         vim
-        terminator
         duf
         jq
         git
