@@ -5,6 +5,8 @@ function install_apt_packages() {
     apt_packages=(
         xorg
 
+        build-essential
+
         pipewire-audio
         pulseaudio-utils
         pavucontrol
@@ -20,8 +22,10 @@ function install_apt_packages() {
         x11-xserver-utils
         xdg-utils
 
-        build-essential
-        i3
+        i3-wm
+        i3lock
+        i3status
+
         vim
         duf
         jq
@@ -89,6 +93,7 @@ function install_apt_packages() {
         libreoffice
         pandoc
         meld
+        tmux
 
         papirus-icon-theme
     )
