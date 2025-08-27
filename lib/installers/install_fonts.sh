@@ -7,6 +7,7 @@ function install_fonts() {
         SourceCodePro
         JetBrainsMono
         Lilex
+        Iosevka
     )
 
     fonts_path="${HOME}/.local/share/fonts"
