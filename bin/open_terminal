@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-exec terminator
+exec /usr/local/bin/st
 
 # total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
 #
