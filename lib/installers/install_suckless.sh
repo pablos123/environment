@@ -10,10 +10,11 @@ function install_suckless() {
         libxft-dev
     )
     sudo apt-get install --yes "${dependencies[@]}"
-    for tool in st dwm dmenu; do
+    # This is agnostic to the tool, add whatever suckless tool you want.
+    for tool in st dmenu; do
         tool_path="${HOME}/.base_repos/${tool}"
         tool_bin="/usr/local/bin/${tool}"
-        tool_config="/home/pab/environment/lib/shared/${tool}_config.h"
+        tool_config="${HOME}/environment/lib/shared/${tool}_config.h"
 
         [[ ! -d "${tool_path}" ]] &&
             git clone --depth 1 "https://git.suckless.org/${tool}" "${tool_path}"
