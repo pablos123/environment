@@ -26,6 +26,7 @@ for_window [class="(?i)google-chrome"] move container to workspace 1
 
 for_window [class="(?i)terminator"] move container to workspace 2
 for_window [class="(?i)org.wezfurlong.wezterm"] move container to workspace 2
+for_window [class="(?i)xterm-256color"] move container to workspace 2
 
 for_window [class="(?i)obsidian"] move container to workspace 3, layout tabbed
 for_window [instance="(?i)chatgpt.com"] move container to workspace 3, layout tabbed
