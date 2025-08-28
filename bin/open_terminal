@@ -7,5 +7,5 @@ exec /usr/local/bin/st
 # if (( total_memory > 10000000 )); then
 #     exec wezterm
 # else
-#     exec terminator
+#     exec /usr/local/bin/st
 # fi
