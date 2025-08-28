@@ -3,7 +3,7 @@ export $(dbus-launch)
 xrdb -load ~/.Xresources &
 
 # Other daemons
-picom &
+picom --daemon &
 nm-applet &
 blueman-applet &
 solaar -w hide &
