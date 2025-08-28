@@ -81,8 +81,8 @@ mode "$exit_mode" {
 
 bindsym $mod+Shift+r exec --no-startup-id reload_environment
 
-# Simulate middle click with the keyboard
-bindsym $mod+m exec --no-startup-id xdotool click 2
+# Simulate middle click with shift modifier to go back to system default on the keyboard
+bindsym $mod+m exec --no-startup-id xdotool keydown shift click 2 keyup shift
 
 # https://wiki.linuxquestions.org/wiki/XF86_keyboard_symbols
 set $refresh_i3status killall -SIGUSR1 i3status
