@@ -94,7 +94,7 @@ function install_apt_packages() {
         pandoc
         meld
         tmux
-
+        aria2
         papirus-icon-theme
     )
     sudo apt-get update
