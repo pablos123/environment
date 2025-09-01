@@ -47,7 +47,7 @@ bind Space:magic-space
 bind "set completion-ignore-case on"
 
 # The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
-bind "set completion-prefix-display-length 3"
+bind "set completion-prefix-display-length 7"
 
 # Display matches for ambiguous patterns at first tab press.
 bind "set show-all-if-ambiguous on"
