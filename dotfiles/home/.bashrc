@@ -1,17 +1,65 @@
 #!/usr/bin/env bash
 
-# If not running interactively, don't do anything
+# If not running interactively, don't do anything.
 [[ $- != *i* ]] &&
+    return
+
+# If bash's version is bad don't do anything.
+((BASH_VERSINFO[0] < 4)) &&
     return
 
 command -v tmux >/dev/null 2>&1 &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]] &&
-  exec tmux -2 # Tell tmux to assume 256 colors
+  exec tmux -2 # Tell tmux to assume 256 colors.
 
-shopt -s direxpand
-shopt -s autocd
+# Prepend cd to directory names automatically.
+shopt -s autocd 2> /dev/null
+
+# Correct spelling errors during tab-completion.
+shopt -s dirspell 2> /dev/null
+
+# Correct spelling errors in arguments supplied to cd.
+shopt -s cdspell 2> /dev/null
+
+# Turn on recursive globbing (enables ** to recurse all directories).
+shopt -s globstar 2> /dev/null
+
+# This allows you to bookmark your favorite places across the file system.
+# Define a variable containing a path and you will be able to cd into it regardless of the directory you're in.
+shopt -s cdable_vars 2> /dev/null
+
+# Update window size after every command.
+shopt -s checkwinsize 2> /dev/null
+
+# Append to the history file, don't overwrite.
+shopt -s histappend
+
+# Save multi-line commands as one command in the history.
+shopt -s cmdhist
+
+# Enable history expansion with space
+# E.g. typing !!<space> will replace the !! with your last command.
+bind Space:magic-space
+
+# Perform file completion in a case insensitive fashion.
+bind "set completion-ignore-case on"
+
+# The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
+bind "set completion-prefix-display-length 3"
+
+# Display matches for ambiguous patterns at first tab press.
+bind "set show-all-if-ambiguous on"
+bind "set show-all-if-unmodified on"
+
+# Immediately add a trailing slash when autocompleting symlinks to directories.
+bind "set mark-symlinked-directories on"
+
+# Prettier completitions
+bind "set colored-stats on"
+bind "set colored-completion-prefix on"
+bind "set visible-stats on"
 
 source "${HOME}/environment/lib/aliases.sh"
 source "${HOME}/environment/lib/git_prompt.sh"
@@ -32,7 +80,26 @@ export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
 
+# Append to history after finishing any command.
 export PROMPT_COMMAND='history -a'
+
+# Automatically trim long paths in the prompt.
+export PROMPT_DIRTRIM=2
+
+# Big history.
+export HISTSIZE=500000
+export HISTFILESIZE=100000
+
+# Avoid duplicate entries.
+export HISTCONTROL="erasedups:ignoreboth"
+
+# Don't record some commands.
+export HISTIGNORE="exit:ls:history:clear"
+
+# Use standard ISO 8601 timestamp
+# %F equivalent to %Y-%m-%d
+# %T equivalent to %H:%M:%S (24-hours format)
+export HISTTIMEFORMAT='%F %T '
 
 export PYENV_ROOT="${HOME}/.pyenv"
 
