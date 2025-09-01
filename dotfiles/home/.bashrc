@@ -46,9 +46,6 @@ bind Space:magic-space
 # Perform file completion in a case insensitive fashion.
 bind "set completion-ignore-case on"
 
-# The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
-bind "set completion-prefix-display-length 7"
-
 # Display matches for ambiguous patterns at first tab press.
 bind "set show-all-if-ambiguous on"
 bind "set show-all-if-unmodified on"
@@ -60,6 +57,8 @@ bind "set mark-symlinked-directories on"
 bind "set colored-stats on"
 bind "set colored-completion-prefix on"
 bind "set visible-stats on"
+# The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
+bind "set completion-prefix-display-length 7"
 
 source "${HOME}/environment/lib/aliases.sh"
 source "${HOME}/environment/lib/git_prompt.sh"
