@@ -1,6 +1,7 @@
 static char *font =
-    "Iosevka Nerd Font:pixelsize=22:antialias=true:autohint=true";
+// "Iosevka Nerd Font:pixelsize=22:antialias=true:autohint=true";
 // "JetBrainsMono Nerd Font:pixelsize=21:antialias=true:autohint=true";
+"ZedMono Nerd Font:pixelsize=21:antialias=true:autohint=true";
 static int borderpx = 4;
 
 /*

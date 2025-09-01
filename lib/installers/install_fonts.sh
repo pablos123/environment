@@ -8,6 +8,7 @@ function install_fonts() {
         JetBrainsMono
         Lilex
         Iosevka
+        ZedMono
     )
 
     fonts_path="${HOME}/.local/share/fonts"
