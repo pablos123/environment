@@ -19,6 +19,7 @@ alias :q="exit"
 alias :wq="exit"
 alias vim="nvim"
 alias bat="batcat"
+alias cat="bat"
 alias df="duf"
 # Git
 alias genc="git add . && git commit -m 'genc'"
