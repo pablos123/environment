@@ -93,7 +93,7 @@ export HISTFILESIZE=100000
 export HISTCONTROL="erasedups:ignoreboth"
 
 # Don't record some commands.
-export HISTIGNORE="exit:ls:history:clear"
+export HISTIGNORE="exit:ls:history:clear:pwd"
 
 # Use standard ISO 8601 timestamp
 # %F equivalent to %Y-%m-%d
