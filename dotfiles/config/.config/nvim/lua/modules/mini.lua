@@ -10,6 +10,18 @@ return {
             require 'mini.cursorword'.setup {}
             require 'mini.statusline'.setup {}
 
+            local mini_pick = require 'mini.pick'
+            mini_pick.setup {}
+            set_keymap('n', '<leader>o', function()
+                mini_pick.builtin.cli({ command = { 'fd', '--hidden' } })
+            end)
+            set_keymap('n', '<leader>f', function()
+                mini_pick.builtin.cli({ command = { 'rg', '--hidden' } })
+            end)
+            set_keymap('n', '<leader>b', function()
+                mini_pick.builtin.buffers()
+            end)
+
             local mini_files = require 'mini.files'
             mini_files.setup {}
             set_keymap('n', '-', function()
