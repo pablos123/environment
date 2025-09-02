@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 #
 # Common
-alias ls="eza --icons --extended --group-directories-first"
+alias ls="eza --icons --extended --group-directories-first -F"
 alias l="ls"
 alias s="ls"
 alias sl="ls"
@@ -18,7 +18,8 @@ alias ....="cd ../../.."
 alias :q="exit"
 alias :wq="exit"
 alias vim="nvim"
-alias bat="batcat"
+alias bat="batcat --theme=gruvbox-dark --paging=never --color=always --decorations=never"
+alias cat="bat"
 alias df="duf"
 # Git
 alias genc="git add . && git commit -m 'genc'"
