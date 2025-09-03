@@ -131,11 +131,11 @@ create_autocmd("TermOpen", {
 set_keymap('t', '<esc>', '<c-\\><c-n>')
 
 -- Open a terminal at the bottom of the screen with a fixed height.
-set_keymap('n', 'gt', function()
-    vim.cmd.new()
-    vim.cmd.wincmd 'J'
-    vim.api.nvim_win_set_height(0, 12)
-    vim.wo.winfixheight = true
+set_keymap('n', '<leader>t', function()
+    vim.cmd.vnew()
+    vim.cmd.wincmd 'L'
+    vim.api.nvim_win_set_width(0, 40)
+    vim.wo.winfixwidth = true
     vim.cmd.term()
     vim.api.nvim_feedkeys('i', 'n', false)
 end)
@@ -144,6 +144,9 @@ set_keymap('n', 'gd', function() vim.diagnostic.open_float() end)
 
 -- This overwrites 'goto files' I do not use it.
 set_keymap('n', 'gf', function() vim.lsp.buf.format() end)
+
+-- This overwrites 'goto files' I do not use it.
+set_keymap('n', 'ga', function() vim.lsp.buf.code_action() end)
 
 return {
     {

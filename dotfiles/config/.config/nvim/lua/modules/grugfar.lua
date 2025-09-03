@@ -2,37 +2,34 @@ return {
     {
         'MagicDuck/grug-far.nvim',
         config = function()
-            vim.keymap.set('n', '<leader>s', '<cmd>GrugFar<cr>')
-            require('grug-far').setup {
+            local grug_far = require('grug-far')
+
+            grug_far.setup({
                 helpLine = {
                     enabled = false,
                 },
-                transient = true,
-                extraArgs = "--hidden -g '!{.git,.svn,.hg}'",
-                keymaps = {
-                    replace = { n = '<localleader>r' },
-                    qflist = { n = '<localleader>q' },
-                    refresh = { n = '<localleader>f' },
-                    gotoLocation = { n = '<enter>' },
-                    help = { n = 'g?' },
-                    pickHistoryEntry = false,
-                    syncLocations = false,
-                    syncLine = false,
-                    close = false,
-                    historyOpen = false,
-                    historyAdd = false,
-                    openLocation = false,
-                    openNextLocation = false,
-                    openPrevLocation = false,
-                    abort = false,
-                    toggleShowCommand = false,
-                    swapEngine = false,
-                    previewLocation = false,
-                    swapReplacementInterpreter = false,
-                    applyNext = false,
-                    applyPrev = false,
+                engines = {
+                    ripgrep = {
+                        extraArgs = "--hidden --multiline",
+                    },
                 },
-            }
+                windowCreationCommand = '',
+                normalModeSearch = false,
+                transient = true,
+                wrap = false,
+                showCompactInputs = true,
+                showInputsTopPadding = false,
+                showInputsBottomPadding = false,
+                staticTitle = 'Wise Wizard',
+            })
+
+            vim.keymap.set('n', '<leader>s', function()
+                vim.cmd.vnew()
+                vim.cmd.wincmd 'L'
+                vim.api.nvim_win_set_width(0, 40)
+                vim.wo.winfixwidth = true
+                grug_far.open()
+            end)
         end,
     },
 }

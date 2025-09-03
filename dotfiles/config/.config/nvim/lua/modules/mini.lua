@@ -13,10 +13,7 @@ return {
             local mini_pick = require 'mini.pick'
             mini_pick.setup {}
             set_keymap('n', '<leader>o', function()
-                mini_pick.builtin.cli({ command = { 'fd', '--hidden' } })
-            end)
-            set_keymap('n', '<leader>f', function()
-                mini_pick.builtin.cli({ command = { 'rg', '--hidden' } })
+                mini_pick.builtin.cli({ command = { 'fd', '--type=f', '--hidden', '--no-follow', '--color=never', '--exclude=.git' } })
             end)
             set_keymap('n', '<leader>b', function()
                 mini_pick.builtin.buffers()
