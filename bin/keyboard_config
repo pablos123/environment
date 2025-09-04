@@ -2,6 +2,7 @@
 
 function configure_keyboard() {
     local options
+
     options=caps:swapescape
 
     xset r rate 230 50

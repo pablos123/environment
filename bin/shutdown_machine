@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-sudo_password="$(zenity --password)" || exit 1
+function shutdown_machine() {
+    local sudo_password
 
-if ! yes "${sudo_password}" | sudo -Sv; then
-    echo "Bad password. Aborting."
-    exit 1
-fi
+    sudo_password="$(zenity --password)" || exit 1
 
-sudo shutdown now
+    if ! yes "${sudo_password}" | sudo -Sv; then
+        echo "Bad password. Aborting."
+        exit 1
+    fi
+
+    sudo shutdown now
+}
+
+shutdown_machine

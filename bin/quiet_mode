@@ -2,10 +2,14 @@
 # I don't want any notifications when I share my screen.
 # Disable/Enable notifications for a while, indicate this with an icon in the status bar.
 
-dunstctl set-paused toggle
+function quiet_mode() {
+    dunstctl set-paused toggle
 
-if [[ $(dunstctl is-paused) == "true" ]]; then
-    bash -c "exec -a quiet_mode_icon yad --notification --image='${HOME}/environment/assets/nonotif.png' --listen --text='Quiet mode on' --no-middle &"
-else
-    pkill -f quiet_mode_icon
-fi
+    if [[ "$(dunstctl is-paused)" == "true" ]]; then
+        bash -c "exec -a quiet_mode_icon yad --notification --image='${HOME}/environment/assets/nonotif.png' --listen --text='Quiet mode on' --no-middle &"
+    else
+        pkill -f quiet_mode_icon
+    fi
+}
+
+quiet_mode

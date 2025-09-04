@@ -3,8 +3,9 @@
 
 function lock_screen() {
     local tmp_file tmp_file_blur
-    tmp_file="/tmp/lock_screen_screenshot.tmp.png"
-    tmp_file_blur="/tmp/lock_screen_screenshot_blur.tmp.png"
+
+    tmp_file='/tmp/lock_screen_screenshot.tmp.png'
+    tmp_file_blur='/tmp/lock_screen_screenshot_blur.tmp.png'
 
     scrot -o "${tmp_file}"
     convert -blur 0x20 "${tmp_file}" "${tmp_file_blur}"

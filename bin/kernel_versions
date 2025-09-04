@@ -2,8 +2,9 @@
 
 function kernel_versions() {
     local kernel_org_url tmp_file columns
+
     kernel_org_url='https://www.kernel.org'
-    tmp_file="/tmp/kernel_org_releases.tmp.json"
+    tmp_file='/tmp/kernel_org_releases.tmp.json'
 
     wget -O  "${tmp_file}" "${kernel_org_url}/releases.json" &>>/dev/null
 

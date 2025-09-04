@@ -2,6 +2,7 @@
 
 function get_curent_workspace() {
     local w oifs name_focused
+
     oifs="${IFS}"
 
     IFS=$'\n'
@@ -17,6 +18,7 @@ function get_curent_workspace() {
 
 function move_workspaces_to_primary() {
     local w oifs current_workspace
+
     oifs="${IFS}"
     current_workspace="$(get_curent_workspace)"
 
@@ -58,10 +60,11 @@ function configure_monitors() {
 }
 
 mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+
 configure_monitors
 
 if [[ "${1}" == "-d" ]]; then
-    tmp_connected_file=/tmp/monitors_connected
+    tmp_connected_file='/tmp/monitors_connected'
     echo -n "${monitors[*]}" > "${tmp_connected_file}"
 
     while true; do

@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
-exec /usr/local/bin/st
+function open_terminal() {
+    exec /usr/local/bin/st
 
-# total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
-#
-# if (( total_memory > 10000000 )); then
-#     exec wezterm
-# else
-#     exec /usr/local/bin/st
-# fi
+    # local total_memory
+    #
+    # total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+    #
+    # if (( total_memory > 10000000 )); then
+    #     exec wezterm
+    # else
+    #     exec /usr/local/bin/st
+    # fi
+}
+
+open_terminal

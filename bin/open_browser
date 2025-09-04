@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+function open_browser() {
+    local total_memory
 
-(( total_memory > 10000000 )) &&
-    exec chrome
+    total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+
+    (( total_memory > 10000000 )) &&
+        exec chrome
+}
+
+open_browser

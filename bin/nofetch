@@ -32,6 +32,7 @@ function wmctrl_info() {
 
 function get_info() {
     local funcs f
+
     funcs=(
         user_info
         hostname_info
@@ -41,8 +42,11 @@ function get_info() {
         mem_info
         wmctrl_info
     )
+    
 
-    for f in "${funcs[@]}"; do "${f}"; done
+    for f in "${funcs[@]}"; do
+        "${f}"
+    done
 }
 
 get_info | sed 's/\(.*:\)\s*/\1/g' | column --table --separator ':'

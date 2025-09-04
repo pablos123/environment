@@ -2,21 +2,28 @@
 # Case insensitive windows class searching is a pain.
 # Maybe I'm missing something.
 
-if xdotool search --onlyvisible --class "pavucontrol" || xdotool search --onlyvisible --class "Pavucontrol"; then
-    xdotool search --onlyvisible --class "pavucontrol" windowclose ||
-        xdotool search --onlyvisible --class "Pavucontrol" windowclose
-    exit 0
-fi
+function sound_config() {
+    local x_size y_size
 
-x_size=600
-y_size=400
+    if xdotool search --onlyvisible --class "pavucontrol" || xdotool search --onlyvisible --class "Pavucontrol"; then
+        xdotool search --onlyvisible --class "pavucontrol" windowclose ||
+            xdotool search --onlyvisible --class "Pavucontrol" windowclose
+        exit 0
+    fi
 
-source "${HOME}/environment/lib/helper_functions.sh"
+    x_size=600
+    y_size=400
 
-pavucontrol -t 3 & disown
+    source "${HOME}/environment/lib/helper_functions.sh"
 
-while ! xdotool search --onlyvisible --class "pavucontrol" && ! xdotool search --onlyvisible --class "Pavucontrol"; do sleep 0.3; done
+    pavucontrol -t 3 & disown
 
-xdotool search --onlyvisible --class "pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}") ||
-    xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
+    while ! xdotool search --onlyvisible --class "pavucontrol" && ! xdotool search --onlyvisible --class "Pavucontrol"; do
+        sleep 0.3;
+    done
 
+    xdotool search --onlyvisible --class "pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}") ||
+        xdotool search --onlyvisible --class "Pavucontrol" windowsize "${x_size}" "${y_size}" windowmove $(calculate_applet_position "${x_size}" "${y_size}")
+}
+
+sound_config

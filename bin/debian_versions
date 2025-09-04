@@ -11,7 +11,7 @@ function get_headers() {
         "End of ELTS"
         "Status"
     )
-    readonly header_names
+    
 
     result=""
     for header_name in "${header_names[@]}"; do
@@ -25,19 +25,19 @@ function debian_versions() {
     local curl_response_md old_ifs releases_url release_table_md
 
     releases_url='https://www.debian.org/releases/'
-    readonly releases_url
+    
 
     old_ifs="${IFS}" && IFS=$'\n'
-    readonly old_ifs
+    
 
     curl_response_md="$(pandoc -f html -t markdown <(curl "${releases_url}" 2>/dev/null))"
-    readonly curl_response_md
+    
 
     release_table_md="$(
         sed -En '
             /^\s+Version\s+Code Name\s+Release Date\s+End of Life\s+/,/^$/ {p; /^$/q}; # Print lines and quit after the first empty line.
         ' <<< "${curl_response_md}")"
-    readonly release_table_md
+    
 
     sanitized_table="$(
       sed -E '
@@ -49,7 +49,7 @@ function debian_versions() {
             s/\s{2,}/\t/g;
         ' <<< "${release_table_md}"
     )"
-    readonly sanitized_table
+    
 
     column --table --separator $'\t' --table-columns "$(get_headers)" <<< "${sanitized_table}"
 
