@@ -42,7 +42,6 @@ function get_info() {
         mem_info
         wmctrl_info
     )
-    
 
     for f in "${funcs[@]}"; do
         "${f}"
