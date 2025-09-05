@@ -12,7 +12,12 @@ if command -v tmux >/dev/null 2>&1 &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]]; then
-  exec tmux -2 attach || tmux -2 new # Tell tmux to assume 256 colors.
+    # Tell tmux to assume 256 colors with the -2 option.
+    if tmux info 2>/dev/null; then
+        exec tmux -2 attach
+    else
+        exec tmux -2 new
+    fi
 fi
 
 # Prepend cd to directory names automatically.
