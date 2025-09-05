@@ -8,11 +8,12 @@
 ((BASH_VERSINFO[0] < 4)) &&
     return
 
-command -v tmux >/dev/null 2>&1 &&
+if command -v tmux >/dev/null 2>&1 &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
-    [[ -z "${TMUX}" ]] &&
-  exec tmux -2 # Tell tmux to assume 256 colors.
+    [[ -z "${TMUX}" ]]; then
+  exec tmux -2 attach || tmux -2 new # Tell tmux to assume 256 colors.
+fi
 
 # Prepend cd to directory names automatically.
 shopt -s autocd 2> /dev/null
