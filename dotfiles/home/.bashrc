@@ -8,42 +8,42 @@
 ((BASH_VERSINFO[0] < 4)) &&
     return
 
-if command -v tmux >/dev/null 2>&1 &&
+if command -v tmux &>>/dev/null &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]]; then
     # Tell tmux to assume 256 colors with the -2 option.
-    if tmux info 2>/dev/null; then
-        exec tmux -2 attach
-    else
-        exec tmux -2 new
-    fi
+    tmux -2 new-session -A -s main
 fi
 
+{
+
 # Prepend cd to directory names automatically.
-shopt -s autocd 2> /dev/null
+shopt -s autocd
 
 # Correct spelling errors during tab-completion.
-shopt -s dirspell 2> /dev/null
+shopt -s dirspell
 
 # Correct spelling errors in arguments supplied to cd.
-shopt -s cdspell 2> /dev/null
+shopt -s cdspell
 
 # Turn on recursive globbing (enables ** to recurse all directories).
-shopt -s globstar 2> /dev/null
+shopt -s globstar
 
 # This allows you to bookmark your favorite places across the file system.
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in.
-shopt -s cdable_vars 2> /dev/null
+shopt -s cdable_vars
 
 # Update window size after every command.
-shopt -s checkwinsize 2> /dev/null
+shopt -s checkwinsize
 
 # Append to the history file, don't overwrite.
 shopt -s histappend
 
 # Save multi-line commands as one command in the history.
 shopt -s cmdhist
+
+} &>>/dev/null
 
 # Enable history expansion with space
 # E.g. typing !!<space> will replace the !! with your last command.
