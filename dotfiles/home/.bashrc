@@ -83,7 +83,7 @@ export GIT_AUTHOR_EMAIL=pablosaavedra123@gmail.com
 export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
-export PS1='\[\e\][0;32m \[\w\] \[\e\][1;33m $(__git_ps1 "(  %s )")\[\e\][0m\n$ '
+export PS1='\[\e\][0;32m\[\w\] \[\e\][1;33m $(__git_ps1 "( %s )")\[\e\][0m\n$ '
 
 # Append to history after finishing any command.
 export PROMPT_COMMAND='history -a'

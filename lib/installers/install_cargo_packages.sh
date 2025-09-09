@@ -7,5 +7,4 @@ function install_cargo_packages() {
     cargo install --locked "${cargo_packages[@]}"
 }
 
-# Nothing for now, eza is now available at official repositories
 # install_cargo_packages
