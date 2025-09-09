@@ -13,7 +13,7 @@ if command -v tmux &>>/dev/null &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]]; then
     # Tell tmux to assume 256 colors with the -2 option.
-    tmux -2 new-session -A -s forest
+    exec tmux -2 new-session -A -s forest
 fi
 
 {
