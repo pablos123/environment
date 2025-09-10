@@ -32,7 +32,7 @@ alias rm='rm -i'
 
 alias genc='git add . && git commit -m "genc"'
 
-alias bigdirs='(sudo du -h / | sort -rh | head -n 15) 2> /dev/null'
+alias bigdirs='(sudo du -h / | sort -rh | head -n 15) 2>/dev/null'
 alias myip='printf "External: " && curl -s ifconfig.me && echo && printf "Local: " && hostname -I'
 alias sources='grep --color=always -v -E "^#|^ *$" /etc/apt/sources.list /etc/apt/sources.list.d/*'
 alias weather='curl wttr.in/rosario'
