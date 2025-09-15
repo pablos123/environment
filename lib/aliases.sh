@@ -12,6 +12,7 @@ alias lla='ls -al'
 alias ..='cd -- ..'
 alias ...='cd -- ../..'
 alias ....='cd -- ../../..'
+alias c='cd'
 
 alias :q='exit'
 alias :wq='exit'
