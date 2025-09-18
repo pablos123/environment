@@ -7,8 +7,4 @@ return {
             }
         end
     },
-    {
-        'pablos123/present.nvim',
-        config = function() require 'present-nvim'.setup {} end
-    },
 }
