@@ -12,9 +12,20 @@ return {
                 ['<Tab>'] = { 'select_next', 'fallback' },
                 ['<CR>'] = { 'accept', 'fallback' },
             },
-            signature = { enabled = true },
+            signature = {
+                enabled = true
+            },
             cmdline = {
                 enabled = false,
+            },
+            completion = {
+                menu = {
+                    draw = {
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                        },
+                    },
+                },
             },
         },
     },

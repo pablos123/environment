@@ -2,7 +2,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         config = function()
-            require 'lspconfig'.lua_ls.setup {
+            vim.lsp.config('lua_ls', {
                 on_init = function(client)
                     if client.workspace_folders then
                         local path = client.workspace_folders[1].name
@@ -29,7 +29,13 @@ return {
                 settings = {
                     Lua = {}
                 }
-            }
+            })
+
+            vim.lsp.config('ansiblels', {
+                on_attach = function(client, _)
+                    client.server_capabilities.semanticTokensProvider = nil
+                end
+            })
 
             local language_servers = {
                 'basedpyright',
@@ -39,10 +45,12 @@ return {
                 'perlnavigator',
                 'clangd',
                 'texlab',
+                'lua_ls',
+                'ansiblels',
             }
 
             for _, ls_name in ipairs(language_servers) do
-                require 'lspconfig'[ls_name].setup {}
+                vim.lsp.enable(ls_name)
             end
         end
     },
@@ -72,16 +80,6 @@ return {
             vim.g.ansible_name_highlight = 'ob'
             vim.g.ansible_extra_keywords_highlight = 1
             vim.g.ansible_attribute_highlight = 'b'
-
-            -- Setup ansiblels if exists. Disable highlight too
-            local lspconfig_exists, lspconfig = pcall(require, 'lspconfig')
-            if lspconfig_exists and lspconfig.ansiblels then
-                lspconfig.ansiblels.setup {
-                    on_attach = function(client, _)
-                        client.server_capabilities.semanticTokensProvider = nil
-                    end
-                }
-            end
 
             -- Disable yaml highlight for treesitter if exists
             local treesitter_exists, treesitter_configs = pcall(require, 'nvim-treesitter.configs')
