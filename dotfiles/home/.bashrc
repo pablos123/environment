@@ -16,6 +16,8 @@ if command -v tmux &>>/dev/null &&
     exec tmux -2 new-session -A -s forest
 fi
 
+# SHELL OPTIONS
+# ---------------------------------------------------------------------
 {
 
 # Prepend cd to directory names automatically.
@@ -65,27 +67,33 @@ bind "set colored-completion-prefix on"
 bind "set visible-stats on"
 # The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
 bind "set completion-prefix-display-length 7"
+# ---------------------------------------------------------------------
 
-source "${HOME}/environment/lib/aliases.sh"
-source "${HOME}/environment/lib/git_prompt.sh"
-
-# Env
+# ENV
+# ---------------------------------------------------------------------
 export VISUAL=/usr/local/bin/nvim
 export EDITOR=/usr/local/bin/nvim
-
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWSTASHSTATE=true
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWUPSTREAM=verbose
 
 export GIT_AUTHOR_NAME=Pablo
 export GIT_AUTHOR_EMAIL=pablosaavedra123@gmail.com
 export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
-export PS1='\[\e\][0;32m\[\w\] \[\e\][0m $(__git_ps1 "( %s )")\n$ '
+# PS1
+export PS1='\[\033[0;32m\]\w\[\033[0m\]\n\$ '
+if [[ -s /usr/lib/git-core/git-sh-prompt ]]; then
+    source "/usr/lib/git-core/git-sh-prompt"
 
+    export GIT_PS1_SHOWCOLORHINTS=true
+    export GIT_PS1_SHOWDIRTYSTATE=true
+    export GIT_PS1_SHOWSTASHSTATE=true
+    export GIT_PS1_SHOWUNTRACKEDFILES=true
+    export GIT_PS1_SHOWUPSTREAM=verbose
+
+    export PS1='\[\033[0;32m\]\w\[\033[0m\] $(__git_ps1 "( %s )")\n\$ '
+fi
+
+# HISTORY
 # Append to history after finishing any command.
 export PROMPT_COMMAND='history -a'
 
@@ -106,9 +114,15 @@ export HISTIGNORE="exit:ls:history:clear:pwd"
 # %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
 export HISTTIMEFORMAT='%F %T '
+# ---------------------------------------------------------------------
+
+# SOURCES
+# ---------------------------------------------------------------------
+source "${HOME}/environment/lib/aliases.sh"
+[[ -f "${HOME}/.bashrc_custom" ]] &&
+    source "${HOME}/.bashrc_custom"
 
 export PYENV_ROOT="${HOME}/.pyenv"
-
 export NVM_DIR="${HOME}/.nvm"
 
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
@@ -116,9 +130,6 @@ export NVM_DIR="${HOME}/.nvm"
 
 [[ -f "${HOME}/.fzf.bash" ]] &&
     source ${HOME}/.fzf.bash
-
-[[ -f "${HOME}/.bashrc_custom" ]] &&
-    source "${HOME}/.bashrc_custom"
 
 [[ -f "${HOME}/.cargo/env" ]] &&
     source "${HOME}/.cargo/env"
@@ -134,3 +145,4 @@ fi
     source "${NVM_DIR}/nvm.sh"
 [[ -s "${NVM_DIR}/bash_completion" ]] &&
     source "${NVM_DIR}/bash_completion"
+# ---------------------------------------------------------------------
