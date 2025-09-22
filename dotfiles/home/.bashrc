@@ -8,6 +8,10 @@
 ((BASH_VERSINFO[0] < 4)) &&
     return
 
+# Return if not the terminal cannot use colors.
+[[ ! "${TERM}" =~ color ]] &&
+    return
+
 if command -v tmux &>>/dev/null &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
@@ -80,22 +84,22 @@ export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 # PS1
-export PS1='\[\033[0;32m\]\w\[\033[0m\]\n\$ '
-if [[ -s /usr/lib/git-core/git-sh-prompt ]]; then
-    source "/usr/lib/git-core/git-sh-prompt"
+source "${HOME}/environment/lib/shared/git_prompt.sh"
 
-    export GIT_PS1_SHOWCOLORHINTS=true
-    export GIT_PS1_SHOWDIRTYSTATE=true
-    export GIT_PS1_SHOWSTASHSTATE=true
-    export GIT_PS1_SHOWUNTRACKEDFILES=true
-    export GIT_PS1_SHOWUPSTREAM=verbose
+export GIT_PS1_SHOWCOLORHINTS=true
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUPSTREAM=verbose
 
-    export PS1='\[\033[0;32m\]\w\[\033[0m\] $(__git_ps1 "( %s )")\n\$ '
-fi
+# Use PROMPT_COMMAND (not PS1) to get color output (see git-prompt.sh for more)
+export PROMPT_COMMAND='__git_ps1 "\[\033[0;32m\]\w\[\033[0m\]" "\n\\\$ "'
+export PS1=''
 
 # HISTORY
+
 # Append to history after finishing any command.
-export PROMPT_COMMAND='history -a'
+export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
 
 # Automatically trim long paths in the prompt.
 export PROMPT_DIRTRIM=2
