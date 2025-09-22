@@ -93,7 +93,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=true
 export GIT_PS1_SHOWUPSTREAM=verbose
 
 # Use PROMPT_COMMAND (not PS1) to get color output (see git-prompt.sh for more)
-export PROMPT_COMMAND='__git_ps1 "\[\033[0;32m\]\w\[\033[0m\]" "\n\\\$ "'
+export PROMPT_COMMAND='__git_ps1 "\[\033[0;34m\]\w\[\033[0m\]" "\n\\\$ "'
 export PS1=''
 
 # HISTORY
