@@ -97,10 +97,4 @@ return {
             require 'mason'.setup {}
         end
     },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        config = function()
-            require 'render-markdown'.setup {}
-        end
-    },
 }
