@@ -37,6 +37,17 @@ return {
                 end
             })
 
+            vim.lsp.config('ty', {
+                settings = {
+                    ty = {
+                        experimental = {
+                            rename = true,
+                            autoImport = true,
+                        },
+                    },
+                },
+            })
+
             local language_servers = {
                 'ty',
                 'ruff',
