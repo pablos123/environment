@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export NVM_DIR=/opt/nvm
-
 function install_nvm() {
     local node_version
 
@@ -17,8 +15,8 @@ function install_nvm() {
     sleep 0.5
 
     node_version="$(node --version)"
-    ln -sf "/opt/nvm/versions/node/${node_version}/bin/node" /usr/bin/node
-    ln -sf "/opt/nvm/versions/node/v${node_version}/bin/npm" /usr/bin/npm
+    ln -sf "${NVM_DIR}/versions/node/${node_version}/bin/node" /usr/bin/node
+    ln -sf "${NVM_DIR}/versions/node/v${node_version}/bin/npm" /usr/bin/npm
 }
 
-install_nvm
+sudo bash -c -- "export NVM_DIR=/opt/nvm; $(declare -f install_nvm); install_nvm"
