@@ -127,7 +127,7 @@ source "${HOME}/environment/lib/aliases.sh"
     source "${HOME}/.bashrc_custom"
 
 export PYENV_ROOT="${HOME}/.pyenv"
-export NVM_DIR="${HOME}/.nvm"
+export NVM_DIR=/opt/nvm
 
 [[ -f /usr/share/bash-completion/bash_completion ]] &&
     source /usr/share/bash-completion/bash_completion
