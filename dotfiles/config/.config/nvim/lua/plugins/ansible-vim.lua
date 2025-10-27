@@ -20,11 +20,3 @@ vim.g.ansible_unindent_after_newline = 0
 vim.g.ansible_name_highlight = 'ob'
 vim.g.ansible_extra_keywords_highlight = 1
 vim.g.ansible_attribute_highlight = 'b'
-
--- Disable yaml highlight for treesitter if exists
-local treesitter_exists, treesitter_configs = pcall(require, 'nvim-treesitter.configs')
-if treesitter_exists then
-    treesitter_configs.setup {
-        highlight = { disable = { 'yaml' }, },
-    }
-end
