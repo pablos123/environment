@@ -93,8 +93,10 @@ function install_apt_packages() {
         libreoffice
         pandoc
         meld
-        tmux
         aria2
+        redshift
+        tmux
+
         papirus-icon-theme
     )
     sudo apt-get update

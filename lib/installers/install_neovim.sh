@@ -26,7 +26,7 @@ function install_neovim() {
         git clone --depth 1 https://github.com/neovim/neovim "${neovim_path}"
 
     (
-        cd "${neovim_path}"
+        cd "${neovim_path}" || exit 1
 
         sudo make clean
         sudo rm -rf .deps build

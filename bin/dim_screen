@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+function dim_screen() {
+    if [[ "$1" == "night" ]]; then
+        redshift -O 4000 -b 0.6 &>>/dev/null
+    else
+        redshift -x &>>/dev/null
+    fi
+
+    notify-send "Brightness adjusted!"
+}
+
+dim_screen "$@"

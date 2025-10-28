@@ -13,10 +13,10 @@ local create_autocmd = vim.api.nvim_create_autocmd
 local create_augroup = function(name) vim.api.nvim_create_augroup(name, { clear = true }) end
 
 local function add_plugin(repo)
-    local t = {}
-    for str in string.gmatch(repo, '([^/]+)') do table.insert(t, str) end
+    local repo_split = {} -- author/name
+    for str in string.gmatch(repo, '([^/]+)') do table.insert(repo_split, str) end
 
-    local m_name = 'plugins.' .. string.gsub(t[2], '%.', '-')
+    local m_name = 'plugins.' .. string.gsub(repo_split[2], '%.', '-')
 
     vim.pack.add({ { src = 'https://github.com/' .. repo }, })
     pcall(require, m_name)
@@ -27,7 +27,6 @@ local plugins = {
     'saghen/blink.cmp',
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
-    'ellisonleao/gruvbox.nvim',
     'MagicDuck/grug-far.nvim',
     'pearofducks/ansible-vim',
     'pablos123/shellcheck.nvim',
@@ -38,6 +37,11 @@ local plugins = {
 -- Options
 -------------------------------------------------------------------------------
 -- Visuals
+vim.cmd 'set background=dark'
+vim.cmd 'colorscheme wildcharm'
+o.winborder = 'rounded'
+o.pumborder = 'rounded'
+
 o.termguicolors = true
 o.colorcolumn = { 80, 100, 120 }
 o.signcolumn = 'yes'
@@ -73,6 +77,14 @@ o.hlsearch = true
 o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
+
+-- Netrw
+g.netrw_keepdir = 0
+g.netrw_winsize = 30
+g.netrw_banner = 0
+g.netrw_localcopydircmd = 'cp -r'
+g.netrw_liststyle = 3
+g.netrw_bufsettings = 'noma nomod nu rnu nobl nowrap ro'
 
 -- Diagnostics
 vim.diagnostic.config {
@@ -158,6 +170,9 @@ keymap_set('n', 'gf', vim.lsp.buf.format)
 
 -- This overwrites 'goto files' I do not use it.
 keymap_set('n', 'ga', vim.lsp.buf.code_action)
+
+-- Explore files
+keymap_set('n', '<leader>e', '<cmd>Lexplore<cr><esc>')
 
 -------------------------------------------------------------------------------
 -- Autocommands Autogroups
