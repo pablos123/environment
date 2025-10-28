@@ -40,7 +40,6 @@ local plugins = {
 vim.cmd 'set background=dark'
 vim.cmd 'colorscheme wildcharm'
 o.winborder = 'rounded'
-o.pumborder = 'rounded'
 
 o.termguicolors = true
 o.colorcolumn = { 80, 100, 120 }
