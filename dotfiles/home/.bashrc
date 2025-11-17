@@ -96,13 +96,13 @@ export GIT_PS1_SHOWUPSTREAM=verbose
 export PROMPT_COMMAND='__git_ps1 "\[\033[0;34m\]\w\[\033[0m\]" "\n\\\$ "'
 export PS1=''
 
+# Automatically trim long paths in the prompt.
+export PROMPT_DIRTRIM=2
+
 # HISTORY
 
 # Append to history after finishing any command.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
-
-# Automatically trim long paths in the prompt.
-export PROMPT_DIRTRIM=2
 
 # Big history.
 export HISTSIZE=500000
