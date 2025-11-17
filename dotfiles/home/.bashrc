@@ -5,10 +5,10 @@
     return
 
 # If bash's version is bad don't do anything.
-((BASH_VERSINFO[0] < 4)) &&
+(( BASH_VERSINFO[0] < 4 )) &&
     return
 
-# Return if not the terminal cannot use colors.
+# Return if the terminal cannot use colors.
 [[ ! "${TERM}" =~ color ]] &&
     return
 
