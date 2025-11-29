@@ -11,6 +11,8 @@ declare -rA web_apps=(
     ["chatgpt"]="https://chatgpt.com/"
     ["teams"]="https://teams.live.com/v2"
     ["tidal"]="https://tidal.com/"
+    ["gmail"]="https://mail.google.com/mail/u/0/"
+    ["desmos"]="https://www.desmos.com/calculator"
 )
 
 # 1: name
