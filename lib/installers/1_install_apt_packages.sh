@@ -98,6 +98,7 @@ function install_apt_packages() {
         tmux
 
         papirus-icon-theme
+        fonts-noto-color-emoji
     )
     sudo apt-get update
     sudo apt-get dist-upgrade --yes
