@@ -62,6 +62,7 @@ function install_apt_packages() {
         unrar-free
         7zip
         tar
+        img2pdf
         flameshot
         zbar-tools
         scrot
