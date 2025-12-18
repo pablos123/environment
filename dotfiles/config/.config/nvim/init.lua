@@ -32,6 +32,8 @@ local plugins = {
     'pablos123/shellcheck.nvim',
     'echasnovski/mini.nvim',
     'rebelot/kanagawa.nvim',
+    'MunifTanjim/nui.nvim',
+    'folke/noice.nvim',
 }
 
 -------------------------------------------------------------------------------

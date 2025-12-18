@@ -39,4 +39,6 @@ alias sources='grep --color=always -v -E "^#|^ *$" /etc/apt/sources.list /etc/ap
 alias weather='curl wttr.in/rosario'
 alias calendar_fact='calendar | head -n 1 | cowsay -f duck | lolcat'
 alias tree='tree --dirsfirst --gitignore -F -C -A'
+alias tre=tree
 alias xfe='(xfe . &>> /dev/null) & disown'
+alias ssh='TERM=xterm-256color ssh'

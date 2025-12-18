@@ -9,10 +9,10 @@
     return
 
 # Return if the terminal cannot use colors.
-[[ ! "${TERM}" =~ color ]] &&
+[[ ! "${TERM}" =~ color ]] && [[ ! "${TERM}" =~ kitty ]] &&
     return
 
-if command -v tmux &>>/dev/null &&
+if [[ ! "${TERM}" =~ kitty ]] && command -v tmux &>>/dev/null &&
     [[ ! "${TERM}" =~ screen ]] &&
     [[ ! "${TERM}" =~ tmux ]] &&
     [[ -z "${TMUX}" ]]; then
