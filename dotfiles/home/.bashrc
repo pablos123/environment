@@ -12,13 +12,15 @@
 [[ ! "${TERM}" =~ color ]] && [[ ! "${TERM}" =~ kitty ]] &&
     return
 
-if [[ ! "${TERM}" =~ kitty ]] && command -v tmux &>>/dev/null &&
-    [[ ! "${TERM}" =~ screen ]] &&
-    [[ ! "${TERM}" =~ tmux ]] &&
-    [[ -z "${TMUX}" ]]; then
-    # Tell tmux to assume 256 colors with the -2 option.
-    exec tmux -2 new-session -A -s forest
-fi
+# Vim terminal buffer sets this value as xterm-256color and the buffer
+# opens tmux.
+# if [[ ! "${TERM}" =~ kitty ]] && command -v tmux &>>/dev/null &&
+#     [[ ! "${TERM}" =~ screen ]] &&
+#     [[ ! "${TERM}" =~ tmux ]] &&
+#     [[ -z "${TMUX}" ]]; then
+#     # Tell tmux to assume 256 colors with the -2 option.
+#     exec tmux -2 new-session -A -s forest
+# fi
 
 # SHELL OPTIONS
 # ---------------------------------------------------------------------
