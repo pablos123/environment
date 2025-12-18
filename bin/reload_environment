@@ -23,7 +23,14 @@ cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 )
 
 rm -f "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
+
 fc-cache -rf &>>/dev/null
+
 killall dunst &>>/dev/null
+
 killall flameshot &>>/dev/null
+
+killall picom &>>/dev/null
+picom --daemon &
+
 i3-msg restart &>>/dev/null

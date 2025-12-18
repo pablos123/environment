@@ -31,16 +31,14 @@ local plugins = {
     'pearofducks/ansible-vim',
     'pablos123/shellcheck.nvim',
     'echasnovski/mini.nvim',
+    'rebelot/kanagawa.nvim',
 }
 
 -------------------------------------------------------------------------------
 -- Options
 -------------------------------------------------------------------------------
 -- Visuals
-vim.cmd 'set background=dark'
-vim.cmd 'colorscheme wildcharm'
-o.winborder = 'single'
-
+o.winborder = 'rounded'
 o.termguicolors = true
 o.colorcolumn = { 80, 100, 120 }
 o.signcolumn = 'yes'
@@ -208,3 +206,6 @@ create_autocmd('TermOpen', {
 -- Plugins
 -------------------------------------------------------------------------------
 for _, p in ipairs(plugins) do add_plugin(p) end
+
+vim.cmd 'set background=dark'
+vim.cmd 'colorscheme kanagawa'
