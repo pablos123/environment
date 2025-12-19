@@ -1,4 +1,6 @@
-local set_keymap = vim.keymap.set
+local keymap_set = vim.keymap.set
+local create_autocmd = vim.api.nvim_create_autocmd
+local create_augroup = function(name) vim.api.nvim_create_augroup(name, { clear = true }) end
 
 require 'mini.icons'.setup {}
 require 'mini.surround'.setup {}
@@ -7,10 +9,10 @@ require 'mini.statusline'.setup {}
 
 local mini_pick = require 'mini.pick'
 mini_pick.setup {}
-set_keymap('n', '<leader>o', function()
+keymap_set('n', '<leader>o', function()
     mini_pick.builtin.cli({ command = { 'fd', '--type=f', '--hidden', '--no-follow', '--color=never', '--exclude=.git' } })
 end)
-set_keymap('n', '<leader>b', function()
+keymap_set('n', '<leader>b', function()
     mini_pick.builtin.buffers()
 end)
 
@@ -22,6 +24,20 @@ indentscope.setup {
         animation = indentscope.gen_animation.none(),
     },
 }
+create_autocmd("FileType", {
+    desc = "Disable indentscope for certain filetypes",
+    pattern = {
+        "help",
+        "mason",
+        "notify",
+        "terminal",
+        "nofile",
+    },
+    callback = function()
+        vim.b.miniindentscope_disable = true
+    end,
+    group = create_augroup('no-indentscope-ft'),
+})
 
 local hipatterns = require 'mini.hipatterns'
 hipatterns.setup {
