@@ -48,4 +48,4 @@ function install_suckless() {
     done
 }
 
-install_suckless "$@"
+# install_suckless "$@"
