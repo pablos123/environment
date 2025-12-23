@@ -17,7 +17,7 @@ battery_notify -d &
 
 # Depends on monitors_config
 sleep 1
-wallpaper_config -d fantasy_forest &
+wallpaper_config -d &
 
 exec i3
 
