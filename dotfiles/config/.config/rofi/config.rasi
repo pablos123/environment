@@ -80,7 +80,7 @@ element.selected.normal,
 element.selected.active,
 element.selected.urgent {
     background-color: @gray;
-    text-color: @orange;
+    text-color: @blue;
 }
 
 /* Active (but not selected) */
