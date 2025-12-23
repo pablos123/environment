@@ -22,7 +22,7 @@ alias im='vim'
 alias mvi='vim'
 alias miv='vim'
 
-alias bat='batcat --theme=1337 --paging=never --decorations=never'
+alias bat='batcat --theme=ansi --paging=never --decorations=never'
 alias cat='bat'
 
 alias duf='duf --style=ascii --theme=ansi'
