@@ -77,13 +77,9 @@ o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
 
--- Netrw
-g.netrw_keepdir = 0
-g.netrw_winsize = 30
-g.netrw_banner = 0
-g.netrw_localcopydircmd = 'cp -r'
-g.netrw_liststyle = 3
-g.netrw_bufsettings = 'noma nomod nu rnu nobl nowrap ro'
+-- Disable Netrw
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
 
 -- Diagnostics
 vim.diagnostic.config {
@@ -169,9 +165,6 @@ keymap_set('n', 'gf', vim.lsp.buf.format)
 
 -- This overwrites 'goto files' I do not use it.
 keymap_set('n', 'ga', vim.lsp.buf.code_action)
-
--- Explore files
-keymap_set('n', '<leader>e', '<cmd>Lexplore<cr><esc>')
 
 -------------------------------------------------------------------------------
 -- Autocommands Autogroups

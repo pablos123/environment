@@ -16,6 +16,19 @@ keymap_set('n', '<leader>b', function()
     mini_pick.builtin.buffers()
 end)
 
+local mini_files = require 'mini.files'
+mini_files.setup {}
+keymap_set('n', '<leader>e', function()
+    if mini_files.close() then return end
+
+    local buf_name = vim.api.nvim_buf_get_name(0)
+    local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
+    vim.schedule(function()
+        mini_files.open(path)
+        mini_files.reveal_cwd()
+    end)
+end)
+
 local indentscope = require 'mini.indentscope'
 indentscope.setup {
     symbol = '│',
