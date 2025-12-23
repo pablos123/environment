@@ -124,20 +124,20 @@ exec_always --no-startup-id open_bar
 
 # No gaps will be shown when there is precisely one window or
 # split container on the workspace.
-smart_gaps on
+# smart_gaps on
 gaps inner 10
-gaps outer 5
+gaps outer -1
 gaps horizontal 5
 gaps vertical 5
 gaps top 5
 gaps left 5
-gaps bottom 5
+gaps bottom 30
 gaps right 5
 
 # Hides edge-specific borders of a container if the container
 # is the only container on its workspace and the gaps to the screen edge are 0.
-hide_edge_borders smart_no_gaps
-# hide_edge_borders smart
+# hide_edge_borders smart_no_gaps
+hide_edge_borders smart
 default_border pixel 3
 default_floating_border pixel 2
 
