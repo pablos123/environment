@@ -19,22 +19,22 @@ enable_recursive_icon_lookup = true
 icon_theme = Papirus-Dark
 max_icon_size = 64
 corner_radius = 10
-background = "#0f1117"
+background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#8aadf4"
 
 [urgency_low]
-background = "#0f1117"
+background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#8aadf4"
 
 [urgency_normal]
-background = "#0f1117"
+background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#8aadf4"
 
 [urgency_critical]
-background = "#1f1f28"
+background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#8aadf4"
 

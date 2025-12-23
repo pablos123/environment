@@ -15,7 +15,7 @@ window {
     width: 40%;
     padding: 20px;
     border: 2px;
-    border-color: @border-gray;
+    border-color: @blue;
     border-radius: 8px;
 }
 
@@ -39,7 +39,7 @@ inputbar {
 }
 
 prompt {
-    text-color: @blue;
+    text-color: @green;
     padding: 0px 6px;
 }
 
@@ -80,14 +80,14 @@ element.selected.normal,
 element.selected.active,
 element.selected.urgent {
     background-color: @gray;
-    text-color: @blue;
+    text-color: @green;
 }
 
 /* Active (but not selected) */
 element.normal.active,
 element.alternate.active {
     background-color: transparent;
-    text-color: @blue;
+    text-color: @green;
 }
 
 /* Urgent (but not selected) */

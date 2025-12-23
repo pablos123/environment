@@ -39,13 +39,15 @@ function move_workspaces_to_primary() {
 }
 
 function configure_monitors() {
-    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then # Notebook
+    # Notebook
+    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
             xrandr --output "HDMI-1" --primary --auto --left-of "eDP-1"
         else
             xrandr --output "eDP-1" --primary --auto
         fi
-    elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then # Desk
+    # Desk
+    elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
             xrandr --output "DisplayPort-2" --primary --auto --right-of "HDMI-A-0"
         else

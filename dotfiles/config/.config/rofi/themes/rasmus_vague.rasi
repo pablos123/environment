@@ -1,6 +1,6 @@
 * {
     /* Backgrounds */
-    black:        #0f1117;
+    black:        #141415;
     dark-gray:    #151820;
     gray:         #1c1f26;
 
@@ -10,6 +10,7 @@
     orange:       #e6c384;
 
     /* Accents */
+    green:        #94c9b2;
     blue:         #8aadf4;
     red:          #e06c75;
     border-gray:  #2a2e36;

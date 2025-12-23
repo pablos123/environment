@@ -10,6 +10,7 @@
     orange:       #e6c384;
 
     /* Accents */
+    green:        #94c9b2;
     blue:         #7e9cd8;
     red:          #e46876;
     border-gray:  #54546d;
