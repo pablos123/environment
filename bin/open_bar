@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-function open_program_launcher() {
+function open_bar() {
+    polybar-msg cmd quit
+    while pgrep -u "${UID}" -x polybar >/dev/null; do sleep 0.3; done
+
     exec polybar
 }
 
-open_program_launcher
+open_bar

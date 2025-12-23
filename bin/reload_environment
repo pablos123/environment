@@ -24,15 +24,22 @@ cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
 rm -f "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
 
-fc-cache -rf &>>/dev/null
+{
+    fc-cache -rf
 
-killall dunst &>>/dev/null
+    killall dunst
+    while pgrep -u "${UID}" -x dunst >/dev/null; do sleep 0.3; done
 
-killall flameshot &>>/dev/null
+    killall flameshot
+    while pgrep -u "${UID}" -x flameshot >/dev/null; do sleep 0.3; done
 
-killall picom &>>/dev/null
-picom --daemon &
+    killall picom
+    while pgrep -u "${UID}" -x picom >/dev/null; do sleep 0.3; done
+    picom --daemon &
 
-polybar-msg cmd quit
+    polybar-msg cmd quit
+    while pgrep -u "${UID}" -x polybar >/dev/null; do sleep 0.3; done
 
-i3-msg restart &>>/dev/null
+    i3-msg restart
+
+} &>>/dev/null
