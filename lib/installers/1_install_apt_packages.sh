@@ -24,7 +24,8 @@ function install_apt_packages() {
 
         i3-wm
         i3lock
-        i3status
+        rofi
+        polybar
 
         vim
         duf

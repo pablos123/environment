@@ -3,10 +3,11 @@ export $(dbus-launch)
 xrdb -load ~/.Xresources &
 
 # Other daemons
-picom --daemon &
-nm-applet &
-blueman-applet &
-solaar -w hide &
+# I will try to not use tray icons for a while.
+# picom --daemon &
+# nm-applet &
+# blueman-applet &
+# solaar -w hide &
 dunst &
 
 # My daemons

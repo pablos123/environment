@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function open_program_launcher() {
+    exec polybar
+}
+
+open_program_launcher

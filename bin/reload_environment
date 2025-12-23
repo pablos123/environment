@@ -33,4 +33,6 @@ killall flameshot &>>/dev/null
 killall picom &>>/dev/null
 picom --daemon &
 
+polybar-msg cmd quit
+
 i3-msg restart &>>/dev/null

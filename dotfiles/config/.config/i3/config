@@ -57,7 +57,7 @@ exec --no-startup-id sleep 10 && clean_urgent
 
 bindsym $mod+Return exec --no-startup-id open_terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
-bindsym $mod+o exec --no-startup-id dmenu_run
+bindsym $mod+o exec --no-startup-id open_program_launcher
 bindsym $mod+Shift+c kill
 
 bindsym $mod+h focus left
@@ -87,7 +87,7 @@ bindsym $mod+Shift+r exec --no-startup-id reload_environment
 bindsym $mod+m exec --no-startup-id xdotool keydown shift click 2 keyup shift
 
 # https://wiki.linuxquestions.org/wiki/XF86_keyboard_symbols
-set $refresh_i3status killall -SIGUSR1 i3status
+# set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -120,12 +120,7 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 0
 
-bar {
-    position bottom
-    mode dock
-    status_command i3status
-    output primary
-}
+exec_always --no-startup-id open_bar
 
 # No gaps will be shown when there is precisely one window or
 # split container on the workspace.
@@ -145,4 +140,6 @@ gaps right 5
 hide_edge_borders smart
 default_border pixel 3
 default_floating_border pixel 2
+
+include ~/.config/i3/themes/rasmus_vague.conf
 

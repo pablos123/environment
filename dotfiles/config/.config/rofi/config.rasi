@@ -1,0 +1,114 @@
+@theme "themes/rasmus_vague"
+
+/* ================================
+ * Window
+ * ================================ */
+* {
+    /* Rofi defaults */
+    background-color: @black;
+    text-color:       @white;
+    font: "ZedMono Nerd Font 11";
+}
+
+
+window {
+    width: 40%;
+    padding: 20px;
+    border: 2px;
+    border-color: @border-gray;
+    border-radius: 8px;
+}
+
+/* ================================
+ * Layout
+ * ================================ */
+
+mainbox {
+    spacing: 12px;
+}
+
+/* ================================
+ * Input Bar
+ * ================================ */
+
+inputbar {
+    padding: 0px;
+    border-radius: 6px;
+    background-color: @dark-gray;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @blue;
+    padding: 0px 6px;
+}
+
+entry {
+    padding: 0px;
+    placeholder: "…";
+    placeholder-color: @light-gray;
+}
+
+/* ================================
+ * List View
+ * ================================ */
+
+listview {
+    lines: 8;
+    spacing: 6px;
+    scrollbar: false;
+}
+
+/* ================================
+ * Elements
+ * ================================ */
+
+element {
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+/* Base items */
+element.normal,
+element.alternate {
+    background-color: transparent;
+    text-color: @white;
+}
+
+/* Selected item */
+element.selected.normal,
+element.selected.active,
+element.selected.urgent {
+    background-color: @gray;
+    text-color: @orange;
+}
+
+/* Active (but not selected) */
+element.normal.active,
+element.alternate.active {
+    background-color: transparent;
+    text-color: @blue;
+}
+
+/* Urgent (but not selected) */
+element.normal.urgent,
+element.alternate.urgent {
+    background-color: transparent;
+    text-color: @red;
+}
+
+/* ================================
+ * Text
+ * ================================ */
+
+element-text {
+    vertical-align: 0.5;
+    background-color: inherit;
+    text-color: inherit;
+}
+
+/* Emphasis for selection */
+element-text.selected {
+    weight: bold;
+}
+

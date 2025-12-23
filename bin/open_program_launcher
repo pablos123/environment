@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function open_program_launcher() {
+    exec rofi -show run -display-run ">"
+}
+
+open_program_launcher

@@ -31,7 +31,7 @@ local plugins = {
     'pearofducks/ansible-vim',
     'pablos123/shellcheck.nvim',
     'echasnovski/mini.nvim',
-    'rebelot/kanagawa.nvim',
+    'kvrohit/rasmus.nvim',
     'MunifTanjim/nui.nvim',
     'folke/noice.nvim',
 }
@@ -210,4 +210,8 @@ create_autocmd('TermOpen', {
 for _, p in ipairs(plugins) do add_plugin(p) end
 
 vim.cmd 'set background=dark'
-vim.cmd 'colorscheme kanagawa'
+vim.cmd 'colorscheme rasmus'
+
+vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
+vim.cmd("highlight NormalNC guibg=NONE")
+vim.cmd("highlight EndOfBuffer guibg=NONE")

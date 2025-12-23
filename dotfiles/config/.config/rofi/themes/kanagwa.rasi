@@ -1,0 +1,17 @@
+* {
+    /* Backgrounds */
+    black:        #1f1f28;
+    dark-gray:    #2a2a37;
+    gray:         #363646;
+
+    /* Foregrounds */
+    white:        #dcd7ba;
+    light-gray:   #727169;
+    orange:       #e6c384;
+
+    /* Accents */
+    blue:         #7e9cd8;
+    red:          #e46876;
+    border-gray:  #54546d;
+}
+

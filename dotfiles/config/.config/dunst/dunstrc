@@ -1,35 +1,42 @@
 # See dunst(5) for all configuration options
-#
+
 [global]
-    monitor = 0
-    follow = none
-    width = 300
-    height = (0, 600)
-    offset = (10, 10)
-    notification_limit = 5
-    icon_corner_radius = 1
-    indicate_hidden = yes
-    transparency = 10
-    frame_width = 3
-    separator_color= frame
-    gap_size = 4
-    font = Lilex Nerd Font 8
-    show_age_threshold = 3600
-    enable_recursive_icon_lookup = true
-    icon_theme = Papirus-Dark
-    max_icon_size = 64
-    corner_radius = 10
-    frame_color = "#DDDDDD"
+monitor = 0
+follow = none
+width = 300
+height = (0, 600)
+offset = (10, 10)
+notification_limit = 5
+icon_corner_radius = 1
+indicate_hidden = yes
+transparency = 10
+frame_width = 3
+separator_color= frame
+gap_size = 4
+font = Lilex Nerd Font 8
+show_age_threshold = 3600
+enable_recursive_icon_lookup = true
+icon_theme = Papirus-Dark
+max_icon_size = 64
+corner_radius = 10
+
+[global]
+background = "#0f1117"
+foreground = "#c9c7cd"
+frame_color = "#8aadf4"
 
 [urgency_low]
-    background = "#000000"
-    foreground = "#DDDDDD"
+background = "#0f1117"
+foreground = "#c9c7cd"
+frame_color = "#8aadf4"
 
 [urgency_normal]
-    background = "#000000"
-    foreground = "#DDDDDD"
+background = "#0f1117"
+foreground = "#c9c7cd"
+frame_color = "#8aadf4"
 
 [urgency_critical]
-    background = "#000000"
-    foreground = "#DDDDDD"
-    frame_color = "#FFFFFF"
+background = "#1f1f28"
+foreground = "#c9c7cd"
+frame_color = "#8aadf4"
+

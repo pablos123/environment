@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-function set_wallpaper() {
-    local wallpapers_array items_count random_index wallpaper
+theme=$1
 
-    wallpapers_array=("${HOME}/images/wallpapers/"*)
+function set_wallpaper() {
+    local wallpapers_array items_count random_index wallpaper wallpapers_dir
+
+    wallpapers_dir="${HOME}/images/wallpapers/${theme}/"
+    [[ ! -d "${wallpapers_dir}" ]] &&
+        wallpapers_dir="${HOME}/images/wallpapers/"
+
+    mapfile -t wallpapers_array < <(find "${wallpapers_dir}" -maxdepth 1 -type f)
+
     items_count="${#wallpapers_array[@]}"
+    [[ "${items_count}" -eq 0 ]] &&
+        return
+
     random_index=$((RANDOM % items_count))
     wallpaper="${wallpapers_array[${random_index}]}"
 
