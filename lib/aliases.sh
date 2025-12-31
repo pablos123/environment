@@ -21,6 +21,7 @@ alias vim='nvim'
 alias im='vim'
 alias mvi='vim'
 alias miv='vim'
+alias v='vim'
 
 alias bat='batcat --theme=ansi --paging=never --decorations=never'
 alias cat='bat'
