@@ -98,6 +98,7 @@ function install_apt_packages() {
         aria2
         redshift
         tmux
+        brightnessctl
 
         papirus-icon-theme
         fonts-noto-color-emoji

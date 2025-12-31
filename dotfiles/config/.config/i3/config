@@ -97,8 +97,8 @@ bindsym XF86Sleep exec --no-startup-id lock_screen
 # If evtest sees nothing, then:
 # The brightness keys are handled entirely by firmware (ACPI/EC) and never generate input events.
 # This is normal on many laptops (especially Lenovo, Dell, some HP).
-# bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
-# bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
 
 # Delegate to some "similar keys"
 bindsym $mod+F5 exec --no-startup-id brightnessctl set 5%-
