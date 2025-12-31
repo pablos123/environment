@@ -98,7 +98,6 @@ function install_apt_packages() {
         aria2
         redshift
         tmux
-        light
 
         papirus-icon-theme
         fonts-noto-color-emoji
