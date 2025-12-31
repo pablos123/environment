@@ -22,7 +22,7 @@ cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
     stow --target="${HOME}" --restow -- */
 )
 
-rm -f -- "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache" "${HOME}/rofi-3.runcache"
+rm -f -- "${HOME}/rofi-3.runcache" "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
 
 
 {
