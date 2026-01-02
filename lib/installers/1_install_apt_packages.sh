@@ -100,6 +100,7 @@ function install_apt_packages() {
         tmux
         brightnessctl
 
+        gnome-themes-extra
         papirus-icon-theme
         fonts-noto-color-emoji
     )
