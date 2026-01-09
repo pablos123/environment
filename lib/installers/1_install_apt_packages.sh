@@ -99,6 +99,7 @@ function install_apt_packages() {
         redshift
         tmux
         brightnessctl
+        inxi
 
         gnome-themes-extra
         papirus-icon-theme
