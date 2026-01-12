@@ -33,7 +33,7 @@ function die() {
 function cleanup() {
     unset ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLER_DIR RELOAD_SCRIPT ORIGINAL_PWD
     unset installer installers
-    unset -f log warn die on_error on_exit
+    unset -f log warn die on_error on_exit cleanup
 }
 
 # --------------------------------------------------
@@ -49,9 +49,7 @@ function on_error() {
 
 function on_exit() {
     cd "${ORIGINAL_PWD}" || true
-
     cleanup
-    unset -f cleanup
 }
 
 trap on_error ERR SIGINT SIGTERM
