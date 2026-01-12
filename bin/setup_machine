@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-set -x
+set -ex
 
 original_path="$(pwd)"
 
 function cwd_on_exit_err() {
     cd "${original_path}" || exit 1
+    echo "SETUP ERROR" >&2
     exit 1
 }
 
@@ -36,6 +37,12 @@ sudo apt-get autoremove --purge --yes
 
 command -v flatpak &&
     flatpak update -y
+
+# Delete first https clone
+if git -C "${HOME}/environment" remote -v | grep -q https; then
+    rm -rf "${HOME}/environment"
+    git clone "git@github.com:pablos123/environment.git" "${HOME}/environment"
+fi
 
 /usr/bin/env bash "${HOME}/environment/bin/reload_environment"
 

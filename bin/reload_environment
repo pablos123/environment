@@ -26,7 +26,6 @@ cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
 rm -f -- "${HOME}/rofi-3.runcache" "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
 
-
 {
     fc-cache -rf
 
