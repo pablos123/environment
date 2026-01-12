@@ -13,6 +13,8 @@ files_to_remove=(
 
 rm -rf -- "${files_to_remove[@]}"
 
+git -C "${HOME}/environment/" pull &>>/dev/null
+
 # Copy the base content
 cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
 
