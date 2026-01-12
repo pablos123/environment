@@ -21,4 +21,3 @@ function calculate_applet_position() {
 
     echo -n "$(( res[0] - x_size - x_gap + res[2] ))" "$(( res[1] - y_size - y_gap + res[3] ))"
 }
-

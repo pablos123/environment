@@ -4,9 +4,7 @@ function install_apt_packages() {
     local apt_packages
     apt_packages=(
         xorg
-
         build-essential
-
         pipewire-audio
         pulseaudio-utils
         pavucontrol
@@ -18,15 +16,12 @@ function install_apt_packages() {
         bluez-firmware
         firmware-iwlwifi
         blueman
-
         x11-xserver-utils
         xdg-utils
-
         i3-wm
         i3lock
         rofi
         polybar
-
         vim
         duf
         jq
@@ -100,7 +95,7 @@ function install_apt_packages() {
         tmux
         brightnessctl
         inxi
-
+        eza
         gnome-themes-extra
         papirus-icon-theme
         fonts-noto-color-emoji
