@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function install_apt_packages() {
+function 1_install_apt_packages() {
     local apt_packages
     apt_packages=(
         xorg
@@ -107,5 +107,5 @@ function install_apt_packages() {
     ln -fs "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 }
 
-install_apt_packages
+1_install_apt_packages
 

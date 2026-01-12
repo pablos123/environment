@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
+# set -Eeuo pipefail
 
-files_to_remove=(
-    "${HOME}/.dotfiles_stow"
+# --------------------------------------------------
+# Configuration (constants only)
+# --------------------------------------------------
+ENVIRONMENT_DIR="${HOME}/environment"
+DOTFILES_DIR="${HOME}/.dotfiles_stow"
+
+ORIGINAL_PWD="$(pwd)"
+
+FILES_TO_REMOVE=(
+    "${DOTFILES_DIR}"
     "${HOME}/.bashrc"
     "${HOME}/.profile"
     "${HOME}/.xinitrc"
@@ -11,37 +20,85 @@ files_to_remove=(
     "${HOME}/.config/gtk-3.0"
 )
 
-rm -rf -- "${files_to_remove[@]}"
-
-git -C "${HOME}/environment/" pull &>>/dev/null
-
-# Copy the base content
-cp -r -- "${HOME}/environment/dotfiles" "${HOME}/.dotfiles_stow"
-
-# Stow the new files
-(
-    cd "${HOME}/.dotfiles_stow" || exit 1
-    stow --target="${HOME}" --restow -- */
+CACHE_FILES=(
+    "${HOME}/rofi-3.runcache"
+    "${HOME}/.cache/dmenu_run"
+    "${HOME}/dmenu_cache"
 )
 
-rm -f -- "${HOME}/rofi-3.runcache" "${HOME}/.cache/dmenu_run" "${HOME}/dmenu_cache"
+# --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    unset ENVIRONMENT_DIR DOTFILES_DIR ORIGINAL_PWD
+    unset FILES_TO_REMOVE CACHE_FILES
+    unset -f on_error on_exit cleanup
+}
 
+# --------------------------------------------------
+# Traps
+# --------------------------------------------------
+function on_error() {
+    local exit_code="${?}"
+    cd "${ORIGINAL_PWD}" || true
+    exit "${exit_code}"
+}
+
+function on_exit() {
+    cd "${ORIGINAL_PWD}" || true
+    cleanup
+}
+
+trap on_error ERR SIGINT SIGTERM
+trap on_exit EXIT
+
+# --------------------------------------------------
+# Remove existing dotfiles
+# --------------------------------------------------
+rm --recursive --force -- "${FILES_TO_REMOVE[@]}"
+
+# --------------------------------------------------
+# Update environment repository
+# --------------------------------------------------
+git -C "${ENVIRONMENT_DIR}" pull &>>/dev/null
+
+# --------------------------------------------------
+# Copy dotfiles base
+# --------------------------------------------------
+cp --recursive -- "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
+
+# --------------------------------------------------
+# Restow dotfiles
+# --------------------------------------------------
+(
+    cd "${DOTFILES_DIR}" || exit 1
+    stow --target="${HOME}" --restow -- */
+) &>>/dev/null
+
+# --------------------------------------------------
+# Cleanup caches
+# --------------------------------------------------
+rm --force -- "${CACHE_FILES[@]}"
+
+# --------------------------------------------------
+# Reload desktop components
+# --------------------------------------------------
 {
-    fc-cache -rf
+    fc-cache --really-force
 
-    killall dunst
-    while pgrep -u "${UID}" -x dunst >/dev/null; do sleep 0.3; done
+    killall dunst || true
+    while pgrep --uid "${UID}" --exact dunst; do sleep 0.3; done
 
-    killall flameshot
-    while pgrep -u "${UID}" -x flameshot >/dev/null; do sleep 0.3; done
+    killall flameshot || true
+    while pgrep --uid "${UID}" --exact flameshot; do sleep 0.3; done
 
-    killall picom
-    while pgrep -u "${UID}" -x picom >/dev/null; do sleep 0.3; done
+    killall picom || true
+    while pgrep --uid "${UID}" --exact picom; do sleep 0.3; done
     picom --daemon &
 
     polybar-msg cmd quit
-    while pgrep -u "${UID}" -x polybar >/dev/null; do sleep 0.3; done
+    while pgrep --uid "${UID}" --exact polybar; do sleep 0.3; done
 
     i3-msg restart
+} &>>/dev/null || true
 
-} &>>/dev/null
