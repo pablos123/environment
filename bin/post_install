@@ -6,7 +6,7 @@ set -Eeuo pipefail
 # --------------------------------------------------
 TARGET_USER="pab"
 MOUNT_BASE="/media/${TARGET_USER}"
-SETUP_URL="https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup_machine"
+SETUP_URL="https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup"
 
 ORIGINAL_PWD="$(pwd)"
 
