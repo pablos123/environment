@@ -11,7 +11,5 @@ I use the latest stable release of Debian headless.
 # New machine
 
 ```bash
-# root
-bash <(curl --fail --silent --show-error --location https://example.com/postinstall-headless.sh)
-exit
+bash <(wget --quiet --output-document=- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/post_install)
 ```

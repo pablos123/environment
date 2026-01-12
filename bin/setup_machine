@@ -28,33 +28,30 @@ function die() {
 }
 
 # --------------------------------------------------
-# Traps
+# Cleanup (only relevant when sourced)
 # --------------------------------------------------
 function cleanup() {
-    # --------------------------------------------------
-    # Cleanup (only relevant when sourced)
-    # --------------------------------------------------
     unset ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLER_DIR RELOAD_SCRIPT ORIGINAL_PWD
     unset installer installers
     unset -f log warn die on_error on_exit
 }
 
+# --------------------------------------------------
+# Traps
+# --------------------------------------------------
 function on_error() {
     local exit_code="${?}"
     cd "${ORIGINAL_PWD}" || true
     printf '\033[1;31m[ERROR]\033[0m Setup failed (exit code %s)\n' "${exit_code}" >&2
 
-    cleanup
-    unset -f cleanup
-
     exit "${exit_code}"
 }
 
 function on_exit() {
+    cd "${ORIGINAL_PWD}" || true
+
     cleanup
     unset -f cleanup
-
-    cd "${ORIGINAL_PWD}" || true
 }
 
 trap on_error ERR SIGINT SIGTERM
@@ -104,19 +101,19 @@ shopt -s nullglob
 installers=( "${INSTALLER_DIR}"/*.bash )
 shopt -u nullglob
 
-(( ${#installers[@]} > 0 )) || die "No installers found in ${INSTALLER_DIR}"
-
-log "Running installers"
-for installer in "${installers[@]}"; do
-    log "Sourcing installer: $(basename "${installer}")"
-    # shellcheck source=/dev/null
-    source "${installer}" >/dev/null
-done
+if (( ${#installers[@]} > 0 )); then
+    log "Running installers"
+    for installer in "${installers[@]}"; do
+        log "Sourcing installer: $(basename "${installer}")"
+        # shellcheck source=/dev/null
+        source "${installer}" >/dev/null
+    done
+fi
 
 # --------------------------------------------------
 # System cleanup
 # --------------------------------------------------
-log "Running apt autoremove"
+log "Running apt autopurge"
 sudo apt autopurge --yes >/dev/null
 
 if command -v flatpak >/dev/null; then
@@ -131,7 +128,7 @@ if [[ -x "${RELOAD_SCRIPT}" ]]; then
     log "Reloading environment"
     /usr/bin/env bash "${RELOAD_SCRIPT}" >/dev/null
 else
-    warn "reload_environment script not found or not executable"
+    warn "${RELOAD_SCRIPT} script not found or not executable"
 fi
 
 log "Setup completed successfully"

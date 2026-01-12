@@ -60,7 +60,7 @@ systemctl enable NetworkManager >/dev/null
 systemctl restart NetworkManager >/dev/null
 
 log "Installing base packages"
-apt install --yes git sudo ntfs-3g rfkill >/dev/null
+apt install --yes git sudo ntfs-3g rfkill curl >/dev/null
 
 log "Making pab sudo"
 usermod -aG sudo pab >/dev/null
@@ -71,5 +71,4 @@ mkdir --parents /media/pab/usb{1..3}
 log "Post-install setup complete."
 
 log "Exit the root session and enter as pab. Then run:"
-log "bash <(curl --fail --silent --show-error --location https://example.com/postinstall-headless.sh)"
-
+log "bash <(curl --fail --silent --show-error --location https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup_machine)"
