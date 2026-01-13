@@ -125,6 +125,12 @@ mkdir --parents \
     >/dev/null
 
 # --------------------------------------------------
+# APT warnings
+# --------------------------------------------------
+log "Removing apt unstable cli interface warning"
+echo "Apt::Cmd::Disable-Script-Warning true;" | sudo tee /etc/apt/apt.conf.d/90disablescriptwarning
+
+# --------------------------------------------------
 # Final instructions
 # --------------------------------------------------
 log "Post-install setup complete"
