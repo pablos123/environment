@@ -87,6 +87,9 @@ mkdir --parents \
     "${HOME}/images/screenshots" \
     >/dev/null
 
+log "Asking for sudo password"
+sudo -v --
+
 # --------------------------------------------------
 # Run installers (.bash, idempotent, quiet)
 # --------------------------------------------------
@@ -122,7 +125,7 @@ fi
 # --------------------------------------------------
 if [[ -x "${RELOAD_SCRIPT}" ]]; then
     log "Reloading environment"
-    ./"${RELOAD_SCRIPT}" >/dev/null
+    "${RELOAD_SCRIPT}" >/dev/null
 else
     warn "${RELOAD_SCRIPT} script not found or not executable"
 fi
