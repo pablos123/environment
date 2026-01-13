@@ -1,29 +1,46 @@
 #!/usr/bin/env bash
+# --------------------------------------------------
+# NOTE:
+# This file is intended to be SOURCED, not executed.
+# Must be compatible with set -Eeuo pipefail.
+# --------------------------------------------------
 
-function obtain_obsidian_version() {
-    echo "${1}" | grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1 | sed 's/v//'
-}
+OBSIDIAN_PATH="${HOME}/bin"
+current_version=""
+latest_version=""
+current_version_path=""
+latest_version_path=""
 
-function install_obsidian() {
-    local current_version latest_version current_version_path latest_version_path obsidian_path
+# --------------------------------------------------
+# Get current installed version
+# --------------------------------------------------
+current_version_file=$(find "${OBSIDIAN_PATH}" -name "obsidian_v*" 2>/dev/null | head -1 || true)
 
-    obsidian_path="${HOME}/bin"
+if [[ -n "${current_version_file}" ]]; then
+    current_version=$(echo "${current_version_file}" | grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1 | sed 's/v//' || true)
+fi
 
-    current_version=$(obtain_obsidian_version "$(find "${obsidian_path}" -name "*obsidian_v*")")
-    latest_version=$(obtain_obsidian_version "$(curl https://github.com/obsidianmd/obsidian-releases/releases/ 2>/dev/null)")
+# --------------------------------------------------
+# Get latest version from GitHub
+# --------------------------------------------------
+latest_version=$(curl --fail --silent --show-error --location https://github.com/obsidianmd/obsidian-releases/releases/ | grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1 | sed 's/v//' || true)
 
-    current_version_path="${obsidian_path}/obsidian_v${current_version}"
-    latest_version_path="${obsidian_path}/obsidian_v${latest_version}"
+# --------------------------------------------------
+# Download and install if newer version available
+# --------------------------------------------------
+if [[ -n "${latest_version}" && "${latest_version}" != "${current_version}" ]]; then
+    current_version_path="${OBSIDIAN_PATH}/obsidian_v${current_version}"
+    latest_version_path="${OBSIDIAN_PATH}/obsidian_v${latest_version}"
 
-    if [[ "${latest_version}" != "${current_version}" ]]; then
-        wget -O "${latest_version_path}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
-        [[ -s "${latest_version_path}" ]] && [[ -s "${current_version_path}" ]] &&
-            rm -f "${current_version_path}"
+    wget --quiet --output-document="${latest_version_path}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage" || true
 
-        chmod +x "${latest_version_path}"
-    else
-        echo "Obsidian is in the latest version: ${latest_version}"
+    if [[ -s "${latest_version_path}" ]]; then
+        chmod +x "${latest_version_path}" || true
+
+        if [[ -s "${current_version_path}" ]]; then
+            rm -f "${current_version_path}" || true
+        fi
     fi
-}
+fi
 
-install_obsidian
+unset OBSIDIAN_PATH current_version latest_version current_version_path latest_version_path current_version_file

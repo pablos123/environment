@@ -1,13 +1,34 @@
 #!/usr/bin/env bash
+# --------------------------------------------------
+# NOTE:
+# This file is intended to be SOURCED, not executed.
+# Must be compatible with set -Eeuo pipefail.
+# --------------------------------------------------
 
-function install_rustup() {
-    sudo apt-get purge --yes rustc cargo
-    sudo apt-get autoremove --purge --yes
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup_installer.sh
-    /usr/bin/env sh /tmp/rustup_installer.sh -y
-    source "${HOME}/.cargo/env"
-    rustup update
-}
+RUSTUP_INSTALLER="/tmp/rustup_installer.sh"
 
-# Nothing for now. I'm not using rust
-# install_rustup
+# --------------------------------------------------
+# Remove existing Rust installation
+# --------------------------------------------------
+sudo apt-get purge --yes rustc cargo >/dev/null 2>&1 || true
+sudo apt-get autoremove --purge --yes >/dev/null 2>&1 || true
+
+# --------------------------------------------------
+# Download and install rustup
+# --------------------------------------------------
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > "${RUSTUP_INSTALLER}"
+/usr/bin/env sh "${RUSTUP_INSTALLER}" -y >/dev/null 2>&1
+
+# --------------------------------------------------
+# Source cargo environment and update
+# --------------------------------------------------
+# shellcheck source=/dev/null
+source "${HOME}/.cargo/env" || true
+rustup update >/dev/null 2>&1 || true
+
+# --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+rm -f "${RUSTUP_INSTALLER}" || true
+
+unset RUSTUP_INSTALLER

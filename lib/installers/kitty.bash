@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
+# --------------------------------------------------
+# NOTE:
+# This file is intended to be SOURCED, not executed.
+# Must be compatible with set -Eeuo pipefail.
+# --------------------------------------------------
 
-function install_kitty() {
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
-    ln -sf "${HOME}/.local/kitty.app/bin/kitty" "${HOME}/bin/kitty"
-    ln -sf "${HOME}/.local/kitty.app/bin/kitten" "${HOME}/bin/kitten"
-}
+KITTY_APP="${HOME}/.local/kitty.app"
 
-install_kitty
+# --------------------------------------------------
+# Install Kitty terminal
+# --------------------------------------------------
+curl --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n >/dev/null 2>&1
+
+# --------------------------------------------------
+# Create symlinks
+# --------------------------------------------------
+ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
+ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true
+
+unset KITTY_APP

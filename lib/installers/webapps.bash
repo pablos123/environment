@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+# --------------------------------------------------
+# NOTE:
+# This file is intended to be SOURCED, not executed.
+# Must be compatible with set -Eeuo pipefail.
+# --------------------------------------------------
+
 # Create web apps executables.
 
-declare -rA web_apps=(
+declare -rA WEB_APPS=(
     ["whatsapp"]="https://web.whatsapp.com/"
     ["discord"]="https://discord.com/channels/@me"
     ["telegram"]="https://web.telegram.org/a/"
@@ -15,14 +21,12 @@ declare -rA web_apps=(
     ["desmos"]="https://www.desmos.com/calculator"
 )
 
-# 1: name
-# 2: url
-function create_web_app() {
-    local app_url app_name app_exec
-    app_name="${1}"
-    app_url="${2}"
-
-    app_instance="$(echo "${app_url}" | sed -r 's/^https:\/\/([a-zA-Z.]+).*/\1/')"
+# --------------------------------------------------
+# Create web app launchers
+# --------------------------------------------------
+for app_name in "${!WEB_APPS[@]}"; do
+    app_url="${WEB_APPS[${app_name}]}"
+    app_instance=$(echo "${app_url}" | sed -r 's/^https:\/\/([a-zA-Z.]+).*/\1/')
     app_exec="${HOME}/bin/${app_name}"
 
     cat > "${app_exec}" <<EOF
@@ -41,11 +45,7 @@ done
 chrome --app="\${app_url}"
 EOF
 
-    chmod +x "${app_exec}"
-}
-
-
-for app_name in "${!web_apps[@]}"; do
-    create_web_app "${app_name}" "${web_apps["${app_name}"]}"
+    chmod +x "${app_exec}" || true
 done
 
+unset app_name app_url app_instance app_exec

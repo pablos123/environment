@@ -52,7 +52,7 @@ fi
 # --------------------------------------------------
 # Theme fix (Papirus)
 # --------------------------------------------------
-if command --command --builtin command hardcode-tray >/dev/null 2>&1; then
+if command -v hardcode-tray >/dev/null 2>&1; then
     sudo --preserve-env=HOME \
         hardcode-tray \
         --apply \
