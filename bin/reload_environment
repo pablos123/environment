@@ -60,7 +60,7 @@ rm --recursive --force -- "${FILES_TO_REMOVE[@]}"
 # --------------------------------------------------
 # Update environment repository
 # --------------------------------------------------
-git -C "${ENVIRONMENT_DIR}" pull >/dev/null
+git -C "${ENVIRONMENT_DIR}" pull --ff-only >/dev/null
 
 # --------------------------------------------------
 # Copy dotfiles base

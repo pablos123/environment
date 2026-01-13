@@ -124,7 +124,7 @@ fi
 # --------------------------------------------------
 if [[ -x "${RELOAD_SCRIPT}" ]]; then
     log "Reloading environment"
-    /usr/bin/env bash "${RELOAD_SCRIPT}" >/dev/null
+    ./"${RELOAD_SCRIPT}" >/dev/null
 else
     warn "${RELOAD_SCRIPT} script not found or not executable"
 fi
