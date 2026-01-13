@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-# --------------------------------------------------
-# NOTE:
-# This file is intended to be SOURCED, not executed.
-# Must be compatible with set -Eeuo pipefail.
-# --------------------------------------------------
+set -Eeuo pipefail
 
 # --------------------------------------------------
 # Google Chrome repository

@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
-# --------------------------------------------------
-# NOTE:
-# This file is intended to be SOURCED, not executed.
-# Must be compatible with set -Eeuo pipefail.
-# --------------------------------------------------
-
+set -Eeuo pipefail
 FZF_REPO_URL="https://github.com/junegunn/fzf.git"
 FZF_DIR="${HOME}/.base_repos/fzf"
 

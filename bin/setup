@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-
 # --------------------------------------------------
 # Configuration (constants only)
 # --------------------------------------------------
@@ -102,9 +101,8 @@ shopt -u nullglob
 if (( ${#installers[@]} > 0 )); then
     log "Running installers"
     for installer in "${installers[@]}"; do
-        log "Sourcing installer: $(basename "${installer}")"
-        # shellcheck source=/dev/null
-        source "${installer}" >/dev/null
+        log "Executing installer: $(basename "${installer}")"
+        "${installer}" >/dev/null
     done
 fi
 
