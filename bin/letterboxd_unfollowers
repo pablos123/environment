@@ -7,8 +7,8 @@ from bs4 import BeautifulSoup
 import requests
 
 LETTERBOXD_USER = "pablos123"
-FOLLOWING_URL = f"https://letterboxd.com/{LETTERBOXD_USER}/following/"
-FOLLOWERS_URL = f"https://letterboxd.com/{LETTERBOXD_USER}/followers/"
+FOLLOWING_URL = f"https://letterboxd.com/{LETTERBOXD_USER}/following"
+FOLLOWERS_URL = f"https://letterboxd.com/{LETTERBOXD_USER}/followers"
 
 
 def get_followers() -> set:
@@ -20,7 +20,7 @@ def get_followers() -> set:
             break
         followers.extend(page_followers)
         page_num += 1
-        sleep(0.5)
+        sleep(1)
     return set(followers)
 
 
@@ -33,6 +33,7 @@ def get_following() -> set:
             break
         following.extend(page_following)
         page_num += 1
+        sleep(1)
     return set(following)
 
 
