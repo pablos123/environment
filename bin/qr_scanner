@@ -5,7 +5,7 @@ function qr_scanner() {
     local tmp_file qr_content
     tmp_file="/tmp/qr_scanner.tmp.png"
 
-    flameshot gui -p "${tmp_file}" &>>/dev/null
+    flameshot gui -p "${tmp_file}" &>/dev/null
     qr_content="$(zbarimg --raw --quiet "${tmp_file}")"
 
     echo "${qr_content}" | xclip

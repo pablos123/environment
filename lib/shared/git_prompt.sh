@@ -143,7 +143,7 @@
 
 # check whether printf supports -v
 __git_printf_supports_v=
-printf -v __git_printf_supports_v -- '%s' yes >/dev/null 2>&1
+printf -v __git_printf_supports_v -- '%s' yes &>/dev/null
 
 # like __git_SOH=$'\001' etc but works also in shells without $'...'
 eval "$(printf '

@@ -13,15 +13,15 @@ function uname_info() {
 }
 
 function cpu_info() {
-    lscpu | awk -F ':' '/^Architecture|^CPU\(s\):|^Model name/ {print $1":"$2}'
+    lscpu | awk --field-separator=':' '/^Architecture|^CPU\(s\):|^Model name/ {print $1":"$2}'
 }
 
 function lsb_info() {
-    lsb_release -a 2>/dev/null | awk -F ':' '/^Distributor ID|^Description|^Release|^Codename/ {print $1":"$2}'
+    lsb_release --all 2>/dev/null | awk --field-separator=':' '/^Distributor ID|^Description|^Release|^Codename/ {print $1":"$2}'
 }
 
 function mem_info() {
-    free -h | awk '/^Mem/ {print $1" "$2}'
+    free --human | awk '/^Mem/ {print $1" "$2}'
 }
 
 function wmctrl_info() {

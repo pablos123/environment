@@ -118,7 +118,7 @@ sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
 # --------------------------------------------------
 # fd compatibility symlink (Debian)
 # --------------------------------------------------
-if command -v fdfind >/dev/null 2>&1; then
+if command -v fdfind &>/dev/null; then
     mkdir --parents "${HOME}/.local/bin"
     ln --symbolic --force "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 fi

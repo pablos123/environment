@@ -8,9 +8,9 @@
 # --------------------------------------------------
 # Remove existing pyenv installation
 # --------------------------------------------------
-rm -rf "${HOME}/.pyenv" || true
+rm --recursive --force "${HOME}/.pyenv" || true
 
 # --------------------------------------------------
 # Install pyenv
 # --------------------------------------------------
-curl --fail --silent --location https://pyenv.run | bash >/dev/null 2>&1
+curl --fail --silent --location https://pyenv.run | bash &>/dev/null

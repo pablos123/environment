@@ -57,8 +57,8 @@ function configure_monitors() {
         i3-nagbar -m 'Monitors configuration not recognized.' -t warning
     fi
 
-    move_workspaces_to_primary &>> /dev/null
-    i3-msg restart &>>/dev/null
+    move_workspaces_to_primary &> /dev/null
+    i3-msg restart &>/dev/null
 }
 
 mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')

@@ -86,10 +86,10 @@ log "Installing NetworkManager"
 apt install --yes network-manager >/dev/null
 
 log "Disabling legacy ifupdown networking"
-rm -f /etc/network/interfaces
+rm --force /etc/network/interfaces
 
-systemctl disable networking.service >/dev/null 2>&1 || true
-systemctl stop networking.service >/dev/null 2>&1 || true
+systemctl disable networking.service &>/dev/null || true
+systemctl stop networking.service &>/dev/null || true
 
 apt purge --yes ifupdown >/dev/null || true
 

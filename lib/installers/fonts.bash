@@ -44,4 +44,4 @@ done
 # --------------------------------------------------
 fc-cache --really-force >/dev/null
 
-unset FONTS FONTS_DIR NERD_FONTS_BASE_URL FONT_DIR ARCHIVE_PATH
+unset FONTS FONTS_DIR NERD_FONTS_BASE_URL FONT_DIR ARCHIVE_PATH font

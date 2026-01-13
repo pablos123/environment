@@ -26,13 +26,13 @@ DEPENDENCIES=(
 # --------------------------------------------------
 # Dependencies
 # --------------------------------------------------
-sudo apt-get install --yes "${DEPENDENCIES[@]}" >/dev/null 2>&1
+sudo apt-get install --yes "${DEPENDENCIES[@]}" &>/dev/null
 
 # --------------------------------------------------
 # Repository
 # --------------------------------------------------
 if [[ ! -d "${NEOVIM_PATH}" ]]; then
-    git clone --depth 1 "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" >/dev/null 2>&1
+    git clone --depth 1 "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" &>/dev/null
 fi
 
 # --------------------------------------------------
@@ -41,21 +41,21 @@ fi
 (
     cd "${NEOVIM_PATH}" || exit 1
 
-    sudo make clean >/dev/null 2>&1 || true
-    sudo rm -rf .deps build >/dev/null 2>&1 || true
+    sudo make clean &>/dev/null || true
+    sudo rm --recursive --force .deps build &>/dev/null || true
 
-    git add . >/dev/null 2>&1 || true
-    git reset --hard >/dev/null 2>&1
-    git pull --ff-only >/dev/null 2>&1
+    git add . &>/dev/null || true
+    git reset --hard &>/dev/null
+    git pull --ff-only &>/dev/null
 
-    make CMAKE_BUILD_TYPE=RelWithDebInfo >/dev/null 2>&1
-    sudo make install >/dev/null 2>&1
-    sudo make clean >/dev/null 2>&1
+    make CMAKE_BUILD_TYPE=RelWithDebInfo &>/dev/null
+    sudo make install &>/dev/null
+    sudo make clean &>/dev/null
 )
 
 # --------------------------------------------------
 # Verify installation
 # --------------------------------------------------
-nvim --version >/dev/null 2>&1 || true
+nvim --version &>/dev/null || true
 
 unset NEOVIM_REPO_URL NEOVIM_PATH DEPENDENCIES

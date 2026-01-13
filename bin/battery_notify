@@ -19,8 +19,8 @@ function is_battery() {
 function battery_notify() {
     local state model percentage battery_data data_filtered
 
-    for battery in $(upower -e); do
-        battery_data="$(upower -i "${battery}")"
+    for battery in $(upower --enumerate); do
+        battery_data="$(upower --show-info "${battery}")"
 
         ! is_battery "${battery_data}" &&
             continue

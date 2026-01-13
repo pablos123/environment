@@ -17,7 +17,7 @@ function calculate_applet_position() {
     y_gap=42
 
     # array: x y offset_x offset_y
-    mapfile -t res < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
+    mapfile -t res < <(xrandr | grep -- 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
 
     echo -n "$(( res[0] - x_size - x_gap + res[2] ))" "$(( res[1] - y_size - y_gap + res[3] ))"
 }

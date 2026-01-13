@@ -18,7 +18,7 @@ function set_wallpaper() {
     random_index=$((RANDOM % items_count))
     wallpaper="${wallpapers_array[${random_index}]}"
 
-    hsetroot -cover "${wallpaper}" &>>/dev/null
+    hsetroot -cover "${wallpaper}" &>/dev/null
 }
 
 set_wallpaper

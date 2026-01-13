@@ -10,7 +10,7 @@ KITTY_APP="${HOME}/.local/kitty.app"
 # --------------------------------------------------
 # Install Kitty terminal
 # --------------------------------------------------
-curl --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n >/dev/null 2>&1
+curl --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n &>/dev/null
 
 # --------------------------------------------------
 # Create symlinks
