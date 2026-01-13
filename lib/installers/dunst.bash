@@ -33,7 +33,7 @@ fi
 # Build & install
 # --------------------------------------------------
 (
-    cd "${DUNST_DIR}" || exit 1
+    cd -- "${DUNST_DIR}" || exit 1
 
     sudo make clean >/dev/null || true
 

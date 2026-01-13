@@ -38,7 +38,7 @@ done
 chrome --app="${app_url}"
 EOF
 
-    chmod +x "${app_exec}" || true
+    chmod +x -- "${app_exec}" || true
 done
 
 # Note: WEB_APPS is readonly and cannot be unset

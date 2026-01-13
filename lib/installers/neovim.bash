@@ -35,10 +35,10 @@ fi
 # Build & install
 # --------------------------------------------------
 (
-    cd "${NEOVIM_PATH}" || exit 1
+    cd -- "${NEOVIM_PATH}" || exit 1
 
     sudo make clean &>/dev/null || true
-    sudo rm --recursive --force .deps build &>/dev/null || true
+    sudo rm --recursive --force -- .deps build &>/dev/null || true
 
     git add . &>/dev/null || true
     git reset --hard &>/dev/null

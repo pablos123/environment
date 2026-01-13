@@ -15,7 +15,7 @@ NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/dow
 # --------------------------------------------------
 # Prepare directory
 # --------------------------------------------------
-mkdir --parents "${FONTS_DIR}"
+mkdir --parents -- "${FONTS_DIR}"
 
 # --------------------------------------------------
 # Install fonts
@@ -25,7 +25,7 @@ for font in "${FONTS[@]}"; do
     ARCHIVE_PATH="${FONTS_DIR}/${font}Nerd.tar.xz"
 
     rm --recursive --force -- "${FONT_DIR}"
-    mkdir --parents "${FONT_DIR}"
+    mkdir --parents -- "${FONT_DIR}"
 
     curl --fail --silent --show-error --location \
         "${NERD_FONTS_BASE_URL}/${font}.tar.xz" \

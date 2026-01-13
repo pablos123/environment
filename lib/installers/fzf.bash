@@ -14,7 +14,7 @@ fi
 # Update & install
 # --------------------------------------------------
 (
-    cd "${FZF_DIR}" || exit 1
+    cd -- "${FZF_DIR}" || exit 1
 
     git reset --hard >/dev/null
     git pull --ff-only >/dev/null

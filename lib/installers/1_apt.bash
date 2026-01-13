@@ -115,8 +115,8 @@ sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
 # fd compatibility symlink (Debian)
 # --------------------------------------------------
 if command -v fdfind &>/dev/null; then
-    mkdir --parents "${HOME}/.local/bin"
-    ln --symbolic --force "$(command -v fdfind)" "${HOME}/.local/bin/fd"
+    mkdir --parents -- "${HOME}/.local/bin"
+    ln --symbolic --force -- "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 fi
 
 unset APT_PACKAGES

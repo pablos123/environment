@@ -4,7 +4,7 @@ set -Eeuo pipefail
 # --------------------------------------------------
 # Remove existing pyenv installation
 # --------------------------------------------------
-rm --recursive --force "${HOME}/.pyenv" || true
+rm --recursive --force -- "${HOME}/.pyenv" || true
 
 # --------------------------------------------------
 # Install pyenv

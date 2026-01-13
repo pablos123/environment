@@ -11,7 +11,7 @@ curl --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/ins
 # --------------------------------------------------
 # Create symlinks
 # --------------------------------------------------
-ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
-ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true
+ln --symbolic --force -- "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
+ln --symbolic --force -- "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true
 
 unset KITTY_APP
