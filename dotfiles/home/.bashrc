@@ -124,7 +124,7 @@ export HISTTIMEFORMAT='%F %T '
 
 # SOURCES
 # ---------------------------------------------------------------------
-source "${HOME}/environment/lib/aliases.sh"
+source "${HOME}/environment/lib/aliases.bash"
 [[ -f "${HOME}/.bashrc_custom" ]] &&
     source "${HOME}/.bashrc_custom"
 

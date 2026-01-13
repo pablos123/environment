@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 #
 # Common
 alias ls='eza --sort=extension --extended --group-directories-first --classify --git'
