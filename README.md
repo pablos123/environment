@@ -8,7 +8,7 @@ I resigned from the battle for visual consistency a long time ago, it is not wor
 
 I use the latest stable release of Debian headless.
 
-# New machine
+I need to run only this, in the end the installer will guide me to setup my environment with my user:
 
 ```bash
 bash <(wget --quiet --output-document=- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/post_install)
