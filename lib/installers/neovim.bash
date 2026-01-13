@@ -52,6 +52,6 @@ fi
 # --------------------------------------------------
 # Verify installation
 # --------------------------------------------------
-nvim --version &>/dev/null || true
+nvim --version
 
 unset NEOVIM_REPO_URL NEOVIM_PATH DEPENDENCIES
