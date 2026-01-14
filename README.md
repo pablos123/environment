@@ -8,8 +8,10 @@ I resigned from the battle for visual consistency a long time ago, it is not wor
 
 I use the latest stable release of Debian headless.
 
-I need to run only this as `root`. At the end the installer will tell me how to setup `pab` user.
+After a fresh Debian headless install, run this as `root`:
 
 ```bash
 bash <(wget --quiet --output-document=- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/post_install)
 ```
+
+At the end the installer will tell me how to setup `pab` user.
