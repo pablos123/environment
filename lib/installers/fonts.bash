@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 FONTS=(
     SourceCodePro
     JetBrainsMono
@@ -13,31 +17,37 @@ FONTS_DIR="${HOME}/.local/share/fonts"
 NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 
 # --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    unset FONTS FONTS_DIR NERD_FONTS_BASE_URL FONT_DIR ARCHIVE_PATH font
+}
+
+# --------------------------------------------------
 # Prepare directory
 # --------------------------------------------------
-mkdir --parents -- "${FONTS_DIR}"
+mkdir --parents "${FONTS_DIR}"
 
 # --------------------------------------------------
 # Install fonts
 # --------------------------------------------------
 for font in "${FONTS[@]}"; do
+    log "Installing ${font} Nerd Font"
     FONT_DIR="${FONTS_DIR}/${font}Nerd"
     ARCHIVE_PATH="${FONTS_DIR}/${font}Nerd.tar.xz"
 
-    rm --recursive --force -- "${FONT_DIR}"
-    mkdir --parents -- "${FONT_DIR}"
+    rm --recursive --force "${FONT_DIR}"
+    mkdir --parents "${FONT_DIR}"
 
     curl --fail --silent --show-error --location \
         "${NERD_FONTS_BASE_URL}/${font}.tar.xz" \
         --output "${ARCHIVE_PATH}"
 
     tar --extract --file "${ARCHIVE_PATH}" --directory "${FONT_DIR}"
-    rm --force -- "${ARCHIVE_PATH}"
+    rm --force "${ARCHIVE_PATH}"
 done
 
 # --------------------------------------------------
 # Refresh font cache
 # --------------------------------------------------
 fc-cache --really-force >/dev/null
-
-unset FONTS FONTS_DIR NERD_FONTS_BASE_URL FONT_DIR ARCHIVE_PATH font

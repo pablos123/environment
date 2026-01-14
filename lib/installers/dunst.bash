@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 DUNST_REPO_URL="https://github.com/dunst-project/dunst.git"
 DUNST_DIR="${HOME}/.base_repos/dunst"
 
@@ -18,6 +22,13 @@ DEPENDENCIES=(
 )
 
 # --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    unset DUNST_REPO_URL DUNST_DIR DEPENDENCIES
+}
+
+# --------------------------------------------------
 # Dependencies
 # --------------------------------------------------
 sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
@@ -26,23 +37,23 @@ sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 # Repository
 # --------------------------------------------------
 if [[ ! -d "${DUNST_DIR}" ]]; then
+    log "Cloning Dunst repository"
     git clone --depth 1 "${DUNST_REPO_URL}" "${DUNST_DIR}" >/dev/null
 fi
 
 # --------------------------------------------------
 # Build & install
 # --------------------------------------------------
-(
-    cd -- "${DUNST_DIR}" || exit 1
+cd "${DUNST_DIR}" || exit 1
 
-    sudo make clean >/dev/null || true
+log "Building Dunst from source"
+{
+    sudo make clean || true
 
-    git reset --hard >/dev/null
-    git pull --ff-only >/dev/null
+    git reset --hard
+    git pull --ff-only
 
-    make >/dev/null
-    sudo make install >/dev/null
-    sudo make clean >/dev/null
-)
-
-unset DUNST_REPO_URL DUNST_DIR DEPENDENCIES
+    make
+    sudo make install
+    sudo make clean
+} >/dev/null

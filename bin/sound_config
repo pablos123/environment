@@ -14,7 +14,7 @@ function sound_config() {
     x_size=600
     y_size=400
 
-    source "${HOME}/environment/lib/helper_functions.bash"
+    source "${HOME}/environment/lib/applet_position.bash"
 
     pavucontrol -t 3 & disown
 

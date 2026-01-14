@@ -14,7 +14,7 @@ function calendar_applet() {
         exit 0
     fi
 
-    source "${HOME}/environment/lib/helper_functions.bash"
+    source "${HOME}/environment/lib/applet_position.bash"
 
     x_size=304
     y_size=208

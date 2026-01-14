@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 # Create web apps executables.
 
 declare -rA WEB_APPS=(
@@ -18,8 +22,17 @@ declare -rA WEB_APPS=(
 )
 
 # --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    # Note: WEB_APPS is readonly and cannot be unset
+    unset app_name app_url app_instance app_exec
+}
+
+# --------------------------------------------------
 # Create web app launchers
 # --------------------------------------------------
+log "Creating web app launchers"
 for app_name in "${!WEB_APPS[@]}"; do
     app_url="${WEB_APPS[${app_name}]}"
     app_instance=$(echo "${app_url}" | sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/')
@@ -30,7 +43,7 @@ for app_name in "${!WEB_APPS[@]}"; do
 
 mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome")
 for id in "\${chrome_window_ids[@]}"; do
-    instance_name="\$(xprop -id "\${id}" | grep -- WM_CLASS | awk '{ print \$3 }' | tr --delete ' \n",')"
+    instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print \$3 }' | tr --delete ' \n",')"
     [[ "${app_instance}" == "\${instance_name}" ]] &&
         exit 0
 done
@@ -38,8 +51,5 @@ done
 chrome --app="${app_url}"
 EOF
 
-    chmod +x -- "${app_exec}" || true
+    chmod +x "${app_exec}" || true
 done
-
-# Note: WEB_APPS is readonly and cannot be unset
-unset app_name app_url app_instance app_exec

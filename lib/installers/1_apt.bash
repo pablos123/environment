@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 APT_PACKAGES=(
     xorg
     build-essential
@@ -101,8 +105,16 @@ APT_PACKAGES=(
 )
 
 # --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    unset APT_PACKAGES
+}
+
+# --------------------------------------------------
 # System update
 # --------------------------------------------------
+log "Updating system packages"
 sudo apt update >/dev/null
 sudo apt full-upgrade --yes >/dev/null
 
@@ -115,9 +127,6 @@ sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
 # fd compatibility symlink (Debian)
 # --------------------------------------------------
 if command -v fdfind &>/dev/null; then
-    mkdir --parents -- "${HOME}/.local/bin"
-    ln --symbolic --force -- "$(command -v fdfind)" "${HOME}/.local/bin/fd"
+    mkdir --parents "${HOME}/.local/bin"
+    ln --symbolic --force "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 fi
-
-unset APT_PACKAGES
-

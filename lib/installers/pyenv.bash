@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 # --------------------------------------------------
 # Remove existing pyenv installation
 # --------------------------------------------------
-rm --recursive --force -- "${HOME}/.pyenv" || true
+rm --recursive --force "${HOME}/.pyenv" || true
 
 # --------------------------------------------------
 # Install pyenv
 # --------------------------------------------------
+log "Installing pyenv"
 curl --fail --silent --location https://pyenv.run | bash &>/dev/null
