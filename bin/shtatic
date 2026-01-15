@@ -72,7 +72,7 @@ make_articles_and_projects() {
 
         for i in "page/items/${d}/"*.md; do
             title=$(head -1 "${i}" | tr -d '#')
-            i=$(basename -- "${i}")
+            i=$(basename "${i}")
 
             echo "$(cat page/head.template)
                 <main class='article'>
