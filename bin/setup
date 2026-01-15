@@ -34,10 +34,10 @@ fi
 # --------------------------------------------------
 if [[ ! -d "${ENVIRONMENT_DIR}" ]]; then
     log "Cloning environment repository"
-    git clone "${ENVIRONMENT_REPO_URL}" "${ENVIRONMENT_DIR}" >/dev/null
+    git clone --quiet "${ENVIRONMENT_REPO_URL}" "${ENVIRONMENT_DIR}"
 else
     log "Updating environment repository"
-    git -C "${ENVIRONMENT_DIR}" pull --ff-only >/dev/null
+    git -C "${ENVIRONMENT_DIR}" pull --ff-only --quiet
 fi
 
 # --------------------------------------------------

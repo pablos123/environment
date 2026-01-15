@@ -18,7 +18,7 @@ function cleanup() {
 # Install Kitty terminal
 # --------------------------------------------------
 log "Installing Kitty terminal"
-curl --no-progress-meter --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n >/dev/null
+curl --fail --silent --show-error --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n 2>/dev/null
 
 # --------------------------------------------------
 # Create symlinks

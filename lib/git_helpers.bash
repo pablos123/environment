@@ -11,12 +11,12 @@ function clone_or_update_repo() {
 
     if [[ ! -d "${repo_dir}" ]]; then
         log "Cloning ${repo_url}"
-        git clone --depth 1 "${repo_url}" "${repo_dir}" >/dev/null
+        git clone --depth 1 --quiet "${repo_url}" "${repo_dir}"
     else
         log "Updating ${repo_dir}"
         cd "${repo_dir}" || return 1
-        git fetch --depth 1 >/dev/null
-        git reset --hard origin/HEAD >/dev/null
+        git fetch --depth 1 --quiet
+        git reset --hard --quiet origin/HEAD
     fi
 }
 
