@@ -17,13 +17,6 @@ FONTS_DIR="${HOME}/.local/share/fonts"
 NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset FONTS FONTS_DIR NERD_FONTS_BASE_URL FONT_DIR ARCHIVE_PATH font
-}
-
-# --------------------------------------------------
 # Prepare directory
 # --------------------------------------------------
 mkdir --parents "${FONTS_DIR}"
@@ -31,16 +24,16 @@ mkdir --parents "${FONTS_DIR}"
 # --------------------------------------------------
 # Install fonts
 # --------------------------------------------------
-for font in "${FONTS[@]}"; do
-    log "Installing ${font} Nerd Font"
-    FONT_DIR="${FONTS_DIR}/${font}Nerd"
-    ARCHIVE_PATH="${FONTS_DIR}/${font}Nerd.tar.xz"
+for FONT in "${FONTS[@]}"; do
+    log "Installing ${FONT} Nerd font"
+    FONT_DIR="${FONTS_DIR}/${FONT}Nerd"
+    ARCHIVE_PATH="${FONTS_DIR}/${FONT}Nerd.tar.xz"
 
     rm --recursive --force "${FONT_DIR}"
     mkdir --parents "${FONT_DIR}"
 
     curl --fail --no-progress-meter --location \
-        "${NERD_FONTS_BASE_URL}/${font}.tar.xz" \
+        "${NERD_FONTS_BASE_URL}/${FONT}.tar.xz" \
         --output "${ARCHIVE_PATH}"
 
     tar --extract --file "${ARCHIVE_PATH}" --directory "${FONT_DIR}"
@@ -50,4 +43,5 @@ done
 # --------------------------------------------------
 # Refresh font cache
 # --------------------------------------------------
+log "Refreshing font cache"
 fc-cache --really-force >/dev/null

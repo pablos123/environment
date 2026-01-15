@@ -24,13 +24,6 @@ NEEDED_DIRECTORIES=(
 )
 
 # --------------------------------------------------
-# Cleanup (only relevant when sourced)
-# --------------------------------------------------
-function cleanup() {
-    unset INSTALLER INSTALLERS ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLERS_DIR RELOAD_SCRIPT NEEDED_DIRECTORIES
-}
-
-# --------------------------------------------------
 # Preconditions
 # --------------------------------------------------
 if [[ ! -f "${HOME}/.ssh/id_rsa.pub" ]]; then
@@ -52,7 +45,7 @@ fi
 # Directory layout
 # --------------------------------------------------
 log "Ensuring base directory structure"
-mkdir --parents -- "${NEEDED_DIRECTORIES[@]}" >/dev/null
+mkdir --parents "${NEEDED_DIRECTORIES[@]}" >/dev/null
 
 log "Asking for sudo password"
 sudo -v
@@ -83,6 +76,9 @@ fi
 log "Running apt autopurge"
 sudo apt autopurge --yes >/dev/null
 
+# --------------------------------------------------
+# Flatpak update
+# --------------------------------------------------
 if command -v flatpak >/dev/null; then
     log "Updating Flatpak packages"
     flatpak update --assumeyes >/dev/null

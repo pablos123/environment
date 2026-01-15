@@ -10,13 +10,6 @@ FZF_REPO_URL="https://github.com/junegunn/fzf.git"
 FZF_DIR="${HOME}/.base_repos/fzf"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset FZF_REPO_URL FZF_DIR
-}
-
-# --------------------------------------------------
 # Clone or update repository
 # --------------------------------------------------
 clone_or_update_repo "${FZF_REPO_URL}" "${FZF_DIR}"

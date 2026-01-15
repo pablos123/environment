@@ -25,17 +25,17 @@ function move_workspaces_to_primary() {
     IFS=$'\n'
     for w in $(i3-msg -t get_workspaces | jq -r .[].name); do
         if [[ "${w}" == "0" ]]; then
-            i3-msg -- workspace "${w}"
-            i3-msg -- move workspace to output nonprimary
+            i3-msg workspace "${w}"
+            i3-msg move workspace to output nonprimary
             continue
         fi
 
-        i3-msg -- workspace "${w}"
-        i3-msg -- move workspace to output primary
+        i3-msg workspace "${w}"
+        i3-msg move workspace to output primary
     done
     IFS="${oifs}"
 
-    i3-msg -- workspace "${current_workspace}"
+    i3-msg workspace "${current_workspace}"
 }
 
 function configure_monitors() {

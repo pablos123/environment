@@ -22,14 +22,6 @@ declare -rA WEB_APPS=(
 )
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    # Note: WEB_APPS is readonly and cannot be unset
-    unset APP_NAME APP_URL APP_INSTANCE APP_EXEC
-}
-
-# --------------------------------------------------
 # Create web app launchers
 # --------------------------------------------------
 log "Creating web app launchers"

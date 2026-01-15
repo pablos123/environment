@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# set -Eeuo pipefail
+set -Eeuo pipefail
+
+# Source shared utilities
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
 # --------------------------------------------------
 # Configuration (constants only)
 # --------------------------------------------------
 ENVIRONMENT_DIR="${HOME}/environment"
 DOTFILES_DIR="${HOME}/.dotfiles_stow"
-
-ORIGINAL_PWD="$(pwd)"
 
 FILES_TO_REMOVE=(
     "${DOTFILES_DIR}"
@@ -26,35 +29,9 @@ CACHE_FILES=(
 )
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset ENVIRONMENT_DIR DOTFILES_DIR ORIGINAL_PWD
-    unset FILES_TO_REMOVE CACHE_FILES
-    unset -f on_error on_exit cleanup
-}
-
-# --------------------------------------------------
-# Traps
-# --------------------------------------------------
-function on_error() {
-    local exit_code="${?}"
-    cd "${ORIGINAL_PWD}" || true
-    exit "${exit_code}"
-}
-
-function on_exit() {
-    cd "${ORIGINAL_PWD}" || true
-    cleanup
-}
-
-trap on_error ERR SIGINT SIGTERM
-trap on_exit EXIT
-
-# --------------------------------------------------
 # Remove existing dotfiles
 # --------------------------------------------------
-rm --recursive --force -- "${FILES_TO_REMOVE[@]}"
+rm --recursive --force "${FILES_TO_REMOVE[@]}"
 
 # --------------------------------------------------
 # Update environment repository
@@ -64,7 +41,7 @@ git -C "${ENVIRONMENT_DIR}" pull --ff-only >/dev/null
 # --------------------------------------------------
 # Copy dotfiles base
 # --------------------------------------------------
-cp --recursive -- "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
+cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 
 # --------------------------------------------------
 # Restow dotfiles
@@ -77,7 +54,7 @@ cp --recursive -- "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 # --------------------------------------------------
 # Cleanup caches
 # --------------------------------------------------
-rm --force -- "${CACHE_FILES[@]}"
+rm --force "${CACHE_FILES[@]}"
 
 # --------------------------------------------------
 # Reload desktop components

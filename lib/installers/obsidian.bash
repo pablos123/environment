@@ -10,15 +10,9 @@ CURRENT_VERSION=""
 LATEST_VERSION=""
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset OBSIDIAN_PATH CURRENT_VERSION LATEST_VERSION CURRENT_VERSION_FILE CURRENT_VERSION_PATH LATEST_VERSION_PATH
-}
-
-# --------------------------------------------------
 # Get current installed version
 # --------------------------------------------------
+log "Checking Obsidian version"
 CURRENT_VERSION_FILE=$(find "${OBSIDIAN_PATH}" -name "obsidian_v*" 2>/dev/null | head --lines=1 || true)
 
 if [[ -n "${CURRENT_VERSION_FILE}" ]]; then

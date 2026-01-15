@@ -8,13 +8,6 @@ source "${HOME}/environment/lib/trap_handlers.bash"
 KITTY_APP="${HOME}/.local/kitty.app"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset KITTY_APP
-}
-
-# --------------------------------------------------
 # Install Kitty terminal
 # --------------------------------------------------
 log "Installing Kitty terminal"
@@ -23,5 +16,6 @@ curl --fail --no-progress-meter --location https://sw.kovidgoyal.net/kitty/insta
 # --------------------------------------------------
 # Create symlinks
 # --------------------------------------------------
+log "Creating Kitty symlinks"
 ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
 ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true

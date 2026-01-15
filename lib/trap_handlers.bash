@@ -27,7 +27,6 @@ function on_exit() {
 
     if declare -F cleanup >/dev/null; then
         cleanup
-        unset -f cleanup
     fi
 }
 

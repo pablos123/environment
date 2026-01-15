@@ -6,13 +6,6 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    : # No variables to clean
-}
-
-# --------------------------------------------------
 # Google Chrome repository
 # --------------------------------------------------
 if [[ ! -f "/usr/share/keyrings/google-chrome.gpg" ]]; then
@@ -34,6 +27,7 @@ fi
 # --------------------------------------------------
 sudo apt update >/dev/null
 
+log "Installing Google Chrome"
 sudo apt install --yes \
     google-chrome-stable \
     xdg-utils \
@@ -47,5 +41,6 @@ sudo apt install --yes \
 # Default browser
 # --------------------------------------------------
 if command -v xdg-settings >/dev/null; then
+    log "Setting default browser"
     xdg-settings set default-web-browser 'google-chrome.desktop' || true
 fi

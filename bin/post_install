@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+
 # --------------------------------------------------
 # Configuration (constants only)
 # --------------------------------------------------
@@ -29,8 +30,7 @@ function die() {
 # Cleanup
 # --------------------------------------------------
 function cleanup() {
-    unset TARGET_USER MOUNT_BASE SETUP_URL ORIGINAL_PWD
-    unset -f log warn die on_error on_exit require_root cleanup
+    :
 }
 
 # --------------------------------------------------

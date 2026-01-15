@@ -9,13 +9,6 @@ GIT_PROMPT_URL="https://raw.githubusercontent.com/git/git/master/contrib/complet
 GIT_PROMPT_PATH="${HOME}/.git-prompt.sh"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset GIT_PROMPT_URL GIT_PROMPT_PATH
-}
-
-# --------------------------------------------------
 # Install git-prompt.sh
 # --------------------------------------------------
 log "Installing git-prompt.sh"

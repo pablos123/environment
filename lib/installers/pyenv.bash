@@ -6,15 +6,9 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    : # No variables to clean
-}
-
-# --------------------------------------------------
 # Remove existing pyenv installation
 # --------------------------------------------------
+log "Removing existing pyenv installation"
 rm --recursive --force "${HOME}/.pyenv" || true
 
 # --------------------------------------------------

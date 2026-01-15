@@ -23,15 +23,9 @@ DEPENDENCIES=(
 )
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset DUNST_REPO_URL DUNST_DIR DEPENDENCIES
-}
-
-# --------------------------------------------------
 # Dependencies
 # --------------------------------------------------
+log "Installing dunst dependencies"
 sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
 # --------------------------------------------------

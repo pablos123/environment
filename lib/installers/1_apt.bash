@@ -105,13 +105,6 @@ APT_PACKAGES=(
 )
 
 # --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-    unset APT_PACKAGES
-}
-
-# --------------------------------------------------
 # System update
 # --------------------------------------------------
 log "Updating system packages"
@@ -121,12 +114,14 @@ sudo apt full-upgrade --yes >/dev/null
 # --------------------------------------------------
 # Package installation
 # --------------------------------------------------
+log "Installing APT packages"
 sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
 
 # --------------------------------------------------
 # fd compatibility symlink (Debian)
 # --------------------------------------------------
 if command -v fdfind &>/dev/null; then
+    log "Creating fd compatibility symlink"
     mkdir --parents "${HOME}/.local/bin"
     ln --symbolic --force "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 fi
