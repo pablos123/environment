@@ -6,7 +6,7 @@ function kernel_versions() {
     kernel_org_url='https://www.kernel.org'
     tmp_file='/tmp/kernel_org_releases.tmp.json'
 
-    curl --silent --output "${tmp_file}" "${kernel_org_url}/releases.json"
+    curl --no-progress-meter --output "${tmp_file}" "${kernel_org_url}/releases.json"
 
     echo -e "\n\e[1;32mLatest Stable:\e[0m\e[1;33m" "$(jq -rM .latest_stable.version "${tmp_file}")\e[0m\n"
 

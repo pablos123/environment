@@ -35,7 +35,7 @@ alias rm='rm --interactive'
 alias genc='git add . && git commit -m "genc"'
 
 alias bigdirs='(sudo du --human-readable / | sort --reverse --human-numeric-sort | head --lines=15) 2>/dev/null'
-alias myip='printf "External: " && curl --silent ifconfig.me && echo && printf "Local: " && hostname -I'
+alias myip='printf "External: " && curl --no-progress-meter ifconfig.me && echo && printf "Local: " && hostname -I'
 alias sources='grep --color=always -v -E "^#|^ *$" /etc/apt/sources.list /etc/apt/sources.list.d/*'
 alias weather='curl wttr.in/rosario'
 alias calendar_fact='calendar | head --lines=1 | cowsay -f duck | lolcat'

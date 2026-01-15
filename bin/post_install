@@ -135,5 +135,5 @@ echo "Apt::Cmd::Disable-Script-Warning true;" | sudo tee /etc/apt/apt.conf.d/90d
 # --------------------------------------------------
 log "Post-install setup complete"
 warn "Exit the root session and enter as ${TARGET_USER}, then run:"
-warn "bash <(curl --fail --silent --show-error --location ${SETUP_URL})"
+warn "bash <(curl --fail --no-progress-meter --location ${SETUP_URL})"
 

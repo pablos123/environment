@@ -21,4 +21,4 @@ rm --recursive --force "${HOME}/.pyenv" || true
 # Install pyenv
 # --------------------------------------------------
 log "Installing pyenv"
-curl --fail --silent --location https://pyenv.run | bash &>/dev/null
+curl --fail --no-progress-meter --location https://pyenv.run | bash &>/dev/null

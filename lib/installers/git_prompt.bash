@@ -20,6 +20,6 @@ function cleanup() {
 # --------------------------------------------------
 log "Installing git-prompt.sh"
 
-curl --fail --silent --show-error --location \
+curl --fail --no-progress-meter --location \
     "${GIT_PROMPT_URL}" \
     --output "${GIT_PROMPT_PATH}"

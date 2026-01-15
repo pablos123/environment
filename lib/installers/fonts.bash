@@ -39,7 +39,7 @@ for font in "${FONTS[@]}"; do
     rm --recursive --force "${FONT_DIR}"
     mkdir --parents "${FONT_DIR}"
 
-    curl --fail --silent --show-error --location \
+    curl --fail --no-progress-meter --location \
         "${NERD_FONTS_BASE_URL}/${font}.tar.xz" \
         --output "${ARCHIVE_PATH}"
 

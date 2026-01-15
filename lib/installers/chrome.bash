@@ -17,7 +17,7 @@ function cleanup() {
 # --------------------------------------------------
 if [[ ! -f "/usr/share/keyrings/google-chrome.gpg" ]]; then
     log "Setting up Google Chrome repository"
-    curl --fail --silent --show-error --location \
+    curl --fail --no-progress-meter --location \
         'https://dl-ssl.google.com/linux/linux_signing_key.pub' \
     | sudo gpg --yes --dearmor \
         --output /usr/share/keyrings/google-chrome.gpg

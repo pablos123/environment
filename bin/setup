@@ -73,6 +73,7 @@ if (( ${#installers[@]} > 0 )); then
     log "Running installers"
     for installer in "${installers[@]}"; do
         log "Executing installer: $(basename "${installer}")"
+        log "..."
         "${installer}" >/dev/null
     done
 fi

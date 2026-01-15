@@ -28,7 +28,7 @@ fi
 # --------------------------------------------------
 # Get latest version from GitHub
 # --------------------------------------------------
-LATEST_VERSION=$(curl --fail --silent --show-error --location https://github.com/obsidianmd/obsidian-releases/releases/ | grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' | head --lines=1 | sed 's/v//' || true)
+LATEST_VERSION=$(curl --fail --no-progress-meter --location https://github.com/obsidianmd/obsidian-releases/releases/ | grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' | head --lines=1 | sed 's/v//' || true)
 
 # --------------------------------------------------
 # Download and install if newer version available
@@ -38,7 +38,7 @@ if [[ -n "${LATEST_VERSION}" && "${LATEST_VERSION}" != "${CURRENT_VERSION}" ]]; 
     CURRENT_VERSION_PATH="${OBSIDIAN_PATH}/obsidian_v${CURRENT_VERSION}"
     LATEST_VERSION_PATH="${OBSIDIAN_PATH}/obsidian_v${LATEST_VERSION}"
 
-    curl --silent --output "${LATEST_VERSION_PATH}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${LATEST_VERSION}/Obsidian-${LATEST_VERSION}.AppImage" || true
+    curl --no-progress-meter --output "${LATEST_VERSION_PATH}" "https://github.com/obsidianmd/obsidian-releases/releases/download/v${LATEST_VERSION}/Obsidian-${LATEST_VERSION}.AppImage" || true
 
     if [[ -s "${LATEST_VERSION_PATH}" ]]; then
         chmod +x "${LATEST_VERSION_PATH}" || true
