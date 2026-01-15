@@ -6,6 +6,13 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
 # --------------------------------------------------
+# Cleanup
+# --------------------------------------------------
+function cleanup() {
+    : # No variables to clean
+}
+
+# --------------------------------------------------
 # Google Chrome repository
 # --------------------------------------------------
 if [[ ! -f "/usr/share/keyrings/google-chrome.gpg" ]]; then

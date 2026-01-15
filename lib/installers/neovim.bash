@@ -4,6 +4,7 @@ set -Eeuo pipefail
 # Source shared utilities
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
+source "${HOME}/environment/lib/git_helpers.bash"
 
 NEOVIM_REPO_URL="https://github.com/neovim/neovim"
 NEOVIM_PATH="${HOME}/.base_repos/neovim"
@@ -36,32 +37,20 @@ function cleanup() {
 sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
 # --------------------------------------------------
-# Repository
+# Clone or update repository
 # --------------------------------------------------
-if [[ ! -d "${NEOVIM_PATH}" ]]; then
-    log "Cloning Neovim repository"
-    git clone --depth 1 "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" >/dev/null
-fi
+clone_or_update_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}"
+
+# --------------------------------------------------
+# Clean build artifacts
+# --------------------------------------------------
+cd "${NEOVIM_PATH}" || exit 1
+sudo rm --recursive --force .deps build 2>/dev/null || true
 
 # --------------------------------------------------
 # Build & install
 # --------------------------------------------------
-cd "${NEOVIM_PATH}" || exit 1
-
-log "Building Neovim from source"
-{
-
-    sudo make clean || true
-    sudo rm --recursive --force .deps build || true
-
-    git add . >/dev/null || true
-    git reset --hard
-    git pull --ff-only
-
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
-    sudo make clean
-} >/dev/null
+make_build_install "${NEOVIM_PATH}" "CMAKE_BUILD_TYPE=RelWithDebInfo"
 
 # --------------------------------------------------
 # Verify installation

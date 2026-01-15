@@ -17,7 +17,7 @@ APT_PACKAGES=(
     bluetooth
     bluez
     bluez-firmware
-    firmware-iwlwifi
+    # firmware-iwlwifi
     blueman
     x11-xserver-utils
     xdg-utils

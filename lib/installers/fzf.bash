@@ -4,6 +4,7 @@ set -Eeuo pipefail
 # Source shared utilities
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
+source "${HOME}/environment/lib/git_helpers.bash"
 
 FZF_REPO_URL="https://github.com/junegunn/fzf.git"
 FZF_DIR="${HOME}/.base_repos/fzf"
@@ -16,22 +17,14 @@ function cleanup() {
 }
 
 # --------------------------------------------------
-# Repository
+# Clone or update repository
 # --------------------------------------------------
-if [[ ! -d "${FZF_DIR}" ]]; then
-    log "Cloning fzf repository"
-    git clone --depth 1 "${FZF_REPO_URL}" "${FZF_DIR}" >/dev/null
-fi
+clone_or_update_repo "${FZF_REPO_URL}" "${FZF_DIR}"
 
 # --------------------------------------------------
-# Update & install
+# Install fzf
 # --------------------------------------------------
 cd "${FZF_DIR}" || exit 1
 
-{
-
-    git reset --hard
-    git pull --ff-only
-
-    ./install --all
-} >/dev/null
+log "Installing fzf"
+./install --all >/dev/null

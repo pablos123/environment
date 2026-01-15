@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
+
 # Trap handlers for error handling and cleanup
 
-# Source print functions for die()
 source "${HOME}/environment/lib/print_functions.bash"
 
-# Capture original working directory for cleanup
+# Capture original working directory for exit
 ORIGINAL_PWD="$(pwd)"
 
 function on_error() {
