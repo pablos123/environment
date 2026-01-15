@@ -10,7 +10,7 @@ source "${HOME}/environment/lib/trap_handlers.bash"
 # --------------------------------------------------
 ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
 ENVIRONMENT_DIR="${HOME}/environment"
-INSTALLER_DIR="${ENVIRONMENT_DIR}/lib/INSTALLERS"
+INSTALLERS_DIR="${ENVIRONMENT_DIR}/lib/installers"
 RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload_environment"
 
 NEEDED_DIRECTORIES=(
@@ -27,7 +27,7 @@ NEEDED_DIRECTORIES=(
 # Cleanup (only relevant when sourced)
 # --------------------------------------------------
 function cleanup() {
-    unset INSTALLER INSTALLERS ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLER_DIR RELOAD_SCRIPT NEEDED_DIRECTORIES
+    unset INSTALLER INSTALLERS ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLERS_DIR RELOAD_SCRIPT NEEDED_DIRECTORIES
 }
 
 # --------------------------------------------------
@@ -60,19 +60,19 @@ sudo -v
 # --------------------------------------------------
 # Run installers (.bash, idempotent, quiet)
 # --------------------------------------------------
-if [[ ! -d "${INSTALLER_DIR}" ]]; then
-    die "INSTALLER directory not found: ${INSTALLER_DIR}"
+if [[ ! -d "${INSTALLERS_DIR}" ]]; then
+    die "Installers directory not found: ${INSTALLERS_DIR}"
 fi
 
 shopt -s nullglob
-INSTALLERS=( "${INSTALLER_DIR}"/*.bash )
+INSTALLERS=( "${INSTALLERS_DIR}"/*.bash )
 shopt -u nullglob
 
 if (( ${#INSTALLERS[@]} > 0 )); then
-    log "Running INSTALLERS"
+    log "Running installers"
     for INSTALLER in "${INSTALLERS[@]}"; do
         log
-        log "=== Executing INSTALLER: $(basename "${INSTALLER}") ==="
+        log "=== Executing: $(basename "${INSTALLER}") ==="
         "${INSTALLER}" >/dev/null
     done
 fi
