@@ -2,8 +2,7 @@
 set -Eeuo pipefail
 
 # Source shared utilities
-source "${HOME}/environment/lib/print_functions.bash"
-source "${HOME}/environment/lib/trap_handlers.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 # --------------------------------------------------
 # Configuration (constants only)
@@ -46,10 +45,8 @@ cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 # --------------------------------------------------
 # Restow dotfiles
 # --------------------------------------------------
-(
-    cd "${DOTFILES_DIR}" || exit 1
-    stow --target="${HOME}" --restow -- */
-) >/dev/null
+cd "${DOTFILES_DIR}" || exit 1
+stow --target="${HOME}" --restow -- */
 
 # --------------------------------------------------
 # Cleanup caches
@@ -62,18 +59,12 @@ rm --force "${CACHE_FILES[@]}"
 {
     fc-cache --really-force
 
-    killall dunst || true
-    while pgrep --uid "${UID}" --exact dunst; do sleep 0.3; done
-
-    killall flameshot || true
-    while pgrep --uid "${UID}" --exact flameshot; do sleep 0.3; done
-
-    killall picom || true
-    while pgrep --uid "${UID}" --exact picom; do sleep 0.3; done
+    kill_and_wait dunst
+    kill_and_wait flameshot
+    kill_and_wait picom
     picom --daemon &
 
-    polybar-msg cmd quit
-    while pgrep --uid "${UID}" --exact polybar; do sleep 0.3; done
+    quit_and_wait "polybar-msg cmd quit" polybar
 
     i3-msg restart
 } >/dev/null || true

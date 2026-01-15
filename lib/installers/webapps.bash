@@ -2,8 +2,7 @@
 set -Eeuo pipefail
 
 # Source shared utilities
-source "${HOME}/environment/lib/print_functions.bash"
-source "${HOME}/environment/lib/trap_handlers.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 declare -rA WEB_APPS=(
     ["whatsapp"]="https://web.whatsapp.com/"

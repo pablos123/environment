@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 
 # Source shared utilities
-source "${HOME}/environment/lib/print_functions.bash"
-source "${HOME}/environment/lib/trap_handlers.bash"
-source "${HOME}/environment/lib/git_helpers.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 readonly FZF_REPO_URL="https://github.com/junegunn/fzf.git"
 readonly FZF_DIR="${HOME}/.base_repos/fzf"

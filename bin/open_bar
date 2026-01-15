@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-function open_bar() {
-    polybar-msg cmd quit
-    while pgrep -u "${UID}" -x polybar >/dev/null; do sleep 0.3; done
+source "${HOME}/environment/lib/helpers.bash"
 
-    polybar left &
-    polybar center &
-    exec polybar right
-}
+quit_and_wait "polybar-msg cmd quit" polybar
 
-open_bar
+polybar left &
+polybar center &
+exec polybar right

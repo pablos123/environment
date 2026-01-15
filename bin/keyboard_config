@@ -20,7 +20,9 @@ function configure_keyboard() {
     xset s "${SCREENSAVER_TIMEOUT}"
     xset dpms 0 0 "${DPMS_OFF_TIMEOUT}"
 
-    # I bought a keyboard with mac's layout (Estaba 60 lucas menos, olvidate)
+    # TODO: Start using keyd
+    #
+    # I bought a keyboard with mac's layout
     # Swap cmd and opt if the keyboard is connected.
     # Give cmd altgr behaviour and opt ctrl.
     # The -option "" at the beginning is for not stacking up the same options

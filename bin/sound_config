@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-source "${HOME}/environment/lib/print_functions.bash"
-source "${HOME}/environment/lib/applet_position.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 # --------------------------------------------------
 # Sound configuration applet (pavucontrol)
