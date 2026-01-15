@@ -5,8 +5,6 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-# Create web apps executables.
-
 declare -rA WEB_APPS=(
     ["whatsapp"]="https://web.whatsapp.com/"
     ["discord"]="https://discord.com/channels/@me"

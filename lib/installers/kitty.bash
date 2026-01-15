@@ -5,7 +5,7 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-KITTY_APP="${HOME}/.local/kitty.app"
+readonly KITTY_APP="${HOME}/.local/kitty.app"
 
 # --------------------------------------------------
 # Install Kitty terminal

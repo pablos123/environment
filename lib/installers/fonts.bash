@@ -5,7 +5,7 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-FONTS=(
+declare -ra FONTS=(
     SourceCodePro
     JetBrainsMono
     Lilex
@@ -13,8 +13,8 @@ FONTS=(
     ZedMono
 )
 
-FONTS_DIR="${HOME}/.local/share/fonts"
-NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+readonly FONTS_DIR="${HOME}/.local/share/fonts"
+readonly NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 
 # --------------------------------------------------
 # Prepare directory

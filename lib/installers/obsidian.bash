@@ -5,9 +5,8 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-OBSIDIAN_PATH="${HOME}/bin"
+readonly OBSIDIAN_PATH="${HOME}/bin"
 CURRENT_VERSION=""
-LATEST_VERSION=""
 
 # --------------------------------------------------
 # Get current installed version

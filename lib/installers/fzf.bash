@@ -6,8 +6,8 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 source "${HOME}/environment/lib/git_helpers.bash"
 
-FZF_REPO_URL="https://github.com/junegunn/fzf.git"
-FZF_DIR="${HOME}/.base_repos/fzf"
+readonly FZF_REPO_URL="https://github.com/junegunn/fzf.git"
+readonly FZF_DIR="${HOME}/.base_repos/fzf"
 
 # --------------------------------------------------
 # Clone or update repository

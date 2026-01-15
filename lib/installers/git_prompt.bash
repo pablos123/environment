@@ -5,8 +5,8 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-GIT_PROMPT_URL="https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-GIT_PROMPT_PATH="${HOME}/.git-prompt.sh"
+readonly GIT_PROMPT_URL="https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
+readonly GIT_PROMPT_PATH="${HOME}/.git-prompt.sh"
 
 # --------------------------------------------------
 # Install git-prompt.sh

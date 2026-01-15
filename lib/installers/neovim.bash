@@ -6,10 +6,10 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 source "${HOME}/environment/lib/git_helpers.bash"
 
-NEOVIM_REPO_URL="https://github.com/neovim/neovim"
-NEOVIM_PATH="${HOME}/.base_repos/neovim"
+readonly NEOVIM_REPO_URL="https://github.com/neovim/neovim"
+readonly NEOVIM_PATH="${HOME}/.base_repos/neovim"
 
-DEPENDENCIES=(
+declare -ra DEPENDENCIES=(
     ninja-build
     gettext
     libtool

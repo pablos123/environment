@@ -5,7 +5,7 @@ set -Eeuo pipefail
 source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 
-APT_PACKAGES=(
+declare -ra APT_PACKAGES=(
     xorg
     build-essential
     pipewire-audio

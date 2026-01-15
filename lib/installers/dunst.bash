@@ -6,10 +6,10 @@ source "${HOME}/environment/lib/print_functions.bash"
 source "${HOME}/environment/lib/trap_handlers.bash"
 source "${HOME}/environment/lib/git_helpers.bash"
 
-DUNST_REPO_URL="https://github.com/dunst-project/dunst.git"
-DUNST_DIR="${HOME}/.base_repos/dunst"
+readonly DUNST_REPO_URL="https://github.com/dunst-project/dunst.git"
+readonly DUNST_DIR="${HOME}/.base_repos/dunst"
 
-DEPENDENCIES=(
+declare -ra DEPENDENCIES=(
     libdbus-1-dev
     libx11-dev
     libxinerama-dev
