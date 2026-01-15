@@ -86,7 +86,8 @@ export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 # PS1
-source "${HOME}/environment/lib/shared/git_prompt.sh"
+[[ -f "${HOME}/.git-prompt.sh" ]] &&
+    source "${HOME}/.git-prompt.sh"
 
 export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWDIRTYSTATE=true
