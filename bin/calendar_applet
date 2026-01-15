@@ -1,33 +1,30 @@
 #!/usr/bin/env bash
-# I'm using a lot the 'cal' command to check for a next X day date, then writing the date one character at the time.
-# Use yad to open a calendar applet.
-# The applets are always in the primary monitor and I control this with i3.
+set -Eeuo pipefail
 
-function calendar_applet() {
-    local previous_calendar selected_date position x_size y_size
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/applet_position.bash"
 
-    previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar")
+# --------------------------------------------------
+# Calendar applet
+# Opens a calendar popup positioned in the corner
+# --------------------------------------------------
 
+readonly CALENDAR_WIDTH=304
+readonly CALENDAR_HEIGHT=208
 
-    if [[ -n "${previous_calendar}" ]]; then
-        xdotool windowclose "${previous_calendar}"
-        exit 0
-    fi
+command -v yad >/dev/null || die "yad not found"
+command -v xdotool >/dev/null || die "xdotool not found"
 
-    source "${HOME}/environment/lib/applet_position.bash"
+previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar" || true)
 
-    x_size=304
-    y_size=208
+if [[ -n "${previous_calendar}" ]]; then
+    xdotool windowclose "${previous_calendar}"
+    exit 0
+fi
 
+mapfile -t position < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}" | tr ' ' '\n')
 
-    mapfile -t position < <(calculate_applet_position "${x_size}" "${y_size}" | tr ' ' '\n')
+selected_date=$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null || true)
 
-
-    selected_date=$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${x_size}" --height="${y_size}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null)
-
-
-    [[ -n "${selected_date}" ]] &&
-        echo "${selected_date}" | xclip
-}
-
-calendar_applet
+[[ -n "${selected_date}" ]] &&
+    echo "${selected_date}" | xclip

@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
+
+# --------------------------------------------------
+# Keyboard configuration
+# --------------------------------------------------
+
+readonly REPEAT_DELAY=230
+readonly REPEAT_RATE=50
+readonly SCREENSAVER_TIMEOUT=900
+readonly DPMS_OFF_TIMEOUT=3600
+readonly POLL_INTERVAL=10
 
 function configure_keyboard() {
     local options
 
     options=caps:swapescape
 
-    xset r rate 230 50
-    xset s 900
-    xset dpms 0 0 3600
+    xset r rate "${REPEAT_DELAY}" "${REPEAT_RATE}"
+    xset s "${SCREENSAVER_TIMEOUT}"
+    xset dpms 0 0 "${DPMS_OFF_TIMEOUT}"
 
     # I bought a keyboard with mac's layout (Estaba 60 lucas menos, olvidate)
     # Swap cmd and opt if the keyboard is connected.
@@ -22,9 +33,13 @@ function configure_keyboard() {
 
 configure_keyboard
 
-if [[ "${1}" == "-d" ]]; then
+# --------------------------------------------------
+# Daemon mode
+# --------------------------------------------------
+
+if [[ "${1:-}" == "-d" ]]; then
     while true; do
-        sleep 10
+        sleep "${POLL_INTERVAL}"
         configure_keyboard
     done
 fi

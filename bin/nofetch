@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
+
+# --------------------------------------------------
+# System information display (like neofetch)
+# --------------------------------------------------
 
 function user_info() {
     echo "User: $(id | awk '{print $1" "$2}')"
@@ -25,10 +30,12 @@ function mem_info() {
 }
 
 function wmctrl_info() {
-    wmctrl -m | awk '/^Name/ {print "WM "$1" "$2}'
+    wmctrl -m 2>/dev/null | awk '/^Name/ {print "WM Name: "$2}' || true
 }
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------
+# Main
+# --------------------------------------------------
 
 function get_info() {
     local funcs f

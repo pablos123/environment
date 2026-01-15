@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function open_terminal() {
-    local total_memory
+# --------------------------------------------------
+# Open terminal based on available memory
+# Uses kitty if sufficient RAM, otherwise fallback to st
+# --------------------------------------------------
 
-    total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+readonly MEMORY_THRESHOLD_KB=10000000
 
-    if (( total_memory > 10000000 )); then
-        exec kitty
-    else
-        exec /usr/local/bin/st
-    fi
-}
+total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
 
-open_terminal
+if (( total_memory > MEMORY_THRESHOLD_KB )); then
+    exec kitty
+else
+    exec /usr/local/bin/st
+fi

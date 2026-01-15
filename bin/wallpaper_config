@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-theme=$2
+# --------------------------------------------------
+# Wallpaper configuration
+# Sets random wallpaper from theme directory
+# --------------------------------------------------
+
+readonly WALLPAPER_INTERVAL=600
+readonly THEME="${2:-}"
 
 function set_wallpaper() {
     local wallpapers_array items_count random_index wallpaper wallpapers_dir
 
-    wallpapers_dir="${HOME}/images/wallpapers/${theme}/"
+    wallpapers_dir="${HOME}/images/wallpapers/${THEME}/"
     [[ ! -d "${wallpapers_dir}" ]] &&
         wallpapers_dir="${HOME}/images/wallpapers/"
 
@@ -23,9 +30,13 @@ function set_wallpaper() {
 
 set_wallpaper
 
-if [[ "${1}" == "-d" ]]; then
+# --------------------------------------------------
+# Daemon mode
+# --------------------------------------------------
+
+if [[ "${1:-}" == "-d" ]]; then
     while true; do
-        sleep 600
+        sleep "${WALLPAPER_INTERVAL}"
         set_wallpaper
     done
 fi

@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function dim_screen() {
-    if [[ "$1" == "night" ]]; then
-        redshift -O 4000 -b 0.6 &>/dev/null
-    else
-        redshift -x &>/dev/null
-    fi
+source "${HOME}/environment/lib/print_functions.bash"
 
-    notify-send "Brightness adjusted!"
-}
+# --------------------------------------------------
+# Screen dimming with redshift
+# --------------------------------------------------
 
-dim_screen "$@"
+readonly DIM_COLOR_TEMP=4000
+readonly DIM_BRIGHTNESS=0.6
+
+command -v redshift >/dev/null || die "redshift not found"
+
+if [[ "${1:-}" == "night" ]]; then
+    redshift -O "${DIM_COLOR_TEMP}" -b "${DIM_BRIGHTNESS}" &>/dev/null
+else
+    redshift -x &>/dev/null
+fi
+
+notify-send "Brightness adjusted!"

@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function open_browser() {
-    local total_memory
+# --------------------------------------------------
+# Open browser if sufficient memory available
+# --------------------------------------------------
 
-    total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+readonly MEMORY_THRESHOLD_KB=10000000
 
-    (( total_memory > 10000000 )) &&
-        exec chrome
-}
+total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
 
-open_browser
+if (( total_memory > MEMORY_THRESHOLD_KB )); then
+    exec chrome
+fi

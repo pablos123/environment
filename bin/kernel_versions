@@ -1,19 +1,29 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function kernel_versions() {
-    local kernel_org_url tmp_file columns
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
 
-    kernel_org_url='https://www.kernel.org'
-    tmp_file='/tmp/kernel_org_releases.tmp.json'
+# --------------------------------------------------
+# Display kernel.org latest releases
+# --------------------------------------------------
 
-    curl --no-progress-meter --output "${tmp_file}" "${kernel_org_url}/releases.json"
+readonly KERNEL_ORG_URL='https://www.kernel.org'
+TMP_FILE="$(mktemp --suffix=.json)"
+readonly TMP_FILE
 
-    echo -e "\n\e[1;32mLatest Stable:\e[0m\e[1;33m" "$(jq -rM .latest_stable.version "${tmp_file}")\e[0m\n"
-
-    columns=$(jq -rM '.releases | map(.moniker + "  " + .version  + "  " + .released.isodate) | .[]' "${tmp_file}")
-
-    echo -e "\e[4;35mMoniker\e[0m  \e[4;35mVersion\e[0m  \e[4;35mDate\e[0m\n${columns}" | column --table
-    echo -e "\n${kernel_org_url}\n"
+cleanup() {
+    rm -f "${TMP_FILE}"
 }
 
-kernel_versions
+command -v curl >/dev/null || die "curl not found"
+command -v jq >/dev/null || die "jq not found"
+
+curl --no-progress-meter --output "${TMP_FILE}" "${KERNEL_ORG_URL}/releases.json"
+
+echo -e "\n\e[1;32mLatest Stable:\e[0m\e[1;33m" "$(jq -rM .latest_stable.version "${TMP_FILE}")\e[0m\n"
+
+columns=$(jq -rM '.releases | map(.moniker + "  " + .version  + "  " + .released.isodate) | .[]' "${TMP_FILE}")
+
+echo -e "\e[4;35mMoniker\e[0m  \e[4;35mVersion\e[0m  \e[4;35mDate\e[0m\n${columns}" | column --table
+echo -e "\n${KERNEL_ORG_URL}\n"

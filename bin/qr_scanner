@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
-# Scan qr showed on the screen and copy the content to the clipboard (works for multiple qrs)
+set -Eeuo pipefail
 
-function qr_scanner() {
-    local tmp_file qr_content
-    tmp_file="/tmp/qr_scanner.tmp.png"
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
 
-    flameshot gui -p "${tmp_file}" &>/dev/null
-    qr_content="$(zbarimg --raw --quiet "${tmp_file}")"
+# --------------------------------------------------
+# QR scanner - screenshot and decode to clipboard
+# --------------------------------------------------
 
-    echo "${qr_content}" | xclip
-    [[ -n "${qr_content}" ]] &&
-        notify-send "${qr_content}"
+TMP_FILE="$(mktemp --suffix=.png)"
+readonly TMP_FILE
 
-    rm -f "${tmp_file}"
+cleanup() {
+    rm -f "${TMP_FILE}"
 }
 
-qr_scanner
+command -v flameshot >/dev/null || die "flameshot not found"
+command -v zbarimg >/dev/null || die "zbarimg not found"
+
+flameshot gui -p "${TMP_FILE}" &>/dev/null || exit 0
+
+qr_content="$(zbarimg --raw --quiet "${TMP_FILE}" || true)"
+
+echo "${qr_content}" | xclip
+[[ -n "${qr_content}" ]] &&
+    notify-send "${qr_content}"

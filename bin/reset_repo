@@ -1,34 +1,28 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function reset_repo() {
-    local branch message
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
 
-    branch=$1
-    message=$2
+# --------------------------------------------------
+# Reset repository to a single commit
+# --------------------------------------------------
 
-    if [[ -z "${branch}" ]] || { [[ ! "${branch}" == "main" ]] &&
-        [[ ! "${branch}" == "master" ]]; }; then
-        echo "Usage: reset_repo 'main/master' ['<commit_message>']"
-        exit 1
-    fi
+readonly BRANCH="${1:-}"
+readonly MESSAGE="${2:-reset commit}"
 
-    [[ -z "${message}" ]] &&
-        message="reset commit"
+if [[ -z "${BRANCH}" ]] || { [[ "${BRANCH}" != "main" ]] && [[ "${BRANCH}" != "master" ]]; }; then
+    die "Usage: reset_repo 'main/master' ['<commit_message>']"
+fi
 
-        # Checkout to an orphan branch
-        git checkout --orphan latest_branch
-        # Add all the files
-        git add -A
-        # Commit the changes
-        git commit -m "${message}"
-        # Delete the master/main branch
-        git branch -D "${branch}"
-        # Rename the current branch to master/main
-        git branch -m "${branch}"
-        # Force update your repository
-        git push -f origin "${branch}"
-        # Set the upstream for next pulls etc
-        git branch --set-upstream-to=origin/"${branch}"
-}
+log "Resetting repository to single commit on ${BRANCH}"
 
-reset_repo "$@"
+git checkout --orphan latest_branch
+git add -A
+git commit -m "${MESSAGE}"
+git branch -D "${BRANCH}"
+git branch -m "${BRANCH}"
+git push -f origin "${BRANCH}"
+git branch --set-upstream-to=origin/"${BRANCH}"
+
+log "Repository reset complete"

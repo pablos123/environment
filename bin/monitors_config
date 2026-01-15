@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function get_curent_workspace() {
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
+
+# --------------------------------------------------
+# Constants
+# --------------------------------------------------
+
+readonly TMP_CONNECTED_FILE='/tmp/monitors_connected'
+readonly POLL_INTERVAL=10
+
+# --------------------------------------------------
+# Dependency checks
+# --------------------------------------------------
+
+command -v jq >/dev/null || die "jq not found"
+command -v xrandr >/dev/null || die "xrandr not found"
+command -v i3-msg >/dev/null || die "i3-msg not found"
+
+# --------------------------------------------------
+# Functions
+# --------------------------------------------------
+
+function get_current_workspace() {
     local w oifs name_focused
 
     oifs="${IFS}"
@@ -20,7 +43,7 @@ function move_workspaces_to_primary() {
     local w oifs current_workspace
 
     oifs="${IFS}"
-    current_workspace="$(get_curent_workspace)"
+    current_workspace="$(get_current_workspace)"
 
     IFS=$'\n'
     for w in $(i3-msg -t get_workspaces | jq -r .[].name); do
@@ -65,18 +88,23 @@ mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
 configure_monitors
 
-if [[ "${1}" == "-d" ]]; then
-    tmp_connected_file='/tmp/monitors_connected'
-    echo -n "${monitors[*]}" > "${tmp_connected_file}"
+# --------------------------------------------------
+# Daemon mode
+# --------------------------------------------------
+
+if [[ "${1:-}" == "-d" ]]; then
+    cleanup() { rm -f "${TMP_CONNECTED_FILE}"; }
+
+    echo -n "${monitors[*]}" > "${TMP_CONNECTED_FILE}"
 
     while true; do
-        sleep 10
+        sleep "${POLL_INTERVAL}"
 
         mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
-        if [[ "${monitors[*]}" != "$(cat "${tmp_connected_file}")" ]]; then
+        if [[ "${monitors[*]}" != "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
             configure_monitors
-            echo -n "${monitors[*]}" > "${tmp_connected_file}"
+            echo -n "${monitors[*]}" > "${TMP_CONNECTED_FILE}"
         fi
     done
 fi

@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
-# Save an image of your current monitors and blur it then, lock your screen.
+set -Eeuo pipefail
 
-function lock_screen() {
-    local tmp_file tmp_file_blur
+source "${HOME}/environment/lib/print_functions.bash"
+source "${HOME}/environment/lib/trap_handlers.bash"
 
-    tmp_file='/tmp/lock_screen_screenshot.tmp.png'
-    tmp_file_blur='/tmp/lock_screen_screenshot_blur.tmp.png'
+# --------------------------------------------------
+# Lock screen with blurred screenshot
+# --------------------------------------------------
 
-    scrot -o "${tmp_file}"
-    convert -blur 0x20 "${tmp_file}" "${tmp_file_blur}"
+TMP_FILE="$(mktemp --suffix=.png)"
+TMP_FILE_BLUR="$(mktemp --suffix=.png)"
+readonly TMP_FILE TMP_FILE_BLUR
 
-    i3lock --no-unlock-indicator --nofork --ignore-empty-password -i "${tmp_file_blur}"
-
-    rm -f "${tmp_file}" "${tmp_file_blur}"
+cleanup() {
+    rm -f "${TMP_FILE}" "${TMP_FILE_BLUR}"
 }
 
-lock_screen
+command -v scrot >/dev/null || die "scrot not found"
+command -v convert >/dev/null || die "convert (imagemagick) not found"
+command -v i3lock >/dev/null || die "i3lock not found"
+
+scrot -o "${TMP_FILE}"
+convert -blur 0x20 "${TMP_FILE}" "${TMP_FILE_BLUR}"
+
+i3lock --no-unlock-indicator --nofork --ignore-empty-password -i "${TMP_FILE_BLUR}"

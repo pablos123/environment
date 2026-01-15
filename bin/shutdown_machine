@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-function shutdown_machine() {
-    local sudo_password
+source "${HOME}/environment/lib/print_functions.bash"
 
-    sudo_password="$(zenity --password)" || exit 1
+# --------------------------------------------------
+# GUI shutdown with password prompt
+# --------------------------------------------------
 
-    if ! yes "${sudo_password}" | sudo -Sv; then
-        echo "Bad password. Aborting."
-        exit 1
-    fi
+command -v zenity >/dev/null || die "zenity not found"
 
-    sudo shutdown now
-}
+sudo_password="$(zenity --password)" || exit 0
 
-shutdown_machine
+if ! echo "${sudo_password}" | sudo -S -v 2>/dev/null; then
+    die "Bad password. Aborting."
+fi
+
+sudo shutdown now
