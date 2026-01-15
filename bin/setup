@@ -98,6 +98,7 @@ else
     warn "${RELOAD_SCRIPT} script not found or not executable"
 fi
 
+log
 log "Setup completed successfully"
 warn "A reboot is recommended"
 
