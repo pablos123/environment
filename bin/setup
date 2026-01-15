@@ -10,16 +10,24 @@ source "${HOME}/environment/lib/trap_handlers.bash"
 # --------------------------------------------------
 ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
 ENVIRONMENT_DIR="${HOME}/environment"
-INSTALLER_DIR="${ENVIRONMENT_DIR}/lib/installers"
+INSTALLER_DIR="${ENVIRONMENT_DIR}/lib/INSTALLERS"
 RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload_environment"
+
+NEEDED_DIRECTORIES=(
+    "${HOME}/repos"
+    "${HOME}/.base_repos"
+    "${HOME}/bin"
+    "${HOME}/.local/bin"
+    "${HOME}/playground"
+    "${HOME}/images/wallpapers"
+    "${HOME}/images/screenshots"
+)
 
 # --------------------------------------------------
 # Cleanup (only relevant when sourced)
 # --------------------------------------------------
 function cleanup() {
-    unset ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLER_DIR RELOAD_SCRIPT
-    unset installer installers
-    unset -f cleanup
+    unset INSTALLER INSTALLERS ENVIRONMENT_REPO_URL ENVIRONMENT_DIR INSTALLER_DIR RELOAD_SCRIPT NEEDED_DIRECTORIES
 }
 
 # --------------------------------------------------
@@ -44,16 +52,7 @@ fi
 # Directory layout
 # --------------------------------------------------
 log "Ensuring base directory structure"
-
-mkdir --parents \
-    "${HOME}/repos" \
-    "${HOME}/.base_repos" \
-    "${HOME}/bin" \
-    "${HOME}/.local/bin" \
-    "${HOME}/playground" \
-    "${HOME}/images/wallpapers" \
-    "${HOME}/images/screenshots" \
-    >/dev/null
+mkdir --parents -- "${NEEDED_DIRECTORIES[@]}" >/dev/null
 
 log "Asking for sudo password"
 sudo -v
@@ -62,19 +61,19 @@ sudo -v
 # Run installers (.bash, idempotent, quiet)
 # --------------------------------------------------
 if [[ ! -d "${INSTALLER_DIR}" ]]; then
-    die "Installer directory not found: ${INSTALLER_DIR}"
+    die "INSTALLER directory not found: ${INSTALLER_DIR}"
 fi
 
 shopt -s nullglob
-installers=( "${INSTALLER_DIR}"/*.bash )
+INSTALLERS=( "${INSTALLER_DIR}"/*.bash )
 shopt -u nullglob
 
-if (( ${#installers[@]} > 0 )); then
-    log "Running installers"
-    for installer in "${installers[@]}"; do
-        log "Executing installer: $(basename "${installer}")"
-        log "..."
-        "${installer}" >/dev/null
+if (( ${#INSTALLERS[@]} > 0 )); then
+    log "Running INSTALLERS"
+    for INSTALLER in "${INSTALLERS[@]}"; do
+        log
+        log "=== Executing INSTALLER: $(basename "${INSTALLER}") ==="
+        "${INSTALLER}" >/dev/null
     done
 fi
 
