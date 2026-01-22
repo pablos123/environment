@@ -165,8 +165,10 @@ if [[ -n "$( ls -A "${MOUNT_POINT}" )" ]]; then
     die "${MOUNT_POINT} directory not empty"
 fi
 
+log "Mounting usb"
 mount "/dev/${sdxn}" "${MOUNT_POINT}"
 
+log "Reading vault passwords"
 if [[ "${is_work}" == "yes" ]]; then
     keepassxc-cli show -q -a notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Work Priv' <<< "${vault_pass}" > /home/pab/.ssh/id_rsa
     keepassxc-cli show -q -a notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Work Public' <<< "${vault_pass}" > /home/pab/.ssh/id_rsa.pub
@@ -180,6 +182,9 @@ chmod 0644 /home/pab/.ssh/id_rsa.pub
 
 chown pab:pab -R /home/pab/.ssh/
 
+log "Unmounting usb"
+umount "${MOUNT_POINT}"
+
 # --------------------------------------------------
 # Timezone
 # --------------------------------------------------
@@ -190,6 +195,6 @@ timedatectl set-timezone America/Argentina/Buenos_Aires
 # Final instructions
 # --------------------------------------------------
 log "Post-install setup complete"
-warn "Exit the root session and enter as ${TARGET_USER}, then run:"
-warn "bash <(curl -fsSL ${SETUP_URL})"
+warn "Consider removing the usb"
+warn "Exit the root session and enter as ${TARGET_USER} to bootsrap the setup."
 
