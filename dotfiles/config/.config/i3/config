@@ -39,6 +39,7 @@ for_window [instance="(?i)web.telegram.org"] move container to workspace 4, layo
 for_window [instance="(?i)web.skype.com"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)teams.live.com__v2"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)mail.google.com__mail_u_0"] move container to workspace 3, layout tabbed
+for_window [class="(?i)thunderbird-default"] move container to workspace 3, layout tabbed
 
 for_window [class="(?i)dbeaver"] move container to workspace 5
 
