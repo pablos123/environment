@@ -180,6 +180,12 @@ chmod 0644 /home/pab/.ssh/id_rsa.pub
 chown pab:pab -R /home/pab/.ssh/
 
 # --------------------------------------------------
+# Timezone
+# --------------------------------------------------
+log "Configuring correct timezone"
+timedatectl set-timezone America/Argentina/Buenos_Aires
+
+# --------------------------------------------------
 # Final instructions
 # --------------------------------------------------
 log "Post-install setup complete"
