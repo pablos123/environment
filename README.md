@@ -17,6 +17,6 @@ bash <(wget --no-cache --no-cookies -qO- https://raw.githubusercontent.com/pablo
 
 With `pab`:
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup)
+bash <(curl -H "Cache-Control: no-cache" -H "Pragma: no-cache" -fsSL https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup)
 ```
 
