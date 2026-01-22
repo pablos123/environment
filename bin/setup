@@ -22,6 +22,7 @@ function die() {
 # Configuration (constants only)
 # --------------------------------------------------
 ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
+PRIVATE_REPO_URL="git@github.com:pablos123/private.git"
 ENVIRONMENT_DIR="${HOME}/environment"
 INSTALLERS_DIR="${ENVIRONMENT_DIR}/lib/installers"
 RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload_environment"
@@ -60,7 +61,7 @@ source "${ENVIRONMENT_DIR}/lib/helpers.bash"
 # --------------------------------------------------
 # Clone additional repositories
 # --------------------------------------------------
-git_clone_pull_repo "private.git" "${HOME}/repos/private" false
+git_clone_pull_repo "${PRIVATE_REPO_URL}" "${HOME}/repos/private" false
 
 # --------------------------------------------------
 # Directory layout
