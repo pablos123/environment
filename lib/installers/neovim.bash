@@ -31,7 +31,7 @@ sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 # --------------------------------------------------
 # Clone or update repository
 # --------------------------------------------------
-clone_or_update_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}"
+git_clone_pull_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" true
 
 # --------------------------------------------------
 # Clean build artifacts

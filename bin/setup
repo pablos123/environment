@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 # --------------------------------------------------
-# Print functions
+# Bootstrap functions (before helpers.bash is available)
 # --------------------------------------------------
 
 function log() {
@@ -53,6 +53,14 @@ else
     log "Updating environment repository"
     git -C "${ENVIRONMENT_DIR}" pull --ff-only --quiet
 fi
+
+# Source helpers now that environment repo exists
+source "${ENVIRONMENT_DIR}/lib/helpers.bash"
+
+# --------------------------------------------------
+# Clone additional repositories
+# --------------------------------------------------
+git_clone_pull_repo "private" "${HOME}/repos/private" false
 
 # --------------------------------------------------
 # Directory layout

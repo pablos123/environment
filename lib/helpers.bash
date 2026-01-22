@@ -96,19 +96,29 @@ function calculate_applet_position() {
 # --------------------------------------------------
 
 # Clone or update a git repository
-# Usage: clone_or_update_repo <url> <directory>
-function clone_or_update_repo() {
+# Usage: git_clone_pull_repo <url> <directory> [force]
+# - force: "true" for shallow clone + hard reset (external repos)
+#          "false" for full clone + ff-only pull (default, personal repos)
+function git_clone_pull_repo() {
     local repo_url="$1"
     local repo_dir="$2"
+    local force="${3:-false}"
 
     if [[ ! -d "${repo_dir}" ]]; then
-        log "Cloning ${repo_url}"
-        git clone --depth 1 --quiet "${repo_url}" "${repo_dir}"
+        log "Cloning $(basename "${repo_dir}")"
+        if [[ "${force}" == "true" ]]; then
+            git clone --depth 1 --quiet "${repo_url}" "${repo_dir}"
+        else
+            git clone --quiet "${repo_url}" "${repo_dir}"
+        fi
     else
-        log "Updating ${repo_dir}"
-        cd "${repo_dir}" || return 1
-        git fetch --depth 1 --quiet
-        git reset --hard --quiet origin/HEAD
+        log "Updating $(basename "${repo_dir}")"
+        if [[ "${force}" == "true" ]]; then
+            git -C "${repo_dir}" fetch --depth 1 --quiet
+            git -C "${repo_dir}" reset --hard --quiet origin/HEAD
+        else
+            git -C "${repo_dir}" pull --ff-only --quiet
+        fi
     fi
 }
 

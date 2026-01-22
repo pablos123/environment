@@ -29,7 +29,7 @@ sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 # --------------------------------------------------
 # Clone or update repository
 # --------------------------------------------------
-clone_or_update_repo "${DUNST_REPO_URL}" "${DUNST_DIR}"
+git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true
 
 # --------------------------------------------------
 # Build & install

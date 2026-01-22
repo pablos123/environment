@@ -10,7 +10,7 @@ readonly FZF_DIR="${HOME}/.base_repos/fzf"
 # --------------------------------------------------
 # Clone or update repository
 # --------------------------------------------------
-clone_or_update_repo "${FZF_REPO_URL}" "${FZF_DIR}"
+git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true
 
 # --------------------------------------------------
 # Install fzf
