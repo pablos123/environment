@@ -69,7 +69,7 @@ log "Starting Debian headless post-install setup"
 # --------------------------------------------------
 log "Asking for /dev/sdxn"
 
-read -rp "In which device partition is the passwords.kdbx file?: (sdxn) " sdxn
+read -r -p "In which device partition is the passwords.kdbx file?: (sdxn) " sdxn
 
 if [[ -z "${sdxn}" ]]; then
     die "Empty sdxn"
@@ -81,7 +81,7 @@ fi
 
 log "Asking if it is work"
 
-read -rp "Is this setup for work?: (yes/no) " is_work
+read -r -p "Is this setup for work?: (yes/no) " is_work
 
 log "Asking for keepassxc vault password"
 
