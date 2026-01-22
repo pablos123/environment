@@ -67,25 +67,25 @@ log "Starting Debian headless post-install setup"
 # --------------------------------------------------
 # Required inputs
 # --------------------------------------------------
-log "Asking for /dev/sdX"
+log "Asking for /dev/sdxn"
 
-read -rp "Which device file is the passwords usb? (sdX)" sdX
+read -rp "In which device partition is the passwords.kdbx file?: (sdxn) " sdxn
 
-if [[ -z "${sdX}" ]]; then
-    die "Empty sdX"
+if [[ -z "${sdxn}" ]]; then
+    die "Empty sdxn"
 fi
 
-if [[ ! -e "/dev/${sdX}" ]]; then
-    die "/dev/${sdX} does not exist"
+if [[ ! -e "/dev/${sdxn}" ]]; then
+    die "/dev/${sdxn} does not exist"
 fi
 
 log "Asking if it is work"
 
-read -rp "Is this setup for work? (yes/no)" is_work
+read -rp "Is this setup for work?: (yes/no) " is_work
 
 log "Asking for keepassxc vault password"
 
-read -rp "Insert keepassxc vault password" vault_pass
+read -rps "Insert keepassxc vault password: " vault_pass
 
 # --------------------------------------------------
 # APT: Remove cdrom entries
@@ -164,7 +164,7 @@ if [[ -n "$( ls -A "${MOUNT_POINT}" )" ]]; then
     die "${MOUNT_POINT} directory not empty"
 fi
 
-mount "/dev/${sdX}" "${MOUNT_POINT}"
+mount "/dev/${sdxn}" "${MOUNT_POINT}"
 
 if [[ "${is_work}" == "yes" ]]; then
     echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Work Priv' > /home/pab/.ssh/id_rsa
