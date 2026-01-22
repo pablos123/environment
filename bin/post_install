@@ -85,7 +85,7 @@ read -rp "Is this setup for work?: (yes/no) " is_work
 
 log "Asking for keepassxc vault password"
 
-read -rps "Insert keepassxc vault password: " vault_pass
+read -rs -p "Insert keepassxc vault password: " vault_pass
 
 # --------------------------------------------------
 # APT: Remove cdrom entries
