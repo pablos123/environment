@@ -168,11 +168,11 @@ fi
 mount "/dev/${sdxn}" "${MOUNT_POINT}"
 
 if [[ "${is_work}" == "yes" ]]; then
-    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Work Priv' > /home/pab/.ssh/id_rsa
-    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Work Public' > /home/pab/.ssh/id_rsa.pub
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin show --attribute notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Work Priv' > /home/pab/.ssh/id_rsa
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin show --attribute notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Work Public' > /home/pab/.ssh/id_rsa.pub
 else
-    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Main Priv' > /home/pab/.ssh/id_rsa
-    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Main Public' > /home/pab/.ssh/id_rsa.pub
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin show --attribute notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Main Priv' > /home/pab/.ssh/id_rsa
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin show --attribute notes "${MOUNT_POINT}/passwords.kdbx" 'SSH Main Public' > /home/pab/.ssh/id_rsa.pub
 fi
 
 chmod 0600 /home/pab/.ssh/id_rsa
