@@ -129,6 +129,7 @@ apt install --yes \
     ntfs-3g \
     rfkill \
     curl \
+    keepassxc \
     >/dev/null
 
 # --------------------------------------------------
