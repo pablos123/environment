@@ -10,8 +10,13 @@ I use the latest stable release of Debian headless.
 
 After a fresh Debian headless install, run this as `root`:
 
+With `root`:
 ```bash
 bash <(wget --no-cache --no-cookies -qO- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/post_install)
 ```
 
-At the end the installer will tell me how to setup `pab` user.
+With `pab`:
+```bash
+bash <(curl -fsSL -qO- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup)
+```
+
