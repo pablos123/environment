@@ -60,7 +60,7 @@ source "${ENVIRONMENT_DIR}/lib/helpers.bash"
 # --------------------------------------------------
 # Clone additional repositories
 # --------------------------------------------------
-git_clone_pull_repo "private" "${HOME}/repos/private" false
+git_clone_pull_repo "private.git" "${HOME}/repos/private" false
 
 # --------------------------------------------------
 # Directory layout
