@@ -65,6 +65,29 @@ require_root
 log "Starting Debian headless post-install setup"
 
 # --------------------------------------------------
+# Required inputs
+# --------------------------------------------------
+log "Asking for /dev/sdX"
+
+read -rp "Which device file is the passwords usb? (sdX)" sdX
+
+if [[ -z "${sdX}" ]]; then
+    die "Empty sdX"
+fi
+
+if [[ ! -e "/dev/${sdX}" ]]; then
+    die "/dev/${sdX} does not exist"
+fi
+
+log "Asking if it is work"
+
+read -rp "Is this setup for work? (yes/no)" is_work
+
+log "Asking for keepassxc vault password"
+
+read -rp "Insert keepassxc vault password" vault_pass
+
+# --------------------------------------------------
 # APT: Remove cdrom entries
 # --------------------------------------------------
 log "Removing cdrom entries from APT sources"
@@ -136,14 +159,6 @@ echo "Apt::Cmd::Disable-Script-Warning true;" | tee /etc/apt/apt.conf.d/90disabl
 log "Creating /home/pab/.ssh directory "
 mkdir -p /home/pab/.ssh
 
-log "Asking for /dev/sdX"
-
-read -rp "Where is the device file? (sdX)" sdX
-
-if [[ ! -e "/dev/${sdX}" ]]; then
-    die "/dev/${sdX} does not exist"
-fi
-
 MOUNT_POINT="${MOUNT_BASE}/usb1"
 if [[ -n "$( ls -A "${MOUNT_POINT}" )" ]]; then
     die "${MOUNT_POINT} directory not empty"
@@ -151,13 +166,13 @@ fi
 
 mount "/dev/${sdX}" "${MOUNT_POINT}"
 
-log "Asking for keepassxc vault password"
-
-read -rp "keepassxc vault password" vault_pass
-
-echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Priv Key' > /home/pab/.ssh/id_rsa
-echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Public Key' > /home/pab/.ssh/id_rsa.pub
-
+if [[ "${is_work}" == "yes" ]]; then
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Work Priv' > /home/pab/.ssh/id_rsa
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Work Public' > /home/pab/.ssh/id_rsa.pub
+else
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Main Priv' > /home/pab/.ssh/id_rsa
+    echo "${vault_pass}" | keepassxc-cli --pw-stdin "${MOUNT_POINT}/passwords.kdbx" show -a notes 'SSH Main Public' > /home/pab/.ssh/id_rsa.pub
+fi
 
 chmod 0600 /home/pab/.ssh/id_rsa
 chmod 0644 /home/pab/.ssh/id_rsa.pub
