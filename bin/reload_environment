@@ -54,6 +54,13 @@ stow --target="${HOME}" --restow -- */
 rm --force "${CACHE_FILES[@]}"
 
 # --------------------------------------------------
+# Prefer dark theme for some applications like Zenity
+# --------------------------------------------------
+# sudo apt install libglib2.0-bin but it's there for default in Debian and
+# I do not want to hardcode a lib version.
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
+# --------------------------------------------------
 # Reload desktop components
 # --------------------------------------------------
 {
