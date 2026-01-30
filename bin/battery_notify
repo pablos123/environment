@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-source "${HOME}/environment/lib/helpers.bash"
-
 # --------------------------------------------------
 # Battery low notification
 # Notify if a battery is low to prevent unexpected shutdowns.
@@ -28,10 +26,10 @@ function is_battery() {
     mapfile -t data_filtered < <(echo "$1" | awk '/present:|model:|rechargeable:|voltage:/{print $2}' | tr -d %)
 
 
-    [[ -z "${data_filtered[0]}" ]] ||
-    [[ -z "${data_filtered[1]}" ]] ||
-    [[ -z "${data_filtered[2]}" ]] ||
-    [[ -z "${data_filtered[3]}" ]] &&
+    [[ -z "${data_filtered[0]:-}" ]] ||
+    [[ -z "${data_filtered[1]:-}" ]] ||
+    [[ -z "${data_filtered[2]:-}" ]] ||
+    [[ -z "${data_filtered[3]:-}" ]] &&
         return 1
     return 0
 }
