@@ -6,7 +6,6 @@ set -Eeuo pipefail
 # --------------------------------------------------
 TARGET_USER="pab"
 MOUNT_BASE="/media/${TARGET_USER}"
-SETUP_URL="https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup"
 
 ORIGINAL_PWD="$(pwd)"
 
@@ -130,6 +129,7 @@ apt install --yes \
     rfkill \
     curl \
     keepassxc \
+    fwupd \
     >/dev/null
 
 # --------------------------------------------------
@@ -190,6 +190,14 @@ umount "${MOUNT_POINT}"
 # --------------------------------------------------
 log "Configuring correct timezone"
 timedatectl set-timezone America/Argentina/Buenos_Aires
+
+# --------------------------------------------------
+# Timezone
+# --------------------------------------------------
+log "Checking for firmware updates"
+fwupdmgr --force --assume-yes refresh
+fwupdmgr --force --assume-yes get-updates
+fwupdmgr --force --assume-yes update
 
 # --------------------------------------------------
 # Final instructions

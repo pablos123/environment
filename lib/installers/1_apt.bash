@@ -102,6 +102,7 @@ declare -ra APT_PACKAGES=(
     gnome-themes-extra
     papirus-icon-theme
     fonts-noto-color-emoji
+    fwupd
 )
 
 # --------------------------------------------------
