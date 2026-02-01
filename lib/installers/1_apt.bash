@@ -103,6 +103,7 @@ declare -ra APT_PACKAGES=(
     papirus-icon-theme
     fonts-noto-color-emoji
     fwupd
+    sshfs
 )
 
 # --------------------------------------------------
