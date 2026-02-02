@@ -52,7 +52,7 @@ function battery_notify() {
         percentage="${data_filtered[2]}"
         if [[ ${percentage} -lt ${LOW_BATTERY_THRESHOLD} ]]; then
             model="${data_filtered[0]}"
-            notify-send --urgency "critical" --expire-time=600000 "LOW BATTERY" "\n${model}: ${percentage}%"
+            notify-send --urgency "critical" --expire-time=10000 "LOW BATTERY" "\n${model}: ${percentage}%"
         fi
     done
 }
