@@ -68,7 +68,7 @@ function configure_monitors() {
         else
             xrandr --output "eDP-1" --primary --auto
         fi
-    # Desk
+    # Desk (Deprecated) TODO: reconfigure work machine
     elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
             xrandr --output "DisplayPort-2" --primary --auto --right-of "HDMI-A-0"
