@@ -33,7 +33,14 @@ function on_error() {
         cd "${ORIGINAL_PWD}" || true
     fi
 
-    die "Script '${script_name}' failed (exit code ${exit_code})"
+    case "${exit_code}" in
+        "130")
+            die "SIGINT received" ;;
+        "143")
+            die "SIGTERM received" ;;
+        *)
+            die "Script '${script_name}' failed (exit code ${exit_code})" ;;
+    esac
 }
 
 function on_exit() {
