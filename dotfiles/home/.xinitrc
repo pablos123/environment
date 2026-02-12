@@ -3,7 +3,6 @@ export $(dbus-launch)
 xrdb -load ~/.Xresources &
 
 # Other daemons
-# I will try to not use tray icons for a while.
 picom --daemon &
 nm-applet &
 blueman-applet &
