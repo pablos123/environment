@@ -6,4 +6,5 @@ quit_and_wait "polybar-msg cmd quit" polybar
 
 polybar left &
 polybar center &
+polybar tray &
 exec polybar right

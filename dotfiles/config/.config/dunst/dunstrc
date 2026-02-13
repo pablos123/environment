@@ -13,7 +13,7 @@ transparency = 10
 frame_width = 3
 separator_color= frame
 gap_size = 4
-font = Lilex Nerd Font 8
+font = ZedMono Nerd Font 8
 show_age_threshold = 3600
 enable_recursive_icon_lookup = true
 icon_theme = Papirus-Dark
@@ -31,10 +31,10 @@ frame_color = "#8aadf4"
 [urgency_normal]
 background = "#141415"
 foreground = "#c9c7cd"
-frame_color = "#8aadf4"
+frame_color = "#94c9b2"
 
 [urgency_critical]
 background = "#141415"
 foreground = "#c9c7cd"
-frame_color = "#8aadf4"
+frame_color = "#e06c75"
 
