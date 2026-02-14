@@ -9,8 +9,8 @@ readonly ORIGINAL_PWD="$(pwd)"
 
 declare -ra SUCKLESS_TOOLS=(st dmenu dwm)
 declare -ra APT_PACKAGES=(
-    tree 
-    htop 
+    tree
+    htop
     vim
     git
     sudo
@@ -114,6 +114,13 @@ systemctl stop networking.service || true
 
 apt purge --yes ifupdown || true
 
+log "Configuring DNS fallback"
+mkdir -p /etc/NetworkManager/conf.d
+cat > /etc/NetworkManager/conf.d/dns-servers.conf <<'DNSEOF'
+[global-dns-domain-*]
+servers=8.8.8.8,1.1.1.1
+DNSEOF
+
 log "Enabling NetworkManager"
 systemctl enable NetworkManager
 systemctl restart NetworkManager
@@ -160,6 +167,116 @@ for tool in "${SUCKLESS_TOOLS[@]}"; do
     make
     make install
 done
+
+# --------------------------------------------------
+# Docker
+# --------------------------------------------------
+log "Installing Docker"
+
+apt install --yes ca-certificates
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "${VERSION_CODENAME}") stable" \
+  | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt update
+apt install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+log "Adding ${TARGET_USER} to docker group"
+usermod --append --groups docker "${TARGET_USER}"
+
+systemctl enable docker
+
+# --------------------------------------------------
+# Dotfiles: .xinitrc
+# --------------------------------------------------
+log "Writing .xinitrc for ${TARGET_USER}"
+
+TARGET_HOME="$(eval echo "~${TARGET_USER}")"
+
+cat > "${TARGET_HOME}/.xinitrc" <<'XINITRC'
+xrdb -merge ~/.Xresources 2>/dev/null
+hsetroot -solid '#1a1b26' &
+exec dwm
+XINITRC
+
+chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.xinitrc"
+
+# --------------------------------------------------
+# Dotfiles: .bashrc
+# --------------------------------------------------
+log "Writing .bashrc for ${TARGET_USER}"
+
+cat > "${TARGET_HOME}/.bashrc" <<'BASHRC'
+# If not interactive, bail
+[[ $- != *i* ]] && return
+
+# --- History ---
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=10000
+HISTFILESIZE=20000
+HISTTIMEFORMAT="%F %T  "
+
+# --- Shell options ---
+shopt -s histappend
+shopt -s checkwinsize
+shopt -s cdspell
+shopt -s dirspell
+shopt -s autocd
+shopt -s globstar
+shopt -s cmdhist
+shopt -s no_empty_cmd_completion
+
+# --- Colors ---
+RST='\[\e[0m\]'
+BOLD='\[\e[1m\]'
+RED='\[\e[31m\]'
+GREEN='\[\e[32m\]'
+YELLOW='\[\e[33m\]'
+BLUE='\[\e[34m\]'
+CYAN='\[\e[36m\]'
+
+__git_branch() {
+    local branch
+    branch="$(git symbolic-ref --short HEAD 2>/dev/null)" || return
+    printf ' (%s)' "${branch}"
+}
+
+if [[ "${EUID}" -eq 0 ]]; then
+    PS1="${RED}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}# "
+else
+    PS1="${GREEN}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}\$ "
+fi
+
+# --- Aliases ---
+alias ls='ls --color=auto'
+alias ll='ls -lhF'
+alias la='ls -AlhF'
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
+alias ip='ip --color=auto'
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+alias mkdir='mkdir -pv'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# --- Completions ---
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+
+# --- Path ---
+export PATH="${HOME}/.local/bin:${PATH}"
+export EDITOR="vim"
+BASHRC
+
+chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.bashrc"
 
 # --------------------------------------------------
 # Firmware
