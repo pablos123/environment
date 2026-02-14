@@ -327,7 +327,7 @@ cat > /etc/default/keyboard <<'KBEOF'
 XKBMODEL="pc105"
 XKBLAYOUT="eu"
 XKBVARIANT=""
-XKBOPTIONS=""
+XKBOPTIONS="caps:swapescape"
 BACKSPACE="guess"
 KBEOF
 
