@@ -125,6 +125,18 @@ log "Enabling NetworkManager"
 systemctl enable NetworkManager
 systemctl restart NetworkManager
 
+log "Waiting for DNS resolution to come up"
+for i in $(seq 1 30); do
+    if getent hosts google.com > /dev/null 2>&1; then
+        log "DNS is working"
+        break
+    fi
+    if [[ "${i}" -eq 30 ]]; then
+        die "DNS resolution failed after 30 seconds"
+    fi
+    sleep 1
+done
+
 # --------------------------------------------------
 # User configuration
 # --------------------------------------------------
