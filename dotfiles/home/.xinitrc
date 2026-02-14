@@ -9,8 +9,12 @@ blueman-applet &
 solaar -w hide &
 dunst &
 
+# Keyboard settings
+xset r rate 230 50
+xset s 900
+xset dpms 0 0 3600
+
 # My daemons
-keyboard_config -d &
 monitors_config -d &
 battery_notify -d &
 

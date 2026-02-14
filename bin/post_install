@@ -232,6 +232,35 @@ KBEOF
 setupcon --force 2>/dev/null || true
 
 # --------------------------------------------------
+# Key remapping (keyd)
+# --------------------------------------------------
+log "Configuring keyd for key remapping"
+
+mkdir -p /etc/keyd
+
+cat > /etc/keyd/default.conf <<'KDEOF'
+[ids]
+*
+
+[main]
+capslock = escape
+escape = capslock
+KDEOF
+
+cat > /etc/keyd/logitech-bolt.conf <<'KDEOF'
+[ids]
+*Logi Bolt Receiver*
+
+[main]
+leftalt = layer(meta)
+leftmeta = layer(alt)
+rightalt = layer(control)
+rightmeta = layer(altgr)
+KDEOF
+
+systemctl enable keyd
+
+# --------------------------------------------------
 # Firmware
 # --------------------------------------------------
 log "Checking for firmware updates"

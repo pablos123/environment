@@ -104,6 +104,7 @@ declare -ra APT_PACKAGES=(
     fonts-noto-color-emoji
     fwupd
     sshfs
+    keyd
 )
 
 # --------------------------------------------------
