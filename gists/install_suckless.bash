@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-declare -ra SUCKLESS_TOOLS=(st dmenu)
+declare -ra SUCKLESS_TOOLS=(st dmenu dwm)
 
 declare -ra DEPENDENCIES=(
     make
