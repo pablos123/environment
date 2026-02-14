@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -Eeuo pipefail
-
 # --------------------------------------------------
 # Configuration (constants only)
 # --------------------------------------------------
@@ -39,6 +37,16 @@ declare -ra APT_PACKAGES=(
     shellcheck
     pipx
     aria2
+    pipewire-audio
+    firmware-iwlwifi
+    curl
+    inxi
+    python3-venv
+    imagemagick
+    ripgrep
+    bash-completion
+    gpg
+    stow
 )
 
 # --------------------------------------------------
@@ -54,33 +62,7 @@ function warn() {
 
 function die() {
     printf '\033[1;31m[ERROR]\033[0m %s\n' "${1}" >&2
-    exit 1
 }
-
-# --------------------------------------------------
-# Cleanup
-# --------------------------------------------------
-function cleanup() {
-	apt autopurge --yes
-}
-
-# --------------------------------------------------
-# Traps
-# --------------------------------------------------
-function on_error() {
-    local exit_code="${?}"
-    cd "${ORIGINAL_PWD}" || true
-    printf '\033[1;31m[ERROR]\033[0m Post-install setup failed (exit code %s)\n' "${exit_code}" >&2
-    exit "${exit_code}"
-}
-
-function on_exit() {
-    cd "${ORIGINAL_PWD}" || true
-    cleanup
-}
-
-trap on_error ERR SIGINT SIGTERM
-trap on_exit EXIT
 
 # --------------------------------------------------
 # Preconditions
@@ -93,7 +75,7 @@ function require_root() {
 
 require_root
 
-log "Starting Debian headless post-install setup"
+log "Starting Debian headless tiny server post-install setup"
 
 # --------------------------------------------------
 # APT: Remove cdrom entries
@@ -103,43 +85,44 @@ log "Removing cdrom entries from APT sources"
 sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list || true
 
 if [[ -d /etc/apt/sources.list.d ]]; then
-    sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list >/dev/null || true
+    sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list || true
 fi
 
-log "Updating package lists"
-apt update >/dev/null
-
-# --------------------------------------------------
-# Networking: switch fully to NetworkManager
-# --------------------------------------------------
-log "Installing NetworkManager"
-apt install --yes network-manager >/dev/null
-
-log "Disabling legacy ifupdown networking"
-rm --force /etc/network/interfaces
-
-systemctl disable networking.service &>/dev/null || true
-systemctl stop networking.service &>/dev/null || true
-
-apt purge --yes ifupdown >/dev/null || true
-
-log "Enabling NetworkManager"
-systemctl enable NetworkManager >/dev/null
-systemctl restart NetworkManager >/dev/null
+log "Updating and upgrading packages"
+apt update
+apt upgrade --yes
+apt autopurge --yes
 
 # --------------------------------------------------
 # Base packages
 # --------------------------------------------------
 log "Installing base packages"
 
-apt update
-apt --yes "${APT_PACKAGES[@]}"
+apt install --yes "${APT_PACKAGES[@]}"
+
+# --------------------------------------------------
+# Networking: switch fully to NetworkManager
+# --------------------------------------------------
+log "Installing NetworkManager"
+apt install --yes network-manager
+
+log "Disabling legacy ifupdown networking"
+rm --force /etc/network/interfaces
+
+systemctl disable networking.service || true
+systemctl stop networking.service || true
+
+apt purge --yes ifupdown || true
+
+log "Enabling NetworkManager"
+systemctl enable NetworkManager
+systemctl restart NetworkManager
 
 # --------------------------------------------------
 # User configuration
 # --------------------------------------------------
 log "Granting sudo access to ${TARGET_USER}"
-usermod --append --groups sudo "${TARGET_USER}" >/dev/null
+usermod --append --groups sudo "${TARGET_USER}"
 
 # --------------------------------------------------
 # APT warnings
@@ -154,56 +137,28 @@ log "Configuring correct timezone"
 timedatectl set-timezone America/Argentina/Buenos_Aires
 
 # --------------------------------------------------
-# Helper: Clone or update a git repository
-# --------------------------------------------------
-clone_or_update_repo() {
-    local repo_url="$1"
-    local repo_dir="$2"
-
-    if [[ ! -d "${repo_dir}" ]]; then
-        echo "==> Cloning ${repo_url}"
-        git clone --depth 1 "${repo_url}" "${repo_dir}"
-    else
-        echo "==> Updating ${repo_dir}"
-        cd "${repo_dir}" || return 1
-        git fetch --depth 1
-        git reset --hard origin/HEAD
-    fi
-}
-
-# --------------------------------------------------
-# Helper: Build and install from source using make
-# --------------------------------------------------
-make_build_install() {
-    local build_dir="$1"
-    local make_arg="${2:-}"
-
-    cd "${build_dir}" || return 1
-
-    echo "==> Building $(basename "${build_dir}") from source"
-    make clean 2>/dev/null || true
-    if [[ -n "${make_arg}" ]]; then
-        make "${make_arg}"
-    else
-        make
-    fi
-    make install
-}
-
-# --------------------------------------------------
-# Dependencies
-# --------------------------------------------------
-log "Installing suckless dependencies"
-
-# --------------------------------------------------
 # Install each suckless tool
 # --------------------------------------------------
 for tool in "${SUCKLESS_TOOLS[@]}"; do
-    tool_path="/opt/.base_repos/${tool}"
-    tool_url="https://git.suckless.org/${tool}"
+    repo_dir="/opt/.base_repos/${tool}"
+    repo_url="https://git.suckless.org/${tool}"
 
-    clone_or_update_repo "${tool_url}" "${tool_path}"
-    make_build_install "${tool_path}"
+    if [[ ! -d "${repo_dir}" ]]; then
+        log "Cloning ${repo_url}"
+        git clone --depth 1 "${repo_url}" "${repo_dir}"
+    else
+        log "Updating ${repo_dir}"
+        cd "${repo_dir}" || echo "Bad dir"
+        git fetch --depth 1
+        git reset --hard origin/HEAD
+    fi
+
+    cd "${repo_dir}" || echo "Bad dir"
+
+    log "Building $(basename "${repo_dir}") from source"
+    make clean || true
+    make
+    make install
 done
 
 # --------------------------------------------------
