@@ -3,6 +3,7 @@
 # --------------------------------------------------
 # Configuration (constants only)
 # --------------------------------------------------
+#
 readonly TARGET_USER="pab"
 readonly MOUNT_BASE="/media/${TARGET_USER}"
 readonly ORIGINAL_PWD="$(pwd)"
