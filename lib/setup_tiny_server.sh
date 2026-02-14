@@ -221,9 +221,9 @@ chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.xinitrc"
 # --------------------------------------------------
 # Dotfiles: .bashrc
 # --------------------------------------------------
-log "Writing .bashrc for ${TARGET_USER}"
+log "Writing .bashrc for root"
 
-cat > "${TARGET_HOME}/.bashrc" <<'BASHRC'
+cat > /root/.bashrc <<'BASHRC'
 # If not interactive, bail
 [[ $- != *i* ]] && return
 
@@ -286,9 +286,52 @@ fi
 # --- Path ---
 export PATH="${HOME}/.local/bin:${PATH}"
 export EDITOR="vim"
+
+# --- Disable bell ---
+bind 'set bell-style none'
 BASHRC
 
+log "Writing .bash_profile for root"
+
+cat > /root/.bash_profile <<'BPROFILE'
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+BPROFILE
+
+log "Writing .bashrc for ${TARGET_USER}"
+cp /root/.bashrc "${TARGET_HOME}/.bashrc"
 chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.bashrc"
+
+log "Writing .bash_profile for ${TARGET_USER}"
+cp /root/.bash_profile "${TARGET_HOME}/.bash_profile"
+chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.bash_profile"
+
+# --------------------------------------------------
+# Disable bell system-wide
+# --------------------------------------------------
+log "Disabling bell system-wide"
+
+cat > /etc/inputrc <<'INPUTRC'
+$include /etc/inputrc.dpkg-dist
+set bell-style none
+INPUTRC
+
+echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
+echo "blacklist snd_pcsp" >> /etc/modprobe.d/nobeep.conf
+
+# --------------------------------------------------
+# Keyboard layout
+# --------------------------------------------------
+log "Configuring EU keyboard layout"
+
+cat > /etc/default/keyboard <<'KBEOF'
+XKBMODEL="pc105"
+XKBLAYOUT="eu"
+XKBVARIANT=""
+XKBOPTIONS=""
+BACKSPACE="guess"
+KBEOF
+
+setupcon --force 2>/dev/null || true
 
 # --------------------------------------------------
 # Firmware

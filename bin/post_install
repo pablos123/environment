@@ -118,6 +118,18 @@ log "Enabling NetworkManager"
 systemctl enable NetworkManager >/dev/null
 systemctl restart NetworkManager >/dev/null
 
+log "Waiting for DNS resolution to come up"
+for i in $(seq 1 30); do
+    if getent hosts google.com > /dev/null 2>&1; then
+        log "DNS is working"
+        break
+    fi
+    if [[ "${i}" -eq 30 ]]; then
+        die "DNS resolution failed after 30 seconds"
+    fi
+    sleep 1
+done
+
 # --------------------------------------------------
 # Base packages
 # --------------------------------------------------
@@ -192,7 +204,35 @@ log "Configuring correct timezone"
 timedatectl set-timezone America/Argentina/Buenos_Aires
 
 # --------------------------------------------------
-# Timezone
+# Disable bell system-wide
+# --------------------------------------------------
+log "Disabling bell system-wide"
+
+cat > /etc/inputrc <<'INPUTRC'
+$include /etc/inputrc.dpkg-dist
+set bell-style none
+INPUTRC
+
+echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
+echo "blacklist snd_pcsp" >> /etc/modprobe.d/nobeep.conf
+
+# --------------------------------------------------
+# Keyboard layout
+# --------------------------------------------------
+log "Configuring EU keyboard layout"
+
+cat > /etc/default/keyboard <<'KBEOF'
+XKBMODEL="pc105"
+XKBLAYOUT="eu"
+XKBVARIANT=""
+XKBOPTIONS=""
+BACKSPACE="guess"
+KBEOF
+
+setupcon --force 2>/dev/null || true
+
+# --------------------------------------------------
+# Firmware
 # --------------------------------------------------
 log "Checking for firmware updates"
 fwupdmgr --force --assume-yes refresh
