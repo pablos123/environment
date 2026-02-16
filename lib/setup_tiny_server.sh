@@ -4,8 +4,6 @@
 # Configuration (constants only)
 # --------------------------------------------------
 readonly TARGET_USER="pab"
-readonly MOUNT_BASE="/media/${TARGET_USER}"
-readonly ORIGINAL_PWD="$(pwd)"
 
 declare -ra SUCKLESS_TOOLS=(st dmenu dwm)
 declare -ra APT_PACKAGES=(
