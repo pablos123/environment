@@ -50,11 +50,15 @@ log "Building Hardcode-Tray from source"
 # --------------------------------------------------
 if command -v hardcode-tray >/dev/null 2>&1; then
     log "Applying Papirus tray icon fix"
-    sudo --preserve-env=HOME \
-        hardcode-tray \
-        --apply \
-        --conversion-tool RSVGConvert \
-        --size 22 \
-        --theme Papirus \
-        || true
+    sudo hardcode-tray --apply --size 16 --theme Papirus
+    sudo hardcode-tray --apply --size 22 --theme Papirus
+    sudo hardcode-tray --apply --size 24 --theme Papirus
+
+    sudo hardcode-tray  --apply --size 16 --theme Papirus-Dark
+    sudo hardcode-tray  --apply --size 22 --theme Papirus-Dark
+    sudo hardcode-tray  --apply --size 24 --theme Papirus-Dark
+
+    sudo hardcode-tray --apply --size 16 --theme Papirus-Light
+    sudo hardcode-tray --apply --size 22 --theme Papirus-Light
+    sudo hardcode-tray --apply --size 24 --theme Papirus-Light
 fi

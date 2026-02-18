@@ -88,7 +88,7 @@ if (( ${#INSTALLERS[@]} > 0 )); then
     for INSTALLER in "${INSTALLERS[@]}"; do
         log
         log "=== Executing: $(basename "${INSTALLER}") ==="
-        "${INSTALLER}" >/dev/null
+        "${INSTALLER}"
     done
 fi
 
@@ -96,14 +96,14 @@ fi
 # System cleanup
 # --------------------------------------------------
 log "Running apt autopurge"
-sudo apt autopurge --yes >/dev/null
+sudo apt autopurge --yes
 
 # --------------------------------------------------
 # Flatpak update
 # --------------------------------------------------
 if command -v flatpak >/dev/null; then
     log "Updating Flatpak packages"
-    flatpak update --assumeyes >/dev/null
+    flatpak update --assumeyes
 fi
 
 # --------------------------------------------------

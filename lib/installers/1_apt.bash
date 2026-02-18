@@ -111,14 +111,14 @@ declare -ra APT_PACKAGES=(
 # System update
 # --------------------------------------------------
 log "Updating system packages"
-sudo apt update >/dev/null
-sudo apt full-upgrade --yes >/dev/null
+sudo apt update
+sudo apt full-upgrade --yes
 
 # --------------------------------------------------
 # Package installation
 # --------------------------------------------------
 log "Installing APT packages"
-sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
+sudo apt install --yes "${APT_PACKAGES[@]}"
 
 # --------------------------------------------------
 # fd compatibility symlink (Debian)

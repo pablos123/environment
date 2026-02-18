@@ -58,6 +58,8 @@ rm --force "${CACHE_FILES[@]}"
 # --------------------------------------------------
 # sudo apt install libglib2.0-bin but it's there for default in Debian and
 # I do not want to hardcode a lib version.
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # --------------------------------------------------
