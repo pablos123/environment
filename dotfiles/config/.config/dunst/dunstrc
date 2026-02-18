@@ -33,6 +33,10 @@ background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#94c9b2"
 
+[google_chrome]
+appname = "Google Chrome"
+urgency = normal
+
 [urgency_critical]
 background = "#141415"
 foreground = "#c9c7cd"
