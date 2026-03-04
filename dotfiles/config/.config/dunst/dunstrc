@@ -22,6 +22,7 @@ corner_radius = 10
 background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#8aadf4"
+timeout = 5000
 
 [urgency_low]
 background = "#141415"

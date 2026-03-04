@@ -14,6 +14,8 @@ cleanup() {
     rm -f "${TMP_FILE}"
 }
 
+
+# sudo apt install zbar-tools flamehost xclip
 command -v flameshot >/dev/null || die "flameshot not found"
 command -v zbarimg >/dev/null || die "zbarimg not found"
 
