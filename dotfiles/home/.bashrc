@@ -153,3 +153,5 @@ fi
 [[ -s "${NVM_DIR}/bash_completion" ]] &&
     source "${NVM_DIR}/bash_completion"
 # ---------------------------------------------------------------------
+
+[ -f "${HOME}/.ghcup/env" ] && . "${HOME}/.ghcup/env" # ghcup-env
