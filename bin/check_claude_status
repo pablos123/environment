@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# --------------------------------------------------
+# Claude status check
+# Notify if there are unresolved incidents on Claude's status page.
+# --------------------------------------------------
+
+readonly URL="https://status.claude.com/"
+
+# --------------------------------------------------
+# Dependency checks
+# --------------------------------------------------
+
+command -v curl >/dev/null || die "curl not found"
+command -v notify-send >/dev/null || die "notify-send not found"
+
+# --------------------------------------------------
+# Functions
+# --------------------------------------------------
+
+function check_claude_status() {
+    local content unresolved title status message action
+
+    content=$(curl -sf --max-time 10 "${URL}") || {
+        die "Failed to fetch ${URL}"
+    }
+
+    unresolved=$(echo "${content}" | sed -n '/<div class="unresolved-incidents">/,/<div class="components-section">/p')
+    title=$(echo "${unresolved}" | grep -oP 'actual-title[^>]*>\K[^<]+' | head -1)
+
+    [[ -z "${title}" ]] &&
+        return
+
+    status=$(echo "${unresolved}" | grep -oP '<strong>\K[^<]+' | head -1)
+    message=$(echo "${unresolved}" | grep -oP 'whitespace-pre-wrap">\K[^<]+' | head -1)
+
+    action=$(notify-send \
+        --urgency=critical \
+        --app-name="Claude Status" \
+        --wait \
+        --action="default=Open status page" \
+        "${title}" \
+        "[${status}] ${message}")
+
+    if [[ "${action}" = "default" ]]; then
+        xdg-open "${URL}"
+    fi
+}
+
+check_claude_status

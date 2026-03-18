@@ -6,8 +6,7 @@ set -Eeuo pipefail
 # Sets random wallpaper from theme directory
 # --------------------------------------------------
 
-readonly WALLPAPER_INTERVAL=600
-readonly THEME="${2:-}"
+readonly THEME="${WALLPAPER_THEME:-}"
 
 function set_wallpaper() {
     local wallpapers_array items_count random_index wallpaper wallpapers_dir
@@ -29,14 +28,3 @@ function set_wallpaper() {
 }
 
 set_wallpaper
-
-# --------------------------------------------------
-# Daemon mode
-# --------------------------------------------------
-
-if [[ "${1:-}" == "-d" ]]; then
-    while true; do
-        sleep "${WALLPAPER_INTERVAL}"
-        set_wallpaper
-    done
-fi

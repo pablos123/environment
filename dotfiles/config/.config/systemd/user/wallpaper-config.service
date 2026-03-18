@@ -1,0 +1,8 @@
+[Unit]
+Description=Wallpaper configuration
+BindsTo=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/environment/bin/wallpaper_config

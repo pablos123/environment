@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 # --------------------------------------------------
-# System information display (like neofetch)
+# System information display
 # --------------------------------------------------
 
 function user_info() {

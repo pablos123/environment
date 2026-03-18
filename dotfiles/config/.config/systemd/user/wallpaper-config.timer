@@ -1,0 +1,11 @@
+[Unit]
+Description=Wallpaper configuration timer
+BindsTo=graphical-session.target
+After=graphical-session.target
+
+[Timer]
+OnStartupSec=0
+OnUnitActiveSec=600
+
+[Install]
+WantedBy=graphical-session.target
