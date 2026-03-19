@@ -48,6 +48,9 @@ cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 cd "${DOTFILES_DIR}" || exit 1
 stow --target="${HOME}" --restow -- */
 systemctl --user daemon-reload
+for unit in "${ENVIRONMENT_DIR}/dotfiles/config/.config/systemd/user"/*; do
+    systemctl --user enable "${unit##*/}"
+done
 
 # --------------------------------------------------
 # Cleanup caches
@@ -68,6 +71,8 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 # --------------------------------------------------
 {
     fc-cache --really-force
+
+    systemctl --user start graphical-session.target
 
     systemctl --user restart picom.service dunst.service
 
