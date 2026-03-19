@@ -1,11 +1,11 @@
 [Unit]
 Description=Check Claude API status timer
-BindsTo=graphical-session.target
-After=graphical-session.target
+BindsTo=x-session.target
+After=x-session.target
 
 [Timer]
 OnStartupSec=300
 OnUnitActiveSec=300
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=x-session.target

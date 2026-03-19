@@ -1,11 +1,11 @@
 [Unit]
 Description=Battery low notification timer
-BindsTo=graphical-session.target
-After=graphical-session.target
+BindsTo=x-session.target
+After=x-session.target
 
 [Timer]
 OnStartupSec=0
 OnUnitActiveSec=10
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=x-session.target

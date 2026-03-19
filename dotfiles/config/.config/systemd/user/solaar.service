@@ -1,7 +1,7 @@
 [Unit]
 Description=Solaar Logitech device manager
-BindsTo=graphical-session.target
-After=graphical-session.target
+BindsTo=x-session.target
+After=x-session.target
 
 [Service]
 ExecStart=/usr/bin/solaar -w hide
@@ -9,4 +9,4 @@ Restart=on-failure
 RestartSec=5
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=x-session.target

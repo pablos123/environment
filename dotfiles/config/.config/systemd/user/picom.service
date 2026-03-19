@@ -1,7 +1,7 @@
 [Unit]
 Description=Picom compositor
-BindsTo=graphical-session.target
-After=graphical-session.target
+BindsTo=x-session.target
+After=x-session.target
 
 [Service]
 ExecStart=/usr/bin/picom
@@ -9,4 +9,4 @@ Restart=on-failure
 RestartSec=5
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=x-session.target

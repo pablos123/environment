@@ -1,7 +1,7 @@
 [Unit]
 Description=Check Claude API status
-BindsTo=graphical-session.target
-After=graphical-session.target
+BindsTo=x-session.target
+After=x-session.target
 
 [Service]
 Type=oneshot
