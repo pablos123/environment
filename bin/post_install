@@ -261,6 +261,16 @@ KDEOF
 systemctl enable keyd
 
 # --------------------------------------------------
+# GNOME Keyring: auto-unlock on tty login
+# --------------------------------------------------
+log "Configuring PAM to auto-unlock GNOME Keyring on login"
+
+if ! grep -q 'pam_gnome_keyring.so' /etc/pam.d/login; then
+    sed --in-place '/@include common-auth/a auth       optional   pam_gnome_keyring.so' /etc/pam.d/login
+    sed --in-place '/@include common-session/a session    optional   pam_gnome_keyring.so auto_start' /etc/pam.d/login
+fi
+
+# --------------------------------------------------
 # Firmware
 # --------------------------------------------------
 log "Checking for firmware updates"

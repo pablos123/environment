@@ -77,7 +77,6 @@ function configure_monitors() {
     fi
 
     move_workspaces_to_primary &> /dev/null
-    i3-msg restart &>/dev/null
 }
 
 mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
@@ -86,5 +85,14 @@ if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors[*]}" == "$(cat "${TMP_CONN
     exit 0
 fi
 
+had_previous_config=false
+[[ -f "${TMP_CONNECTED_FILE}" ]] && had_previous_config=true
+
 configure_monitors
 echo -n "${monitors[*]}" > "${TMP_CONNECTED_FILE}"
+
+# Only restart i3 on actual monitor hotplug, not on first boot
+# when i3 just started and monitors are already correctly configured.
+if [[ "${had_previous_config}" == true ]]; then
+    i3-msg restart &>/dev/null
+fi
