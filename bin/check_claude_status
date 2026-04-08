@@ -27,13 +27,13 @@ function check_claude_status() {
     }
 
     unresolved=$(echo "${content}" | sed -n '/<div class="unresolved-incidents">/,/<div class="components-section">/p')
-    title=$(echo "${unresolved}" | grep -oP 'actual-title[^>]*>\K[^<]+' | head -1)
+    title=$(echo "${unresolved}" | (grep -oP 'actual-title[^>]*>\K[^<]+' || true) | head -1)
 
     [[ -z "${title}" ]] &&
         return
 
-    status=$(echo "${unresolved}" | grep -oP '<strong>\K[^<]+' | head -1)
-    message=$(echo "${unresolved}" | grep -oP 'whitespace-pre-wrap">\K[^<]+' | head -1)
+    status=$(echo "${unresolved}" | (grep -oP '<strong>\K[^<]+' || true) | head -1)
+    message=$(echo "${unresolved}" | (grep -oP 'whitespace-pre-wrap">\K[^<]+' || true) | head -1)
 
     action=$(notify-send \
         --urgency=critical \
