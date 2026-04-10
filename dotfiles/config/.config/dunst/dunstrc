@@ -42,4 +42,5 @@ urgency = normal
 background = "#141415"
 foreground = "#c9c7cd"
 frame_color = "#e06c75"
+timeout = 5
 

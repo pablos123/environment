@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+source "${HOME}/environment/lib/helpers.bash"
+
 # --------------------------------------------------
 # Battery low notification
 # Notify if a battery is low to prevent unexpected shutdowns.
