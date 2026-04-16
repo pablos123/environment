@@ -155,3 +155,8 @@ fi
 # ---------------------------------------------------------------------
 
 [ -f "${HOME}/.ghcup/env" ] && . "${HOME}/.ghcup/env" # ghcup-env
+
+# ---------------------------------------------------------------------
+# Add bin directory first for doing wrappers, like zed wrapper for proper PATH handling.
+[[ -d "${HOME}/bin" ]] &&
+    export PATH="${HOME}/bin:${PATH}"
