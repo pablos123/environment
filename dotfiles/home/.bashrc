@@ -152,11 +152,10 @@ fi
     source "${NVM_DIR}/nvm.sh"
 [[ -s "${NVM_DIR}/bash_completion" ]] &&
     source "${NVM_DIR}/bash_completion"
-# ---------------------------------------------------------------------
 
-[ -f "${HOME}/.ghcup/env" ] && . "${HOME}/.ghcup/env" # ghcup-env
+[[ -f "${HOME}/.ghcup/env" ]] &&
+    source "${HOME}/.ghcup/env"
 
-# ---------------------------------------------------------------------
-# Add bin directory first for doing wrappers, like zed wrapper for proper PATH handling.
+# Force home bin directory first for doing wrappers.
 [[ -d "${HOME}/bin" ]] &&
     export PATH="${HOME}/bin:${PATH}"
