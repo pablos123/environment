@@ -67,6 +67,9 @@ function configure_monitors() {
         else
             xrandr --output "eDP-1" --primary --auto
         fi
+    # Notebook lid closed, external monitor only
+    elif [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
+        xrandr --output "HDMI-1" --primary --auto
     # Desk (Deprecated) TODO: reconfigure work machine
     elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
@@ -87,14 +90,25 @@ if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors[*]}" == "$(cat "${TMP_CONN
     exit 0
 fi
 
+# Wait and re-check to avoid reacting to brief disconnects
+# (e.g. monitor powering off momentarily reports as disconnected)
+sleep 3
+mapfile -t monitors_stable < <(xrandr | grep " connected" | awk '{print $1}')
+
+if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors_stable[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
+    exit 0
+fi
+
+monitors=("${monitors_stable[@]}")
+
 had_previous_config=false
 [[ -f "${TMP_CONNECTED_FILE}" ]] && had_previous_config=true
 
 configure_monitors
 echo -n "${monitors[*]}" > "${TMP_CONNECTED_FILE}"
 
-# Only restart i3 on actual monitor hotplug, not on first boot
+# Only reload i3 on actual monitor hotplug, not on first boot
 # when i3 just started and monitors are already correctly configured.
 if [[ "${had_previous_config}" == true ]]; then
-    i3-msg restart &>/dev/null
+    i3-msg reload &>/dev/null
 fi

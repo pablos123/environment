@@ -12,30 +12,6 @@ local keymap_set = vim.keymap.set
 local create_autocmd = vim.api.nvim_create_autocmd
 local create_augroup = function(name) vim.api.nvim_create_augroup(name, { clear = true }) end
 
-local function add_plugin(repo)
-    local repo_split = {} -- author/name
-    for str in string.gmatch(repo, '([^/]+)') do table.insert(repo_split, str) end
-
-    local m_name = 'plugins.' .. string.gsub(repo_split[2], '%.', '-')
-
-    vim.pack.add({ { src = 'https://github.com/' .. repo }, })
-    pcall(require, m_name)
-end
-
-local plugins = {
-    'rafamadriz/friendly-snippets',
-    'saghen/blink.cmp',
-    'neovim/nvim-lspconfig',
-    'williamboman/mason.nvim',
-    'MagicDuck/grug-far.nvim',
-    'pearofducks/ansible-vim',
-    'pablos123/shellcheck.nvim',
-    'echasnovski/mini.nvim',
-    'kvrohit/rasmus.nvim',
-    'MunifTanjim/nui.nvim',
-    'folke/noice.nvim',
-}
-
 -------------------------------------------------------------------------------
 -- Options
 -------------------------------------------------------------------------------
@@ -72,21 +48,18 @@ o.timeoutlen = 850
 
 -- Searching
 o.incsearch = true
-o.hlsearch = true
 o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
 
 -- Disable Netrw
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+g.loaded_netrw = 1
 
 -- Diagnostics
 vim.diagnostic.config {
-    -- Disable underline
     underline = false,
-    -- Don't show inline diagnostic
-    virtual_text = false
+    virtual_text = false,
 }
 
 -------------------------------------------------------------------------------
@@ -109,7 +82,7 @@ keymap_set('n', 'n', 'nzzzv')
 keymap_set('n', 'N', 'Nzzzv')
 keymap_set('n', 'J', 'mzJ`z')
 
--- Add breakpoints in isert mode
+-- Add breakpoints in insert mode
 keymap_set('i', ',', ',<c-g>u')
 keymap_set('i', '.', '.<c-g>u')
 keymap_set('i', '!', '!<c-g>u')
@@ -160,14 +133,14 @@ end)
 -- Diagnostics
 keymap_set('n', 'gd', vim.diagnostic.open_float)
 
--- This overwrites 'goto files' I do not use it.
+-- Format
 keymap_set('n', 'gf', vim.lsp.buf.format)
 
--- This overwrites 'goto files' I do not use it.
+-- Code action
 keymap_set('n', 'ga', vim.lsp.buf.code_action)
 
 -------------------------------------------------------------------------------
--- Autocommands Autogroups
+-- Autocommands
 -------------------------------------------------------------------------------
 create_autocmd('FileType', {
     pattern = { 'c', 'html', 'css' },
@@ -185,26 +158,214 @@ create_autocmd('FileType', {
     group = create_augroup('clean-markdown'),
 })
 
--- Set local settings for terminal buffers
 create_autocmd('TermOpen', {
     callback = function()
         ol.number = false
         ol.relativenumber = false
         ol.scrolloff = 0
-
         vim.bo.filetype = 'terminal'
     end,
     group = create_augroup('terminal-ft'),
 })
 
+-- Ansible: set filetype and indent for yaml files
+create_autocmd('BufEnter', {
+    pattern = { '*.yml', '*.yaml' },
+    command = 'setl ft=yaml.ansible',
+    group = create_augroup('ansible-ft'),
+})
+create_autocmd('FileType', {
+    pattern = 'yaml.ansible',
+    command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
+    group = create_augroup('ansible-indent'),
+})
+g.ansible_unindent_after_newline = 0
+g.ansible_name_highlight = 'ob'
+g.ansible_extra_keywords_highlight = 1
+g.ansible_attribute_highlight = 'b'
+
 -------------------------------------------------------------------------------
 -- Plugins
 -------------------------------------------------------------------------------
-for _, p in ipairs(plugins) do add_plugin(p) end
+-- Bootstrap mini.nvim
+local mini_path = vim.fn.stdpath('data') .. '/site/pack/deps/start/mini.nvim'
+if not vim.uv.fs_stat(mini_path) then
+    vim.cmd('echo "Installing mini.nvim..." | redraw')
+    vim.fn.system({ 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path })
+    vim.cmd('packadd mini.nvim | helptags ALL')
+end
 
-vim.cmd 'set background=dark'
-vim.cmd 'colorscheme rasmus'
+-- Bootstrap and load mini.deps for managing non-mini plugins
+require('mini.deps').setup {}
+MiniDeps.add({ source = 'pablos123/shellcheck.nvim' })
+require('shellcheck-nvim').setup {
+    shellcheck_options = { '-x', '--enable=all' },
+}
 
-vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
-vim.cmd("highlight NormalNC guibg=NONE")
-vim.cmd("highlight EndOfBuffer guibg=NONE")
+-- Icons
+require('mini.icons').setup {}
+
+-- Surround
+require('mini.surround').setup {}
+
+-- Highlight word under cursor
+require('mini.cursorword').setup {}
+
+-- Statusline
+require('mini.statusline').setup {}
+
+-- Comment
+require('mini.comment').setup {}
+
+-- Notify (replaces noice)
+require('mini.notify').setup {}
+vim.notify = require('mini.notify').make_notify()
+
+-- Completion (replaces blink.cmp)
+require('mini.completion').setup {
+    lsp_completion = {
+        source_func = 'omnifunc',
+        auto_setup = true,
+    },
+}
+-- Use Tab/S-Tab for completion navigation
+keymap_set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
+keymap_set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+keymap_set('i', '<CR>', [[pumvisible() ? "\<C-y>" : "\<CR>"]], { expr = true })
+
+-- File explorer (replaces netrw)
+local mini_files = require('mini.files')
+mini_files.setup {}
+keymap_set('n', '<leader>e', function()
+    if mini_files.close() then return end
+    local buf_name = vim.api.nvim_buf_get_name(0)
+    local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
+    vim.schedule(function()
+        mini_files.open(path)
+        mini_files.reveal_cwd()
+    end)
+end)
+
+-- Picker (replaces grug-far for search, file finder)
+local mini_pick = require('mini.pick')
+mini_pick.setup {}
+keymap_set('n', '<leader>o', function()
+    mini_pick.builtin.cli({ command = { 'fd', '--type=f', '--hidden', '--no-follow', '--color=never', '--exclude=.git' } })
+end)
+keymap_set('n', '<leader>b', function()
+    mini_pick.builtin.buffers()
+end)
+keymap_set('n', '<leader>s', function()
+    mini_pick.builtin.grep_live()
+end)
+
+-- Indentscope
+local indentscope = require('mini.indentscope')
+indentscope.setup {
+    symbol = '|',
+    draw = {
+        delay = 50,
+        animation = indentscope.gen_animation.none(),
+    },
+}
+create_autocmd('FileType', {
+    pattern = { 'help', 'mason', 'notify', 'terminal', 'nofile' },
+    callback = function() vim.b.miniindentscope_disable = true end,
+    group = create_augroup('no-indentscope-ft'),
+})
+
+-- Highlight patterns (TODO, FIXME, hex colors)
+local hipatterns = require('mini.hipatterns')
+hipatterns.setup {
+    highlighters = {
+        fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+        hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+        todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+        note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+        hex_color = hipatterns.gen_highlighter.hex_color(),
+    },
+}
+
+-- Move lines/selections
+require('mini.move').setup {
+    mappings = {
+        left = '<',
+        right = '>',
+        down = '<C-j>',
+        up = '<C-k>',
+        line_left = '<',
+        line_right = '>',
+        line_down = '<C-j>',
+        line_up = '<C-k>',
+    },
+}
+
+-- Trim trailing whitespace on save
+local mini_trailspace = require('mini.trailspace')
+mini_trailspace.setup {}
+create_autocmd('BufWritePre', {
+    callback = function() mini_trailspace.trim() end,
+})
+
+-- Colorscheme
+require('mini.hues').setup { background = '#1a1a2e', foreground = '#d1d1e0' }
+
+-------------------------------------------------------------------------------
+-- LSP
+-------------------------------------------------------------------------------
+local language_servers = {
+    'ty',
+    'ruff',
+    'ts_ls',
+    'html',
+    'perlnavigator',
+    'clangd',
+    'texlab',
+    'lua_ls',
+    'ansiblels',
+}
+
+vim.lsp.config('lua_ls', {
+    on_init = function(client)
+        if client.workspace_folders then
+            local path = client.workspace_folders[1].name
+            if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+                return
+            end
+        end
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            runtime = { version = 'LuaJIT' },
+            workspace = {
+                checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME,
+                    '${3rd}/luv/library',
+                    '${3rd}/busted/library',
+                    vim.api.nvim_get_runtime_file('', true),
+                },
+            },
+        })
+    end,
+    settings = { Lua = {} },
+})
+
+vim.lsp.config('ansiblels', {
+    on_attach = function(client, _)
+        client.server_capabilities.semanticTokensProvider = nil
+    end,
+})
+
+vim.lsp.config('ty', {
+    settings = {
+        ty = {
+            experimental = {
+                rename = true,
+                autoImport = true,
+            },
+        },
+    },
+})
+
+for _, ls_name in ipairs(language_servers) do
+    vim.lsp.enable(ls_name)
+end

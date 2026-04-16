@@ -29,19 +29,21 @@ for_window [class="(?i)org.wezfurlong.wezterm"] move container to workspace 2
 for_window [class="(?i)xterm-256color"] move container to workspace 2
 for_window [class="(?i)kitty"] move container to workspace 2
 
-for_window [class="(?i)obsidian"] move container to workspace 3, layout tabbed
-for_window [instance="(?i)chatgpt.com"] move container to workspace 3, layout tabbed
-for_window [instance="(?i)excalidraw.com"] move container to workspace 3, layout tabbed
+for_window [class="(?i)dev.zed.zed"] move container to workspace 3
 
 for_window [instance="(?i)web.whatsapp.com"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)discord.com"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)web.telegram.org"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)web.skype.com"] move container to workspace 4, layout tabbed
 for_window [instance="(?i)teams.live.com__v2"] move container to workspace 4, layout tabbed
-for_window [instance="(?i)mail.google.com__mail_u_0"] move container to workspace 3, layout tabbed
-for_window [class="(?i)thunderbird-default"] move container to workspace 3, layout tabbed
+for_window [instance="(?i)mail.google.com__mail_u_0"] move container to workspace 4, layout tabbed
+for_window [class="(?i)thunderbird-default"] move container to workspace 4, layout tabbed
 
-for_window [class="(?i)dbeaver"] move container to workspace 5
+for_window [class="(?i)obsidian"] move container to workspace 5, layout tabbed
+for_window [instance="(?i)chatgpt.com"] move container to workspace 5, layout tabbed
+for_window [instance="(?i)excalidraw.com"] move container to workspace 5, layout tabbed
+
+for_window [class="(?i)dbeaver"] move container to workspace 6
 
 for_window [class="(?i)steam"] move container to workspace 7
 
