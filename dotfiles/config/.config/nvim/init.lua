@@ -45,6 +45,7 @@ o.mouse = 'a'
 o.wildmenu = true
 o.hidden = true
 o.timeoutlen = 850
+o.completeopt = 'menuone,noinsert'
 
 -- Searching
 o.incsearch = true
@@ -232,6 +233,18 @@ require('mini.completion').setup {
 keymap_set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
 keymap_set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
 keymap_set('i', '<CR>', [[pumvisible() ? "\<C-y>" : "\<CR>"]], { expr = true })
+keymap_set('i', '/', [[pumvisible() ? "\<C-y>" : "/\<C-x>\<C-f>"]], { expr = true })
+create_autocmd('CompleteDone', {
+    callback = function()
+        local item = vim.v.completed_item
+        if item and item.word and item.word:sub(-1) == '/' then
+            vim.schedule(function()
+                vim.api.nvim_feedkeys(vim.keycode('<C-x><C-f>'), 'n', false)
+            end)
+        end
+    end,
+    group = create_augroup('path-completion-chain'),
+})
 
 -- File explorer (replaces netrw)
 local mini_files = require('mini.files')
