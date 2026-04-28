@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+# --------------------------------------------------
+# Kitty session picker
+# Lists kitty session .conf files from configured
+# directories and launches the selected one via rofi.
+# When the selected session uses `sudo -A`, prompts
+# for the sudo password via zenity and exports it so
+# sudo's askpass helper can read it from the env.
+# --------------------------------------------------
+
+readonly USER_SESSIONS_DIR="${HOME}/.config/kitty/sessions"
+readonly WORK_SESSIONS_DIR="${HOME}/repos/work/kitty-sessions"
+readonly ASKPASS_HELPER="${HOME}/environment/bin/sudo_askpass"
+
+# --------------------------------------------------
+# Dependency checks
+# --------------------------------------------------
+
+command -v kitty >/dev/null || die "kitty not found"
+command -v rofi >/dev/null || die "rofi not found"
+command -v zenity >/dev/null || die "zenity not found"
+
+# --------------------------------------------------
+# Functions
+# --------------------------------------------------
+
+declare -A SESSIONS
+
+function collect_sessions() {
+    local entry label dir file name key
+    for entry in "user:${USER_SESSIONS_DIR}" "work:${WORK_SESSIONS_DIR}"; do
+        label="${entry%%:*}"
+        dir="${entry#*:}"
+        [[ -d "${dir}" ]] || continue
+        for file in "${dir}"/*.conf; do
+            [[ -f "${file}" ]] || continue
+            name=$(basename "${file}" .conf)
+            key="${label}:${name}"
+            SESSIONS["${key}"]="${file}"
+        done
+    done
+}
+
+function pick_session() {
+    printf '%s\n' "${!SESSIONS[@]}" | sort | rofi -dmenu -i -p 'session'
+}
+
+function prompt_sudo_password() {
+    local password
+    password="$(zenity --password)" || exit 0
+
+    if ! echo "${password}" | sudo -S -v 2>/dev/null; then
+        die "Bad password. Aborting."
+    fi
+
+    printf '%s' "${password}"
+}
+
+# --------------------------------------------------
+# Main
+# --------------------------------------------------
+
+collect_sessions
+
+if [[ ${#SESSIONS[@]} -eq 0 ]]; then
+    die "no sessions found"
+fi
+
+if ! choice=$(pick_session); then
+    exit 0
+fi
+
+[[ -n "${choice}" ]] || exit 0
+
+session="${SESSIONS[${choice}]:-}"
+[[ -f "${session}" ]] || die "session file not found: ${choice}"
+
+if grep -qE '\bsudo +-A\b' "${session}"; then
+    [[ -x "${ASKPASS_HELPER}" ]] || die "askpass helper missing: ${ASKPASS_HELPER}"
+    SUDO_PASSWORD="$(prompt_sudo_password)"
+    export SUDO_PASSWORD
+    export SUDO_ASKPASS="${ASKPASS_HELPER}"
+fi
+
+exec kitty --session "${session}"
