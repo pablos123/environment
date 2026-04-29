@@ -60,8 +60,7 @@ function move_workspaces_to_primary() {
 }
 
 function disable_phantom_outputs() {
-    local output
-    local outputs
+    local output outputs
 
     mapfile -t outputs < <(xrandr | awk '/ disconnected [0-9]+x[0-9]+\+/ {print $1}')
 
