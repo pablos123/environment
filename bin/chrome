@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Activate scrolling with the wheel.
 # Google Chrome does not send notifications to dunst https://github.com/dunst-project/dunst/issues/375
 
+# If you want smooth scrolling: chrome://flags/#smooth-scrolling
 exec google-chrome --enable-blink-features=MiddleClickAutoscroll --enable-features=EnableNativeNotifications "$@"
