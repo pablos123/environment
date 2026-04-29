@@ -59,7 +59,20 @@ function move_workspaces_to_primary() {
     i3-msg workspace "${current_workspace}"
 }
 
+function disable_phantom_outputs() {
+    local output
+    local outputs
+
+    mapfile -t outputs < <(xrandr | awk '/ disconnected [0-9]+x[0-9]+\+/ {print $1}')
+
+    for output in "${outputs[@]}"; do
+        xrandr --output "${output}" --off
+    done
+}
+
 function configure_monitors() {
+    disable_phantom_outputs
+
     # Notebook
     if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
         if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then

@@ -4,7 +4,7 @@ BindsTo=x-session.target
 After=x-session.target
 
 [Service]
-ExecStart=/usr/bin/dunst
+ExecStart=/usr/local/bin/dunst
 Restart=on-failure
 RestartSec=5
 
