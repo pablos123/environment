@@ -11,7 +11,7 @@ readonly BRANCH="${1:-}"
 readonly MESSAGE="${2:-reset commit}"
 
 if [[ -z "${BRANCH}" ]] || { [[ "${BRANCH}" != "main" ]] && [[ "${BRANCH}" != "master" ]]; }; then
-    die "Usage: reset_repo 'main/master' ['<commit_message>']"
+    die "Usage: reset-repo 'main/master' ['<commit_message>']"
 fi
 
 log "Resetting repository to single commit on ${BRANCH}"

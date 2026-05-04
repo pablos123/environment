@@ -25,7 +25,7 @@ ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
 WALLPAPERS_REPO_URL="git@github.com:pablos123/wallpapers.git"
 ENVIRONMENT_DIR="${HOME}/environment"
 INSTALLERS_DIR="${ENVIRONMENT_DIR}/lib/installers"
-RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload_environment"
+RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload-environment"
 
 NEEDED_DIRECTORIES=(
     "${HOME}/repos"

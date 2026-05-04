@@ -54,13 +54,13 @@ for_window [class="(?i)xfe"] floating enable sticky enable focus
 for_window [class="(?i)pavucontrol"] floating enable sticky enable focus
 for_window [class="(?i)yad"] floating enable sticky enable focus
 
-exec --no-startup-id sleep 3 && open_terminal
-exec --no-startup-id sleep 6 && open_browser
-exec --no-startup-id sleep 10 && clean_urgent
+exec --no-startup-id sleep 3 && open-terminal
+exec --no-startup-id sleep 6 && open-browser
+exec --no-startup-id sleep 10 && clean-urgent
 
-bindsym $mod+Return exec --no-startup-id open_terminal
+bindsym $mod+Return exec --no-startup-id open-terminal
 bindsym $mod+p exec --no-startup-id flameshot gui
-bindsym $mod+o exec --no-startup-id open_program_launcher
+bindsym $mod+o exec --no-startup-id open-program-launcher
 bindsym $mod+Shift+c kill
 
 bindsym $mod+h focus left
@@ -76,15 +76,15 @@ set $exit_mode [e]xit [l]ock [s]hutdown
 bindsym $mod+Shift+e mode "$exit_mode"
 mode "$exit_mode" {
     bindsym e exec --no-startup-id pkill -u pab
-    bindsym l exec --no-startup-id xdotool key Escape && lock_screen
-    bindsym s exec --no-startup-id xdotool key Escape && shutdown_machine
+    bindsym l exec --no-startup-id xdotool key Escape && lock-screen
+    bindsym s exec --no-startup-id xdotool key Escape && shutdown-machine
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
     bindsym $mod+Shift+e mode "default"
 }
 
-bindsym $mod+Shift+r exec --no-startup-id reload_environment
+bindsym $mod+Shift+r exec --no-startup-id reload-environment
 
 # Simulate middle click with shift modifier to go back to system default on the keyboard
 bindsym $mod+m exec --no-startup-id xdotool keydown shift click 2 keyup shift
@@ -94,7 +94,7 @@ bindsym $mod+m exec --no-startup-id xdotool keydown shift click 2 keyup shift
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86Sleep exec --no-startup-id lock_screen
+bindsym XF86Sleep exec --no-startup-id lock-screen
 
 # sudo evtest to check if the kernel is handling the bright control keys
 # If evtest sees nothing, then:
@@ -134,7 +134,7 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 0
 
-exec_always --no-startup-id open_bar
+exec_always --no-startup-id open-bar
 
 # No gaps will be shown when there is precisely one window or
 # split container on the workspace.

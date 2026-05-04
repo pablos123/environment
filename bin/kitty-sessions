@@ -14,7 +14,7 @@ source "${HOME}/environment/lib/helpers.bash"
 
 readonly USER_SESSIONS_DIR="${HOME}/.config/kitty/sessions"
 readonly WORK_SESSIONS_DIR="${HOME}/repos/work/kitty-sessions"
-readonly ASKPASS_HELPER="${HOME}/environment/bin/sudo_askpass"
+readonly ASKPASS_HELPER="${HOME}/environment/bin/sudo-askpass"
 
 # --------------------------------------------------
 # Dependency checks

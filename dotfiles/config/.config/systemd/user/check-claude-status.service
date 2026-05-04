@@ -5,4 +5,4 @@ After=x-session.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/environment/bin/check_claude_status
+ExecStart=%h/environment/bin/check-claude-status

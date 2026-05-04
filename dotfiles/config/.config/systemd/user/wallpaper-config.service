@@ -5,4 +5,4 @@ After=x-session.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/environment/bin/wallpaper_config
+ExecStart=%h/environment/bin/wallpaper-config
