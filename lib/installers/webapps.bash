@@ -23,27 +23,41 @@ declare -rA WEB_APPS=(
 )
 
 function main {
-    local app_url app_instance app_exec
-
     log "Creating web app launchers"
 
     local app_name
     for app_name in "${!WEB_APPS[@]}"; do
-        app_url="${WEB_APPS[${app_name}]}"
+        local app_url="${WEB_APPS[${app_name}]}"
+
+        local app_instance
         app_instance=$(sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/' <<<"${app_url}")
-        app_exec="${HOME}/bin/${app_name}"
+
+        local app_exec="${HOME}/bin/${app_name}"
 
         cat >"${app_exec}" <<EOF
 #!/usr/bin/env bash
 
-mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome")
-for id in "\${chrome_window_ids[@]}"; do
-    instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print \$3 }' | tr --delete ' \n",')"
-    [[ "${app_instance}" == "\${instance_name}" ]] &&
-        exit 0
-done
+# Launcher for ${app_name}
 
-chrome --app="${app_url}"
+set -Eeuo pipefail
+
+function main {
+    local -a chrome_window_ids
+    mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome")
+
+    local id
+    for id in "\${chrome_window_ids[@]}"; do
+        local instance_name
+        instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print \$3 }' | tr --delete ' \n",')"
+        if [[ "${app_instance}" == "\${instance_name}" ]]; then
+            return 0
+        fi
+    done
+
+    chrome --app="${app_url}"
+}
+
+main "\$@"
 EOF
 
         chmod +x "${app_exec}"

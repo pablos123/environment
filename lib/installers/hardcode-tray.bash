@@ -31,7 +31,7 @@ function main {
 
     log "Building Hardcode-Tray from source"
     (
-        cd "${HARDCODE_TRAY_DIR}" || exit 1
+        cd "${HARDCODE_TRAY_DIR}"
 
         meson setup \
             --reconfigure \

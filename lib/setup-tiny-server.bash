@@ -51,14 +51,12 @@ declare -ra APT_PACKAGES=(
 )
 
 function require_root {
-    if [[ "${EUID}" -ne 0 ]]; then
+    if ((EUID != 0)); then
         die "Run this script as root"
     fi
 }
 
 function main {
-    local target_home repo_dir repo_url repo_name
-
     require_root
 
     log "Starting Debian headless tiny server post-install setup"
@@ -136,8 +134,8 @@ DNSEOF
 
     local tool
     for tool in "${SUCKLESS_TOOLS[@]}"; do
-        repo_dir="/opt/.base_repos/${tool}"
-        repo_url="https://git.suckless.org/${tool}"
+        local repo_dir="/opt/.base_repos/${tool}"
+        local repo_url="https://git.suckless.org/${tool}"
 
         if [[ ! -d "${repo_dir}" ]]; then
             log "Cloning ${repo_url}"
@@ -155,7 +153,7 @@ DNSEOF
             die "could not cd into ${repo_dir}"
         fi
 
-        repo_name="${repo_dir##*/}"
+        local repo_name="${repo_dir##*/}"
         log "Building ${repo_name} from source"
         if ! make clean; then
             :
@@ -171,11 +169,11 @@ DNSEOF
     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
     chmod a+r /etc/apt/keyrings/docker.asc
 
-    local arch codename
+    local arch
     arch="$(dpkg --print-architecture)"
     source /etc/os-release
     # shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
-    codename="${VERSION_CODENAME}"
+    local codename="${VERSION_CODENAME}"
 
     printf 'deb [arch=%s signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian %s stable\n' \
         "${arch}" "${codename}" |
@@ -191,6 +189,7 @@ DNSEOF
 
     log "Writing .xinitrc for ${TARGET_USER}"
 
+    local target_home
     target_home="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
 
     cat >"${target_home}/.xinitrc" <<'XINITRC'

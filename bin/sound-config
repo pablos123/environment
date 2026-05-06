@@ -30,8 +30,6 @@ function close_pavu {
 }
 
 function main {
-    local -i pos_x pos_y
-
     if pavu_visible; then
         close_pavu
         return 0
@@ -44,6 +42,8 @@ function main {
         sleep 0.3
     done
 
+    local -i pos_x
+    local -i pos_y
     read -r pos_x pos_y < <(calculate_applet_position "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}")
 
     if ! xdotool search --onlyvisible --class "pavucontrol" \

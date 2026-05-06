@@ -16,12 +16,11 @@ function cleanup {
 }
 
 function main {
-    local qr_content
-
     if ! flameshot gui --path "${TMP_FILE}" >/dev/null 2>&1; then
         return 0
     fi
 
+    local qr_content
     if ! qr_content="$(zbarimg --raw --quiet "${TMP_FILE}")"; then
         return 0
     fi

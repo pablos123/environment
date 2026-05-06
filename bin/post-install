@@ -11,20 +11,19 @@ declare -r MOUNT_BASE="/media/${TARGET_USER}"
 declare -r MOUNT_POINT="${MOUNT_BASE}/usb1"
 
 function require_root {
-    if [[ "${EUID}" -ne 0 ]]; then
+    if ((EUID != 0)); then
         die "Run this script as root"
     fi
 }
 
 function main {
-    local sdxn is_work vault_pass
-
     require_root
 
     log "Starting Debian headless post-install setup"
 
     log "Asking for /dev/sdxn"
 
+    local sdxn
     read -r -p "In which device partition is the passwords.kdbx file?: (sdxn) " sdxn
 
     if [[ -z "${sdxn}" ]]; then
@@ -37,10 +36,12 @@ function main {
 
     log "Asking if it is work"
 
+    local is_work
     read -r -p "Is this setup for work?: (yes/no) " is_work
 
     log "Asking for keepassxc vault password"
 
+    local vault_pass
     read -rs -p "Insert keepassxc vault password: " vault_pass
 
     log "Removing cdrom entries from APT sources"

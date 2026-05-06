@@ -32,19 +32,20 @@ function get_headers {
 }
 
 function main {
-    local curl_response_md release_table_md sanitized_table old_ifs
-
-    old_ifs="${IFS}"
+    local old_ifs="${IFS}"
     IFS=$'\n'
 
+    local curl_response_md
     curl_response_md="$(pandoc --from html --to markdown <(curl "${RELEASES_URL}" 2>/dev/null))"
 
+    local release_table_md
     release_table_md="$(
         sed --regexp-extended --quiet '
             /^\s+Version\s+Code Name\s+Release Date\s+End of Life\s+/,/^$/ {p; /^$/q};
         ' <<<"${curl_response_md}"
     )"
 
+    local sanitized_table
     sanitized_table="$(
         sed --regexp-extended '
             s/^\s+//;

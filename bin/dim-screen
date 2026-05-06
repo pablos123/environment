@@ -12,9 +12,7 @@ declare -ri DIM_COLOR_TEMP=4000
 declare -r DIM_BRIGHTNESS=0.6
 
 function main {
-    local mode
-
-    mode="${1:-}"
+    local mode="${1:-}"
 
     if [[ "${mode}" == "night" ]]; then
         redshift -O "${DIM_COLOR_TEMP}" -b "${DIM_BRIGHTNESS}" >/dev/null 2>&1

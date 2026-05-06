@@ -15,23 +15,23 @@ declare -r ASKPASS_HELPER="${HOME}/environment/bin/sudo-askpass"
 declare -A SESSIONS
 
 function collect_sessions {
-    local label dir name key
     local -a entries=("user:${USER_SESSIONS_DIR}" "work:${WORK_SESSIONS_DIR}")
 
-    local entry file
+    local entry
     for entry in "${entries[@]}"; do
-        label="${entry%%:*}"
-        dir="${entry#*:}"
+        local label="${entry%%:*}"
+        local dir="${entry#*:}"
         if [[ ! -d "${dir}" ]]; then
             continue
         fi
+        local file
         for file in "${dir}"/*.conf; do
             if [[ ! -f "${file}" ]]; then
                 continue
             fi
-            name="${file##*/}"
+            local name="${file##*/}"
             name="${name%.conf}"
-            key="${label}:${name}"
+            local key="${label}:${name}"
             SESSIONS["${key}"]="${file}"
         done
     done
@@ -43,7 +43,6 @@ function pick_session {
 
 function prompt_sudo_password {
     local password
-
     if ! password="$(zenity --password)"; then
         return 1
     fi
@@ -56,14 +55,13 @@ function prompt_sudo_password {
 }
 
 function main {
-    local choice session
-
     collect_sessions
 
     if ((${#SESSIONS[@]} == 0)); then
         die "no sessions found"
     fi
 
+    local choice
     if ! choice="$(pick_session)"; then
         return 0
     fi
@@ -72,7 +70,7 @@ function main {
         return 0
     fi
 
-    session="${SESSIONS[${choice}]:-}"
+    local session="${SESSIONS[${choice}]:-}"
     if [[ ! -f "${session}" ]]; then
         die "session file not found: ${choice}"
     fi

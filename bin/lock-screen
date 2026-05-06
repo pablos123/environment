@@ -9,8 +9,10 @@ source "${HOME}/environment/lib/helpers.bash"
 require_commands scrot convert i3lock
 
 TMP_FILE="$(mktemp --suffix=.png)"
+declare -r TMP_FILE
+
 TMP_FILE_BLUR="$(mktemp --suffix=.png)"
-declare -r TMP_FILE TMP_FILE_BLUR
+declare -r TMP_FILE_BLUR
 
 function cleanup {
     rm --force "${TMP_FILE}" "${TMP_FILE_BLUR}"

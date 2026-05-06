@@ -92,18 +92,15 @@ declare -ri APPLET_X_GAP=16
 declare -ri APPLET_Y_GAP=42
 
 function calculate_applet_position {
-    local x_size y_size
-    local -a res
+    local x_size="${1:-}"
+    local y_size="${2:-}"
 
-    x_size="${1:-}"
-    y_size="${2:-}"
-
-    if [[ -z "${x_size}" ]] || [[ ! "${x_size}" =~ ^[0-9]+$ ]] ||
-        [[ -z "${y_size}" ]] || [[ ! "${y_size}" =~ ^[0-9]+$ ]]; then
+    if [[ -z "${x_size}" || ! "${x_size}" =~ ^[0-9]+$ || -z "${y_size}" || ! "${y_size}" =~ ^[0-9]+$ ]]; then
         return 1
     fi
 
     # array: x y offset_x offset_y
+    local -a res
     # shellcheck disable=SC2020  # tr 'x+' maps two chars to newlines, not a word pattern
     mapfile -t res < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
 
@@ -144,7 +141,9 @@ function make_build_install {
     local build_dir="$1"
     local make_arg="${2:-}"
 
-    cd "${build_dir}" || return 1
+    if ! cd "${build_dir}"; then
+        return 1
+    fi
 
     log "Building ${build_dir##*/} from source"
     {

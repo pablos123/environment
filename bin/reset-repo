@@ -9,12 +9,10 @@ source "${HOME}/environment/lib/helpers.bash"
 require_commands git
 
 function main {
-    local branch message
+    local branch="${1:-}"
+    local message="${2:-reset commit}"
 
-    branch="${1:-}"
-    message="${2:-reset commit}"
-
-    if [[ -z "${branch}" ]] || { [[ "${branch}" != "main" ]] && [[ "${branch}" != "master" ]]; }; then
+    if [[ -z "${branch}" || ("${branch}" != "main" && "${branch}" != "master") ]]; then
         die "Usage: reset-repo 'main|master' ['<commit_message>']"
     fi
 

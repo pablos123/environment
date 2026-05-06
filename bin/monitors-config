@@ -11,13 +11,12 @@ require_commands jq xrandr i3-msg
 declare -r TMP_CONNECTED_FILE='/tmp/monitors_connected'
 
 function get_current_workspace {
-    local name_focused
     local -a workspaces=()
-
     mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[] | "\(.name)::\(.focused)"')
 
     local w
     for w in "${workspaces[@]}"; do
+        local -a name_focused
         mapfile -t name_focused < <(printf '%s' "${w//::/\\n}")
         if [[ "${name_focused[1]}" == "true" ]]; then
             printf '%s\n' "${name_focused[0]}"
@@ -28,10 +27,9 @@ function get_current_workspace {
 
 function move_workspaces_to_primary {
     local current_workspace
-    local -a workspaces=()
-
     current_workspace="$(get_current_workspace)"
 
+    local -a workspaces=()
     mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[].name')
 
     local w
@@ -51,7 +49,6 @@ function move_workspaces_to_primary {
 
 function disable_phantom_outputs {
     local -a outputs=()
-
     mapfile -t outputs < <(xrandr | awk '/ disconnected [0-9]+x[0-9]+\+/ {print $1}')
 
     local output
@@ -83,26 +80,27 @@ function configure_monitors {
 }
 
 function main {
-    local had_previous_config
-    local -a monitors=() monitors_stable=()
-
+    local -a monitors=()
     mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
-    if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
+    if [[ -f "${TMP_CONNECTED_FILE}" && "${monitors[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
         exit 0
     fi
 
     # Wait and re-check to avoid reacting to brief disconnects
     # (e.g. monitor powering off momentarily reports as disconnected)
     sleep 3
+
+    local -a monitors_stable=()
     mapfile -t monitors_stable < <(xrandr | grep " connected" | awk '{print $1}')
 
-    if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors_stable[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
+    if [[ -f "${TMP_CONNECTED_FILE}" && "${monitors_stable[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
         exit 0
     fi
 
     monitors=("${monitors_stable[@]}")
 
+    local had_previous_config
     if [[ -f "${TMP_CONNECTED_FILE}" ]]; then
         had_previous_config=true
     else

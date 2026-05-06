@@ -20,15 +20,13 @@ declare -r FONTS_DIR="${HOME}/.local/share/fonts"
 declare -r NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 
 function main {
-    local font_dir archive_path
-
     mkdir --parents "${FONTS_DIR}"
 
     local font
     for font in "${FONTS[@]}"; do
         log "Installing ${font} Nerd font"
-        font_dir="${FONTS_DIR}/${font}Nerd"
-        archive_path="${FONTS_DIR}/${font}Nerd.tar.xz"
+        local font_dir="${FONTS_DIR}/${font}Nerd"
+        local archive_path="${FONTS_DIR}/${font}Nerd.tar.xz"
 
         rm --recursive --force "${font_dir}"
         mkdir --parents "${font_dir}"

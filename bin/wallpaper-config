@@ -11,24 +11,21 @@ require_commands hsetroot find
 declare -r THEME="${WALLPAPER_THEME:-}"
 
 function main {
-    local wallpapers_dir wallpaper
-    local -i items_count random_index
-    local -a wallpapers
-
-    wallpapers_dir="${HOME}/images/wallpapers/${THEME}/"
+    local wallpapers_dir="${HOME}/images/wallpapers/${THEME}/"
     if [[ ! -d "${wallpapers_dir}" ]]; then
         wallpapers_dir="${HOME}/images/wallpapers/"
     fi
 
+    local -a wallpapers
     mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f)
 
-    items_count="${#wallpapers[@]}"
+    local -i items_count="${#wallpapers[@]}"
     if ((items_count == 0)); then
         return 0
     fi
 
-    random_index=$((RANDOM % items_count))
-    wallpaper="${wallpapers[random_index]}"
+    local -i random_index=$((RANDOM % items_count))
+    local wallpaper="${wallpapers[random_index]}"
 
     hsetroot -cover "${wallpaper}" >/dev/null 2>&1
 }

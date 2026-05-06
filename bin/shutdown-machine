@@ -10,7 +10,6 @@ require_commands zenity sudo
 
 function main {
     local sudo_password
-
     if ! sudo_password="$(zenity --password)"; then
         return 0
     fi

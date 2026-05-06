@@ -11,15 +11,15 @@ require_commands curl notify-send xdg-open
 declare -r URL="https://status.claude.com/"
 
 function main {
-    local content unresolved title status message action
-
+    local content
     if ! content="$(curl --silent --fail --max-time 10 "${URL}")"; then
         die "Failed to fetch ${URL}"
     fi
 
+    local unresolved
     unresolved="$(sed -n '/<div class="unresolved-incidents">/,/<div class="components-section">/p' <<<"${content}")"
 
-    title=""
+    local title=""
     if ! title="$(grep --only-matching --perl-regexp 'actual-title[^>]*>\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
         title=""
     fi
@@ -28,16 +28,17 @@ function main {
         return 0
     fi
 
-    status=""
+    local status=""
     if ! status="$(grep --only-matching --perl-regexp '<strong>\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
         status=""
     fi
 
-    message=""
+    local message=""
     if ! message="$(grep --only-matching --perl-regexp 'whitespace-pre-wrap">\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
         message=""
     fi
 
+    local action
     action="$(notify-send \
         --urgency=critical \
         --app-name="Claude Status" \

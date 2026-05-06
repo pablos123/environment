@@ -11,10 +11,9 @@ require_commands dunstctl yad
 declare -r QUIET_MODE_ICON="${HOME}/environment/assets/nonotif.png"
 
 function main {
-    local paused
-
     dunstctl set-paused toggle
 
+    local paused
     paused="$(dunstctl is-paused)"
 
     if [[ "${paused}" == "true" ]]; then
