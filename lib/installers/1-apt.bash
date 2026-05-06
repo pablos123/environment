@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
+
+# APT package installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
+
+require_commands sudo apt
 
 declare -ra APT_PACKAGES=(
     xorg
@@ -107,24 +111,21 @@ declare -ra APT_PACKAGES=(
     keyd
 )
 
-# --------------------------------------------------
-# System update
-# --------------------------------------------------
-log "Updating system packages"
-sudo apt update
-sudo apt full-upgrade --yes
+function main {
+    log "Updating system packages"
+    sudo apt update
+    sudo apt full-upgrade --yes
 
-# --------------------------------------------------
-# Package installation
-# --------------------------------------------------
-log "Installing APT packages"
-sudo apt install --yes "${APT_PACKAGES[@]}"
+    log "Installing APT packages"
+    sudo apt install --yes "${APT_PACKAGES[@]}"
 
-# --------------------------------------------------
-# fd compatibility symlink (Debian)
-# --------------------------------------------------
-if command -v fdfind &>/dev/null; then
-    log "Creating fd compatibility symlink"
-    mkdir --parents "${HOME}/.local/bin"
-    ln --symbolic --force "$(command -v fdfind)" "${HOME}/.local/bin/fd"
-fi
+    if command -v fdfind >/dev/null; then
+        log "Creating fd compatibility symlink"
+        mkdir --parents "${HOME}/.local/bin"
+        local fdfind_path
+        fdfind_path="$(command -v fdfind)"
+        ln --symbolic --force "${fdfind_path}" "${HOME}/.local/bin/fd"
+    fi
+}
+
+main "$@"

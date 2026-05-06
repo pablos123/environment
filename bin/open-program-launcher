@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
-exec rofi -show run -display-run ">"
+# Program launcher
+
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands rofi
+
+function main {
+    exec rofi -show run -display-run ">"
+}
+
+main "$@"

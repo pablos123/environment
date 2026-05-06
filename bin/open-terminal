@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
+
+# Open terminal based on memory
+
 set -Eeuo pipefail
 
-# --------------------------------------------------
-# Open terminal based on available memory
-# Uses kitty if sufficient RAM, otherwise fallback to st
-# --------------------------------------------------
+source "${HOME}/environment/lib/helpers.bash"
 
-readonly MEMORY_THRESHOLD_KB=10000000
+require_commands free awk
 
-total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+declare -ri MEMORY_THRESHOLD_KB=10000000
 
-if (( total_memory > MEMORY_THRESHOLD_KB )); then
-    exec kitty
-else
+function main {
+    local -i total_memory
+    total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+
+    if ((total_memory > MEMORY_THRESHOLD_KB)); then
+        exec kitty
+    fi
     exec /usr/local/bin/st
-fi
+}
+
+main "$@"

@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-# Install Flatseal for giving flatpak Steam more permission to access the
-# file system if you want to use, for example, another drive to save your games.
+# Steam wrapper
 
-exec flatpak run com.valvesoftware.Steam -system-composer
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands flatpak
+
+function main {
+    exec flatpak run com.valvesoftware.Steam -system-composer "$@"
+}
+
+main "$@"

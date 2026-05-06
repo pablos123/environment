@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
+
+# Kitty terminal installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-readonly KITTY_APP="${HOME}/.local/kitty.app"
+require_commands curl ln sh
 
-# --------------------------------------------------
-# Install Kitty terminal
-# --------------------------------------------------
-log "Installing Kitty terminal"
-curl --fail --no-progress-meter --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n 2>/dev/null
+declare -r KITTY_APP="${HOME}/.local/kitty.app"
 
-# --------------------------------------------------
-# Create symlinks
-# --------------------------------------------------
-log "Creating Kitty symlinks"
-ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
-ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true
+function main {
+    log "Installing Kitty terminal"
+    curl --fail --no-progress-meter --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n 2>/dev/null
+
+    log "Creating Kitty symlinks"
+    if ! ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty"; then
+        :
+    fi
+    if ! ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten"; then
+        :
+    fi
+}
+
+main "$@"

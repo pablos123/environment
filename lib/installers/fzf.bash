@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
+
+# fzf installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-readonly FZF_REPO_URL="https://github.com/junegunn/fzf.git"
-readonly FZF_DIR="${HOME}/.base_repos/fzf"
+require_commands git
 
-# --------------------------------------------------
-# Clone or update repository
-# --------------------------------------------------
-git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true
+declare -r FZF_REPO_URL="https://github.com/junegunn/fzf.git"
+declare -r FZF_DIR="${HOME}/.base_repos/fzf"
 
-# --------------------------------------------------
-# Install fzf
-# --------------------------------------------------
-cd "${FZF_DIR}" || exit 1
+function main {
+    git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true
 
-log "Installing fzf"
-./install --all >/dev/null
+    log "Installing fzf"
+    "${FZF_DIR}/install" --all >/dev/null
+}
+
+main "$@"

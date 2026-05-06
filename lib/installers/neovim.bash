@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
+
+# Neovim installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-readonly NEOVIM_REPO_URL="https://github.com/neovim/neovim"
-readonly NEOVIM_PATH="${HOME}/.base_repos/neovim"
+require_commands git make sudo
+
+declare -r NEOVIM_REPO_URL="https://github.com/neovim/neovim"
+declare -r NEOVIM_PATH="${HOME}/.base_repos/neovim"
 
 declare -ra DEPENDENCIES=(
     ninja-build
@@ -22,31 +26,24 @@ declare -ra DEPENDENCIES=(
     doxygen
 )
 
-# --------------------------------------------------
-# Dependencies
-# --------------------------------------------------
-log "Installing Neovim dependencies"
-sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+function main {
+    log "Installing Neovim dependencies"
+    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
-# --------------------------------------------------
-# Clone or update repository
-# --------------------------------------------------
-git_clone_pull_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" true
+    git_clone_pull_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" true
 
-# --------------------------------------------------
-# Clean build artifacts
-# --------------------------------------------------
-log "Cleaning build artifacts"
-cd "${NEOVIM_PATH}" || exit 1
-sudo rm --recursive --force .deps build 2>/dev/null || true
+    log "Cleaning build artifacts"
+    cd "${NEOVIM_PATH}"
+    if ! sudo rm --recursive --force .deps build 2>/dev/null; then
+        :
+    fi
 
-# --------------------------------------------------
-# Build & install
-# --------------------------------------------------
-make_build_install "${NEOVIM_PATH}" "CMAKE_BUILD_TYPE=RelWithDebInfo"
+    make_build_install "${NEOVIM_PATH}" "CMAKE_BUILD_TYPE=RelWithDebInfo"
 
-# --------------------------------------------------
-# Verify installation
-# --------------------------------------------------
-log "Verifying Neovim installation"
-command -v nvim || exit 1
+    log "Verifying Neovim installation"
+    if ! command -v nvim >/dev/null; then
+        die "nvim not found after installation"
+    fi
+}
+
+main "$@"

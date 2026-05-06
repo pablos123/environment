@@ -144,12 +144,6 @@ keymap_set('n', 'ga', vim.lsp.buf.code_action)
 -- Autocommands
 -------------------------------------------------------------------------------
 create_autocmd('FileType', {
-    pattern = { 'c', 'html', 'css' },
-    command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
-    group = create_augroup('2-indent-ft'),
-})
-
-create_autocmd('FileType', {
     pattern = 'markdown',
     callback = function()
         ol.wrap = true
@@ -169,17 +163,13 @@ create_autocmd('TermOpen', {
     group = create_augroup('terminal-ft'),
 })
 
--- Ansible: set filetype and indent for yaml files
+-- Ansible: detect filetype for yaml files
 create_autocmd('BufEnter', {
     pattern = { '*.yml', '*.yaml' },
     command = 'setl ft=yaml.ansible',
     group = create_augroup('ansible-ft'),
 })
-create_autocmd('FileType', {
-    pattern = 'yaml.ansible',
-    command = 'setl tabstop=2 shiftwidth=2 softtabstop=2',
-    group = create_augroup('ansible-indent'),
-})
+
 g.ansible_unindent_after_newline = 0
 g.ansible_name_highlight = 'ob'
 g.ansible_extra_keywords_highlight = 1

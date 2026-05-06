@@ -1,0 +1,25 @@
+# ~/.shellcheckrc — global shellcheck configuration
+#
+# Project-level disables. Each one is silenced because the warning is
+# redundant or unhelpful given the conventions we follow.
+
+# SC2312: "command in pipeline masks return value."
+# We always set `set -o pipefail`, so pipeline failures DO propagate.
+# This warning is a false positive in our codebase.
+disable=SC2312
+
+# SC1091: "not following sourced file."
+# Static cross-file analysis isn't worth a per-script directive in this
+# environment. Sourced files (helpers.bash, etc.) exist at runtime and
+# the scripts work; we don't need shellcheck to follow them.
+disable=SC1091
+
+# SC2310: "function invoked in `if` condition disables `set -e`."
+# Our control flow rule (only `if/then/fi`, no `&&` / `||`) means
+# predicate functions are *always* called from test positions. The
+# `set -e` suspension is the documented bash semantics of test
+# positions — it's the intentional behavior, not an oversight. Our
+# predicate functions are simple by convention (no internal commands
+# whose failure we'd want `set -e` to catch); the warning is structural
+# noise.
+disable=SC2310

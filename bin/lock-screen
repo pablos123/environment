@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
+
+# Lock screen
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Lock screen with blurred screenshot
-# --------------------------------------------------
+require_commands scrot convert i3lock
 
 TMP_FILE="$(mktemp --suffix=.png)"
 TMP_FILE_BLUR="$(mktemp --suffix=.png)"
-readonly TMP_FILE TMP_FILE_BLUR
+declare -r TMP_FILE TMP_FILE_BLUR
 
-cleanup() {
-    rm -f "${TMP_FILE}" "${TMP_FILE_BLUR}"
+function cleanup {
+    rm --force "${TMP_FILE}" "${TMP_FILE_BLUR}"
 }
 
-command -v scrot >/dev/null || die "scrot not found"
-command -v convert >/dev/null || die "convert (imagemagick) not found"
-command -v i3lock >/dev/null || die "i3lock not found"
+function main {
+    scrot --overwrite "${TMP_FILE}"
+    convert -blur 0x20 "${TMP_FILE}" "${TMP_FILE_BLUR}"
+    i3lock --no-unlock-indicator --nofork --ignore-empty-password --image "${TMP_FILE_BLUR}"
+}
 
-scrot -o "${TMP_FILE}"
-convert -blur 0x20 "${TMP_FILE}" "${TMP_FILE_BLUR}"
-
-i3lock --no-unlock-indicator --nofork --ignore-empty-password -i "${TMP_FILE_BLUR}"
+main "$@"

@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
-systemctl --user restart pipewire.service &>/dev/null
+# Restart audio
+
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands systemctl
+
+function main {
+    systemctl --user restart pipewire.service >/dev/null 2>&1
+}
+
+main "$@"

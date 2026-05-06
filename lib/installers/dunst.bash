@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
+
+# Dunst installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-readonly DUNST_REPO_URL="https://github.com/dunst-project/dunst.git"
-readonly DUNST_DIR="${HOME}/.base_repos/dunst"
+require_commands git make sudo
+
+declare -r DUNST_REPO_URL="https://github.com/dunst-project/dunst.git"
+declare -r DUNST_DIR="${HOME}/.base_repos/dunst"
 
 declare -ra DEPENDENCIES=(
     libdbus-1-dev
@@ -20,18 +24,13 @@ declare -ra DEPENDENCIES=(
     libnotify-dev
 )
 
-# --------------------------------------------------
-# Dependencies
-# --------------------------------------------------
-log "Installing dunst dependencies"
-sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+function main {
+    log "Installing dunst dependencies"
+    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
-# --------------------------------------------------
-# Clone or update repository
-# --------------------------------------------------
-git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true
+    git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true
 
-# --------------------------------------------------
-# Build & install
-# --------------------------------------------------
-make_build_install "${DUNST_DIR}"
+    make_build_install "${DUNST_DIR}"
+}
+
+main "$@"

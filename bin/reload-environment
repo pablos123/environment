@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
+
+# Reload environment
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Configuration (constants only)
-# --------------------------------------------------
-ENVIRONMENT_DIR="${HOME}/environment"
-DOTFILES_DIR="${HOME}/.dotfiles_stow"
+require_commands git stow systemctl gsettings fc-cache i3-msg
 
-FILES_TO_REMOVE=(
+declare -r ENVIRONMENT_DIR="${HOME}/environment"
+declare -r DOTFILES_DIR="${HOME}/.dotfiles_stow"
+
+declare -ra FILES_TO_REMOVE=(
     "${DOTFILES_DIR}"
     "${HOME}/.bashrc"
     "${HOME}/.profile"
@@ -21,61 +22,48 @@ FILES_TO_REMOVE=(
     "${HOME}/.config/gtk-3.0"
 )
 
-CACHE_FILES=(
+declare -ra CACHE_FILES=(
     "${HOME}/rofi-3.runcache"
     "${HOME}/.cache/dmenu_run"
     "${HOME}/dmenu_cache"
 )
 
-# --------------------------------------------------
-# Remove existing dotfiles
-# --------------------------------------------------
-rm --recursive --force "${FILES_TO_REMOVE[@]}"
+function main {
+    rm --recursive --force "${FILES_TO_REMOVE[@]}"
 
-# --------------------------------------------------
-# Update environment repository
-# --------------------------------------------------
-git -C "${ENVIRONMENT_DIR}" pull --ff-only >/dev/null
+    git -C "${ENVIRONMENT_DIR}" pull --ff-only >/dev/null
 
-# --------------------------------------------------
-# Copy dotfiles base
-# --------------------------------------------------
-cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
+    cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 
-# --------------------------------------------------
-# Restow dotfiles
-# --------------------------------------------------
-cd "${DOTFILES_DIR}" || exit 1
-stow --target="${HOME}" --restow -- */
-systemctl --user daemon-reload
-for unit in "${ENVIRONMENT_DIR}/dotfiles/config/.config/systemd/user"/*; do
-    grep -q '^\[Install\]' "${unit}" && systemctl --user enable "${unit##*/}" >/dev/null
-done
+    if ! cd "${DOTFILES_DIR}"; then
+        die "could not cd into ${DOTFILES_DIR}"
+    fi
+    stow --target="${HOME}" --restow -- */
+    systemctl --user daemon-reload
 
-# --------------------------------------------------
-# Cleanup caches
-# --------------------------------------------------
-rm --force "${CACHE_FILES[@]}"
+    local unit
+    for unit in "${ENVIRONMENT_DIR}/dotfiles/config/.config/systemd/user"/*; do
+        if grep --quiet '^\[Install\]' "${unit}"; then
+            systemctl --user enable "${unit##*/}" >/dev/null
+        fi
+    done
 
-# --------------------------------------------------
-# Prefer dark theme for some applications like Zenity
-# --------------------------------------------------
-# sudo apt install libglib2.0-bin but it's there for default in Debian and
-# I do not want to hardcode a lib version.
-gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    rm --force "${CACHE_FILES[@]}"
 
-# --------------------------------------------------
-# Reload desktop components
-# --------------------------------------------------
-{
-    fc-cache --really-force
+    # Prefer the dark GTK theme for apps like zenity. libglib2.0-bin
+    # provides gsettings; it ships with Debian by default.
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-    systemctl --user restart picom.service dunst.service
+    if ! {
+        fc-cache --really-force
+        systemctl --user restart picom.service dunst.service
+        quit_and_wait "polybar-msg cmd quit" polybar
+        i3-msg restart
+    } >/dev/null; then
+        :
+    fi
+}
 
-    quit_and_wait "polybar-msg cmd quit" polybar
-
-    i3-msg restart
-} >/dev/null || true
-
+main "$@"

@@ -1,33 +1,60 @@
 #!/usr/bin/env bash
+
+# Sound configuration applet
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Sound configuration applet (pavucontrol)
-# Case insensitive windows class searching is a pain.
-# --------------------------------------------------
+require_commands pavucontrol xdotool
 
-readonly PAVUCONTROL_WIDTH=600
-readonly PAVUCONTROL_HEIGHT=400
+declare -ri PAVUCONTROL_WIDTH=600
+declare -ri PAVUCONTROL_HEIGHT=400
 
-command -v pavucontrol >/dev/null || die "pavucontrol not found"
-command -v xdotool >/dev/null || die "xdotool not found"
+function pavu_visible {
+    if xdotool search --onlyvisible --class "pavucontrol" 2>/dev/null; then
+        return 0
+    fi
+    if xdotool search --onlyvisible --class "Pavucontrol" 2>/dev/null; then
+        return 0
+    fi
+    return 1
+}
 
-# Check both case variants (xdotool class search is case-sensitive)
-if xdotool search --onlyvisible --class "pavucontrol" 2>/dev/null || xdotool search --onlyvisible --class "Pavucontrol" 2>/dev/null; then
-    xdotool search --onlyvisible --class "pavucontrol" windowclose 2>/dev/null ||
-        xdotool search --onlyvisible --class "Pavucontrol" windowclose 2>/dev/null || true
-    exit 0
-fi
+function close_pavu {
+    if ! xdotool search --onlyvisible --class "pavucontrol" windowclose 2>/dev/null; then
+        if ! xdotool search --onlyvisible --class "Pavucontrol" windowclose 2>/dev/null; then
+            :
+        fi
+    fi
+}
 
-pavucontrol -t 3 & disown
+function main {
+    local -i pos_x pos_y
 
-while ! xdotool search --onlyvisible --class "pavucontrol" 2>/dev/null && ! xdotool search --onlyvisible --class "Pavucontrol" 2>/dev/null; do
-    sleep 0.3
-done
+    if pavu_visible; then
+        close_pavu
+        return 0
+    fi
 
-read -r pos_x pos_y <<< "$(calculate_applet_position "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}")"
+    pavucontrol -t 3 &
+    disown
 
-xdotool search --onlyvisible --class "pavucontrol" windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" windowmove "${pos_x}" "${pos_y}" 2>/dev/null ||
-    xdotool search --onlyvisible --class "Pavucontrol" windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" windowmove "${pos_x}" "${pos_y}" 2>/dev/null || true
+    while ! pavu_visible; do
+        sleep 0.3
+    done
+
+    read -r pos_x pos_y < <(calculate_applet_position "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}")
+
+    if ! xdotool search --onlyvisible --class "pavucontrol" \
+        windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" \
+        windowmove "${pos_x}" "${pos_y}" 2>/dev/null; then
+        if ! xdotool search --onlyvisible --class "Pavucontrol" \
+            windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" \
+            windowmove "${pos_x}" "${pos_y}" 2>/dev/null; then
+            :
+        fi
+    fi
+}
+
+main "$@"

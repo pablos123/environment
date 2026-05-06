@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
-# Clean demands_attention from apps
-# Mainly for lots or urgent workspaces at startup
 
-function clean_urgent() {
+# Clean urgent flag
+
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands wmctrl awk
+
+function main {
+    local -a windows
+
+    mapfile -t windows < <(wmctrl -l | awk '{print $1}')
+
     local win
-    for win in $(wmctrl -l | awk -F' ' '{print $1}'); do
+    for win in "${windows[@]}"; do
         wmctrl -i -r "${win}" -b remove,demands_attention
     done
 }
 
-clean_urgent
+main "$@"

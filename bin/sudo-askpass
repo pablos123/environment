@@ -1,2 +1,11 @@
 #!/usr/bin/env bash
-printf '%s\n' "${SUDO_PASSWORD:-}"
+
+# Sudo askpass helper
+
+set -Eeuo pipefail
+
+function main {
+    printf '%s\n' "${SUDO_PASSWORD:-}"
+}
+
+main "$@"

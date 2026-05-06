@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-# --------------------------------------------------
-# Configuration (constants only)
-# --------------------------------------------------
-readonly TARGET_USER="pab"
+# One-shot post-install setup for a fresh Debian server.
+
+set -Eeuo pipefail
+
+source "/home/pab/environment/lib/helpers.bash"
+
+declare -r TARGET_USER="pab"
 
 declare -ra SUCKLESS_TOOLS=(st dmenu dwm)
 declare -ra APT_PACKAGES=(
@@ -47,181 +50,160 @@ declare -ra APT_PACKAGES=(
     stow
 )
 
-# --------------------------------------------------
-# Helpers (only our messages)
-# --------------------------------------------------
-function log() {
-    printf '\033[1;32m==>\033[0m %s\n' "${1}"
-}
-
-function warn() {
-    printf '\033[1;33m[WARN]\033[0m %s\n' "${1}"
-}
-
-function die() {
-    printf '\033[1;31m[ERROR]\033[0m %s\n' "${1}" >&2
-}
-
-# --------------------------------------------------
-# Preconditions
-# --------------------------------------------------
-function require_root() {
+function require_root {
     if [[ "${EUID}" -ne 0 ]]; then
         die "Run this script as root"
     fi
 }
 
-require_root
+function main {
+    local target_home repo_dir repo_url repo_name
 
-log "Starting Debian headless tiny server post-install setup"
+    require_root
 
-# --------------------------------------------------
-# APT: Remove cdrom entries
-# --------------------------------------------------
-log "Removing cdrom entries from APT sources"
+    log "Starting Debian headless tiny server post-install setup"
 
-sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list || true
+    log "Removing cdrom entries from APT sources"
 
-if [[ -d /etc/apt/sources.list.d ]]; then
-    sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list || true
-fi
+    if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list; then
+        :
+    fi
 
-log "Updating and upgrading packages"
-apt update
-apt upgrade --yes
-apt autopurge --yes
+    if [[ -d /etc/apt/sources.list.d ]]; then
+        if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list; then
+            :
+        fi
+    fi
 
-# --------------------------------------------------
-# Base packages
-# --------------------------------------------------
-log "Installing base packages"
+    log "Updating and upgrading packages"
+    apt update
+    apt upgrade --yes
+    apt autopurge --yes
 
-apt install --yes "${APT_PACKAGES[@]}"
+    log "Installing base packages"
 
-# --------------------------------------------------
-# Networking: switch fully to NetworkManager
-# --------------------------------------------------
-log "Installing NetworkManager"
-apt install --yes network-manager
+    apt install --yes "${APT_PACKAGES[@]}"
 
-log "Disabling legacy ifupdown networking"
-rm --force /etc/network/interfaces
+    log "Installing NetworkManager"
+    apt install --yes network-manager
 
-systemctl disable networking.service || true
-systemctl stop networking.service || true
+    log "Disabling legacy ifupdown networking"
+    rm --force /etc/network/interfaces
 
-apt purge --yes ifupdown || true
+    if ! systemctl disable networking.service; then
+        :
+    fi
+    if ! systemctl stop networking.service; then
+        :
+    fi
 
-log "Configuring DNS fallback"
-mkdir -p /etc/NetworkManager/conf.d
-cat > /etc/NetworkManager/conf.d/dns-servers.conf <<'DNSEOF'
+    if ! apt purge --yes ifupdown; then
+        :
+    fi
+
+    log "Configuring DNS fallback"
+    mkdir --parents /etc/NetworkManager/conf.d
+    cat >/etc/NetworkManager/conf.d/dns-servers.conf <<'DNSEOF'
 [global-dns-domain-*]
 servers=8.8.8.8,1.1.1.1
 DNSEOF
 
-log "Enabling NetworkManager"
-systemctl enable NetworkManager
-systemctl restart NetworkManager
+    log "Enabling NetworkManager"
+    systemctl enable NetworkManager
+    systemctl restart NetworkManager
 
-log "Waiting for DNS resolution to come up"
-for i in $(seq 1 30); do
-    if getent hosts google.com > /dev/null 2>&1; then
-        log "DNS is working"
-        break
-    fi
-    if [[ "${i}" -eq 30 ]]; then
-        die "DNS resolution failed after 30 seconds"
-    fi
-    sleep 1
-done
+    log "Waiting for DNS resolution to come up"
+    local -i i
+    for ((i = 1; i <= 30; i++)); do
+        if getent hosts google.com >/dev/null 2>&1; then
+            log "DNS is working"
+            break
+        fi
+        if ((i == 30)); then
+            die "DNS resolution failed after 30 seconds"
+        fi
+        sleep 1
+    done
 
-# --------------------------------------------------
-# User configuration
-# --------------------------------------------------
-log "Granting sudo access to ${TARGET_USER}"
-usermod --append --groups sudo "${TARGET_USER}"
+    log "Granting sudo access to ${TARGET_USER}"
+    usermod --append --groups sudo "${TARGET_USER}"
 
-# --------------------------------------------------
-# APT warnings
-# --------------------------------------------------
-log "Removing apt unstable cli interface warning"
-echo "Apt::Cmd::Disable-Script-Warning true;" | tee /etc/apt/apt.conf.d/90disablescriptwarning
+    log "Removing apt unstable cli interface warning"
+    echo "Apt::Cmd::Disable-Script-Warning true;" | tee /etc/apt/apt.conf.d/90disablescriptwarning
 
-# --------------------------------------------------
-# Timezone
-# --------------------------------------------------
-log "Configuring correct timezone"
-timedatectl set-timezone America/Argentina/Buenos_Aires
+    log "Configuring correct timezone"
+    timedatectl set-timezone America/Argentina/Buenos_Aires
 
-# --------------------------------------------------
-# Install each suckless tool
-# --------------------------------------------------
-for tool in "${SUCKLESS_TOOLS[@]}"; do
-    repo_dir="/opt/.base_repos/${tool}"
-    repo_url="https://git.suckless.org/${tool}"
+    local tool
+    for tool in "${SUCKLESS_TOOLS[@]}"; do
+        repo_dir="/opt/.base_repos/${tool}"
+        repo_url="https://git.suckless.org/${tool}"
 
-    if [[ ! -d "${repo_dir}" ]]; then
-        log "Cloning ${repo_url}"
-        git clone --depth 1 "${repo_url}" "${repo_dir}"
-    else
-        log "Updating ${repo_dir}"
-        cd "${repo_dir}" || echo "Bad dir"
-        git fetch --depth 1
-        git reset --hard origin/HEAD
-    fi
+        if [[ ! -d "${repo_dir}" ]]; then
+            log "Cloning ${repo_url}"
+            git clone --depth 1 "${repo_url}" "${repo_dir}"
+        else
+            log "Updating ${repo_dir}"
+            if ! cd "${repo_dir}"; then
+                die "could not cd into ${repo_dir}"
+            fi
+            git fetch --depth 1
+            git reset --hard origin/HEAD
+        fi
 
-    cd "${repo_dir}" || echo "Bad dir"
+        if ! cd "${repo_dir}"; then
+            die "could not cd into ${repo_dir}"
+        fi
 
-    log "Building $(basename "${repo_dir}") from source"
-    make clean || true
-    make
-    make install
-done
+        repo_name="${repo_dir##*/}"
+        log "Building ${repo_name} from source"
+        if ! make clean; then
+            :
+        fi
+        make
+        make install
+    done
 
-# --------------------------------------------------
-# Docker
-# --------------------------------------------------
-log "Installing Docker"
+    log "Installing Docker"
 
-apt install --yes ca-certificates
-install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-chmod a+r /etc/apt/keyrings/docker.asc
+    apt install --yes ca-certificates
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+    chmod a+r /etc/apt/keyrings/docker.asc
 
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "${VERSION_CODENAME}") stable" \
-  | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    local arch codename
+    arch="$(dpkg --print-architecture)"
+    source /etc/os-release
+    # shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
+    codename="${VERSION_CODENAME}"
 
-apt update
-apt install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    printf 'deb [arch=%s signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian %s stable\n' \
+        "${arch}" "${codename}" |
+        tee /etc/apt/sources.list.d/docker.list >/dev/null
 
-log "Adding ${TARGET_USER} to docker group"
-usermod --append --groups docker "${TARGET_USER}"
+    apt update
+    apt install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-systemctl enable docker
+    log "Adding ${TARGET_USER} to docker group"
+    usermod --append --groups docker "${TARGET_USER}"
 
-# --------------------------------------------------
-# Dotfiles: .xinitrc
-# --------------------------------------------------
-log "Writing .xinitrc for ${TARGET_USER}"
+    systemctl enable docker
 
-TARGET_HOME="$(eval echo "~${TARGET_USER}")"
+    log "Writing .xinitrc for ${TARGET_USER}"
 
-cat > "${TARGET_HOME}/.xinitrc" <<'XINITRC'
+    target_home="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
+
+    cat >"${target_home}/.xinitrc" <<'XINITRC'
 xrdb -merge ~/.Xresources 2>/dev/null
 hsetroot -solid '#1a1b26' &
 exec dwm
 XINITRC
 
-chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.xinitrc"
+    chown "${TARGET_USER}:${TARGET_USER}" "${target_home}/.xinitrc"
 
-# --------------------------------------------------
-# Dotfiles: .bashrc
-# --------------------------------------------------
-log "Writing .bashrc for root"
+    log "Writing .bashrc for root"
 
-cat > /root/.bashrc <<'BASHRC'
+    cat >/root/.bashrc <<'BASHRC'
 # If not interactive, bail
 [[ $- != *i* ]] && return
 
@@ -278,7 +260,7 @@ alias ...='cd ../..'
 
 # --- Completions ---
 if [[ -f /usr/share/bash-completion/bash_completion ]]; then
-    . /usr/share/bash-completion/bash_completion
+    source /usr/share/bash-completion/bash_completion
 fi
 
 # --- Path ---
@@ -289,39 +271,33 @@ export EDITOR="vim"
 bind 'set bell-style none'
 BASHRC
 
-log "Writing .bash_profile for root"
+    log "Writing .bash_profile for root"
 
-cat > /root/.bash_profile <<'BPROFILE'
+    cat >/root/.bash_profile <<'BPROFILE'
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 BPROFILE
 
-log "Writing .bashrc for ${TARGET_USER}"
-cp /root/.bashrc "${TARGET_HOME}/.bashrc"
-chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.bashrc"
+    log "Writing .bashrc for ${TARGET_USER}"
+    cp /root/.bashrc "${target_home}/.bashrc"
+    chown "${TARGET_USER}:${TARGET_USER}" "${target_home}/.bashrc"
 
-log "Writing .bash_profile for ${TARGET_USER}"
-cp /root/.bash_profile "${TARGET_HOME}/.bash_profile"
-chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.bash_profile"
+    log "Writing .bash_profile for ${TARGET_USER}"
+    cp /root/.bash_profile "${target_home}/.bash_profile"
+    chown "${TARGET_USER}:${TARGET_USER}" "${target_home}/.bash_profile"
 
-# --------------------------------------------------
-# Disable bell system-wide
-# --------------------------------------------------
-log "Disabling bell system-wide"
+    log "Disabling bell system-wide"
 
-cat > /etc/inputrc <<'INPUTRC'
+    cat >/etc/inputrc <<'INPUTRC'
 $include /etc/inputrc.dpkg-dist
 set bell-style none
 INPUTRC
 
-echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
-echo "blacklist snd_pcsp" >> /etc/modprobe.d/nobeep.conf
+    echo "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
+    echo "blacklist snd_pcsp" >>/etc/modprobe.d/nobeep.conf
 
-# --------------------------------------------------
-# Keyboard layout
-# --------------------------------------------------
-log "Configuring EU keyboard layout"
+    log "Configuring EU keyboard layout"
 
-cat > /etc/default/keyboard <<'KBEOF'
+    cat >/etc/default/keyboard <<'KBEOF'
 XKBMODEL="pc105"
 XKBLAYOUT="eu"
 XKBVARIANT=""
@@ -329,16 +305,16 @@ XKBOPTIONS="caps:swapescape"
 BACKSPACE="guess"
 KBEOF
 
-setupcon --force 2>/dev/null || true
+    if ! setupcon --force 2>/dev/null; then
+        :
+    fi
 
-# --------------------------------------------------
-# Firmware
-# --------------------------------------------------
-log "Checking for firmware updates"
-fwupdmgr --force --assume-yes refresh
-fwupdmgr --force --assume-yes get-updates
-fwupdmgr --force --assume-yes update
+    log "Checking for firmware updates"
+    fwupdmgr --force --assume-yes refresh
+    fwupdmgr --force --assume-yes get-updates
+    fwupdmgr --force --assume-yes update
 
-log "Post-install setup complete"
+    log "Post-install setup complete"
+}
 
-
+main "$@"

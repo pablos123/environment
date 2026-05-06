@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
+
+# Zed editor installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Dependencies
-# --------------------------------------------------
-log "Installing Zed dependencies"
-sudo apt install --yes rsync >/dev/null
+require_commands curl sudo apt
 
-# --------------------------------------------------
-# Install Zed editor
-# --------------------------------------------------
-log "Installing Zed editor"
-curl --fail --no-progress-meter --location https://zed.dev/install.sh | sh
+function main {
+    log "Installing Zed dependencies"
+    sudo apt install --yes rsync >/dev/null
+
+    log "Installing Zed editor"
+    curl --fail --no-progress-meter --location https://zed.dev/install.sh | sh
+}
+
+main "$@"

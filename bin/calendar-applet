@@ -1,29 +1,40 @@
 #!/usr/bin/env bash
+
+# Calendar applet
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Calendar applet
-# Opens a calendar popup positioned in the corner
-# --------------------------------------------------
+require_commands yad xdotool xclip
 
-readonly CALENDAR_WIDTH=304
-readonly CALENDAR_HEIGHT=208
+declare -ri CALENDAR_WIDTH=304
+declare -ri CALENDAR_HEIGHT=208
 
-command -v yad >/dev/null || die "yad not found"
-command -v xdotool >/dev/null || die "xdotool not found"
+function main {
+    local previous_calendar selected_date
+    local -a position
 
-previous_calendar=$(xdotool search --onlyvisible --name "Tiny Calendar" || true)
+    previous_calendar=""
+    if ! previous_calendar="$(xdotool search --onlyvisible --name "Tiny Calendar")"; then
+        previous_calendar=""
+    fi
 
-if [[ -n "${previous_calendar}" ]]; then
-    xdotool windowclose "${previous_calendar}"
-    exit 0
-fi
+    if [[ -n "${previous_calendar}" ]]; then
+        xdotool windowclose "${previous_calendar}"
+        return 0
+    fi
 
-mapfile -t position < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}" | tr ' ' '\n')
+    mapfile -t position < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}" | tr ' ' '\n')
 
-selected_date=$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null || true)
+    selected_date=""
+    if ! selected_date="$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null)"; then
+        selected_date=""
+    fi
 
-[[ -n "${selected_date}" ]] &&
-    echo "${selected_date}" | xclip
+    if [[ -n "${selected_date}" ]]; then
+        printf '%s' "${selected_date}" | xclip
+    fi
+}
+
+main "$@"

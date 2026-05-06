@@ -1,27 +1,34 @@
 #!/usr/bin/env bash
+
+# Reset repository to a single commit
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Reset repository to a single commit
-# --------------------------------------------------
+require_commands git
 
-readonly BRANCH="${1:-}"
-readonly MESSAGE="${2:-reset commit}"
+function main {
+    local branch message
 
-if [[ -z "${BRANCH}" ]] || { [[ "${BRANCH}" != "main" ]] && [[ "${BRANCH}" != "master" ]]; }; then
-    die "Usage: reset-repo 'main/master' ['<commit_message>']"
-fi
+    branch="${1:-}"
+    message="${2:-reset commit}"
 
-log "Resetting repository to single commit on ${BRANCH}"
+    if [[ -z "${branch}" ]] || { [[ "${branch}" != "main" ]] && [[ "${branch}" != "master" ]]; }; then
+        die "Usage: reset-repo 'main|master' ['<commit_message>']"
+    fi
 
-git checkout --orphan latest_branch
-git add -A
-git commit -m "${MESSAGE}"
-git branch -D "${BRANCH}"
-git branch -m "${BRANCH}"
-git push -f origin "${BRANCH}"
-git branch --set-upstream-to=origin/"${BRANCH}"
+    log "Resetting repository to single commit on ${branch}"
 
-log "Repository reset complete"
+    git checkout --orphan latest_branch
+    git add --all
+    git commit --message="${message}"
+    git branch --delete --force "${branch}"
+    git branch --move "${branch}"
+    git push --force origin "${branch}"
+    git branch --set-upstream-to=origin/"${branch}"
+
+    log "Repository reset complete"
+}
+
+main "$@"

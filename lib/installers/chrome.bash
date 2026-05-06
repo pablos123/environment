@@ -1,45 +1,46 @@
 #!/usr/bin/env bash
+
+# Google Chrome installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Google Chrome repository
-# --------------------------------------------------
-if [[ ! -f "/usr/share/keyrings/google-chrome.gpg" ]]; then
-    log "Setting up Google Chrome repository"
-    curl --fail --no-progress-meter --location \
-        'https://dl-ssl.google.com/linux/linux_signing_key.pub' \
-    | sudo gpg --yes --dearmor \
-        --output /usr/share/keyrings/google-chrome.gpg
-fi
+require_commands curl gpg sudo apt
 
-if [[ ! -f "/etc/apt/sources.list.d/google-chrome.list" ]]; then
-    echo \
-        'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' \
-    | sudo tee /etc/apt/sources.list.d/google-chrome.list >/dev/null
-fi
+function main {
+    if [[ ! -f "/usr/share/keyrings/google-chrome.gpg" ]]; then
+        log "Setting up Google Chrome repository"
+        curl --fail --no-progress-meter --location \
+            'https://dl-ssl.google.com/linux/linux_signing_key.pub' |
+            sudo gpg --yes --dearmor \
+                --output /usr/share/keyrings/google-chrome.gpg
+    fi
 
-# --------------------------------------------------
-# Packages
-# --------------------------------------------------
-sudo apt update >/dev/null
+    if [[ ! -f "/etc/apt/sources.list.d/google-chrome.list" ]]; then
+        echo \
+            'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' |
+            sudo tee /etc/apt/sources.list.d/google-chrome.list >/dev/null
+    fi
 
-log "Installing Google Chrome"
-sudo apt install --yes \
-    google-chrome-stable \
-    xdg-utils \
-    fonts-noto-color-emoji \
-    >/dev/null
+    sudo apt update >/dev/null
 
-# Fix fonts rendering incorrectly:
-# Disable the flag chrome://flags/#enable-gpu-rasterization
+    log "Installing Google Chrome"
+    sudo apt install --yes \
+        google-chrome-stable \
+        xdg-utils \
+        fonts-noto-color-emoji \
+        >/dev/null
 
-# --------------------------------------------------
-# Default browser
-# --------------------------------------------------
-if command -v xdg-settings >/dev/null; then
-    log "Setting default browser"
-    xdg-settings set default-web-browser 'google-chrome.desktop' || true
-fi
+    # Fix fonts rendering incorrectly:
+    # Disable the flag chrome://flags/#enable-gpu-rasterization
+
+    if command -v xdg-settings >/dev/null; then
+        log "Setting default browser"
+        if ! xdg-settings set default-web-browser 'google-chrome.desktop'; then
+            :
+        fi
+    fi
+}
+
+main "$@"

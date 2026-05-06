@@ -18,12 +18,13 @@ main() {
 }
 
 serve() {
-    python3 -m http.server 7392 -d "docs" & spid=$!
+    python3 -m http.server 7392 -d "docs" &
+    spid=$!
     sleep 2
 
-    lso=$(command ls -l --time=atime --full-time page/**/*)
+    lso=$(find page -type f -exec ls -l --time=atime --full-time {} +)
     while true; do
-        lso_check="$(command ls -l --time=atime --full-time page/**/*)"
+        lso_check="$(find page -type f -exec ls -l --time=atime --full-time {} +)"
         if [ ! "${lso}" = "${lso_check}" ]; then
             echo "Files modified..."
             build
@@ -52,7 +53,7 @@ make_index() {
         <a href='./items/aboutme.html'>About me</a><br>
         ·<br>
         <a href='https://github.com/pablos123'>GitHub</a><br>
-        $(cat page/tail.template)" > docs/index.html
+        $(cat page/tail.template)" >docs/index.html
 
     sed -i 's@SHARED_DIR@./shared@;/BACK_BUTTON/d;/Home/d' docs/index.html
 }
@@ -61,7 +62,7 @@ make_aboutme() {
     echo "$(cat page/head.template)
         <main class='article'>
         $(pandoc -f markdown -t html5 page/items/aboutme.md)
-        $(cat page/tail.template)" > docs/items/aboutme.html
+        $(cat page/tail.template)" >docs/items/aboutme.html
 
     sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' docs/items/aboutme.html
 }
@@ -79,7 +80,7 @@ make_articles_and_projects() {
             echo "$(cat page/head.template)
                 <main class='article'>
                 $(pandoc -f markdown -t html5 "page/items/${d}/${i}")
-                $(cat page/tail.template)" > "docs/items/${d}/${i%.*}.html"
+                $(cat page/tail.template)" >"docs/items/${d}/${i%.*}.html"
 
             sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@./${d%.*}.html@" "docs/items/${d}/${i%.*}.html"
 
@@ -87,7 +88,7 @@ make_articles_and_projects() {
         done
 
         echo "${menu_page}
-            $(cat page/tail.template)" > "docs/items/${d}/${d%.*}.html"
+            $(cat page/tail.template)" >"docs/items/${d}/${d%.*}.html"
 
         sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "docs/items/${d}/${d%.*}.html"
     done
@@ -109,7 +110,7 @@ make_utilities() {
     done
 
     echo "${menu_page}
-        $(cat page/tail.template)" > "docs/items/utilities/utilities.html"
+        $(cat page/tail.template)" >"docs/items/utilities/utilities.html"
 
     sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "docs/items/utilities/utilities.html"
 }

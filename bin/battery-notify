@@ -1,65 +1,77 @@
 #!/usr/bin/env bash
+
+# Battery low notification
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Battery low notification
-# Notify if a battery is low to prevent unexpected shutdowns.
-# --------------------------------------------------
+require_commands upower notify-send awk
 
-readonly CRITICAL_THRESHOLD=10
-readonly LOW_THRESHOLD=15
+declare -ri CRITICAL_THRESHOLD=10
+declare -ri LOW_THRESHOLD=15
 
-# --------------------------------------------------
-# Dependency checks
-# --------------------------------------------------
+function is_battery {
+    local data
+    local -a fields
 
-command -v upower >/dev/null || die "upower not found"
-command -v notify-send >/dev/null || die "notify-send not found"
+    data="$1"
 
-# --------------------------------------------------
-# Functions
-# --------------------------------------------------
+    mapfile -t fields < <(awk '/present:|model:|rechargeable:|voltage:/{print $2}' <<<"${data}")
 
-function is_battery() {
-    local data_filtered
-
-    mapfile -t data_filtered < <(echo "$1" | awk '/present:|model:|rechargeable:|voltage:/{print $2}' | tr -d %)
-
-
-    [[ -z "${data_filtered[0]:-}" ]] ||
-    [[ -z "${data_filtered[1]:-}" ]] ||
-    [[ -z "${data_filtered[2]:-}" ]] ||
-    [[ -z "${data_filtered[3]:-}" ]] &&
+    if ((${#fields[@]} != 4)); then
         return 1
+    fi
+
+    local field
+    for field in "${fields[@]}"; do
+        if [[ -z "${field}" ]]; then
+            return 1
+        fi
+    done
+
     return 0
 }
 
-function battery_notify() {
-    local state model percentage battery_data data_filtered
+function notify_for_battery {
+    local battery battery_data model state
+    local -i percentage
+    local -a fields
 
-    for battery in $(upower --enumerate); do
-        battery_data="$(upower --show-info "${battery}")"
+    battery="$1"
 
-        ! is_battery "${battery_data}" &&
-            continue
+    battery_data="$(upower --show-info "${battery}")"
 
-        mapfile -t data_filtered < <(echo "${battery_data}" | awk '/model:|state:|percentage:/{print $2}' | tr -d %)
+    if ! is_battery "${battery_data}"; then
+        return 0
+    fi
 
-        state="${data_filtered[1]}"
-        [[ "${state}" != "discharging" ]] &&
-            continue
+    mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
 
-        percentage="${data_filtered[2]}"
-        model="${data_filtered[0]}"
+    model="${fields[0]}"
+    state="${fields[1]}"
+    percentage="${fields[2]//%/}"
 
-        if [[ ${percentage} -lt ${CRITICAL_THRESHOLD} ]]; then
-            notify-send --urgency "critical" --expire-time="10000" "CRITICAL BATTERY: ${model}"
-        elif [[ ${percentage} -lt ${LOW_THRESHOLD} ]]; then
-            notify-send --urgency "critical" --expire-time="10000" "LOW BATTERY: ${model}"
-        fi
+    if [[ "${state}" != "discharging" ]]; then
+        return 0
+    fi
+
+    if ((percentage < CRITICAL_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"
+    elif ((percentage < LOW_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "LOW BATTERY: ${model}"
+    fi
+}
+
+function main {
+    local -a batteries
+
+    mapfile -t batteries < <(upower --enumerate)
+
+    local battery
+    for battery in "${batteries[@]}"; do
+        notify_for_battery "${battery}"
     done
 }
 
-battery_notify
+main "$@"

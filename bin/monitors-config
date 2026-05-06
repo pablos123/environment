@@ -1,50 +1,41 @@
 #!/usr/bin/env bash
+
+# Monitor hotplug handler
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Constants
-# --------------------------------------------------
+require_commands jq xrandr i3-msg
 
-readonly TMP_CONNECTED_FILE='/tmp/monitors_connected'
+declare -r TMP_CONNECTED_FILE='/tmp/monitors_connected'
 
-# --------------------------------------------------
-# Dependency checks
-# --------------------------------------------------
+function get_current_workspace {
+    local name_focused
+    local -a workspaces=()
 
-command -v jq >/dev/null || die "jq not found"
-command -v xrandr >/dev/null || die "xrandr not found"
-command -v i3-msg >/dev/null || die "i3-msg not found"
+    mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[] | "\(.name)::\(.focused)"')
 
-# --------------------------------------------------
-# Functions
-# --------------------------------------------------
-
-function get_current_workspace() {
-    local w oifs name_focused
-
-    oifs="${IFS}"
-
-    IFS=$'\n'
-    for w in $(i3-msg -t get_workspaces | jq -r '.[] | "\(.name)::\(.focused)"'); do
-        mapfile -t name_focused < <(echo -e "${w//::/\\n}")
+    local w
+    for w in "${workspaces[@]}"; do
+        mapfile -t name_focused < <(printf '%s' "${w//::/\\n}")
         if [[ "${name_focused[1]}" == "true" ]]; then
-            echo "${name_focused[0]}"
+            printf '%s\n' "${name_focused[0]}"
             break
         fi
     done
-    IFS="${oifs}"
 }
 
-function move_workspaces_to_primary() {
-    local w oifs current_workspace
+function move_workspaces_to_primary {
+    local current_workspace
+    local -a workspaces=()
 
-    oifs="${IFS}"
     current_workspace="$(get_current_workspace)"
 
-    IFS=$'\n'
-    for w in $(i3-msg -t get_workspaces | jq -r .[].name); do
+    mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[].name')
+
+    local w
+    for w in "${workspaces[@]}"; do
         if [[ "${w}" == "0" ]]; then
             i3-msg workspace "${w}"
             i3-msg move workspace to output nonprimary
@@ -54,73 +45,78 @@ function move_workspaces_to_primary() {
         i3-msg workspace "${w}"
         i3-msg move workspace to output primary
     done
-    IFS="${oifs}"
 
     i3-msg workspace "${current_workspace}"
 }
 
-function disable_phantom_outputs() {
-    local output outputs
+function disable_phantom_outputs {
+    local -a outputs=()
 
     mapfile -t outputs < <(xrandr | awk '/ disconnected [0-9]+x[0-9]+\+/ {print $1}')
 
+    local output
     for output in "${outputs[@]}"; do
         xrandr --output "${output}" --off
     done
 }
 
-function configure_monitors() {
+function configure_monitors {
+    local -n monitors_ref="${1}"
+
     disable_phantom_outputs
 
     # Notebook
-    if [[ "${monitors[*]}" =~ "eDP-1" ]]; then
-        if [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
+    if [[ "${monitors_ref[*]}" =~ "eDP-1" ]]; then
+        if [[ "${monitors_ref[*]}" =~ "HDMI-1" ]]; then
             xrandr --output "HDMI-1" --primary --auto --left-of "eDP-1"
         else
             xrandr --output "eDP-1" --primary --auto
         fi
     # Notebook lid closed, external monitor only
-    elif [[ "${monitors[*]}" =~ "HDMI-1" ]]; then
+    elif [[ "${monitors_ref[*]}" =~ "HDMI-1" ]]; then
         xrandr --output "HDMI-1" --primary --auto
-    # Desk (Deprecated) TODO: reconfigure work machine
-    elif [[ "${monitors[*]}" =~ "DisplayPort-2" ]]; then
-        if [[ "${monitors[*]}" =~ "HDMI-A-0" ]]; then
-            xrandr --output "DisplayPort-2" --primary --auto --right-of "HDMI-A-0"
-        else
-            xrandr --output "DisplayPort-2" --primary --auto
-        fi
     else
         i3-nagbar -m 'Monitors configuration not recognized.' -t warning
     fi
 
-    move_workspaces_to_primary &> /dev/null
+    move_workspaces_to_primary >/dev/null 2>&1
 }
 
-mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
+function main {
+    local had_previous_config
+    local -a monitors=() monitors_stable=()
 
-if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
-    exit 0
-fi
+    mapfile -t monitors < <(xrandr | grep " connected" | awk '{print $1}')
 
-# Wait and re-check to avoid reacting to brief disconnects
-# (e.g. monitor powering off momentarily reports as disconnected)
-sleep 3
-mapfile -t monitors_stable < <(xrandr | grep " connected" | awk '{print $1}')
+    if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
+        exit 0
+    fi
 
-if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors_stable[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
-    exit 0
-fi
+    # Wait and re-check to avoid reacting to brief disconnects
+    # (e.g. monitor powering off momentarily reports as disconnected)
+    sleep 3
+    mapfile -t monitors_stable < <(xrandr | grep " connected" | awk '{print $1}')
 
-monitors=("${monitors_stable[@]}")
+    if [[ -f "${TMP_CONNECTED_FILE}" ]] && [[ "${monitors_stable[*]}" == "$(cat "${TMP_CONNECTED_FILE}")" ]]; then
+        exit 0
+    fi
 
-had_previous_config=false
-[[ -f "${TMP_CONNECTED_FILE}" ]] && had_previous_config=true
+    monitors=("${monitors_stable[@]}")
 
-configure_monitors
-echo -n "${monitors[*]}" > "${TMP_CONNECTED_FILE}"
+    if [[ -f "${TMP_CONNECTED_FILE}" ]]; then
+        had_previous_config=true
+    else
+        had_previous_config=false
+    fi
 
-# Only reload i3 on actual monitor hotplug, not on first boot
-# when i3 just started and monitors are already correctly configured.
-if [[ "${had_previous_config}" == true ]]; then
-    i3-msg reload &>/dev/null
-fi
+    configure_monitors monitors
+    printf '%s' "${monitors[*]}" >"${TMP_CONNECTED_FILE}"
+
+    # Only reload i3 on actual monitor hotplug, not on first boot
+    # when i3 just started and monitors are already correctly configured.
+    if [[ "${had_previous_config}" == true ]]; then
+        i3-msg reload >/dev/null 2>&1
+    fi
+}
+
+main "$@"

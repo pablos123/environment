@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
+
+# Web app launcher installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
+
+require_commands sed chmod
 
 declare -rA WEB_APPS=(
     ["whatsapp"]="https://web.whatsapp.com/"
@@ -18,27 +22,32 @@ declare -rA WEB_APPS=(
     ["desmos"]="https://www.desmos.com/calculator"
 )
 
-# --------------------------------------------------
-# Create web app launchers
-# --------------------------------------------------
-log "Creating web app launchers"
-for APP_NAME in "${!WEB_APPS[@]}"; do
-    APP_URL="${WEB_APPS[${APP_NAME}]}"
-    APP_INSTANCE=$(echo "${APP_URL}" | sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/')
-    APP_EXEC="${HOME}/bin/${APP_NAME}"
+function main {
+    local app_url app_instance app_exec
 
-    cat > "${APP_EXEC}" <<EOF
+    log "Creating web app launchers"
+
+    local app_name
+    for app_name in "${!WEB_APPS[@]}"; do
+        app_url="${WEB_APPS[${app_name}]}"
+        app_instance=$(sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/' <<<"${app_url}")
+        app_exec="${HOME}/bin/${app_name}"
+
+        cat >"${app_exec}" <<EOF
 #!/usr/bin/env bash
 
 mapfile -t chrome_window_ids < <(xdotool search --class "Google-chrome")
 for id in "\${chrome_window_ids[@]}"; do
     instance_name="\$(xprop -id "\${id}" | grep WM_CLASS | awk '{ print \$3 }' | tr --delete ' \n",')"
-    [[ "${APP_INSTANCE}" == "\${instance_name}" ]] &&
+    [[ "${app_instance}" == "\${instance_name}" ]] &&
         exit 0
 done
 
-chrome --app="${APP_URL}"
+chrome --app="${app_url}"
 EOF
 
-    chmod +x "${APP_EXEC}" || true
-done
+        chmod +x "${app_exec}"
+    done
+}
+
+main "$@"

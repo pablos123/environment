@@ -156,6 +156,9 @@ fi
 [[ -f "${HOME}/.ghcup/env" ]] &&
     source "${HOME}/.ghcup/env"
 
+[[ -d "${HOME}/go/bin" ]] &&
+    export PATH="${HOME}/go/bin:${PATH}"
+
 # Force home bin directory first for doing wrappers.
 [[ -d "${HOME}/bin" ]] &&
     export PATH="${HOME}/bin:${PATH}"

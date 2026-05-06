@@ -1,22 +1,29 @@
 #!/usr/bin/env bash
+
+# Quiet mode
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Quiet mode - toggle notifications
-# Disable/Enable notifications with status icon
-# --------------------------------------------------
+require_commands dunstctl yad
 
-readonly QUIET_MODE_ICON="${HOME}/environment/assets/nonotif.png"
+declare -r QUIET_MODE_ICON="${HOME}/environment/assets/nonotif.png"
 
-command -v dunstctl >/dev/null || die "dunstctl not found"
-command -v yad >/dev/null || die "yad not found"
+function main {
+    local paused
 
-dunstctl set-paused toggle
+    dunstctl set-paused toggle
 
-if [[ "$(dunstctl is-paused)" == "true" ]]; then
-    bash -c "exec -a quiet_mode_icon yad --notification --image='${QUIET_MODE_ICON}' --listen --text='Quiet mode on' --no-middle &"
-else
-    pkill -f quiet_mode_icon || true
-fi
+    paused="$(dunstctl is-paused)"
+
+    if [[ "${paused}" == "true" ]]; then
+        bash -c "exec -a quiet_mode_icon yad --notification --image='${QUIET_MODE_ICON}' --listen --text='Quiet mode on' --no-middle &"
+    else
+        if ! pkill --full quiet_mode_icon; then
+            :
+        fi
+    fi
+}
+
+main "$@"

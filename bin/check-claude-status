@@ -1,53 +1,54 @@
 #!/usr/bin/env bash
+
+# Claude status check
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# Claude status check
-# Notify if there are unresolved incidents on Claude's status page.
-# --------------------------------------------------
+require_commands curl notify-send xdg-open
 
-readonly URL="https://status.claude.com/"
+declare -r URL="https://status.claude.com/"
 
-# --------------------------------------------------
-# Dependency checks
-# --------------------------------------------------
-
-command -v curl >/dev/null || die "curl not found"
-command -v notify-send >/dev/null || die "notify-send not found"
-
-# --------------------------------------------------
-# Functions
-# --------------------------------------------------
-
-function check_claude_status() {
+function main {
     local content unresolved title status message action
 
-    content=$(curl -sf --max-time 10 "${URL}") || {
+    if ! content="$(curl --silent --fail --max-time 10 "${URL}")"; then
         die "Failed to fetch ${URL}"
-    }
+    fi
 
-    unresolved=$(echo "${content}" | sed -n '/<div class="unresolved-incidents">/,/<div class="components-section">/p')
-    title=$(echo "${unresolved}" | (grep -oP 'actual-title[^>]*>\K[^<]+' || true) | head -1)
+    unresolved="$(sed -n '/<div class="unresolved-incidents">/,/<div class="components-section">/p' <<<"${content}")"
 
-    [[ -z "${title}" ]] &&
-        return
+    title=""
+    if ! title="$(grep --only-matching --perl-regexp 'actual-title[^>]*>\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
+        title=""
+    fi
 
-    status=$(echo "${unresolved}" | (grep -oP '<strong>\K[^<]+' || true) | head -1)
-    message=$(echo "${unresolved}" | (grep -oP 'whitespace-pre-wrap">\K[^<]+' || true) | head -1)
+    if [[ -z "${title}" ]]; then
+        return 0
+    fi
 
-    action=$(notify-send \
+    status=""
+    if ! status="$(grep --only-matching --perl-regexp '<strong>\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
+        status=""
+    fi
+
+    message=""
+    if ! message="$(grep --only-matching --perl-regexp 'whitespace-pre-wrap">\K[^<]+' <<<"${unresolved}" | head --lines=1)"; then
+        message=""
+    fi
+
+    action="$(notify-send \
         --urgency=critical \
         --app-name="Claude Status" \
         --wait \
         --action="default=Open status page" \
         "${title}" \
-        "[${status}] ${message}")
+        "[${status}] ${message}")"
 
-    if [[ "${action}" = "default" ]]; then
+    if [[ "${action}" == "default" ]]; then
         xdg-open "${URL}"
     fi
 }
 
-check_claude_status
+main "$@"

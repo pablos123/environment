@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
+
+# Open browser if memory permits
+
 set -Eeuo pipefail
 
-# --------------------------------------------------
-# Open browser if sufficient memory available
-# --------------------------------------------------
+source "${HOME}/environment/lib/helpers.bash"
 
-readonly MEMORY_THRESHOLD_KB=10000000
+require_commands free awk chrome
 
-total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+declare -ri MEMORY_THRESHOLD_KB=10000000
 
-if (( total_memory > MEMORY_THRESHOLD_KB )); then
-    exec chrome
-fi
+function main {
+    local -i total_memory
+    total_memory="$(free --total | awk '/^Mem:/ {print $2}')"
+
+    if ((total_memory > MEMORY_THRESHOLD_KB)); then
+        exec chrome
+    fi
+}
+
+main "$@"

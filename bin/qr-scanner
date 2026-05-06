@@ -1,28 +1,36 @@
 #!/usr/bin/env bash
+
+# QR scanner
+
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-# --------------------------------------------------
-# QR scanner - screenshot and decode to clipboard
-# --------------------------------------------------
+require_commands flameshot zbarimg xclip notify-send
 
 TMP_FILE="$(mktemp --suffix=.png)"
-readonly TMP_FILE
+declare -r TMP_FILE
 
-cleanup() {
-    rm -f "${TMP_FILE}"
+function cleanup {
+    rm --force "${TMP_FILE}"
 }
 
+function main {
+    local qr_content
 
-# sudo apt install zbar-tools flamehost xclip
-command -v flameshot >/dev/null || die "flameshot not found"
-command -v zbarimg >/dev/null || die "zbarimg not found"
+    if ! flameshot gui --path "${TMP_FILE}" >/dev/null 2>&1; then
+        return 0
+    fi
 
-flameshot gui -p "${TMP_FILE}" &>/dev/null || exit 0
+    if ! qr_content="$(zbarimg --raw --quiet "${TMP_FILE}")"; then
+        return 0
+    fi
 
-qr_content="$(zbarimg --raw --quiet "${TMP_FILE}" || true)"
+    printf '%s' "${qr_content}" | xclip
 
-echo "${qr_content}" | xclip
-[[ -n "${qr_content}" ]] &&
-    notify-send "${qr_content}"
+    if [[ -n "${qr_content}" ]]; then
+        notify-send "${qr_content}"
+    fi
+}
+
+main "$@"

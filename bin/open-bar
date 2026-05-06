@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
+# Open polybar
+
+set -Eeuo pipefail
+
 source "${HOME}/environment/lib/helpers.bash"
 
-quit_and_wait "polybar-msg cmd quit" polybar
+require_commands polybar polybar-msg
 
-polybar left &
-polybar center &
-polybar tray &
-exec polybar right
+function main {
+    quit_and_wait "polybar-msg cmd quit" polybar
+
+    polybar left &
+    polybar center &
+    polybar tray &
+    exec polybar right
+}
+
+main "$@"

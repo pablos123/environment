@@ -1,22 +1,34 @@
 #!/usr/bin/env bash
-# Print basic escape terminal colors
 
-for x in {0..8}; do
-    echo -ne "\e[${x}""m\\\e[${x}""m\e[0m "
-    echo
-done
-for x in {0..8}; do
-    for i in {30..37}; do
-        echo -ne "\e[${x};${i}""m\\\e[${x};${i}""m\e[0m "
+# Print color codes
+
+set -Eeuo pipefail
+
+function main {
+    local -i x
+    for x in {0..8}; do
+        printf '\e[%dm\\e[%dm\e[0m \n' "${x}" "${x}"
     done
-    echo
-done
-for x in {0..8}; do
-    for i in {30..37}; do
-        for a in {40..47}; do
-            echo -ne "\e[${x};${i};${a}""m\\\e[${x};${i};${a}""m\e[0m "
+
+    local -i i
+    for x in {0..8}; do
+        for i in {30..37}; do
+            printf '\e[%d;%dm\\e[%d;%dm\e[0m ' "${x}" "${i}" "${x}" "${i}"
         done
-        echo
+        printf '\n'
     done
-done
-echo -ne "\e[0m"
+
+    local -i a
+    for x in {0..8}; do
+        for i in {30..37}; do
+            for a in {40..47}; do
+                printf '\e[%d;%d;%dm\\e[%d;%d;%dm\e[0m ' "${x}" "${i}" "${a}" "${x}" "${i}" "${a}"
+            done
+            printf '\n'
+        done
+    done
+
+    printf '\e[0m'
+}
+
+main "$@"

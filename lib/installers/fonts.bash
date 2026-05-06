@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
+
+# Nerd Fonts installer
+
 set -Eeuo pipefail
 
-# Source shared utilities
 source "${HOME}/environment/lib/helpers.bash"
+
+require_commands curl tar fc-cache
 
 declare -ra FONTS=(
     SourceCodePro
@@ -12,35 +16,33 @@ declare -ra FONTS=(
     ZedMono
 )
 
-readonly FONTS_DIR="${HOME}/.local/share/fonts"
-readonly NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+declare -r FONTS_DIR="${HOME}/.local/share/fonts"
+declare -r NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 
-# --------------------------------------------------
-# Prepare directory
-# --------------------------------------------------
-mkdir --parents "${FONTS_DIR}"
+function main {
+    local font_dir archive_path
 
-# --------------------------------------------------
-# Install fonts
-# --------------------------------------------------
-for FONT in "${FONTS[@]}"; do
-    log "Installing ${FONT} Nerd font"
-    FONT_DIR="${FONTS_DIR}/${FONT}Nerd"
-    ARCHIVE_PATH="${FONTS_DIR}/${FONT}Nerd.tar.xz"
+    mkdir --parents "${FONTS_DIR}"
 
-    rm --recursive --force "${FONT_DIR}"
-    mkdir --parents "${FONT_DIR}"
+    local font
+    for font in "${FONTS[@]}"; do
+        log "Installing ${font} Nerd font"
+        font_dir="${FONTS_DIR}/${font}Nerd"
+        archive_path="${FONTS_DIR}/${font}Nerd.tar.xz"
 
-    curl --fail --no-progress-meter --location \
-        "${NERD_FONTS_BASE_URL}/${FONT}.tar.xz" \
-        --output "${ARCHIVE_PATH}"
+        rm --recursive --force "${font_dir}"
+        mkdir --parents "${font_dir}"
 
-    tar --extract --file "${ARCHIVE_PATH}" --directory "${FONT_DIR}"
-    rm --force "${ARCHIVE_PATH}"
-done
+        curl --fail --no-progress-meter --location \
+            "${NERD_FONTS_BASE_URL}/${font}.tar.xz" \
+            --output "${archive_path}"
 
-# --------------------------------------------------
-# Refresh font cache
-# --------------------------------------------------
-log "Refreshing font cache"
-fc-cache --really-force >/dev/null
+        tar --extract --file "${archive_path}" --directory "${font_dir}"
+        rm --force "${archive_path}"
+    done
+
+    log "Refreshing font cache"
+    fc-cache --really-force >/dev/null
+}
+
+main "$@"

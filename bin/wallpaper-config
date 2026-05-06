@@ -1,30 +1,36 @@
 #!/usr/bin/env bash
+
+# Wallpaper configuration
+
 set -Eeuo pipefail
 
-# --------------------------------------------------
-# Wallpaper configuration
-# Sets random wallpaper from theme directory
-# --------------------------------------------------
+source "${HOME}/environment/lib/helpers.bash"
 
-readonly THEME="${WALLPAPER_THEME:-}"
+require_commands hsetroot find
 
-function set_wallpaper() {
-    local wallpapers_array items_count random_index wallpaper wallpapers_dir
+declare -r THEME="${WALLPAPER_THEME:-}"
+
+function main {
+    local wallpapers_dir wallpaper
+    local -i items_count random_index
+    local -a wallpapers
 
     wallpapers_dir="${HOME}/images/wallpapers/${THEME}/"
-    [[ ! -d "${wallpapers_dir}" ]] &&
+    if [[ ! -d "${wallpapers_dir}" ]]; then
         wallpapers_dir="${HOME}/images/wallpapers/"
+    fi
 
-    mapfile -t wallpapers_array < <(find "${wallpapers_dir}" -maxdepth 1 -type f)
+    mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f)
 
-    items_count="${#wallpapers_array[@]}"
-    [[ "${items_count}" -eq 0 ]] &&
-        return
+    items_count="${#wallpapers[@]}"
+    if ((items_count == 0)); then
+        return 0
+    fi
 
     random_index=$((RANDOM % items_count))
-    wallpaper="${wallpapers_array[${random_index}]}"
+    wallpaper="${wallpapers[random_index]}"
 
-    hsetroot -cover "${wallpaper}" &>/dev/null
+    hsetroot -cover "${wallpaper}" >/dev/null 2>&1
 }
 
-set_wallpaper
+main "$@"

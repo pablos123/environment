@@ -1,46 +1,52 @@
 #!/usr/bin/env bash
+
+# nofetch
+
 set -Eeuo pipefail
 
-# --------------------------------------------------
-# System information display
-# --------------------------------------------------
+source "${HOME}/environment/lib/helpers.bash"
 
-function user_info() {
-    echo "User: $(id | awk '{print $1" "$2}')"
+require_commands id hostname uname lscpu lsb_release free awk column sed
+
+function user_info {
+    local user_line
+    user_line="$(id | awk '{print $1" "$2}')"
+    printf 'User: %s\n' "${user_line}"
 }
 
-function hostname_info() {
-    echo "Hostname: $(hostname)"
+function hostname_info {
+    local host
+    host="$(hostname)"
+    printf 'Hostname: %s\n' "${host}"
 }
 
-function uname_info() {
-    echo "Kernel release: $(uname --kernel-release)"
+function uname_info {
+    local kernel
+    kernel="$(uname --kernel-release)"
+    printf 'Kernel release: %s\n' "${kernel}"
 }
 
-function cpu_info() {
+function cpu_info {
     lscpu | awk --field-separator=':' '/^Architecture|^CPU\(s\):|^Model name/ {print $1":"$2}'
 }
 
-function lsb_info() {
+function lsb_info {
     lsb_release --all 2>/dev/null | awk --field-separator=':' '/^Distributor ID|^Description|^Release|^Codename/ {print $1":"$2}'
 }
 
-function mem_info() {
+function mem_info {
     free --human | awk '/^Mem/ {print $1" "$2}'
 }
 
-function wmctrl_info() {
-    wmctrl -m 2>/dev/null | awk '/^Name/ {print "WM Name: "$2}' || true
+function wmctrl_info {
+    if ! command -v wmctrl >/dev/null; then
+        return 0
+    fi
+    wmctrl -m 2>/dev/null | awk '/^Name/ {print "WM Name: "$2}'
 }
 
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
-
-function get_info() {
-    local funcs f
-
-    funcs=(
+function get_info {
+    local -a funcs=(
         user_info
         hostname_info
         uname_info
@@ -50,9 +56,14 @@ function get_info() {
         wmctrl_info
     )
 
+    local f
     for f in "${funcs[@]}"; do
         "${f}"
     done
 }
 
-get_info | sed 's/\(.*:\)\s*/\1/g' | column --table --separator ':'
+function main {
+    get_info | sed 's/\(.*:\)\s*/\1/g' | column --table --separator ':'
+}
+
+main "$@"

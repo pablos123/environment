@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
-exec chrome --incognito
+# Incognito browser
+
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands chrome
+
+function main {
+    exec chrome --incognito "$@"
+}
+
+main "$@"

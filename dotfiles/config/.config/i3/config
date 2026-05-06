@@ -72,20 +72,6 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-set $exit_mode [e]xit [l]ock [s]hutdown
-bindsym $mod+Shift+e mode "$exit_mode"
-mode "$exit_mode" {
-    bindsym e exec --no-startup-id pkill -u pab
-    bindsym l exec --no-startup-id xdotool key Escape && lock-screen
-    bindsym s exec --no-startup-id xdotool key Escape && shutdown-machine
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+Shift+e mode "default"
-}
-
-bindsym $mod+Shift+r exec --no-startup-id reload-environment
-
 # Simulate middle click with shift modifier to go back to system default on the keyboard
 bindsym $mod+m exec --no-startup-id xdotool keydown shift click 2 keyup shift
 

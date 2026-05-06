@@ -1,51 +1,65 @@
 #!/usr/bin/env bash
+
+# Shared shell library for scripts in this repo.
+
 set -Eeuo pipefail
 
-# --------------------------------------------------
-# Print functions
-# --------------------------------------------------
-
-function log() {
+function log {
     printf '\033[1;32m==>\033[0m %s\n' "${1:-}" >&2
 }
 
-function warn() {
+function warn {
     printf '\033[1;33m[WARN]\033[0m %s\n' "${1:-}" >&2
 }
 
-function die() {
+function die {
     printf '\033[1;31m[ERROR]\033[0m %s\n' "${1:-}" >&2
     exit 1
 }
 
-# --------------------------------------------------
-# Trap handlers
-# --------------------------------------------------
+function require_commands {
+    local -a missing=()
 
-ORIGINAL_PWD="${ORIGINAL_PWD:-$(pwd)}"
+    local cmd
+    for cmd in "$@"; do
+        if ! command -v "${cmd}" >/dev/null; then
+            missing+=("${cmd}")
+        fi
+    done
 
-function on_error() {
-    local exit_code="${?}"
+    if ((${#missing[@]} > 0)); then
+        die "missing commands: ${missing[*]}"
+    fi
+}
+
+ORIGINAL_PWD="${ORIGINAL_PWD:-${PWD}}"
+
+function on_error {
+    local -i exit_code="${?}"
     local script_name
-    script_name="$(basename "${BASH_SOURCE[1]:-${0}}")"
+    script_name="${BASH_SOURCE[1]:-${0}}"
+    script_name="${script_name##*/}"
 
     if [[ -n "${ORIGINAL_PWD:-}" ]] && [[ -d "${ORIGINAL_PWD}" ]]; then
-        cd "${ORIGINAL_PWD}" || true
+        cd "${ORIGINAL_PWD}"
     fi
 
     case "${exit_code}" in
         "130")
-            die "SIGINT received" ;;
+            die "SIGINT received"
+            ;;
         "143")
-            die "SIGTERM received" ;;
+            die "SIGTERM received"
+            ;;
         *)
-            die "Script '${script_name}' failed (exit code ${exit_code})" ;;
+            die "Script '${script_name}' failed (exit code ${exit_code})"
+            ;;
     esac
 }
 
-function on_exit() {
+function on_exit {
     if [[ -n "${ORIGINAL_PWD:-}" ]] && [[ -d "${ORIGINAL_PWD}" ]]; then
-        cd "${ORIGINAL_PWD}" || true
+        cd "${ORIGINAL_PWD}"
     fi
 
     if declare -F cleanup >/dev/null; then
@@ -53,73 +67,68 @@ function on_exit() {
     fi
 }
 
-# --------------------------------------------------
-# Process management
-# --------------------------------------------------
-
-function kill_and_wait() {
+function kill_and_wait {
     local process_name="${1}"
-    killall "${process_name}" || true
+    if ! killall "${process_name}"; then
+        :
+    fi
     while pgrep --uid "${UID}" --exact "${process_name}" >/dev/null; do
         sleep 0.3
     done
 }
 
-function quit_and_wait() {
+function quit_and_wait {
     local quit_cmd="${1}"
     local process_name="${2}"
-    ${quit_cmd} || true
+    if ! ${quit_cmd}; then
+        :
+    fi
     while pgrep --uid "${UID}" --exact "${process_name}" >/dev/null; do
         sleep 0.3
     done
 }
 
-# --------------------------------------------------
-# Applet position
-# --------------------------------------------------
+declare -ri APPLET_X_GAP=16
+declare -ri APPLET_Y_GAP=42
 
-readonly APPLET_X_GAP=16
-readonly APPLET_Y_GAP=42
-
-function calculate_applet_position() {
-    local x_size y_size res
+function calculate_applet_position {
+    local x_size y_size
+    local -a res
 
     x_size="${1:-}"
     y_size="${2:-}"
 
     if [[ -z "${x_size}" ]] || [[ ! "${x_size}" =~ ^[0-9]+$ ]] ||
-       [[ -z "${y_size}" ]] || [[ ! "${y_size}" =~ ^[0-9]+$ ]]; then
+        [[ -z "${y_size}" ]] || [[ ! "${y_size}" =~ ^[0-9]+$ ]]; then
         return 1
     fi
 
     # array: x y offset_x offset_y
+    # shellcheck disable=SC2020  # tr 'x+' maps two chars to newlines, not a word pattern
     mapfile -t res < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
 
-    echo -n "$(( res[0] - x_size - APPLET_X_GAP + res[2] ))" "$(( res[1] - y_size - APPLET_Y_GAP + res[3] ))"
+    echo -n "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
 }
-
-# --------------------------------------------------
-# Git management
-# --------------------------------------------------
 
 # Clone or update a git repository
 # Usage: git_clone_pull_repo <url> <directory> [force]
 # - force: "true" for shallow clone + hard reset (external repos)
 #          "false" for full clone + ff-only pull (default, personal repos)
-function git_clone_pull_repo() {
+function git_clone_pull_repo {
     local repo_url="$1"
     local repo_dir="$2"
     local force="${3:-false}"
+    local repo_name="${repo_dir##*/}"
 
     if [[ ! -d "${repo_dir}" ]]; then
-        log "Cloning $(basename "${repo_dir}")"
+        log "Cloning ${repo_name}"
         if [[ "${force}" == "true" ]]; then
             git clone --depth 1 --quiet "${repo_url}" "${repo_dir}"
         else
             git clone --quiet "${repo_url}" "${repo_dir}"
         fi
     else
-        log "Updating $(basename "${repo_dir}")"
+        log "Updating ${repo_name}"
         if [[ "${force}" == "true" ]]; then
             git -C "${repo_dir}" fetch --depth 1 --quiet
             git -C "${repo_dir}" reset --hard --quiet origin/HEAD
@@ -131,15 +140,17 @@ function git_clone_pull_repo() {
 
 # Build and install from source using make
 # Usage: make_build_install <directory> [make_args]
-function make_build_install() {
+function make_build_install {
     local build_dir="$1"
     local make_arg="${2:-}"
 
     cd "${build_dir}" || return 1
 
-    log "Building $(basename "${build_dir}") from source"
+    log "Building ${build_dir##*/} from source"
     {
-        sudo make clean 2>/dev/null || true
+        if ! sudo make clean 2>/dev/null; then
+            :
+        fi
         if [[ -n "${make_arg}" ]]; then
             make "${make_arg}"
         else
@@ -148,10 +159,6 @@ function make_build_install() {
         sudo make install
     } >/dev/null
 }
-
-# --------------------------------------------------
-# Register trap handlers
-# --------------------------------------------------
 
 trap on_error ERR SIGINT SIGTERM
 trap on_exit EXIT
