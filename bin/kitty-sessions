@@ -16,7 +16,6 @@ declare -A SESSIONS
 
 function collect_sessions {
     local -a entries=("user:${USER_SESSIONS_DIR}" "work:${WORK_SESSIONS_DIR}")
-
     local entry
     for entry in "${entries[@]}"; do
         local label="${entry%%:*}"

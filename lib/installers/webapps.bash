@@ -33,7 +33,6 @@ function main {
         app_instance=$(sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/' <<<"${app_url}")
 
         local app_exec="${HOME}/bin/${app_name}"
-
         cat >"${app_exec}" <<EOF
 #!/usr/bin/env bash
 

@@ -10,7 +10,6 @@ require_commands wmctrl awk
 
 function main {
     local -a windows
-
     mapfile -t windows < <(wmctrl -l | awk '{print $1}')
 
     local win

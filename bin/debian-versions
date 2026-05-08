@@ -22,7 +22,6 @@ declare -ra HEADER_NAMES=(
 
 function get_headers {
     local result=""
-
     local header_name
     for header_name in "${HEADER_NAMES[@]}"; do
         result+="\e[1;35m${header_name}\e[0m,"

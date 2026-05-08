@@ -19,7 +19,6 @@ function die {
 
 function require_commands {
     local -a missing=()
-
     local cmd
     for cmd in "$@"; do
         if ! command -v "${cmd}" >/dev/null; then
@@ -94,7 +93,6 @@ declare -ri APPLET_Y_GAP=42
 function calculate_applet_position {
     local x_size="${1:-}"
     local y_size="${2:-}"
-
     if [[ -z "${x_size}" || ! "${x_size}" =~ ^[0-9]+$ || -z "${y_size}" || ! "${y_size}" =~ ^[0-9]+$ ]]; then
         return 1
     fi

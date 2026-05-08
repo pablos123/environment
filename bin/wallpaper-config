@@ -26,7 +26,6 @@ function main {
 
     local -i random_index=$((RANDOM % items_count))
     local wallpaper="${wallpapers[random_index]}"
-
     hsetroot -cover "${wallpaper}" >/dev/null 2>&1
 }
 

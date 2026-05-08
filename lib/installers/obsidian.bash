@@ -36,7 +36,6 @@ function main {
         log "Updating Obsidian to v${latest_version}"
         local current_version_path="${OBSIDIAN_PATH}/obsidian_v${current_version}"
         local latest_version_path="${OBSIDIAN_PATH}/obsidian_v${latest_version}"
-
         if ! curl --no-progress-meter --location --output "${latest_version_path}" \
             "https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"; then
             :

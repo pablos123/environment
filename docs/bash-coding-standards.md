@@ -87,6 +87,15 @@ Not `battery_notify()`, not `function battery_notify()`. The parentheses are red
 
 ---
 
+## Naming
+
+- **Executable filenames** in `bin/`: lowercase ASCII alphanumerics and `-`. No underscores, no uppercase.
+- **Function names**: lowercase ASCII alphanumerics and `_`. No hyphens, no uppercase.
+
+Variable case (UPPERCASE for constants, lowercase for locals) is covered under Variable declarations below.
+
+---
+
 ## Control flow
 
 Use explicit conditionals — `if/then/fi`. Do not chain commands with `&&` or `||` to express branching.
@@ -194,6 +203,16 @@ mapfile -t items < <(find ...)
 ```
 
 `local var=$(cmd)` always returns 0 because the `local` builtin succeeds even when `cmd` fails — the same root cause as the `declare -r` rule above.
+
+When the `local` line is itself the definition (declare + assign on one line) and the variable is mutated in a later block, place the `local` immediately before that block. For an accumulator updated in a loop, that means just above the loop — above the loop's own `local`:
+
+```bash
+local -i count=0
+local entry
+for entry in "${items[@]}"; do
+    ((count++))
+done
+```
 
 For loops, every `for` gets its own `local` line directly above, including nested loops:
 
