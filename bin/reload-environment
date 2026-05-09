@@ -44,7 +44,7 @@ function main {
     local unit
     for unit in "${ENVIRONMENT_DIR}/dotfiles/config/.config/systemd/user"/*; do
         if grep --quiet '^\[Install\]' "${unit}"; then
-            systemctl --user enable "${unit##*/}" >/dev/null
+            systemctl --user enable "${unit##*/}" &>>/dev/null
         fi
     done
 
