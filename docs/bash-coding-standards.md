@@ -102,9 +102,20 @@ Every script follows the same fixed top-down order. No deviations. The strict he
 
 Each section is separated by a blank line. Sections that don't apply (a three-line wrapper has no declarations) are omitted; the relative order of the others is preserved.
 
-### No structural-label dividers
+---
 
-`# ---` / label / `# ---` blocks are forbidden. Section dividers in particular add nothing:
+## Comments
+
+Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the *why* is non-obvious — a workaround, an external constraint, a subtle invariant, or behavior that would surprise. One or two lines is enough.
+
+Forbidden:
+
+- Restating what the code does (`# Iterate over the array` above a `for` loop).
+- Multi-line essays and `# ---` borders.
+- Structural-label dividers (`# Constants`, `# Functions`, `# main`) — `declare -r` is obviously constants, `function` is obviously functions.
+- Operation labels above a block (`# Docker`, `# Networking`, `# Cleanup`) — the code below is the documentation.
+
+Section dividers in particular add nothing:
 
 ```bash
 # --------------------------------------------------
@@ -116,15 +127,7 @@ Each section is separated by a blank line. Sections that don't apply (a three-li
 # --------------------------------------------------
 ```
 
-`declare -r` lines are obviously constants; `function` lines are obviously functions; `function main` is obviously main. The label says nothing the code does not. The same applies to operation labels (`# Docker`, `# Networking`, `# Cleanup`): if the block is short enough for a one-word label, it is short enough to read directly; if it is long, extract a named function.
-
-### When to comment
-
-Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the **why** is non-obvious to a reader looking at the code: a workaround, an external constraint, a subtle invariant, or behavior that would surprise. Do not restate **what** the code does — `# Iterate over the array` above a `for` loop is noise.
-
-When a comment is warranted, one or two lines is enough. No multi-line essays, no `# ---` borders.
-
-Inline `# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
+`# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
 
 ```bash
 # shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
