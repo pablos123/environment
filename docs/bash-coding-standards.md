@@ -91,14 +91,14 @@ This example exercises most of the rules in this document; the sections below re
 
 Every script follows the same fixed top-down order. No deviations. The strict header order, top to bottom:
 
-1. **Shebang.** `#!/usr/bin/env bash` locates Bash via `PATH` rather than hardcoding `/bin/bash`.
-2. **Header comment.** A single one-line `#` comment naming what the file is. Required for every script and library; no exceptions. A second short line is permitted only when there is genuine context the reader cannot infer from the code (e.g., "Run as root.", "Sourced by interactive shells; no strict mode."). Two lines maximum.
-3. **`set -Eeuo pipefail`.** Fail on errors (`-e`), unset variables (`-u`), and pipeline failures (`pipefail`). `-E` propagates the `ERR` trap into functions and subshells.
-4. **`source` the helpers.** Always `source`, never `.`.
-5. **`require_commands`.** Verify external dependencies before any setup work runs.
-6. **File-scope declarations.** `declare -r` constants in UPPERCASE.
-7. **Function definitions.** Helpers first, then `main`.
-8. **`main "$@"`.** The last line of the file.
+1. Shebang: `#!/usr/bin/env bash`
+2. Header comment (one or two lines).
+3. `set -Eeuo pipefail`
+4. `source` the helpers.
+5. `require_commands` for external dependencies.
+6. File-scope `declare -r` constants.
+7. Function definitions (helpers first, then `main`).
+8. `main "$@"`
 
 Each section is separated by a blank line. Sections that don't apply (a three-line wrapper has no declarations) are omitted; the relative order of the others is preserved.
 
@@ -108,6 +108,12 @@ Each section is separated by a blank line. Sections that don't apply (a three-li
 
 Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the *why* is non-obvious — a workaround, an external constraint, a subtle invariant, or behavior that would surprise.
 
+`# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
+
+```bash
+# shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
+```
+
 Avoid:
 
 - Restating what the code does (`# Iterate over the array` above a `for` loop).
@@ -115,12 +121,6 @@ Avoid:
 - Structural-label dividers (`# Constants`, `# Functions`, `# main`) — `declare -r` is obviously constants, `function` is obviously functions.
 - Operation labels above a block (`# Docker`, `# Networking`, `# Cleanup`) — the code below is the documentation.
 - Section dividers — they add nothing.
-
-`# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
-
-```bash
-# shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
-```
 
 ---
 
@@ -131,9 +131,9 @@ Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b
 - **Executable scripts** (in `bin/`): no extension; kebab-case.
 - **Sourced bash libraries**: `.bash` extension; snake_case.
 - **Function names**: snake_case.
-- **Variables**: lowercase for locals, function-internal state, and loop variables; UPPERCASE for `declare -r` configuration, exported variables, and anything that mirrors the shell environment.
-
-The reason for the variable casing is collision avoidance: the shell environment (`HOME`, `PATH`, `UID`, `EDITOR`, `XDG_*`, …) is uppercase. Uppercase locals risk shadowing them; lowercase locals cannot.
+- **Variables**:
+    - lowercase for local variables.
+    - UPPERCASE for `declare -r` configuration and exported variables.
 
 ---
 

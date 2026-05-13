@@ -11,18 +11,7 @@ require_commands jq xrandr i3-msg
 declare -r TMP_CONNECTED_FILE='/tmp/monitors_connected'
 
 function get_current_workspace {
-    local -a workspaces=()
-    mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[] | "\(.name)::\(.focused)"')
-
-    local w
-    for w in "${workspaces[@]}"; do
-        local -a name_focused
-        mapfile -t name_focused < <(printf '%s' "${w//::/\\n}")
-        if [[ "${name_focused[1]}" == "true" ]]; then
-            printf '%s\n' "${name_focused[0]}"
-            break
-        fi
-    done
+    i3-msg -t get_workspaces | jq --raw-output '.[] | select(.focused) | .name'
 }
 
 function move_workspaces_to_primary {
@@ -76,7 +65,7 @@ function configure_monitors {
         i3-nagbar -m 'Monitors configuration not recognized.' -t warning
     fi
 
-    move_workspaces_to_primary >/dev/null 2>&1
+    move_workspaces_to_primary >/dev/null
 }
 
 function main {
