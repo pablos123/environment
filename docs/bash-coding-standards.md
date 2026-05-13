@@ -6,9 +6,7 @@ The guiding principle: prefer Bash builtins and explicit structure over external
 
 ---
 
-## Script header
-
-Every script follows the same fixed top-down order. No deviations.
+## Script example
 
 ```bash
 #!/usr/bin/env bash
@@ -85,7 +83,13 @@ function main {
 main "$@"
 ```
 
-This example exercises most of the rules in this document; the sections below refer back to it. The strict header order, top to bottom:
+This example exercises most of the rules in this document; the sections below refer back to it.
+
+---
+
+## Anatomy of a script
+
+Every script follows the same fixed top-down order. No deviations. The strict header order, top to bottom:
 
 1. **Shebang.** `#!/usr/bin/env bash` locates Bash via `PATH` rather than hardcoding `/bin/bash`.
 2. **Header comment.** A single one-line `#` comment naming what the file is. Required for every script and library; no exceptions. A second short line is permitted only when there is genuine context the reader cannot infer from the code (e.g., "Run as root.", "Sourced by interactive shells; no strict mode."). Two lines maximum.
@@ -176,7 +180,7 @@ Branches become greppable, indentation reflects control flow, and the failure re
 
 The rule applies to **command-level** control flow only. It does not apply to:
 
-- Parameter expansion defaults: `${var:-default}`, `${var:?error}` — these are expansions, not control flow.
+- Parameter expansion defaults: `${var:-default}` — this is an expansion, not control flow.
 - Operators *inside* `[[ ]]`: `[[ -n "${a}" && -n "${b}" ]]` is a single test, not a chain.
 
 ---
