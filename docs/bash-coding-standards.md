@@ -106,16 +106,15 @@ Each section is separated by a blank line. Sections that don't apply (a three-li
 
 ## Comments
 
-Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the *why* is non-obvious — a workaround, an external constraint, a subtle invariant, or behavior that would surprise. One or two lines is enough.
+Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the *why* is non-obvious — a workaround, an external constraint, a subtle invariant, or behavior that would surprise.
 
-Forbidden:
+Avoid:
 
 - Restating what the code does (`# Iterate over the array` above a `for` loop).
 - Multi-line essays and `# ---` borders.
 - Structural-label dividers (`# Constants`, `# Functions`, `# main`) — `declare -r` is obviously constants, `function` is obviously functions.
 - Operation labels above a block (`# Docker`, `# Networking`, `# Cleanup`) — the code below is the documentation.
-
-Section dividers in particular add nothing.
+- Section dividers — they add nothing.
 
 `# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
 
@@ -326,16 +325,6 @@ When the builtin form is harder to read than the external — typically complex 
 ## Long options over short
 
 Prefer long options (`--option`) to short options (`-o`) wherever both exist. Long options read as prose at the call site, survive grep, and don't require a man-page lookup later.
-
-```bash
-# Yes
-notify-send --urgency critical --expire-time 10000 "${msg}"
-shfmt --write "${file}"
-
-# No
-notify-send -u critical -t 10000 "${msg}"
-shfmt -w "${file}"
-```
 
 Short options are acceptable when no long form exists: bash builtins (`mapfile -t`, `read -r`) and tools whose native syntax is single-dash multi-letter (`find -type f`, `find -maxdepth 1`).
 
