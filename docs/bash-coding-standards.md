@@ -85,7 +85,7 @@ function main {
 main "$@"
 ```
 
-This single example exercises every rule in this document; the sections below refer back to it. The strict header order, top to bottom:
+This example exercises most of the rules in this document; the sections below refer back to it. The strict header order, top to bottom:
 
 1. **Shebang.** `#!/usr/bin/env bash` locates Bash via `PATH` rather than hardcoding `/bin/bash`.
 2. **Header comment.** A single one-line `#` comment naming what the file is. Required for every script and library; no exceptions. A second short line is permitted only when there is genuine context the reader cannot infer from the code (e.g., "Run as root.", "Sourced by interactive shells; no strict mode."). Two lines maximum.
@@ -286,47 +286,11 @@ done
 
 `local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless. The uniform rule — one `local` per variable, immediately above its definition, no exceptions — is preferable to a special case for nested loops.
 
-### Template
-
-```bash
-function example {
-    local name="$1"
-    local dir="${2:-${HOME}}"
-
-    if [[ ! -d "${dir}" ]]; then
-        die "directory not found: ${dir}"
-    fi
-
-    local -a items
-    mapfile -t items < <(find "${dir}" -maxdepth 1 -type f)
-
-    local -i count=0
-    local entry
-    for entry in "${items[@]}"; do
-        ((count++))
-    done
-
-    local first
-    first="$(head --lines=1 "${dir}/.index")"
-    log "${name}: ${count} files; index starts with '${first}'"
-}
-```
-
 ---
 
 ## `main` function
 
-Every executable script defines a `main` function and ends with `main "$@"`. No exceptions, including three-line wrappers:
-
-```bash
-function main {
-    exec firefox --private-window "$@"
-}
-
-main "$@"
-```
-
-The uniform shape buys three things:
+Every executable script defines a `main` function and ends with `main "$@"`. No exceptions, including three-line wrappers. The uniform shape buys three things:
 
 - Arguments enter the script in exactly one place.
 - Sourcing the file does not auto-execute it, which is useful for testing or for refactoring helpers out into a library.
