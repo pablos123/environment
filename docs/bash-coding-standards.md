@@ -2,8 +2,6 @@
 
 A style guide for Bash scripts. The rules apply to any file that begins with `#!/usr/bin/env bash`.
 
-The guiding principle: prefer Bash builtins and explicit structure over external tools and clever shortcuts. Scripts should read top-down, failure modes should be obvious, and the same shape should repeat everywhere.
-
 ---
 
 ## Script example
@@ -139,7 +137,7 @@ Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b
 
 ## Control flow
 
-Use explicit conditionals — `if/then/fi`. Do not chain commands with `&&` or `||` to express branching.
+Use explicit conditionals. Do not chain commands with `&&` or `||` to express branching.
 
 ```bash
 if ! command -v upower >/dev/null; then
@@ -155,9 +153,9 @@ if ! pkill old-daemon; then
 fi
 ```
 
-Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain. The third form — `if ! cmd; then :; fi` — is the explicit "swallow failure" idiom, replacing `cmd || true`.
+Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain. The third form is the explicit "swallow failure" idiom, replacing `cmd || true`.
 
-`if cmd; then` also suspends `set -e` for `cmd`. That is documented bash semantics for any test position; the suspension is intentional behavior, not an oversight.
+`if cmd` also suspends `set -e` for `cmd`. That is documented bash semantics for any test position; the suspension is intentional behavior, not an oversight.
 
 The rule applies to **command-level** control flow only. It does not apply to:
 
@@ -294,7 +292,7 @@ Functions `return`. Only `main` and `die` ever call `exit`.
 - A helper that fails should `return 1`, or rely on `set -e` to propagate the failure of a command substitution or pipeline.
 - `main` is the only place where a deliberate `exit N` (with a chosen code) belongs.
 
-A function that calls `exit` cannot be safely composed: it cannot be called from `if helper; then …`, cannot be sourced for testing, cannot be reused. `return` keeps the function as a unit.
+A function that calls `exit` cannot be safely composed: it cannot be called from `if helper`, cannot be sourced for testing, cannot be reused. `return` keeps the function as a unit.
 
 ---
 
@@ -335,7 +333,7 @@ Short options are acceptable when no long form exists: bash builtins (`mapfile -
 - Always brace expansions: `${var}`, not `$var`.
 - Always quote expansions: `"${var}"`, not `${var}`. Exceptions: inside `[[ ... ]]` (right side of `=~`), inside `(( ... ))`, and where word-splitting is intentional (rare).
 - Use `[[ ]]` for tests, never `[ ]`. `[[ ]]` does not word-split or glob, supports `=~` for regex, and accepts `&&` and `||` *inside* the test (a single test, not control-flow chaining).
-- Use `(( ))` for arithmetic comparisons and assignments: `if ((count < 10)); then`, `((count++))`. Inside `(( ))`, variables are referenced without `$`.
+- Use `(( ))` for arithmetic comparisons and assignments: `if ((count < 10))`, `((count++))`. Inside `(( ))`, variables are referenced without `$`.
 - Do not use `[[ "${a}" -lt "${b}" ]]` for numeric comparison. `(( ))` is shorter, doesn't need quoting, and reads as math.
 
 ---
@@ -346,8 +344,6 @@ Every script must:
 
 - Pass `shfmt --diff` with no changes. Indentation is four spaces; `case` arms are indented under `case`.
 - Pass `shellcheck --enable=all` with zero warnings. `--enable=all` turns on optional checks that align with the rules in this document and catch genuine bugs the rules do not address.
-
-POSIX `sh` files use `shfmt --posix --indent=4`. `--posix` selects the dialect — shfmt cannot infer it from `#!/usr/bin/env sh` and would otherwise format as bash.
 
 ### Project-level shellcheck disables
 
