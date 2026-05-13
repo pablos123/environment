@@ -318,7 +318,7 @@ Prefer Bash parameter expansion, here-strings, and arithmetic to forking externa
 | `for x in $(cmd)` | `mapfile -t arr < <(cmd); for x in "${arr[@]}"` |
 | `. file.bash` | `source file.bash` |
 
-When the builtin form is harder to read than the external — typically complex regex extraction — the external is fine. The rule is "prefer," not "exclusive." The `source` row is the one exception that *is* exclusive: never use `.` in a bash file.
+When the builtin form is harder to read than the external — typically complex regex extraction — the external is fine.
 
 ---
 
@@ -345,7 +345,7 @@ Short options are acceptable when no long form exists: bash builtins (`mapfile -
 Every script must:
 
 - Pass `shfmt --diff` with no changes. Indentation is four spaces; `case` arms are indented under `case`.
-- Pass `shellcheck --enable=all` with zero warnings. `--enable=all` turns on optional checks (`require-variable-braces`, `require-double-brackets`, `quote-safe-variables`, others) that align with the rules in this document and catch genuine bugs the rules do not address.
+- Pass `shellcheck --enable=all` with zero warnings. `--enable=all` turns on optional checks that align with the rules in this document and catch genuine bugs the rules do not address.
 
 POSIX `sh` files use `shfmt --posix --indent=4`. `--posix` selects the dialect — shfmt cannot infer it from `#!/usr/bin/env sh` and would otherwise format as bash.
 
