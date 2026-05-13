@@ -115,17 +115,7 @@ Forbidden:
 - Structural-label dividers (`# Constants`, `# Functions`, `# main`) — `declare -r` is obviously constants, `function` is obviously functions.
 - Operation labels above a block (`# Docker`, `# Networking`, `# Cleanup`) — the code below is the documentation.
 
-Section dividers in particular add nothing:
-
-```bash
-# --------------------------------------------------
-# Constants
-# --------------------------------------------------
-
-# --------------------------------------------------
-# Functions
-# --------------------------------------------------
-```
+Section dividers in particular add nothing.
 
 `# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
 
@@ -135,27 +125,16 @@ Section dividers in particular add nothing:
 
 ---
 
-## Function syntax
-
-Use the `function` keyword without parentheses:
-
-```bash
-function battery_notify {
-    ...
-}
-```
-
-Not `battery_notify()`, not `function battery_notify()`. The parentheses are redundant when `function` is present, and dropping them lets the keyword carry the meaning.
-
----
-
 ## Naming
+
+Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b`, `pct`, `fld`, `e`. Short conventional names for trivial loop variables (`i` for a numeric index, `f` for a one-line file iteration) remain acceptable; abbreviations of domain words do not.
 
 - **Executable scripts** (in `bin/`): no extension; kebab-case.
 - **Sourced bash libraries**: `.bash` extension; snake_case.
 - **Function names**: snake_case.
+- **Variables**: lowercase for locals, function-internal state, and loop variables; UPPERCASE for `declare -r` configuration, exported variables, and anything that mirrors the shell environment.
 
-Variable case (UPPERCASE for constants, lowercase for locals) is covered under Variable declarations below.
+The reason for the variable casing is collision avoidance: the shell environment (`HOME`, `PATH`, `UID`, `EDITOR`, `XDG_*`, …) is uppercase. Uppercase locals risk shadowing them; lowercase locals cannot.
 
 ---
 
@@ -209,14 +188,6 @@ Bash has no string type, so plain `local` *is* the typed form for strings.
 
 `local -i` evaluates assignments as arithmetic: `local -i x="2+3"` yields `5`. Non-numeric assignments become `0` — a useful safety net for "this must be a number" function arguments.
 
-### Naming
-
-UPPERCASE for `declare -r` configuration at the top of a script, exported variables, and anything that mirrors the shell environment. lowercase for locals, function-internal state, and loop variables.
-
-The reason is collision avoidance: the shell environment (`HOME`, `PATH`, `UID`, `EDITOR`, `XDG_*`, …) is uppercase. Uppercase locals risk shadowing them; lowercase locals cannot.
-
-Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b`, `pct`, `fld`, `e`. Short conventional names for trivial loop variables (`i` for a numeric index, `f` for a one-line file iteration) remain acceptable; abbreviations of domain words do not.
-
 ### Configuration block
 
 Configuration constants go at the top of the script, after the header comment, as `declare -r` declarations:
@@ -243,6 +214,16 @@ declare -r TMP_FILE
 ---
 
 ## Function shape
+
+Use the `function` keyword without parentheses:
+
+```bash
+function battery_notify {
+    ...
+}
+```
+
+Not `battery_notify()`, not `function battery_notify()`. The parentheses are redundant when `function` is present, and dropping them lets the keyword carry the meaning.
 
 One `local` per variable, declared immediately above the line that defines it.
 

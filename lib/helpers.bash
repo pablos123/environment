@@ -102,7 +102,7 @@ function calculate_applet_position {
     # shellcheck disable=SC2020  # tr 'x+' maps two chars to newlines, not a word pattern
     mapfile -t res < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
 
-    echo -n "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
+    echo "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
 }
 
 # Clone or update a git repository
