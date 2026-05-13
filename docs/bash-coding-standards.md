@@ -1,6 +1,6 @@
 # Bash Coding Standards
 
-A style guide for Bash scripts. The rules apply to any file that begins with `#!/usr/bin/env bash`. POSIX `sh` scripts follow POSIX conventions and are not covered here — none of the bash idioms below (`local`, `[[ ]]`, `mapfile`, type flags, the `function` keyword) apply to a POSIX-only file.
+A style guide for Bash scripts. The rules apply to any file that begins with `#!/usr/bin/env bash`.
 
 The guiding principle: prefer Bash builtins and explicit structure over external tools and clever shortcuts. Scripts should read top-down, failure modes should be obvious, and the same shape should repeat everywhere.
 
@@ -24,18 +24,73 @@ require_commands upower notify-send
 declare -ri CRITICAL_THRESHOLD=10
 declare -ri LOW_THRESHOLD=15
 
-function helper_x { ... }
-function main { ... }
+function is_battery {
+    local data="$1"
+
+    local -a fields
+    mapfile -t fields < <(awk '/present:|model:|rechargeable:|voltage:/{print $2}' <<<"${data}")
+
+    if ((${#fields[@]} != 4)); then
+        return 1
+    fi
+
+    local field
+    for field in "${fields[@]}"; do
+        if [[ -z "${field}" ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+function notify_for_battery {
+    local battery="$1"
+
+    local battery_data
+    battery_data="$(upower --show-info "${battery}")"
+
+    if ! is_battery "${battery_data}"; then
+        return 0
+    fi
+
+    local -a fields
+    mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
+
+    local model="${fields[0]}"
+    local state="${fields[1]}"
+    local -i percentage="${fields[2]//%/}"
+
+    if [[ "${state}" != "discharging" ]]; then
+        return 0
+    fi
+
+    if ((percentage < CRITICAL_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"
+    elif ((percentage < LOW_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "LOW BATTERY: ${model}"
+    fi
+}
+
+function main {
+    local -a batteries
+    mapfile -t batteries < <(upower --enumerate)
+
+    local battery
+    for battery in "${batteries[@]}"; do
+        notify_for_battery "${battery}"
+    done
+}
 
 main "$@"
 ```
 
-The strict order, top to bottom:
+This single example exercises every rule in this document; the sections below refer back to it. The strict header order, top to bottom:
 
 1. **Shebang.** `#!/usr/bin/env bash` locates Bash via `PATH` rather than hardcoding `/bin/bash`.
 2. **Header comment.** A single one-line `#` comment naming what the file is. Required for every script and library; no exceptions. A second short line is permitted only when there is genuine context the reader cannot infer from the code (e.g., "Run as root.", "Sourced by interactive shells; no strict mode."). Two lines maximum.
 3. **`set -Eeuo pipefail`.** Fail on errors (`-e`), unset variables (`-u`), and pipeline failures (`pipefail`). `-E` propagates the `ERR` trap into functions and subshells.
-4. **`source` the helpers.** Always `source`, never `.`. The longer spelling makes "this is loading another file" visible at a glance.
+4. **`source` the helpers.** Always `source`, never `.`.
 5. **`require_commands`.** Verify external dependencies before any setup work runs.
 6. **File-scope declarations.** `declare -r` constants in UPPERCASE.
 7. **Function definitions.** Helpers first, then `main`.
@@ -89,7 +144,8 @@ Not `battery_notify()`, not `function battery_notify()`. The parentheses are red
 
 ## Naming
 
-- **Executable filenames** in `bin/`: lowercase ASCII alphanumerics and `-`. No underscores, no uppercase.
+- **Executable scripts** (in `bin/`): no extension. Lowercase ASCII alphanumerics and `-`; no underscores, no uppercase.
+- **Sourced bash libraries**: `.bash` extension. Lowercase ASCII alphanumerics, `-` and `_` both fine.
 - **Function names**: lowercase ASCII alphanumerics and `_`. No hyphens, no uppercase.
 
 Variable case (UPPERCASE for constants, lowercase for locals) is covered under Variable declarations below.
@@ -152,6 +208,8 @@ Bash has no string type, so plain `local` *is* the typed form for strings.
 UPPERCASE for `declare -r` configuration at the top of a script, exported variables, and anything that mirrors the shell environment. lowercase for locals, function-internal state, and loop variables.
 
 The reason is collision avoidance: the shell environment (`HOME`, `PATH`, `UID`, `EDITOR`, `XDG_*`, …) is uppercase. Uppercase locals risk shadowing them; lowercase locals cannot.
+
+Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b`, `pct`, `fld`, `e`. Short conventional names for trivial loop variables (`i` for a numeric index, `f` for a one-line file iteration) remain acceptable; abbreviations of domain words do not.
 
 ### Configuration block
 
@@ -342,32 +400,6 @@ Short options are acceptable when no long form exists: bash builtins (`mapfile -
 
 ---
 
-## Dependency checks
-
-External commands that a script depends on are verified at the top of the file — after the configuration block, before any function definitions or `main`:
-
-```bash
-declare -r URL="https://example.com"
-
-require_commands curl jq
-
-function fetch {
-    ...
-}
-
-function main {
-    ...
-}
-
-main "$@"
-```
-
-Performing the check at file scope (not inside `main`) ensures the script aborts *before* any function is defined or any logic runs. The user sees missing tools immediately, not after partial setup.
-
-A single check that collects every missing command and aborts with one message is preferable to per-tool guards: installing missing tooling becomes one round-trip instead of one per re-run.
-
----
-
 ## Linting and formatting
 
 Every script must:
@@ -386,84 +418,3 @@ Three checks are disabled at the repository level:
 - **`SC2310`** — *function invoked in `if` / `while` / `until` condition disables `set -e`.* The control-flow rule (`if/then/fi` for all branching) means predicate functions are *always* called from test positions. The `set -e` suspension that fires there is documented bash semantics, not an oversight. Predicate functions in this codebase are written to be simple — no internal commands whose failure `set -e` would need to catch — so the warning is structural noise.
 
 For everything else, suppress checks inline with `# shellcheck disable=SCxxxx` and a one-line justification. Do not silence checks at the file or repository level.
-
----
-
-## Putting it all together
-
-A complete script that exercises every rule:
-
-```bash
-#!/usr/bin/env bash
-
-# Battery low notification
-
-set -Eeuo pipefail
-
-source "lib/helpers.bash"
-
-require_commands upower notify-send
-
-declare -ri CRITICAL_THRESHOLD=10
-declare -ri LOW_THRESHOLD=15
-
-function is_battery {
-    local data="$1"
-
-    local -a fields
-    mapfile -t fields < <(awk '/present:|model:|rechargeable:|voltage:/{print $2}' <<<"${data}")
-
-    if ((${#fields[@]} != 4)); then
-        return 1
-    fi
-
-    local field
-    for field in "${fields[@]}"; do
-        if [[ -z "${field}" ]]; then
-            return 1
-        fi
-    done
-
-    return 0
-}
-
-function notify_for_battery {
-    local battery="$1"
-
-    local battery_data
-    battery_data="$(upower --show-info "${battery}")"
-
-    if ! is_battery "${battery_data}"; then
-        return 0
-    fi
-
-    local -a fields
-    mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
-
-    local model="${fields[0]}"
-    local state="${fields[1]}"
-    local -i percentage="${fields[2]//%/}"
-
-    if [[ "${state}" != "discharging" ]]; then
-        return 0
-    fi
-
-    if ((percentage < CRITICAL_THRESHOLD)); then
-        notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"
-    elif ((percentage < LOW_THRESHOLD)); then
-        notify-send --urgency critical --expire-time 10000 "LOW BATTERY: ${model}"
-    fi
-}
-
-function main {
-    local -a batteries
-    mapfile -t batteries < <(upower --enumerate)
-
-    local battery
-    for battery in "${batteries[@]}"; do
-        notify_for_battery "${battery}"
-    done
-}
-
-main "$@"
-```
