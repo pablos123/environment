@@ -144,9 +144,9 @@ Not `battery_notify()`, not `function battery_notify()`. The parentheses are red
 
 ## Naming
 
-- **Executable scripts** (in `bin/`): no extension. Lowercase ASCII alphanumerics and `-`; no underscores, no uppercase.
-- **Sourced bash libraries**: `.bash` extension. Lowercase ASCII alphanumerics, `-` and `_` both fine.
-- **Function names**: lowercase ASCII alphanumerics and `_`. No hyphens, no uppercase.
+- **Executable scripts** (in `bin/`): no extension; kebab-case.
+- **Sourced bash libraries**: `.bash` extension; snake_case.
+- **Function names**: snake_case.
 
 Variable case (UPPERCASE for constants, lowercase for locals) is covered under Variable declarations below.
 
@@ -157,7 +157,6 @@ Variable case (UPPERCASE for constants, lowercase for locals) is covered under V
 Use explicit conditionals — `if/then/fi`. Do not chain commands with `&&` or `||` to express branching.
 
 ```bash
-# Yes
 if ! command -v upower >/dev/null; then
     die "upower not found"
 fi
@@ -166,12 +165,12 @@ if [[ ! -d "${dir}" ]]; then
     continue
 fi
 
-# No
-command -v upower >/dev/null || die "upower not found"
-[[ -d "${dir}" ]] || continue
+if ! pkill old-daemon; then
+    :
+fi
 ```
 
-Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain.
+Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain. The third form — `if ! cmd; then :; fi` — is the explicit "swallow failure" idiom, replacing `cmd || true`.
 
 `if cmd; then` also suspends `set -e` for `cmd`. That is documented bash semantics for any test position; the suspension is intentional behavior, not an oversight.
 
