@@ -100,6 +100,8 @@ Every script follows the same fixed top-down order. No deviations. The strict he
 
 Each section is separated by a blank line. Sections that don't apply (a three-line wrapper has no declarations) are omitted; the relative order of the others is preserved.
 
+Files sourced into an interactive shell (`lib/aliases.bash`, `.bashrc`) deliberately omit `set -Eeuo pipefail` so the options don't leak into the user's session. The omission must be acknowledged with a one-line header comment so it doesn't look accidental.
+
 ---
 
 ## Comments
@@ -325,6 +327,8 @@ When the builtin form is harder to read than the external — typically complex 
 Prefer long options (`--option`) to short options (`-o`) wherever both exist. Long options read as prose at the call site, survive grep, and don't require a man-page lookup later.
 
 Short options are acceptable when no long form exists: bash builtins (`mapfile -t`, `read -r`) and tools whose native syntax is single-dash multi-letter (`find -type f`, `find -maxdepth 1`).
+
+If the long form would push the line past 80 columns (4-space indent counted), use the short form. This applies even when the short form is already over 80 — making an over-budget line longer doesn't earn its keep. Backslash continuation is acceptable when it keeps the long form readable, but a single-line short form is usually better than a two-line long form for the same call.
 
 ---
 

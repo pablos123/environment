@@ -127,7 +127,7 @@ DNSEOF
     usermod --append --groups sudo "${TARGET_USER}"
 
     log "Removing apt unstable cli interface warning"
-    echo "Apt::Cmd::Disable-Script-Warning true;" | tee /etc/apt/apt.conf.d/90disablescriptwarning
+    tee /etc/apt/apt.conf.d/90disablescriptwarning <<<"Apt::Cmd::Disable-Script-Warning true;"
 
     log "Configuring correct timezone"
     timedatectl set-timezone America/Argentina/Buenos_Aires
@@ -165,7 +165,7 @@ DNSEOF
     log "Installing Docker"
 
     apt install --yes ca-certificates
-    install -m 0755 -d /etc/apt/keyrings
+    install --mode=0755 --directory /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
     chmod a+r /etc/apt/keyrings/docker.asc
 
@@ -291,8 +291,8 @@ $include /etc/inputrc.dpkg-dist
 set bell-style none
 INPUTRC
 
-    echo "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
-    echo "blacklist snd_pcsp" >>/etc/modprobe.d/nobeep.conf
+    printf '%s\n' "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
+    printf '%s\n' "blacklist snd_pcsp" >>/etc/modprobe.d/nobeep.conf
 
     log "Configuring EU keyboard layout"
 

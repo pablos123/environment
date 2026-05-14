@@ -115,12 +115,12 @@ function main {
         >/dev/null
 
     log "Removing apt unstable cli interface warning"
-    printf '%s\n' "Apt::Cmd::Disable-Script-Warning true;" | tee /etc/apt/apt.conf.d/90disablescriptwarning
+    tee /etc/apt/apt.conf.d/90disablescriptwarning <<<"Apt::Cmd::Disable-Script-Warning true;"
 
     log "Creating /home/${TARGET_USER}/.ssh directory "
     mkdir --parents "/home/${TARGET_USER}/.ssh"
 
-    if [[ -n "$(ls -A "${MOUNT_POINT}")" ]]; then
+    if [[ -n "$(ls --almost-all "${MOUNT_POINT}")" ]]; then
         die "${MOUNT_POINT} directory not empty"
     fi
 
