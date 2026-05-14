@@ -44,13 +44,13 @@ function notify_for_battery {
     local -a fields
     mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
 
-    local model="${fields[0]}"
     local state="${fields[1]}"
-    local -i percentage="${fields[2]//%/}"
-
     if [[ "${state}" != "discharging" ]]; then
         return 0
     fi
+
+    local model="${fields[0]}"
+    local -i percentage="${fields[2]//%/}"
 
     if ((percentage < CRITICAL_THRESHOLD)); then
         notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"

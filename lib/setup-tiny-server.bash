@@ -203,16 +203,18 @@ XINITRC
     log "Writing .bashrc for root"
 
     cat >/root/.bashrc <<'BASHRC'
-# If not interactive, bail
-[[ $- != *i* ]] && return
+# Interactive bash startup; `set -Eeuo pipefail` is deliberately omitted to
+# avoid leaking errexit/nounset/pipefail into the session.
 
-# --- History ---
-HISTCONTROL=ignoreboth:erasedups
-HISTSIZE=10000
-HISTFILESIZE=20000
-HISTTIMEFORMAT="%F %T  "
+if [[ ${-} != *i* ]]; then
+    return
+fi
 
-# --- Shell options ---
+export HISTCONTROL=ignoreboth:erasedups
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTTIMEFORMAT="%F %T  "
+
 shopt -s histappend
 shopt -s checkwinsize
 shopt -s cdspell
@@ -222,58 +224,57 @@ shopt -s globstar
 shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 
-# --- Colors ---
-RST='\[\e[0m\]'
-BOLD='\[\e[1m\]'
-RED='\[\e[31m\]'
-GREEN='\[\e[32m\]'
-YELLOW='\[\e[33m\]'
-BLUE='\[\e[34m\]'
-CYAN='\[\e[36m\]'
+declare -r RST='\[\e[0m\]'
+declare -r BOLD='\[\e[1m\]'
+declare -r RED='\[\e[31m\]'
+declare -r GREEN='\[\e[32m\]'
+declare -r YELLOW='\[\e[33m\]'
+declare -r BLUE='\[\e[34m\]'
+declare -r CYAN='\[\e[36m\]'
 
-__git_branch() {
+function __git_branch {
     local branch
-    branch="$(git symbolic-ref --short HEAD 2>/dev/null)" || return
+    if ! branch="$(git symbolic-ref --short HEAD 2>/dev/null)"; then
+        return
+    fi
     printf ' (%s)' "${branch}"
 }
 
-if [[ "${EUID}" -eq 0 ]]; then
+if ((EUID == 0)); then
     PS1="${RED}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}# "
 else
     PS1="${GREEN}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}\$ "
 fi
 
-# --- Aliases ---
 alias ls='ls --color=auto'
-alias ll='ls -lhF'
-alias la='ls -AlhF'
+alias ll='ls -l --human-readable --classify'
+alias la='ls -l --almost-all --human-readable --classify'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias ip='ip --color=auto'
-alias df='df -h'
-alias du='du -h'
-alias free='free -h'
-alias mkdir='mkdir -pv'
+alias df='df --human-readable'
+alias du='du --human-readable'
+alias free='free --human-readable'
+alias mkdir='mkdir --parents --verbose'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-# --- Completions ---
 if [[ -f /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
 fi
 
-# --- Path ---
 export PATH="${HOME}/.local/bin:${PATH}"
 export EDITOR="vim"
 
-# --- Disable bell ---
 bind 'set bell-style none'
 BASHRC
 
     log "Writing .bash_profile for root"
 
     cat >/root/.bash_profile <<'BPROFILE'
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+if [[ -f "${HOME}/.bashrc" ]]; then
+    source "${HOME}/.bashrc"
+fi
 BPROFILE
 
     log "Writing .bashrc for ${TARGET_USER}"

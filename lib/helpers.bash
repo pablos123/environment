@@ -105,10 +105,6 @@ function calculate_applet_position {
     echo "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
 }
 
-# Clone or update a git repository
-# Usage: git_clone_pull_repo <url> <directory> [force]
-# - force: "true" for shallow clone + hard reset (external repos)
-#          "false" for full clone + ff-only pull (default, personal repos)
 function git_clone_pull_repo {
     local repo_url="$1"
     local repo_dir="$2"
@@ -133,15 +129,13 @@ function git_clone_pull_repo {
     fi
 }
 
-# Build and install from source using make
-# Usage: make_build_install <directory> [make_args]
 function make_build_install {
     local build_dir="$1"
-    local make_arg="${2:-}"
-
     if ! cd "${build_dir}"; then
         return 1
     fi
+
+    local make_arg="${2:-}"
 
     log "Building ${build_dir##*/} from source"
     {
