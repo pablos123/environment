@@ -54,6 +54,7 @@ function notify_for_battery {
     mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
 
     local state="${fields[1]}"
+
     if [[ "${state}" != "discharging" ]]; then
         return 0
     fi
@@ -87,7 +88,9 @@ This example exercises most of the rules in this document; the sections below re
 
 ## Anatomy of a script
 
-Every script follows the same fixed top-down order. No deviations. The strict header order, top to bottom:
+Every executable script follows the same fixed top-down order — no deviations, including three-line wrappers.
+
+The strict header order, top to bottom:
 
 1. Shebang: `#!/usr/bin/env bash`
 2. Header comment (one or two lines).
@@ -271,18 +274,6 @@ done
 ```
 
 `local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless. The uniform rule — one `local` per variable, immediately above its definition, no exceptions — is preferable to a special case for nested loops.
-
----
-
-## `main` function
-
-Every executable script defines a `main` function and ends with `main "$@"`. No exceptions, including three-line wrappers. The uniform shape buys three things:
-
-- Arguments enter the script in exactly one place.
-- Sourcing the file does not auto-execute it, which is useful for testing or for refactoring helpers out into a library.
-- Every script has the same shape, eliminating the "is this the kind that has a main?" cognitive load.
-
-Sourced libraries do not define `main` — their body *is* the init, and the rule's purpose (don't auto-execute on source) is moot for files whose only job is to be sourced.
 
 ---
 
