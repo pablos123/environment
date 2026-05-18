@@ -13,7 +13,7 @@ A style guide for Bash scripts. The rules apply to any file that begins with `#!
 
 set -Eeuo pipefail
 
-source "lib/helpers.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 require_commands upower notify-send
 
@@ -21,17 +21,14 @@ declare -ri CRITICAL_THRESHOLD=10
 declare -ri LOW_THRESHOLD=15
 
 function is_battery {
-    local data="$1"
+    local -n fields_ref="$1"
 
-    local -a fields
-    mapfile -t fields < <(awk '/present:|model:|rechargeable:|voltage:/{print $2}' <<<"${data}")
-
-    if ((${#fields[@]} != 4)); then
+    if ((${#fields_ref[@]} != 3)); then
         return 1
     fi
 
     local field
-    for field in "${fields[@]}"; do
+    for field in "${fields_ref[@]}"; do
         if [[ -z "${field}" ]]; then
             return 1
         fi
@@ -46,12 +43,12 @@ function notify_for_battery {
     local battery_data
     battery_data="$(upower --show-info "${battery}")"
 
-    if ! is_battery "${battery_data}"; then
-        return 0
-    fi
-
     local -a fields
     mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
+
+    if ! is_battery fields; then
+        return 0
+    fi
 
     local state="${fields[1]}"
 
@@ -88,7 +85,7 @@ This example exercises most of the rules in this document; the sections below re
 
 ## Anatomy of a script
 
-Every executable script follows the same fixed top-down order — no deviations, including three-line wrappers.
+Every executable script follows the same fixed top-down order, including three-line wrappers.
 
 The strict header order, top to bottom:
 
@@ -227,7 +224,7 @@ function battery_notify {
 
 Not `battery_notify()`, not `function battery_notify()`. The parentheses are redundant when `function` is present, and dropping them lets the keyword carry the meaning.
 
-One `local` per variable, declared immediately above the line that defines it.
+One `local` per variable, declared immediately above the line that defines it, including nested loops.
 
 If the value is a plain expression — parameter expansion, literal, integer arithmetic, anything that cannot fail — declare and assign on one line:
 
@@ -261,7 +258,7 @@ for entry in "${items[@]}"; do
 done
 ```
 
-For loops, every `for` gets its own `local` line directly above, including nested loops:
+Nested loops follow the same rule — one `local` per `for`:
 
 ```bash
 local entry
@@ -273,7 +270,7 @@ for entry in "${entries[@]}"; do
 done
 ```
 
-`local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless. The uniform rule — one `local` per variable, immediately above its definition, no exceptions — is preferable to a special case for nested loops.
+`local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless.
 
 ---
 
@@ -307,6 +304,8 @@ Prefer Bash parameter expansion, here-strings, and arithmetic to forking externa
 | `[ ... ]` | `[[ ... ]]` |
 | `expr "${a}" + "${b}"` | `((a + b))` |
 | `for x in $(cmd)` | `mapfile -t arr < <(cmd); for x in "${arr[@]}"` |
+| `wc -l <"${file}"` | `mapfile -t lines <"${file}"; ((${#lines[@]}))` |
+| `sed 's/x/y/' <<<"${var}"` | `${var/x/y}` (single) or `${var//x/y}` (global) |
 | `. file.bash` | `source file.bash` |
 
 When the builtin form is harder to read than the external — typically complex regex extraction — the external is fine.
