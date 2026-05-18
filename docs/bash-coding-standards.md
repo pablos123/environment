@@ -300,7 +300,7 @@ Prefer Bash parameter expansion, here-strings, and arithmetic to forking externa
 | `tr 'A-Z' 'a-z'` | `${var,,}` |
 | `echo "${var}" \| cmd` | `cmd <<<"${var}"` |
 | `$(pwd)` | `${PWD}` |
-| `~` (in scripts) | `${HOME}` |
+| `~` | `${HOME}` |
 | `[ ... ]` | `[[ ... ]]` |
 | `expr "${a}" + "${b}"` | `((a + b))` |
 | `for x in $(cmd)` | `mapfile -t arr < <(cmd); for x in "${arr[@]}"` |
