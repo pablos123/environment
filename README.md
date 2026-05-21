@@ -6,11 +6,9 @@ I am using this set of tools since a lot of time and I do not think I will chang
 
 I resigned from the battle for visual consistency a long time ago, it is not worth it.
 
-I use the latest stable release of Debian headless.
+I use the latest stable release of Debian headless. I run this setup after a fresh Debian headless install.
 
 ---
-
-After a fresh Debian headless install:
 
 With `root`.
 ```bash
