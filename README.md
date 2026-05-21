@@ -8,15 +8,17 @@ I resigned from the battle for visual consistency a long time ago, it is not wor
 
 I use the latest stable release of Debian headless.
 
-After a fresh Debian headless install, run this as `root`:
+---
 
-With `root`:
+After a fresh Debian headless install:
+
+With `root`.
 ```bash
 bash <(wget --no-cache --no-cookies -qO- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/post-install)
 ```
 
-With `pab`:
+With `pab`.
 ```bash
-bash <(curl -H "Cache-Control: no-cache" -H "Pragma: no-cache" -fsSL https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup)
+bash <(wget --no-cache --no-cookies -qO- https://raw.githubusercontent.com/pablos123/environment/refs/heads/main/bin/setup)
 ```
 
