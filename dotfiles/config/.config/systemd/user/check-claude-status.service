@@ -1,8 +1,0 @@
-[Unit]
-Description=Check Claude API status
-BindsTo=x-session.target
-After=x-session.target
-
-[Service]
-Type=oneshot
-ExecStart=%h/environment/bin/check-claude-status

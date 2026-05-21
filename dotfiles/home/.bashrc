@@ -1,56 +1,55 @@
-#!/usr/bin/env bash
+# Bash interactive shell configuration. `set -Eeuo pipefail` is deliberately
+# omitted because this file is sourced into the interactive shell.
 
 # If not running interactively, don't do anything.
-[[ $- != *i* ]] &&
+if [[ "$-" != *i* ]]; then
     return
+fi
 
 # If bash's version is bad don't do anything.
-(( BASH_VERSINFO[0] < 4 )) &&
+if ((BASH_VERSINFO[0] < 4)); then
     return
+fi
 
 # Return if the terminal cannot use colors.
-[[ ! "${TERM}" =~ color ]] && [[ ! "${TERM}" =~ kitty ]] &&
+if [[ ! "${TERM}" =~ color && ! "${TERM}" =~ kitty ]]; then
     return
+fi
 
 # Vim terminal buffer sets this value as xterm-256color and the buffer
 # opens tmux.
-# if [[ ! "${TERM}" =~ kitty ]] && command -v tmux &>>/dev/null &&
-#     [[ ! "${TERM}" =~ screen ]] &&
-#     [[ ! "${TERM}" =~ tmux ]] &&
-#     [[ -z "${TMUX}" ]]; then
-#     # Tell tmux to assume 256 colors with the -2 option.
-#     exec tmux -2 new-session -A -s forest
+# if [[ ! "${TERM}" =~ kitty && ! "${TERM}" =~ screen && ! "${TERM}" =~ tmux && -z "${TMUX}" ]]; then
+#     if command -v tmux &>/dev/null; then
+#         # Tell tmux to assume 256 colors with the -2 option.
+#         exec tmux -2 new-session -A -s forest
+#     fi
 # fi
 
-# SHELL OPTIONS
-# ---------------------------------------------------------------------
 {
+    # Prepend cd to directory names automatically.
+    shopt -s autocd
 
-# Prepend cd to directory names automatically.
-shopt -s autocd
+    # Correct spelling errors during tab-completion.
+    shopt -s dirspell
 
-# Correct spelling errors during tab-completion.
-shopt -s dirspell
+    # Correct spelling errors in arguments supplied to cd.
+    shopt -s cdspell
 
-# Correct spelling errors in arguments supplied to cd.
-shopt -s cdspell
+    # Turn on recursive globbing (enables ** to recurse all directories).
+    shopt -s globstar
 
-# Turn on recursive globbing (enables ** to recurse all directories).
-shopt -s globstar
+    # This allows you to bookmark your favorite places across the file system.
+    # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in.
+    shopt -s cdable_vars
 
-# This allows you to bookmark your favorite places across the file system.
-# Define a variable containing a path and you will be able to cd into it regardless of the directory you're in.
-shopt -s cdable_vars
+    # Update window size after every command.
+    shopt -s checkwinsize
 
-# Update window size after every command.
-shopt -s checkwinsize
+    # Append to the history file, don't overwrite.
+    shopt -s histappend
 
-# Append to the history file, don't overwrite.
-shopt -s histappend
-
-# Save multi-line commands as one command in the history.
-shopt -s cmdhist
-
+    # Save multi-line commands as one command in the history.
+    shopt -s cmdhist
 } &>>/dev/null
 
 # Enable history expansion with space
@@ -73,10 +72,7 @@ bind "set colored-completion-prefix on"
 bind "set visible-stats on"
 # The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
 bind "set completion-prefix-display-length 7"
-# ---------------------------------------------------------------------
 
-# ENV
-# ---------------------------------------------------------------------
 export VISUAL=/usr/local/bin/nvim
 export EDITOR=/usr/local/bin/nvim
 
@@ -86,8 +82,9 @@ export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
 # PS1
-[[ -f "${HOME}/.git-prompt.sh" ]] &&
+if [[ -f "${HOME}/.git-prompt.sh" ]]; then
     source "${HOME}/.git-prompt.sh"
+fi
 
 export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWDIRTYSTATE=true
@@ -101,8 +98,6 @@ export PS1=''
 
 # Automatically trim long paths in the prompt.
 export PROMPT_DIRTRIM=2
-
-# HISTORY
 
 # Append to history after finishing any command.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
@@ -121,44 +116,54 @@ export HISTIGNORE="exit:ls:history:clear:pwd"
 # %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
 export HISTTIMEFORMAT='%F %T '
-# ---------------------------------------------------------------------
 
-# SOURCES
-# ---------------------------------------------------------------------
 source "${HOME}/environment/lib/aliases.bash"
-[[ -f "${HOME}/.bashrc_custom" ]] &&
+
+if [[ -f "${HOME}/.bashrc_custom" ]]; then
     source "${HOME}/.bashrc_custom"
+fi
 
 export PYENV_ROOT="${HOME}/.pyenv"
 export NVM_DIR="${HOME}/.nvm"
 
-[[ -f /usr/share/bash-completion/bash_completion ]] &&
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
+fi
 
-[[ -f "${HOME}/.fzf.bash" ]] &&
-    source ${HOME}/.fzf.bash
+if [[ -f "${HOME}/.fzf.bash" ]]; then
+    source "${HOME}/.fzf.bash"
+fi
 
-[[ -f "${HOME}/.cargo/env" ]] &&
+if [[ -f "${HOME}/.cargo/env" ]]; then
     source "${HOME}/.cargo/env"
+fi
 
-[[ -d "${PYENV_ROOT}"/bin ]] && [[ ":${PATH}:" != *":${PYENV_ROOT}/bin:"* ]] &&
+if [[ -d "${PYENV_ROOT}/bin" && ":${PATH}:" != *":${PYENV_ROOT}/bin:"* ]]; then
     export PATH="${PYENV_ROOT}/bin:${PATH}"
+fi
+
 if command -v pyenv &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
 
-[[ -s "${NVM_DIR}/nvm.sh" ]] &&
+if [[ -s "${NVM_DIR}/nvm.sh" ]]; then
     source "${NVM_DIR}/nvm.sh"
-[[ -s "${NVM_DIR}/bash_completion" ]] &&
+fi
+
+if [[ -s "${NVM_DIR}/bash_completion" ]]; then
     source "${NVM_DIR}/bash_completion"
+fi
 
-[[ -f "${HOME}/.ghcup/env" ]] &&
+if [[ -f "${HOME}/.ghcup/env" ]]; then
     source "${HOME}/.ghcup/env"
+fi
 
-[[ -d "${HOME}/go/bin" ]] &&
+if [[ -d "${HOME}/go/bin" ]]; then
     export PATH="${HOME}/go/bin:${PATH}"
+fi
 
 # Force home bin directory first for doing wrappers.
-[[ -d "${HOME}/bin" ]] &&
+if [[ -d "${HOME}/bin" ]]; then
     export PATH="${HOME}/bin:${PATH}"
+fi

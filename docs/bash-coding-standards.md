@@ -1,14 +1,10 @@
 # Bash Coding Standards
 
-A style guide for Bash scripts. The rules apply to any file that begins with `#!/usr/bin/env bash`. POSIX `sh` scripts follow POSIX conventions and are not covered here — none of the bash idioms below (`local`, `[[ ]]`, `mapfile`, type flags, the `function` keyword) apply to a POSIX-only file.
-
-The guiding principle: prefer Bash builtins and explicit structure over external tools and clever shortcuts. Scripts should read top-down, failure modes should be obvious, and the same shape should repeat everywhere.
+A style guide for Bash scripts. The rules apply to any file that begins with `#!/usr/bin/env bash`.
 
 ---
 
-## Script header
-
-Every script follows the same fixed top-down order. No deviations.
+## Script example
 
 ```bash
 #!/usr/bin/env bash
@@ -17,91 +13,135 @@ Every script follows the same fixed top-down order. No deviations.
 
 set -Eeuo pipefail
 
-source "lib/helpers.bash"
+source "${HOME}/environment/lib/helpers.bash"
 
 require_commands upower notify-send
 
 declare -ri CRITICAL_THRESHOLD=10
 declare -ri LOW_THRESHOLD=15
 
-function helper_x { ... }
-function main { ... }
+function is_battery {
+    local -n fields_ref="$1"
+
+    if ((${#fields_ref[@]} != 3)); then
+        return 1
+    fi
+
+    local field
+    for field in "${fields_ref[@]}"; do
+        if [[ -z "${field}" ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+function notify_for_battery {
+    local battery="$1"
+
+    local battery_data
+    battery_data="$(upower --show-info "${battery}")"
+
+    local -a fields
+    mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
+
+    if ! is_battery fields; then
+        return 0
+    fi
+
+    local state="${fields[1]}"
+
+    if [[ "${state}" != "discharging" ]]; then
+        return 0
+    fi
+
+    local model="${fields[0]}"
+    local -i percentage="${fields[2]//%/}"
+
+    if ((percentage < CRITICAL_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"
+    elif ((percentage < LOW_THRESHOLD)); then
+        notify-send --urgency critical --expire-time 10000 "LOW BATTERY: ${model}"
+    fi
+}
+
+function main {
+    local -a batteries
+    mapfile -t batteries < <(upower --enumerate)
+
+    local battery
+    for battery in "${batteries[@]}"; do
+        notify_for_battery "${battery}"
+    done
+}
 
 main "$@"
 ```
 
-The strict order, top to bottom:
+This example exercises most of the rules in this document; the sections below refer back to it.
 
-1. **Shebang.** `#!/usr/bin/env bash` locates Bash via `PATH` rather than hardcoding `/bin/bash`.
-2. **Header comment.** A single one-line `#` comment naming what the file is. Required for every script and library; no exceptions. A second short line is permitted only when there is genuine context the reader cannot infer from the code (e.g., "Run as root.", "Sourced by interactive shells; no strict mode."). Two lines maximum.
-3. **`set -Eeuo pipefail`.** Fail on errors (`-e`), unset variables (`-u`), and pipeline failures (`pipefail`). `-E` propagates the `ERR` trap into functions and subshells.
-4. **`source` the helpers.** Always `source`, never `.`. The longer spelling makes "this is loading another file" visible at a glance.
-5. **`require_commands`.** Verify external dependencies before any setup work runs.
-6. **File-scope declarations.** `declare -r` constants in UPPERCASE.
-7. **Function definitions.** Helpers first, then `main`.
-8. **`main "$@"`.** The last line of the file.
+---
+
+## Anatomy of a script
+
+Every executable script follows the same fixed top-down order, including three-line wrappers.
+
+The strict header order, top to bottom:
+
+1. Shebang: `#!/usr/bin/env bash`
+2. Header comment (one or two lines).
+3. `set -Eeuo pipefail`
+4. `source` the helpers.
+5. `require_commands` for external dependencies.
+6. File-scope `declare -r` constants.
+7. Function definitions (helpers first, then `main`).
+8. `main "$@"`
 
 Each section is separated by a blank line. Sections that don't apply (a three-line wrapper has no declarations) are omitted; the relative order of the others is preserved.
 
-### No structural-label dividers
+Files sourced into an interactive shell (`lib/aliases.bash`, `.bashrc`) deliberately omit `set -Eeuo pipefail` so the options don't leak into the user's session. The omission must be acknowledged with a one-line header comment so it doesn't look accidental.
 
-`# ---` / label / `# ---` blocks are forbidden. Section dividers in particular add nothing:
+---
 
-```bash
-# --------------------------------------------------
-# Constants
-# --------------------------------------------------
+## Comments
 
-# --------------------------------------------------
-# Functions
-# --------------------------------------------------
-```
+Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the *why* is non-obvious — a workaround, an external constraint, a subtle invariant, or behavior that would surprise.
 
-`declare -r` lines are obviously constants; `function` lines are obviously functions; `function main` is obviously main. The label says nothing the code does not. The same applies to operation labels (`# Docker`, `# Networking`, `# Cleanup`): if the block is short enough for a one-word label, it is short enough to read directly; if it is long, extract a named function.
-
-### When to comment
-
-Default to no comment. Well-named functions and variables make most prose redundant. Add a comment only when the **why** is non-obvious to a reader looking at the code: a workaround, an external constraint, a subtle invariant, or behavior that would surprise. Do not restate **what** the code does — `# Iterate over the array` above a `for` loop is noise.
-
-When a comment is warranted, one or two lines is enough. No multi-line essays, no `# ---` borders.
-
-Inline `# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
+`# shellcheck disable=SCxxxx` directives carry a one-line justification on the same line:
 
 ```bash
 # shellcheck disable=SC2154  # VERSION_CODENAME is defined by /etc/os-release
 ```
 
----
+Avoid:
 
-## Function syntax
-
-Use the `function` keyword without parentheses:
-
-```bash
-function battery_notify {
-    ...
-}
-```
-
-Not `battery_notify()`, not `function battery_notify()`. The parentheses are redundant when `function` is present, and dropping them lets the keyword carry the meaning.
+- Restating what the code does (`# Iterate over the array` above a `for` loop).
+- Multi-line essays and `# ---` borders.
+- Structural-label dividers (`# Constants`, `# Functions`, `# main`) — `declare -r` is obviously constants, `function` is obviously functions.
+- Operation labels above a block (`# Docker`, `# Networking`, `# Cleanup`) — the code below is the documentation.
+- Section dividers — they add nothing.
 
 ---
 
 ## Naming
 
-- **Executable filenames** in `bin/`: lowercase ASCII alphanumerics and `-`. No underscores, no uppercase.
-- **Function names**: lowercase ASCII alphanumerics and `_`. No hyphens, no uppercase.
+Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b`, `pct`, `fld`, `e`. Short conventional names for trivial loop variables (`i` for a numeric index, `f` for a one-line file iteration) remain acceptable; abbreviations of domain words do not.
 
-Variable case (UPPERCASE for constants, lowercase for locals) is covered under Variable declarations below.
+- **Executable scripts** (in `bin/`): no extension; kebab-case.
+- **Sourced bash libraries**: `.bash` extension; snake_case.
+- **Function names**: snake_case.
+- **Variables**:
+    - lowercase for local variables.
+    - UPPERCASE for `declare -r` configuration and exported variables.
 
 ---
 
 ## Control flow
 
-Use explicit conditionals — `if/then/fi`. Do not chain commands with `&&` or `||` to express branching.
+Use explicit conditionals. Do not chain commands with `&&` or `||` to express branching.
 
 ```bash
-# Yes
 if ! command -v upower >/dev/null; then
     die "upower not found"
 fi
@@ -110,18 +150,18 @@ if [[ ! -d "${dir}" ]]; then
     continue
 fi
 
-# No
-command -v upower >/dev/null || die "upower not found"
-[[ -d "${dir}" ]] || continue
+if ! pkill old-daemon; then
+    :
+fi
 ```
 
-Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain.
+Branches become greppable, indentation reflects control flow, and the failure response (`die`, `continue`, `return 0`) reads like prose rather than being tucked at the end of a chain. The third form is the explicit "swallow failure" idiom, replacing `cmd || true`.
 
-`if cmd; then` also suspends `set -e` for `cmd`. That is documented bash semantics for any test position; the suspension is intentional behavior, not an oversight.
+`if cmd` also suspends `set -e` for `cmd`. That is documented bash semantics for any test position; the suspension is intentional behavior, not an oversight.
 
 The rule applies to **command-level** control flow only. It does not apply to:
 
-- Parameter expansion defaults: `${var:-default}`, `${var:?error}` — these are expansions, not control flow.
+- Parameter expansion defaults: `${var:-default}` — this is an expansion, not control flow.
 - Operators *inside* `[[ ]]`: `[[ -n "${a}" && -n "${b}" ]]` is a single test, not a chain.
 
 ---
@@ -146,12 +186,6 @@ Always use `declare -r` for file-scope constants — never `readonly`. `readonly
 Bash has no string type, so plain `local` *is* the typed form for strings.
 
 `local -i` evaluates assignments as arithmetic: `local -i x="2+3"` yields `5`. Non-numeric assignments become `0` — a useful safety net for "this must be a number" function arguments.
-
-### Naming
-
-UPPERCASE for `declare -r` configuration at the top of a script, exported variables, and anything that mirrors the shell environment. lowercase for locals, function-internal state, and loop variables.
-
-The reason is collision avoidance: the shell environment (`HOME`, `PATH`, `UID`, `EDITOR`, `XDG_*`, …) is uppercase. Uppercase locals risk shadowing them; lowercase locals cannot.
 
 ### Configuration block
 
@@ -180,7 +214,17 @@ declare -r TMP_FILE
 
 ## Function shape
 
-One `local` per variable, declared immediately above the line that defines it.
+Use the `function` keyword without parentheses:
+
+```bash
+function battery_notify {
+    ...
+}
+```
+
+Not `battery_notify()`, not `function battery_notify()`. The parentheses are redundant when `function` is present, and dropping them lets the keyword carry the meaning.
+
+One `local` per variable, declared immediately above the line that defines it, including nested loops.
 
 If the value is a plain expression — parameter expansion, literal, integer arithmetic, anything that cannot fail — declare and assign on one line:
 
@@ -214,7 +258,7 @@ for entry in "${items[@]}"; do
 done
 ```
 
-For loops, every `for` gets its own `local` line directly above, including nested loops:
+Nested loops follow the same rule — one `local` per `for`:
 
 ```bash
 local entry
@@ -226,55 +270,7 @@ for entry in "${entries[@]}"; do
 done
 ```
 
-`local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless. The uniform rule — one `local` per variable, immediately above its definition, no exceptions — is preferable to a special case for nested loops.
-
-### Template
-
-```bash
-function example {
-    local name="$1"
-    local dir="${2:-${HOME}}"
-
-    if [[ ! -d "${dir}" ]]; then
-        die "directory not found: ${dir}"
-    fi
-
-    local -a items
-    mapfile -t items < <(find "${dir}" -maxdepth 1 -type f)
-
-    local -i count=0
-    local entry
-    for entry in "${items[@]}"; do
-        ((count++))
-    done
-
-    local first
-    first="$(head --lines=1 "${dir}/.index")"
-    log "${name}: ${count} files; index starts with '${first}'"
-}
-```
-
----
-
-## `main` function
-
-Every executable script defines a `main` function and ends with `main "$@"`. No exceptions, including three-line wrappers:
-
-```bash
-function main {
-    exec firefox --private-window "$@"
-}
-
-main "$@"
-```
-
-The uniform shape buys three things:
-
-- Arguments enter the script in exactly one place.
-- Sourcing the file does not auto-execute it, which is useful for testing or for refactoring helpers out into a library.
-- Every script has the same shape, eliminating the "is this the kind that has a main?" cognitive load.
-
-Sourced libraries do not define `main` — their body *is* the init, and the rule's purpose (don't auto-execute on source) is moot for files whose only job is to be sourced.
+`local` is function-scoped in bash, so re-running `local file` once per outer iteration is harmless.
 
 ---
 
@@ -286,7 +282,7 @@ Functions `return`. Only `main` and `die` ever call `exit`.
 - A helper that fails should `return 1`, or rely on `set -e` to propagate the failure of a command substitution or pipeline.
 - `main` is the only place where a deliberate `exit N` (with a chosen code) belongs.
 
-A function that calls `exit` cannot be safely composed: it cannot be called from `if helper; then …`, cannot be sourced for testing, cannot be reused. `return` keeps the function as a unit.
+A function that calls `exit` cannot be safely composed: it cannot be called from `if helper`, cannot be sourced for testing, cannot be reused. `return` keeps the function as a unit.
 
 ---
 
@@ -304,13 +300,15 @@ Prefer Bash parameter expansion, here-strings, and arithmetic to forking externa
 | `tr 'A-Z' 'a-z'` | `${var,,}` |
 | `echo "${var}" \| cmd` | `cmd <<<"${var}"` |
 | `$(pwd)` | `${PWD}` |
-| `~` (in scripts) | `${HOME}` |
+| `~` | `${HOME}` |
 | `[ ... ]` | `[[ ... ]]` |
 | `expr "${a}" + "${b}"` | `((a + b))` |
 | `for x in $(cmd)` | `mapfile -t arr < <(cmd); for x in "${arr[@]}"` |
+| `wc -l <"${file}"` | `mapfile -t lines <"${file}"; ((${#lines[@]}))` |
+| `sed 's/x/y/' <<<"${var}"` | `${var/x/y}` (single) or `${var//x/y}` (global) |
 | `. file.bash` | `source file.bash` |
 
-When the builtin form is harder to read than the external — typically complex regex extraction — the external is fine. The rule is "prefer," not "exclusive." The `source` row is the one exception that *is* exclusive: never use `.` in a bash file.
+When the builtin form is harder to read than the external — typically complex regex extraction — the external is fine.
 
 ---
 
@@ -318,17 +316,9 @@ When the builtin form is harder to read than the external — typically complex 
 
 Prefer long options (`--option`) to short options (`-o`) wherever both exist. Long options read as prose at the call site, survive grep, and don't require a man-page lookup later.
 
-```bash
-# Yes
-notify-send --urgency critical --expire-time 10000 "${msg}"
-shfmt --write "${file}"
-
-# No
-notify-send -u critical -t 10000 "${msg}"
-shfmt -w "${file}"
-```
-
 Short options are acceptable when no long form exists: bash builtins (`mapfile -t`, `read -r`) and tools whose native syntax is single-dash multi-letter (`find -type f`, `find -maxdepth 1`).
+
+If the long form would push the line past 80 columns (4-space indent counted), use the short form. This applies even when the short form is already over 80 — making an over-budget line longer doesn't earn its keep. Backslash continuation is acceptable when it keeps the long form readable, but a single-line short form is usually better than a two-line long form for the same call.
 
 ---
 
@@ -337,34 +327,8 @@ Short options are acceptable when no long form exists: bash builtins (`mapfile -
 - Always brace expansions: `${var}`, not `$var`.
 - Always quote expansions: `"${var}"`, not `${var}`. Exceptions: inside `[[ ... ]]` (right side of `=~`), inside `(( ... ))`, and where word-splitting is intentional (rare).
 - Use `[[ ]]` for tests, never `[ ]`. `[[ ]]` does not word-split or glob, supports `=~` for regex, and accepts `&&` and `||` *inside* the test (a single test, not control-flow chaining).
-- Use `(( ))` for arithmetic comparisons and assignments: `if ((count < 10)); then`, `((count++))`. Inside `(( ))`, variables are referenced without `$`.
+- Use `(( ))` for arithmetic comparisons and assignments: `if ((count < 10))`, `((count++))`. Inside `(( ))`, variables are referenced without `$`.
 - Do not use `[[ "${a}" -lt "${b}" ]]` for numeric comparison. `(( ))` is shorter, doesn't need quoting, and reads as math.
-
----
-
-## Dependency checks
-
-External commands that a script depends on are verified at the top of the file — after the configuration block, before any function definitions or `main`:
-
-```bash
-declare -r URL="https://example.com"
-
-require_commands curl jq
-
-function fetch {
-    ...
-}
-
-function main {
-    ...
-}
-
-main "$@"
-```
-
-Performing the check at file scope (not inside `main`) ensures the script aborts *before* any function is defined or any logic runs. The user sees missing tools immediately, not after partial setup.
-
-A single check that collects every missing command and aborts with one message is preferable to per-tool guards: installing missing tooling becomes one round-trip instead of one per re-run.
 
 ---
 
@@ -373,9 +337,7 @@ A single check that collects every missing command and aborts with one message i
 Every script must:
 
 - Pass `shfmt --diff` with no changes. Indentation is four spaces; `case` arms are indented under `case`.
-- Pass `shellcheck --enable=all` with zero warnings. `--enable=all` turns on optional checks (`require-variable-braces`, `require-double-brackets`, `quote-safe-variables`, others) that align with the rules in this document and catch genuine bugs the rules do not address.
-
-POSIX `sh` files use `shfmt --posix --indent=4`. `--posix` selects the dialect — shfmt cannot infer it from `#!/usr/bin/env sh` and would otherwise format as bash.
+- Pass `shellcheck --enable=all` with zero warnings. `--enable=all` turns on optional checks that align with the rules in this document and catch genuine bugs the rules do not address.
 
 ### Project-level shellcheck disables
 
@@ -386,84 +348,3 @@ Three checks are disabled at the repository level:
 - **`SC2310`** — *function invoked in `if` / `while` / `until` condition disables `set -e`.* The control-flow rule (`if/then/fi` for all branching) means predicate functions are *always* called from test positions. The `set -e` suspension that fires there is documented bash semantics, not an oversight. Predicate functions in this codebase are written to be simple — no internal commands whose failure `set -e` would need to catch — so the warning is structural noise.
 
 For everything else, suppress checks inline with `# shellcheck disable=SCxxxx` and a one-line justification. Do not silence checks at the file or repository level.
-
----
-
-## Putting it all together
-
-A complete script that exercises every rule:
-
-```bash
-#!/usr/bin/env bash
-
-# Battery low notification
-
-set -Eeuo pipefail
-
-source "lib/helpers.bash"
-
-require_commands upower notify-send
-
-declare -ri CRITICAL_THRESHOLD=10
-declare -ri LOW_THRESHOLD=15
-
-function is_battery {
-    local data="$1"
-
-    local -a fields
-    mapfile -t fields < <(awk '/present:|model:|rechargeable:|voltage:/{print $2}' <<<"${data}")
-
-    if ((${#fields[@]} != 4)); then
-        return 1
-    fi
-
-    local field
-    for field in "${fields[@]}"; do
-        if [[ -z "${field}" ]]; then
-            return 1
-        fi
-    done
-
-    return 0
-}
-
-function notify_for_battery {
-    local battery="$1"
-
-    local battery_data
-    battery_data="$(upower --show-info "${battery}")"
-
-    if ! is_battery "${battery_data}"; then
-        return 0
-    fi
-
-    local -a fields
-    mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
-
-    local model="${fields[0]}"
-    local state="${fields[1]}"
-    local -i percentage="${fields[2]//%/}"
-
-    if [[ "${state}" != "discharging" ]]; then
-        return 0
-    fi
-
-    if ((percentage < CRITICAL_THRESHOLD)); then
-        notify-send --urgency critical --expire-time 10000 "CRITICAL BATTERY: ${model}"
-    elif ((percentage < LOW_THRESHOLD)); then
-        notify-send --urgency critical --expire-time 10000 "LOW BATTERY: ${model}"
-    fi
-}
-
-function main {
-    local -a batteries
-    mapfile -t batteries < <(upower --enumerate)
-
-    local battery
-    for battery in "${batteries[@]}"; do
-        notify_for_battery "${battery}"
-    done
-}
-
-main "$@"
-```

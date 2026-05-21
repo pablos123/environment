@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# Shell aliases
+# Shell aliases. Sourced into the interactive shell, so `set -Eeuo pipefail` is
+# deliberately omitted to avoid leaking errexit/nounset/pipefail into the session.
 
 alias ls='eza --sort=extension --extended --group-directories-first --classify --git'
 alias l='ls'

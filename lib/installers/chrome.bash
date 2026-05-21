@@ -18,9 +18,8 @@ function main {
     fi
 
     if [[ ! -f "/etc/apt/sources.list.d/google-chrome.list" ]]; then
-        echo \
-            'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' |
-            sudo tee /etc/apt/sources.list.d/google-chrome.list >/dev/null
+        sudo tee /etc/apt/sources.list.d/google-chrome.list >/dev/null \
+            <<<'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
     fi
 
     sudo apt update >/dev/null
