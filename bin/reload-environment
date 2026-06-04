@@ -23,7 +23,8 @@ declare -ra FILES_TO_REMOVE=(
 )
 
 declare -ra CACHE_FILES=(
-    "${HOME}/rofi-3.runcache"
+    "${HOME}/.cache/rofi3.runcache"
+    "${HOME}/.cache/rofi3.druncache"
     "${HOME}/.cache/dmenu_run"
     "${HOME}/dmenu_cache"
 )
