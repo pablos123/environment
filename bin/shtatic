@@ -35,14 +35,13 @@ function render {
 
 function make_index {
     render "<main class='menu'>
-<a href='./items/projects/projects.html'>Projects</a><br>
-<a href='./items/articles/articles.html'>Articles</a><br>
-<a href='./items/utilities/utilities.html'>Utilities</a><br>
-<a href='./items/aboutme.html'>About me</a><br>
+<a href='./items/words/words.html'>Words</a><br>
+<a href='./items/builds/builds.html'>Builds</a><br>
 ·<br>
 <a href='https://github.com/pablos123'>GitHub</a><br>" "${DOCS_DIR}/index.html"
 
-    sed -i 's@SHARED_DIR@./shared@;/BACK_BUTTON/d;/Home/d' "${DOCS_DIR}/index.html"
+    # Home page needs no Home link, so reuse that header slot for About me.
+    sed -i 's@SHARED_DIR@./shared@;/BACK_BUTTON/d;s@<a href="/">Home</a> |@<a href="./items/aboutme.html">About me</a>@' "${DOCS_DIR}/index.html"
 }
 
 function make_aboutme {
@@ -55,46 +54,56 @@ ${body}" "${DOCS_DIR}/items/aboutme.html"
     sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' "${DOCS_DIR}/items/aboutme.html"
 }
 
-function make_articles_and_projects {
-    local section
-    for section in projects articles; do
-        mkdir --parents "${DOCS_DIR}/items/${section}"
+# Renders one Markdown writeup to an article page and returns its menu link.
+# Args: <source.md> <output.html> <back-button-target>
+# Side effect: appends the <a> link to the global `writeup_link`.
+function render_writeup {
+    local file="$1"
+    local output="$2"
+    local back="$3"
 
-        local menu="<main class='menu'>"
-        local file
-        for file in "${PAGE_DIR}/items/${section}/"*.md; do
-            local title
-            if ! read -r title <"${file}"; then
-                :
-            fi
-            title="${title//#/}"
+    local title
+    if ! read -r title <"${file}"; then
+        :
+    fi
+    title="${title//#/}"
 
-            local name="${file##*/}"
-            name="${name%.*}"
+    local name="${file##*/}"
+    name="${name%.*}"
 
-            local body
-            body="$(pandoc --from markdown --to html5 "${file}")"
+    local body
+    body="$(pandoc --from markdown --to html5 "${file}")"
 
-            render "<main class='article'>
-${body}" "${DOCS_DIR}/items/${section}/${name}.html"
+    render "<main class='article'>
+${body}" "${output}"
 
-            sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@./${section}.html@" "${DOCS_DIR}/items/${section}/${name}.html"
+    sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@${back}@" "${output}"
 
-            menu="${menu}<a href='./${name}.html'>${title}</a><br>"
-        done
-
-        render "${menu}" "${DOCS_DIR}/items/${section}/${section}.html"
-
-        sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/${section}/${section}.html"
-    done
+    writeup_link="<a href='./${name}.html'>${title}</a><br>"
 }
 
-function make_utilities {
-    mkdir --parents "${DOCS_DIR}/items/utilities"
+function make_words {
+    mkdir --parents "${DOCS_DIR}/items/words"
 
     local menu="<main class='menu'>"
+    local file
+    for file in "${PAGE_DIR}/items/words/"*.md; do
+        render_writeup "${file}" "${DOCS_DIR}/items/words/$(basename "${file}" .md).html" "./words.html"
+        menu="${menu}${writeup_link}"
+    done
+
+    render "${menu}" "${DOCS_DIR}/items/words/words.html"
+
+    sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/words/words.html"
+}
+
+function make_builds {
+    mkdir --parents "${DOCS_DIR}/items/builds"
+
+    # playground: self-contained interactive apps (a dir with an index.html)
+    local playground="<h2 class='section'>playground</h2>"
     local dir
-    for dir in "${PAGE_DIR}/items/utilities/"*/; do
+    for dir in "${PAGE_DIR}/items/builds/"*/; do
         if [[ ! -d "${dir}" ]]; then
             continue
         fi
@@ -106,14 +115,25 @@ function make_utilities {
         title="$(grep --only-matching '<title>[^<]*' "${dir}index.html")"
         title="${title#<title>}"
 
-        cp --recursive "${dir}" "${DOCS_DIR}/items/utilities/"
+        cp --recursive "${dir}" "${DOCS_DIR}/items/builds/"
 
-        menu="${menu}<a href='./${name}/index.html'>${title}</a><br>"
+        playground="${playground}<a href='./${name}/index.html'>${title}</a><br>"
     done
 
-    render "${menu}" "${DOCS_DIR}/items/utilities/utilities.html"
+    # workshop: Markdown writeups (each links out to its repository)
+    local workshop="<h2 class='section'>workshop</h2>"
+    local file
+    for file in "${PAGE_DIR}/items/builds/"*.md; do
+        if [[ ! -e "${file}" ]]; then
+            continue
+        fi
+        render_writeup "${file}" "${DOCS_DIR}/items/builds/$(basename "${file}" .md).html" "./builds.html"
+        workshop="${workshop}${writeup_link}"
+    done
 
-    sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/utilities/utilities.html"
+    render "<main class='menu'>${playground}${workshop}" "${DOCS_DIR}/items/builds/builds.html"
+
+    sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/builds/builds.html"
 }
 
 function build {
@@ -122,8 +142,8 @@ function build {
     mkdir --parents "${DOCS_DIR}/items"
     make_index
     make_aboutme
-    make_articles_and_projects
-    make_utilities
+    make_words
+    make_builds
 }
 
 function snapshot_pages {
