@@ -1,118 +1,165 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+# Static site generator: renders page/ Markdown and templates into docs/
 
-trap 'kill_server; trap - EXIT; exit' EXIT INT HUP TERM
+set -Eeuo pipefail
 
-kill_server() {
-    if [ -n "${spid}" ]; then
-        echo "Killing server..."
-        kill -9 "${spid}"
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands python3 pandoc find sed grep
+
+declare -r PAGE_DIR="page"
+declare -r DOCS_DIR="docs"
+declare -ri SERVER_PORT=7392
+
+# Set by serve, read by cleanup to stop the background server on exit.
+server_pid=""
+
+function cleanup {
+    if [[ -n "${server_pid:-}" ]]; then
+        log "Killing server"
+        kill -s KILL "${server_pid}"
     fi
 }
 
-main() {
-    [ ! -d "page" ] && exit 1
-    build
-    [ "${1}" = "-s" ] && serve
+function render {
+    local body="$1"
+    local output="$2"
+
+    {
+        cat "${PAGE_DIR}/head.template"
+        printf '%s\n' "${body}"
+        cat "${PAGE_DIR}/tail.template"
+    } >"${output}"
 }
 
-serve() {
-    python3 -m http.server 7392 -d "docs" &
-    spid=$!
-    sleep 2
+function make_index {
+    render "<main class='menu'>
+<a href='./items/projects/projects.html'>Projects</a><br>
+<a href='./items/articles/articles.html'>Articles</a><br>
+<a href='./items/utilities/utilities.html'>Utilities</a><br>
+<a href='./items/aboutme.html'>About me</a><br>
+·<br>
+<a href='https://github.com/pablos123'>GitHub</a><br>" "${DOCS_DIR}/index.html"
 
-    lso=$(find page -type f -exec ls -l --time=atime --full-time {} +)
-    while true; do
-        lso_check="$(find page -type f -exec ls -l --time=atime --full-time {} +)"
-        if [ ! "${lso}" = "${lso_check}" ]; then
-            echo "Files modified..."
-            build
-            lso="${lso_check}"
-        fi
-        sleep 1
+    sed -i 's@SHARED_DIR@./shared@;/BACK_BUTTON/d;/Home/d' "${DOCS_DIR}/index.html"
+}
+
+function make_aboutme {
+    local body
+    body="$(pandoc --from markdown --to html5 "${PAGE_DIR}/items/aboutme.md")"
+
+    render "<main class='article'>
+${body}" "${DOCS_DIR}/items/aboutme.html"
+
+    sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' "${DOCS_DIR}/items/aboutme.html"
+}
+
+function make_articles_and_projects {
+    local section
+    for section in projects articles; do
+        mkdir --parents "${DOCS_DIR}/items/${section}"
+
+        local menu="<main class='menu'>"
+        local file
+        for file in "${PAGE_DIR}/items/${section}/"*.md; do
+            local title
+            if ! read -r title <"${file}"; then
+                :
+            fi
+            title="${title//#/}"
+
+            local name="${file##*/}"
+            name="${name%.*}"
+
+            local body
+            body="$(pandoc --from markdown --to html5 "${file}")"
+
+            render "<main class='article'>
+${body}" "${DOCS_DIR}/items/${section}/${name}.html"
+
+            sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@./${section}.html@" "${DOCS_DIR}/items/${section}/${name}.html"
+
+            menu="${menu}<a href='./${name}.html'>${title}</a><br>"
+        done
+
+        render "${menu}" "${DOCS_DIR}/items/${section}/${section}.html"
+
+        sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/${section}/${section}.html"
     done
 }
 
-build() {
-    echo "Building..."
-    rm -rf docs/items docs/index.html
-    mkdir -p docs/items
+function make_utilities {
+    mkdir --parents "${DOCS_DIR}/items/utilities"
+
+    local menu="<main class='menu'>"
+    local dir
+    for dir in "${PAGE_DIR}/items/utilities/"*/; do
+        if [[ ! -d "${dir}" ]]; then
+            continue
+        fi
+
+        local name="${dir%/}"
+        name="${name##*/}"
+
+        local title
+        title="$(grep --only-matching '<title>[^<]*' "${dir}index.html")"
+        title="${title#<title>}"
+
+        cp --recursive "${dir}" "${DOCS_DIR}/items/utilities/"
+
+        menu="${menu}<a href='./${name}/index.html'>${title}</a><br>"
+    done
+
+    render "${menu}" "${DOCS_DIR}/items/utilities/utilities.html"
+
+    sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "${DOCS_DIR}/items/utilities/utilities.html"
+}
+
+function build {
+    log "Building"
+    rm --recursive --force "${DOCS_DIR}/items" "${DOCS_DIR}/index.html"
+    mkdir --parents "${DOCS_DIR}/items"
     make_index
     make_aboutme
     make_articles_and_projects
     make_utilities
 }
 
-make_index() {
-    echo "$(cat page/head.template)
-        <main class='menu'>
-        <a href='./items/projects/projects.html'>Projects</a><br>
-        <a href='./items/articles/articles.html'>Articles</a><br>
-        <a href='./items/utilities/utilities.html'>Utilities</a><br>
-        <a href='./items/aboutme.html'>About me</a><br>
-        ·<br>
-        <a href='https://github.com/pablos123'>GitHub</a><br>
-        $(cat page/tail.template)" >docs/index.html
-
-    sed -i 's@SHARED_DIR@./shared@;/BACK_BUTTON/d;/Home/d' docs/index.html
+function snapshot_pages {
+    find "${PAGE_DIR}" -type f -exec ls -l --time=atime --full-time {} +
 }
 
-make_aboutme() {
-    echo "$(cat page/head.template)
-        <main class='article'>
-        $(pandoc -f markdown -t html5 page/items/aboutme.md)
-        $(cat page/tail.template)" >docs/items/aboutme.html
+function serve {
+    python3 -m http.server "${SERVER_PORT}" --directory "${DOCS_DIR}" &
+    server_pid=$!
+    sleep 2
 
-    sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' docs/items/aboutme.html
-}
+    local snapshot
+    snapshot="$(snapshot_pages)"
 
-make_articles_and_projects() {
-    for d in projects articles; do
-        mkdir -p "docs/items/${d}"
-
-        menu_page="$(cat page/head.template)<main class='menu'>"
-
-        for i in "page/items/${d}/"*.md; do
-            title=$(head -1 "${i}" | tr -d '#')
-            i=$(basename "${i}")
-
-            echo "$(cat page/head.template)
-                <main class='article'>
-                $(pandoc -f markdown -t html5 "page/items/${d}/${i}")
-                $(cat page/tail.template)" >"docs/items/${d}/${i%.*}.html"
-
-            sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@./${d%.*}.html@" "docs/items/${d}/${i%.*}.html"
-
-            menu_page="${menu_page}<a href='./${i%.*}.html'>${title}</a><br>"
-        done
-
-        echo "${menu_page}
-            $(cat page/tail.template)" >"docs/items/${d}/${d%.*}.html"
-
-        sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "docs/items/${d}/${d%.*}.html"
+    while true; do
+        local current
+        current="$(snapshot_pages)"
+        if [[ "${snapshot}" != "${current}" ]]; then
+            log "Files modified"
+            build
+            snapshot="${current}"
+        fi
+        sleep 1
     done
 }
 
-make_utilities() {
-    mkdir -p "docs/items/utilities"
+function main {
+    if [[ ! -d "${PAGE_DIR}" ]]; then
+        die "${PAGE_DIR} directory not found"
+    fi
 
-    menu_page="$(cat page/head.template)<main class='menu'>"
+    build
 
-    for d in "page/items/utilities/"/*/; do
-        [ -d "${d}" ] || continue
-        name=$(basename "${d}")
-        title=$(grep -o '<title>[^<]*' "${d}index.html" | sed 's/<title>//')
-
-        cp -r "${d}" "docs/items/utilities/"
-
-        menu_page="${menu_page}<a href='./${name}/index.html'>${title}</a><br>"
-    done
-
-    echo "${menu_page}
-        $(cat page/tail.template)" >"docs/items/utilities/utilities.html"
-
-    sed -i 's@SHARED_DIR@../../shared@;s@BACK_BUTTON@../../index.html@' "docs/items/utilities/utilities.html"
+    if [[ "${1:-}" == "-s" ]]; then
+        serve
+    fi
 }
 
 main "$@"
