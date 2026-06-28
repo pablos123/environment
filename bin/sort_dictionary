@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Sort a dictionary data file in place.
+
+Structure: a JSON object keyed by section
+(letter), each value a list of entries; every entry has a "term".
+
+    { "A": [ {"term": "...", ...}, ... ], "B": [ ... ] }
+
+Sorts the section keys, then the entries within each section by term
+(case-insensitive). Entry bodies — senses, syn, abbrv — are left
+untouched (sense order is meaningful). Output formatting matches the
+existing files: indent=1, non-ASCII preserved, no trailing newline.
+
+Usage:
+    python3 sort_json.py data/hepcats.json [more.json ...]
+    python3 sort_json.py --check data/*.json   # exit 1 if any unsorted
+"""
+import json, sys
+
+
+def sort_dict(d):
+    return {k: sorted(d[k], key=lambda e: e["term"].casefold())
+            for k in sorted(d)}
+
+
+def dump(d):
+    return json.dumps(d, ensure_ascii=False, indent=1)
+
+
+def main(argv):
+    check = "--check" in argv
+    paths = [a for a in argv if a != "--check"]
+    if not paths:
+        print(__doc__)
+        return 2
+    rc = 0
+    for p in paths:
+        with open(p, encoding="utf-8") as f:
+            before = f.read()
+        d = json.loads(before)
+        after = dump(sort_dict(d))
+        if after == before:
+            print(f"{p}: already sorted")
+            continue
+        if check:
+            print(f"{p}: NOT sorted")
+            rc = 1
+            continue
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(after)
+        print(f"{p}: sorted")
+    return rc
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
