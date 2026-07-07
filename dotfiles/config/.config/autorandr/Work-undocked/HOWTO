@@ -1,0 +1,20 @@
+# Work-undocked — laptop only, no external
+# autorandr matches profiles by EDID (the 'setup' file), so this profile
+# must be saved on the target machine with the screen physically connected.
+# It cannot be fabricated. autorandr ignores this file (only 'config', 'setup',
+# and hook scripts matter), so it is safe here as a reminder.
+#
+# Layout: laptop panel primary.
+# NOTE: on the Work laptop, confirm the output names with 'xrandr' first —
+#       the external may be HDMI-1, HDMI-2, DP-1, etc. Adjust the command.
+#
+# 1. Connect the screen, set the layout:
+#      xrandr --output eDP-1 --primary --auto
+#
+# 2. Save (writes real 'config' + 'setup' here):
+#      autorandr --save Work-undocked
+#
+# 3. Copy back into the repo (live dir is a throwaway stow copy):
+#      cp -r ~/.config/autorandr/Work-undocked ~/environment/dotfiles/config/.config/autorandr/
+#
+# 4. Commit.

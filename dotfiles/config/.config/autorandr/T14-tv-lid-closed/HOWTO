@@ -1,0 +1,18 @@
+# T14-tv-lid-closed — lid CLOSED, TV over HDMI only.
+# autorandr matches profiles by EDID (the 'setup' file), so this profile
+# must be saved on the T14 with the TV connected and the laptop panel off.
+# It cannot be fabricated. autorandr ignores this file (only 'config', 'setup',
+# and hook scripts matter), so it is safe here as a reminder.
+#
+# Layout: TV primary, laptop panel off.
+#
+# 1. Connect the TV, set the layout (eDP off simulates lid closed):
+#      xrandr --output HDMI-1 --primary --auto --output eDP-1 --off
+#
+# 2. Save (writes real 'config' + 'setup' here):
+#      autorandr --save T14-tv-lid-closed
+#
+# 3. Copy back into the repo (live dir is a throwaway stow copy):
+#      cp -r ~/.config/autorandr/T14-tv-lid-closed ~/environment/dotfiles/config/.config/autorandr/
+#
+# 4. Commit.

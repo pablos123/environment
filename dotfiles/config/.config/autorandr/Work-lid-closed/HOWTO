@@ -1,0 +1,20 @@
+# Work-lid-closed — lid CLOSED, external only
+# autorandr matches profiles by EDID (the 'setup' file), so this profile
+# must be saved on the target machine with the screen physically connected.
+# It cannot be fabricated. autorandr ignores this file (only 'config', 'setup',
+# and hook scripts matter), so it is safe here as a reminder.
+#
+# Layout: external primary, laptop panel off.
+# NOTE: on the Work laptop, confirm the output names with 'xrandr' first —
+#       the external may be HDMI-1, HDMI-2, DP-1, etc. Adjust the command.
+#
+# 1. Connect the screen, set the layout:
+#      xrandr --output HDMI-1 --primary --auto --output eDP-1 --off
+#
+# 2. Save (writes real 'config' + 'setup' here):
+#      autorandr --save Work-lid-closed
+#
+# 3. Copy back into the repo (live dir is a throwaway stow copy):
+#      cp -r ~/.config/autorandr/Work-lid-closed ~/environment/dotfiles/config/.config/autorandr/
+#
+# 4. Commit.
