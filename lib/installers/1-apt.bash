@@ -23,6 +23,7 @@ declare -ra APT_PACKAGES=(
     firmware-iwlwifi
     blueman
     x11-xserver-utils
+    autorandr
     xdg-utils
     i3-wm
     i3lock

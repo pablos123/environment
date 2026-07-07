@@ -1,8 +1,0 @@
-[Unit]
-Description=Monitor configuration
-BindsTo=x-session.target
-After=x-session.target
-
-[Service]
-Type=oneshot
-ExecStart=%h/environment/bin/monitors-config

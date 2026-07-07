@@ -1,0 +1,19 @@
+# T14-docked — laptop lid OPEN, external HDMI monitor connected.
+# autorandr matches profiles by EDID (the 'setup' file), so this profile
+# cannot be fabricated: it must be saved on the T14 with the monitor plugged.
+# autorandr ignores this file (only 'config', 'setup', and hook scripts matter),
+# so it is safe to leave here as a reminder. Delete it after saving if you like.
+#
+# Layout (from the old bin/monitors-config): HDMI primary, left of the laptop.
+#
+# 1. Plug the monitor, lid open, then set the layout:
+#      xrandr --output HDMI-1 --primary --auto --left-of eDP-1 --output eDP-1 --auto
+#
+# 2. Capture it (writes real 'config' + 'setup' here, overwriting nothing important):
+#      autorandr --save T14-docked
+#
+# 3. Copy the saved profile back into the repo (the live dir is a throwaway
+#    stow copy, wiped by reload-environment):
+#      cp -r ~/.config/autorandr/T14-docked ~/environment/dotfiles/config/.config/autorandr/
+#
+# 4. Commit.
