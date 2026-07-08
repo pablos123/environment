@@ -38,3 +38,8 @@ function move_workspaces_to_primary {
 
 move_workspaces_to_primary >/dev/null
 i3-msg reload >/dev/null 2>&1
+
+wallpaper_config="${HOME}/environment/bin/wallpaper-config"
+if [[ -x "${wallpaper_config}" ]]; then
+    "${wallpaper_config}"
+fi

@@ -8,10 +8,33 @@ source "${HOME}/environment/lib/helpers.bash"
 
 require_commands hsetroot find
 
-declare -r THEME="${WALLPAPER_THEME:-}"
+declare -r CONFIG_FILE="${HOME}/.wallpaper_config"
+declare -ra ALLOWED_FORMS=(cover center fill full tile extend)
 
 function main {
-    local wallpapers_dir="${HOME}/images/wallpapers/${THEME}/"
+    local type=""
+    local form="cover"
+
+    if [[ -r "${CONFIG_FILE}" ]]; then
+        # shellcheck source=/dev/null
+        source "${CONFIG_FILE}"
+    fi
+    form="${form:-cover}"
+
+    local allowed
+    local -i is_valid=0
+    for allowed in "${ALLOWED_FORMS[@]}"; do
+        if [[ "${form}" == "${allowed}" ]]; then
+            is_valid=1
+            break
+        fi
+    done
+    if ((is_valid == 0)); then
+        warn "unknown wallpaper form '${form}', falling back to 'cover'"
+        form="cover"
+    fi
+
+    local wallpapers_dir="${HOME}/images/wallpapers/${type}/"
     if [[ ! -d "${wallpapers_dir}" ]]; then
         wallpapers_dir="${HOME}/images/wallpapers/"
     fi
@@ -26,7 +49,7 @@ function main {
 
     local -i random_index=$((RANDOM % items_count))
     local wallpaper="${wallpapers[random_index]}"
-    hsetroot -cover "${wallpaper}" >/dev/null 2>&1
+    hsetroot "-${form}" "${wallpaper}" >/dev/null 2>&1
 }
 
 main "$@"
