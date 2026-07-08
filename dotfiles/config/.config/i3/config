@@ -39,7 +39,7 @@ for_window [instance="(?i)teams.live.com__v2"] move container to workspace 4, la
 for_window [instance="(?i)mail.google.com__mail_u_0"] move container to workspace 4, layout tabbed
 for_window [class="(?i)thunderbird-default"] move container to workspace 4, layout tabbed
 
-for_window [class="(?i)obsidian"] move container to workspace 5, layout tabbed
+for_window [class="(?i)zennotes"] move container to workspace 5, layout tabbed
 for_window [instance="(?i)chatgpt.com"] move container to workspace 5, layout tabbed
 for_window [instance="(?i)excalidraw.com"] move container to workspace 5, layout tabbed
 
