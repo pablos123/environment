@@ -127,6 +127,17 @@ function main {
         fdfind_path="$(command -v fdfind)"
         ln --symbolic --force "${fdfind_path}" "${HOME}/.local/bin/fd"
     fi
+
+    log "Adding autorandr hotplug EDID-settle delay"
+    sudo mkdir --parents /etc/systemd/system/autorandr.service.d
+    sudo tee /etc/systemd/system/autorandr.service.d/delay.conf >/dev/null <<'EOF'
+[Service]
+# Let a hotplugged monitor's EDID become readable before autorandr matches a
+# profile, so it doesn't fall back to the laptop-only profile and disable the
+# external monitor (black screen on plug-in).
+ExecStartPre=/bin/sleep 2
+EOF
+    sudo systemctl daemon-reload
 }
 
 main "$@"

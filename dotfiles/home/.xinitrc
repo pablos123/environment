@@ -5,8 +5,13 @@ xrdb -merge ~/.Xresources &
 
 # Keyboard settings
 xset r rate 230 50
-xset s 900
-xset dpms 0 0 3600
+
+# Disable screen blanking and DPMS power-off. Without these, X uses its built-in
+# defaults (blank saver at ~10 min, DPMS on), which black out the screen and can
+# leave an external monitor hard to wake. Explicit 'off' is required; removing the
+# lines is not the same as disabling.
+xset s off
+xset -dpms
 
 # Export X11 environment to systemd user session
 systemctl --user import-environment DISPLAY XAUTHORITY DBUS_SESSION_BUS_ADDRESS
