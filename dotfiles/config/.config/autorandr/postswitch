@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 # autorandr postswitch hook: applies i3 workspace layout after a profile
-# switch, then reloads i3 so bars re-init per monitor. Runs for every
-# profile; when only one output is active, primary == nonprimary and the
-# workspace moves are harmless no-ops.
+# switch, then reloads i3 so bars re-init per monitor.
 
 set -Eeuo pipefail
 
@@ -25,7 +23,8 @@ function move_workspaces_to_primary {
     for w in "${workspaces[@]}"; do
         if [[ "${w}" == "0" ]]; then
             i3-msg workspace "${w}"
-            i3-msg move workspace to output nonprimary
+            # 'nonprimary' matches nothing on a single output; fall back.
+            i3-msg move workspace to output nonprimary primary
             continue
         fi
 

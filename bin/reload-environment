@@ -60,7 +60,7 @@ function main {
     if ! {
         fc-cache --really-force
         systemctl --user restart picom.service dunst.service
-        quit_and_wait "polybar-msg cmd quit" polybar
+        # i3 restart re-runs 'exec_always open-bar', which quits polybar itself.
         i3-msg restart
     } >/dev/null; then
         :

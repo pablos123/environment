@@ -132,10 +132,21 @@ function main {
     sudo mkdir --parents /etc/systemd/system/autorandr.service.d
     sudo tee /etc/systemd/system/autorandr.service.d/delay.conf >/dev/null <<'EOF'
 [Service]
-# Let a hotplugged monitor's EDID become readable before autorandr matches a
-# profile, so it doesn't fall back to the laptop-only profile and disable the
-# external monitor (black screen on plug-in).
+# Wait for a hotplugged monitor's EDID to become readable.
 ExecStartPre=/bin/sleep 2
+# Drop --default default: no such profile, so every run errors.
+ExecStart=
+ExecStart=/usr/bin/autorandr --batch --change
+EOF
+
+    log "Adding autorandr lid-switch ACPI-settle delay"
+    sudo mkdir --parents /etc/systemd/system/autorandr-lid-listener.service.d
+    sudo tee /etc/systemd/system/autorandr-lid-listener.service.d/delay.conf >/dev/null <<'EOF'
+[Service]
+# libinput reports the toggle before /proc/acpi/button/lid settles, so sleep
+# inside the loop. ExecStartPre would only delay the listener's own startup.
+ExecStart=
+ExecStart=sh -c "stdbuf -oL libinput debug-events | grep -E --line-buffered '^[[:space:]-]+event[0-9]+[[:space:]]+SWITCH_TOGGLE[[:space:]]' | while read line; do sleep 1; autorandr --batch --change; done"
 EOF
     sudo systemctl daemon-reload
 }
