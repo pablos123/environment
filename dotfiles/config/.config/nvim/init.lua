@@ -16,7 +16,7 @@ local create_augroup = function(name) vim.api.nvim_create_augroup(name, { clear 
 -- Options
 -------------------------------------------------------------------------------
 -- Visuals
-o.winborder = 'rounded'
+o.winborder = 'single'
 o.termguicolors = true
 o.colorcolumn = '80,100,120'
 o.signcolumn = 'yes'

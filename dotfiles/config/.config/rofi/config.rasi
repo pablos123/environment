@@ -16,7 +16,7 @@ window {
     padding: 20px;
     border: 2px;
     border-color: @blue;
-    border-radius: 8px;
+    /* border-radius: 8px; */
 }
 
 /* ================================
@@ -33,7 +33,7 @@ mainbox {
 
 inputbar {
     padding: 0px;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     background-color: @dark-gray;
     children: [ prompt, entry ];
 }
@@ -65,7 +65,7 @@ listview {
 
 element {
     padding: 4px 6px;
-    border-radius: 6px;
+    /* border-radius: 6px; */
 }
 
 /* Base items */
