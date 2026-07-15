@@ -16,6 +16,12 @@ function main {
         die "Usage: reset-repo 'main|master' ['<commit_message>']"
     fi
 
+    local remote
+    remote="$(git remote get-url origin 2>/dev/null || echo '<no origin>')"
+    if ! confirm "Wipe all history and force-push a single commit to ${remote} (${branch})?"; then
+        die "aborted"
+    fi
+
     log "Resetting repository to single commit on ${branch}"
 
     git checkout --orphan latest_branch

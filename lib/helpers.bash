@@ -17,6 +17,16 @@ function die {
     exit 1
 }
 
+function confirm {
+    local prompt="${1:-Are you sure?}"
+    if [[ ! -t 0 ]]; then
+        die "confirmation required but no interactive terminal: ${prompt}"
+    fi
+    local reply
+    read -r -p "${prompt} [y/N] " reply
+    [[ "${reply}" =~ ^[Yy]$ ]]
+}
+
 function require_commands {
     local -a missing=()
     local cmd

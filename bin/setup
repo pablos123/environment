@@ -16,7 +16,6 @@ declare -ra NEEDED_DIRECTORIES=(
     "${HOME}/bin"
     "${HOME}/.local/bin"
     "${HOME}/playground"
-    "${HOME}/images/wallpapers"
     "${HOME}/images/screenshots"
 )
 
@@ -50,7 +49,7 @@ function main {
     # Source helpers now that environment repo exists
     source "${ENVIRONMENT_DIR}/lib/helpers.bash"
 
-    git_clone_pull_repo "${WALLPAPERS_REPO_URL}" "${HOME}/repos/wallpapers" false
+    git_clone_pull_repo "${WALLPAPERS_REPO_URL}" "${HOME}/images/wallpapers" true
 
     log "Ensuring base directory structure"
     mkdir --parents "${NEEDED_DIRECTORIES[@]}" >/dev/null

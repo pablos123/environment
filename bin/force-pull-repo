@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Force a repository to match its remote, discarding local changes and
+# history divergence. Companion to reset-repo (orphan-push) for repos whose
+# history is intentionally rewritten, e.g. the wallpapers backup repo.
+
+set -Eeuo pipefail
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands git
+
+function main {
+    local skip_confirm=0
+    if [[ "${1:-}" == "-y" ]]; then
+        skip_confirm=1
+        shift
+    fi
+
+    local branch="${1:-}"
+    if [[ -z "${branch}" || ("${branch}" != "main" && "${branch}" != "master") ]]; then
+        die "Usage: force-pull-repo [-y] 'main|master'"
+    fi
+
+    if ((skip_confirm == 0)); then
+        if ! confirm "Discard ALL local changes and match origin/${branch}?"; then
+            die "aborted"
+        fi
+    fi
+
+    log "Force-pulling ${branch} from origin"
+
+    git fetch origin
+    git reset --hard "origin/${branch}"
+    git clean -fd
+
+    log "Force-pull complete"
+}
+
+main "$@"

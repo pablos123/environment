@@ -12,7 +12,7 @@ declare -r CONFIG_FILE="${HOME}/.wallpaper_config"
 declare -ra ALLOWED_FORMS=(cover center fill full tile extend)
 
 function main {
-    local type=""
+    local type="default"
     local form="cover"
 
     if [[ -r "${CONFIG_FILE}" ]]; then
@@ -20,6 +20,7 @@ function main {
         source "${CONFIG_FILE}"
     fi
     form="${form:-cover}"
+    type="${type:-default}"
 
     local allowed
     local -i is_valid=0
@@ -36,11 +37,11 @@ function main {
 
     local wallpapers_dir="${HOME}/images/wallpapers/${type}/"
     if [[ ! -d "${wallpapers_dir}" ]]; then
-        wallpapers_dir="${HOME}/images/wallpapers/"
+        wallpapers_dir="${HOME}/images/wallpapers/default/"
     fi
 
     local -a wallpapers
-    mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f)
+    mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f -name '*.png')
 
     local -i items_count="${#wallpapers[@]}"
     if ((items_count == 0)); then
