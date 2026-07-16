@@ -31,23 +31,22 @@ function main {
 
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v hardcode-tray >/dev/null; then
         log "Hardcode-Tray already at latest version, skipping build (use --force to rebuild)"
-        return 0
+    else
+        log "Installing Hardcode-Tray dependencies"
+        sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+
+        log "Building Hardcode-Tray from source"
+        (
+            cd "${HARDCODE_TRAY_DIR}"
+
+            meson setup \
+                --reconfigure \
+                --prefix=/usr \
+                builddir >/dev/null
+
+            sudo ninja -C builddir install >/dev/null
+        )
     fi
-
-    log "Installing Hardcode-Tray dependencies"
-    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
-
-    log "Building Hardcode-Tray from source"
-    (
-        cd "${HARDCODE_TRAY_DIR}"
-
-        meson setup \
-            --reconfigure \
-            --prefix=/usr \
-            builddir >/dev/null
-
-        sudo ninja -C builddir install >/dev/null
-    )
 
     if command -v hardcode-tray >/dev/null; then
         log "Applying Papirus tray icon fix"
