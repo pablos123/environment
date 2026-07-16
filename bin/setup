@@ -12,6 +12,7 @@ declare -r RELOAD_SCRIPT="${ENVIRONMENT_DIR}/bin/reload-environment"
 
 declare -ra NEEDED_DIRECTORIES=(
     "${HOME}/repos"
+    "${HOME}/media"
     "${HOME}/.base_repos"
     "${HOME}/bin"
     "${HOME}/.local/bin"
