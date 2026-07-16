@@ -18,9 +18,22 @@ declare -ra FONTS=(
 
 declare -r FONTS_DIR="${HOME}/.local/share/fonts"
 declare -r NERD_FONTS_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+declare -r VERSION_FILE="${FONTS_DIR}/.nerd-fonts-version"
 
 function main {
+    local force
+    force="$(parse_force_flag "${1:-}")"
+
     mkdir --parents "${FONTS_DIR}"
+
+    local latest
+    latest="$(github_latest_release_tag "ryanoasis/nerd-fonts")"
+
+    if [[ "${force}" == "false" && -n "${latest}" && -f "${VERSION_FILE}" ]] \
+        && [[ "$(<"${VERSION_FILE}")" == "${latest}" ]]; then
+        log "Nerd fonts ${latest} already installed, skipping (use --force to reinstall)"
+        return 0
+    fi
 
     local font
     for font in "${FONTS[@]}"; do
@@ -41,6 +54,10 @@ function main {
 
     log "Refreshing font cache"
     fc-cache --really-force >/dev/null
+
+    if [[ -n "${latest}" ]]; then
+        echo "${latest}" >"${VERSION_FILE}"
+    fi
 }
 
 main "$@"

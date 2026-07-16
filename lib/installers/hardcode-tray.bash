@@ -24,10 +24,18 @@ declare -ra DEPENDENCIES=(
 )
 
 function main {
-    log "Installing Hardcode-Tray dependencies"
-    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+    local force
+    force="$(parse_force_flag "${1:-}")"
 
     git_clone_pull_repo "${HARDCODE_TRAY_REPO_URL}" "${HARDCODE_TRAY_DIR}" true
+
+    if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v hardcode-tray >/dev/null; then
+        log "Hardcode-Tray already at latest version, skipping build (use --force to rebuild)"
+        return 0
+    fi
+
+    log "Installing Hardcode-Tray dependencies"
+    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
     log "Building Hardcode-Tray from source"
     (

@@ -25,10 +25,18 @@ declare -ra DEPENDENCIES=(
 )
 
 function main {
-    log "Installing dunst dependencies"
-    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+    local force
+    force="$(parse_force_flag "${1:-}")"
 
     git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true
+
+    if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v dunst >/dev/null; then
+        log "dunst already at latest version, skipping build (use --force to rebuild)"
+        return 0
+    fi
+
+    log "Installing dunst dependencies"
+    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
     make_build_install "${DUNST_DIR}"
 }

@@ -115,11 +115,17 @@ function calculate_applet_position {
     echo "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
 }
 
+# Set by git_clone_pull_repo: "true" when the repo was cloned or received new commits
+# shellcheck disable=SC2034  # consumed by sourcing installer scripts
+declare GIT_REPO_CHANGED=true
+
 function git_clone_pull_repo {
     local repo_url="$1"
     local repo_dir="$2"
     local force="${3:-false}"
     local repo_name="${repo_dir##*/}"
+
+    GIT_REPO_CHANGED=true
 
     if [[ ! -d "${repo_dir}" ]]; then
         log "Cloning ${repo_name}"
@@ -130,12 +136,39 @@ function git_clone_pull_repo {
         fi
     else
         log "Updating ${repo_name}"
+        local old_head
+        old_head="$(git -C "${repo_dir}" rev-parse HEAD)"
         if [[ "${force}" == "true" ]]; then
             git -C "${repo_dir}" fetch --depth 1 --quiet
             git -C "${repo_dir}" reset --hard --quiet origin/HEAD
         else
             git -C "${repo_dir}" pull --ff-only --quiet
         fi
+        if [[ "$(git -C "${repo_dir}" rev-parse HEAD)" == "${old_head}" ]]; then
+            # shellcheck disable=SC2034  # consumed by sourcing installer scripts
+            GIT_REPO_CHANGED=false
+        fi
+    fi
+}
+
+# Usage: github_latest_release_tag "owner/repo" -> echoes tag (e.g. "v0.47.4"), empty on failure
+function github_latest_release_tag {
+    local repo="$1"
+    local url
+    if ! url="$(curl --fail --no-progress-meter --head --location \
+        --output /dev/null --write-out '%{url_effective}' \
+        "https://github.com/${repo}/releases/latest")"; then
+        return 0
+    fi
+    echo "${url##*/}"
+}
+
+# Usage: parse_force_flag "${1:-}" -> echoes "true"/"false"
+function parse_force_flag {
+    if [[ "${1:-}" == "--force" ]]; then
+        echo true
+    else
+        echo false
     fi
 }
 

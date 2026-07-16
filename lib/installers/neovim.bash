@@ -27,10 +27,18 @@ declare -ra DEPENDENCIES=(
 )
 
 function main {
-    log "Installing Neovim dependencies"
-    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
+    local force
+    force="$(parse_force_flag "${1:-}")"
 
     git_clone_pull_repo "${NEOVIM_REPO_URL}" "${NEOVIM_PATH}" true
+
+    if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v nvim >/dev/null; then
+        log "Neovim already at latest version, skipping build (use --force to rebuild)"
+        return 0
+    fi
+
+    log "Installing Neovim dependencies"
+    sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
     log "Cleaning build artifacts"
     cd "${NEOVIM_PATH}"
