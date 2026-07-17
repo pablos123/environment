@@ -63,9 +63,7 @@ function render_writeup {
     local back="$3"
 
     local title
-    if ! read -r title <"${file}"; then
-        :
-    fi
+    read -r title <"${file}" || true
     title="${title//#/}"
 
     local name="${file##*/}"

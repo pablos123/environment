@@ -63,14 +63,10 @@ function main {
 
     log "Removing cdrom entries from APT sources"
 
-    if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list; then
-        :
-    fi
+    sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list || true
 
     if [[ -d /etc/apt/sources.list.d ]]; then
-        if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list; then
-            :
-        fi
+        sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list || true
     fi
 
     log "Updating and upgrading packages"
@@ -88,16 +84,10 @@ function main {
     log "Disabling legacy ifupdown networking"
     rm --force /etc/network/interfaces
 
-    if ! systemctl disable networking.service; then
-        :
-    fi
-    if ! systemctl stop networking.service; then
-        :
-    fi
+    systemctl disable networking.service || true
+    systemctl stop networking.service || true
 
-    if ! apt purge --yes ifupdown; then
-        :
-    fi
+    apt purge --yes ifupdown || true
 
     log "Configuring DNS fallback"
     mkdir --parents /etc/NetworkManager/conf.d
@@ -155,9 +145,7 @@ DNSEOF
 
         local repo_name="${repo_dir##*/}"
         log "Building ${repo_name} from source"
-        if ! make clean; then
-            :
-        fi
+        make clean || true
         make
         make install
     done
@@ -305,9 +293,7 @@ XKBOPTIONS="caps:swapescape"
 BACKSPACE="guess"
 KBEOF
 
-    if ! setupcon --force 2>/dev/null; then
-        :
-    fi
+    setupcon --force 2>/dev/null || true
 
     log "Checking for firmware updates"
     fwupdmgr --force --assume-yes refresh

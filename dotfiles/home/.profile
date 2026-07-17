@@ -1,21 +1,27 @@
 #!/usr/bin/env sh
 
-[ -d "${HOME}/bin" ] &&
-   PATH="${HOME}/bin:${PATH}"
+if [ -d "${HOME}/bin" ]; then
+    PATH="${HOME}/bin:${PATH}"
+fi
 
-[ -d "${HOME}/.local/bin" ] &&
-  PATH="${HOME}/.local/bin:${PATH}"
+if [ -d "${HOME}/.local/bin" ]; then
+    PATH="${HOME}/.local/bin:${PATH}"
+fi
 
-[ -d "${HOME}/.cargo/bin" ] &&
+if [ -d "${HOME}/.cargo/bin" ]; then
     PATH="${HOME}/.cargo/bin:${PATH}"
+fi
 
-[ -d "${HOME}/go/bin" ] &&
+if [ -d "${HOME}/go/bin" ]; then
     PATH="${HOME}/go/bin:${PATH}"
+fi
 
-[ -d "${HOME}/environment/bin" ] &&
+if [ -d "${HOME}/environment/bin" ]; then
     PATH="${HOME}/environment/bin:${PATH}"
+fi
 
 export PATH
 
-[ "$(tty)" = "/dev/tty1" ] && [ -z "${DISPLAY}" ] && command -v startx &&
+if [ "$(tty)" = "/dev/tty1" ] && [ -z "${DISPLAY}" ] && command -v startx >/dev/null; then
     startx
+fi

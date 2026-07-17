@@ -23,9 +23,7 @@ function pavu_visible {
 
 function close_pavu {
     if ! xdotool search --onlyvisible --class "pavucontrol" windowclose 2>/dev/null; then
-        if ! xdotool search --onlyvisible --class "Pavucontrol" windowclose 2>/dev/null; then
-            :
-        fi
+        xdotool search --onlyvisible --class "Pavucontrol" windowclose 2>/dev/null || true
     fi
 }
 
@@ -49,11 +47,9 @@ function main {
     if ! xdotool search --onlyvisible --class "pavucontrol" \
         windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" \
         windowmove "${pos_x}" "${pos_y}" 2>/dev/null; then
-        if ! xdotool search --onlyvisible --class "Pavucontrol" \
+        xdotool search --onlyvisible --class "Pavucontrol" \
             windowsize "${PAVUCONTROL_WIDTH}" "${PAVUCONTROL_HEIGHT}" \
-            windowmove "${pos_x}" "${pos_y}" 2>/dev/null; then
-            :
-        fi
+            windowmove "${pos_x}" "${pos_y}" 2>/dev/null || true
     fi
 }
 

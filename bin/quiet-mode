@@ -19,9 +19,7 @@ function main {
     if [[ "${paused}" == "true" ]]; then
         bash -c "exec -a quiet_mode_icon yad --notification --image='${QUIET_MODE_ICON}' --listen --text='Quiet mode on' --no-middle &"
     else
-        if ! pkill --full quiet_mode_icon; then
-            :
-        fi
+        pkill --full quiet_mode_icon || true
     fi
 }
 

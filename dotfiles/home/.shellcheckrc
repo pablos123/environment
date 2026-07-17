@@ -15,7 +15,7 @@ disable=SC2312
 disable=SC1091
 
 # SC2310: "function invoked in `if` condition disables `set -e`."
-# Our control flow rule (only `if/then/fi`, no `&&` / `||`) means
+# Our control flow rule (`if/then/fi`, or a one-line `||` guard) means
 # predicate functions are *always* called from test positions. The
 # `set -e` suspension is the documented bash semantics of test
 # positions — it's the intentional behavior, not an oversight. Our

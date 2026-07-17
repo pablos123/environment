@@ -46,19 +46,13 @@ function main {
     log "Updating Zen Notes to v${latest_version}"
     local current_version_path="${ZEN_NOTES_PATH}/zen-notes-v${current_version}"
     local latest_version_path="${ZEN_NOTES_PATH}/zen-notes-v${latest_version}"
-    if ! curl --no-progress-meter --location --output "${latest_version_path}" "${ZEN_NOTES_URL}"; then
-        :
-    fi
+    curl --no-progress-meter --location --output "${latest_version_path}" "${ZEN_NOTES_URL}" || true
 
     if [[ -s "${latest_version_path}" ]]; then
-        if ! chmod +x "${latest_version_path}"; then
-            :
-        fi
+        chmod +x "${latest_version_path}" || true
 
         if [[ -s "${current_version_path}" && "${current_version_path}" != "${latest_version_path}" ]]; then
-            if ! rm --force "${current_version_path}"; then
-                :
-            fi
+            rm --force "${current_version_path}" || true
         fi
     fi
 }

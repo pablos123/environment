@@ -29,8 +29,8 @@ function main {
     local latest
     latest="$(github_latest_release_tag "ryanoasis/nerd-fonts")"
 
-    if [[ "${force}" == "false" && -n "${latest}" && -f "${VERSION_FILE}" ]] \
-        && [[ "$(<"${VERSION_FILE}")" == "${latest}" ]]; then
+    if [[ "${force}" == "false" && -n "${latest}" && -f "${VERSION_FILE}" &&
+        "$(<"${VERSION_FILE}")" == "${latest}" ]]; then
         log "Nerd fonts ${latest} already installed, skipping (use --force to reinstall)"
         return 0
     fi

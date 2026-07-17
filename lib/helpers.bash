@@ -49,7 +49,7 @@ function on_error {
     script_name="${BASH_SOURCE[1]:-${0}}"
     script_name="${script_name##*/}"
 
-    if [[ -n "${ORIGINAL_PWD:-}" ]] && [[ -d "${ORIGINAL_PWD}" ]]; then
+    if [[ -n "${ORIGINAL_PWD:-}" && -d "${ORIGINAL_PWD}" ]]; then
         cd "${ORIGINAL_PWD}"
     fi
 
@@ -67,7 +67,7 @@ function on_error {
 }
 
 function on_exit {
-    if [[ -n "${ORIGINAL_PWD:-}" ]] && [[ -d "${ORIGINAL_PWD}" ]]; then
+    if [[ -n "${ORIGINAL_PWD:-}" && -d "${ORIGINAL_PWD}" ]]; then
         cd "${ORIGINAL_PWD}"
     fi
 
@@ -78,9 +78,7 @@ function on_exit {
 
 function kill_and_wait {
     local process_name="${1}"
-    if ! killall "${process_name}"; then
-        :
-    fi
+    killall "${process_name}" || true
     while pgrep --uid "${UID}" --exact "${process_name}" >/dev/null; do
         sleep 0.3
     done
@@ -89,9 +87,7 @@ function kill_and_wait {
 function quit_and_wait {
     local quit_cmd="${1}"
     local process_name="${2}"
-    if ! ${quit_cmd}; then
-        :
-    fi
+    ${quit_cmd} || true
     while pgrep --uid "${UID}" --exact "${process_name}" >/dev/null; do
         sleep 0.3
     done
@@ -182,9 +178,7 @@ function make_build_install {
 
     log "Building ${build_dir##*/} from source"
     {
-        if ! sudo make clean 2>/dev/null; then
-            :
-        fi
+        sudo make clean 2>/dev/null || true
         if [[ -n "${make_arg}" ]]; then
             make "${make_arg}"
         else

@@ -46,14 +46,10 @@ function main {
 
     log "Removing cdrom entries from APT sources"
 
-    if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list; then
-        :
-    fi
+    sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list || true
 
     if [[ -d /etc/apt/sources.list.d ]]; then
-        if ! sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list >/dev/null; then
-            :
-        fi
+        sed --in-place '/^deb cdrom:/d' /etc/apt/sources.list.d/*.list >/dev/null || true
     fi
 
     log "Updating package lists"
@@ -65,16 +61,10 @@ function main {
     log "Disabling legacy ifupdown networking"
     rm --force /etc/network/interfaces
 
-    if ! systemctl disable networking.service >/dev/null 2>&1; then
-        :
-    fi
-    if ! systemctl stop networking.service >/dev/null 2>&1; then
-        :
-    fi
+    systemctl disable networking.service >/dev/null 2>&1 || true
+    systemctl stop networking.service >/dev/null 2>&1 || true
 
-    if ! apt purge --yes ifupdown >/dev/null; then
-        :
-    fi
+    apt purge --yes ifupdown >/dev/null || true
 
     log "Enabling NetworkManager"
     systemctl enable NetworkManager >/dev/null
@@ -167,9 +157,7 @@ XKBOPTIONS=""
 BACKSPACE="guess"
 KBEOF
 
-    if ! setupcon --force 2>/dev/null; then
-        :
-    fi
+    setupcon --force 2>/dev/null || true
 
     log "Configuring keyd for key remapping"
 

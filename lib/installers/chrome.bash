@@ -36,9 +36,7 @@ function main {
 
     if command -v xdg-settings >/dev/null; then
         log "Setting default browser"
-        if ! xdg-settings set default-web-browser 'google-chrome.desktop'; then
-            :
-        fi
+        xdg-settings set default-web-browser 'google-chrome.desktop' || true
     fi
 }
 

@@ -42,9 +42,7 @@ function main {
 
     log "Cleaning build artifacts"
     cd "${NEOVIM_PATH}"
-    if ! sudo rm --recursive --force .deps build 2>/dev/null; then
-        :
-    fi
+    sudo rm --recursive --force .deps build 2>/dev/null || true
 
     make_build_install "${NEOVIM_PATH}" "CMAKE_BUILD_TYPE=RelWithDebInfo"
 

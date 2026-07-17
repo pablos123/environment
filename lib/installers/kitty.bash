@@ -28,12 +28,8 @@ function main {
     curl --fail --no-progress-meter --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n 2>/dev/null
 
     log "Creating Kitty symlinks"
-    if ! ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty"; then
-        :
-    fi
-    if ! ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten"; then
-        :
-    fi
+    ln --symbolic --force "${KITTY_APP}/bin/kitty" "${HOME}/bin/kitty" || true
+    ln --symbolic --force "${KITTY_APP}/bin/kitten" "${HOME}/bin/kitten" || true
 }
 
 main "$@"
