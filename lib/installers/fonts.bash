@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Nerd Fonts installer
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

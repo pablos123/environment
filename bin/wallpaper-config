@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Wallpaper configuration
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

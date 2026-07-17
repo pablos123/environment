@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# APT package installer
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

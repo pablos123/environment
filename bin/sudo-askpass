@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Sudo askpass helper
-
 set -Eeuo pipefail
 
 function main {

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# QR scanner
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

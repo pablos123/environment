@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# autorandr postswitch hook: applies i3 workspace layout after a profile
-# switch, then reloads i3 so bars re-init per monitor.
-
 set -Eeuo pipefail
 
 command -v i3-msg >/dev/null || exit 0

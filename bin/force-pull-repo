@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Force a repository to match its remote, discarding local changes and history.
-# Companion to reset-repo for repos whose history is intentionally rewritten.
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

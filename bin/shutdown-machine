@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Shutdown with GUI password prompt
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

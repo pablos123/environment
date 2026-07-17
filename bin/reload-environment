@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Reload environment
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

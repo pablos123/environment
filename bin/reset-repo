@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Reset repository to a single commit
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

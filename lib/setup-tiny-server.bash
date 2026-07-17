@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# One-shot post-install setup for a fresh Debian server.
-
 set -Eeuo pipefail
 
 source "/home/pab/environment/lib/helpers.bash"
@@ -183,9 +181,6 @@ XINITRC
     log "Writing .bashrc for root"
 
     cat >/root/.bashrc <<'BASHRC'
-# Interactive bash startup; `set -Eeuo pipefail` is deliberately omitted to
-# avoid leaking errexit/nounset/pipefail into the session.
-
 if [[ ${-} != *i* ]]; then
     return
 fi

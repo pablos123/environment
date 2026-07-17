@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Print color codes
-
 set -Eeuo pipefail
 
 function main {

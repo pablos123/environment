@@ -1,6 +1,3 @@
-# Bash interactive shell configuration. `set -Eeuo pipefail` is deliberately
-# omitted because this file is sourced into the interactive shell.
-
 # If not running interactively, don't do anything.
 if [[ "$-" != *i* ]]; then
     return
@@ -117,7 +114,48 @@ export HISTIGNORE="exit:ls:history:clear:pwd"
 # %T equivalent to %H:%M:%S (24-hours format)
 export HISTTIMEFORMAT='%F %T '
 
-source "${HOME}/environment/lib/aliases.bash"
+alias ls='eza --sort=extension --extended --group-directories-first --classify --git'
+alias l='ls'
+alias s='ls'
+alias sl='ls'
+alias ll='ls --long'
+alias la='ls --all'
+alias lla='ls --all --long'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias c='cd'
+
+alias :q='exit'
+alias :wq='exit'
+
+alias vim='nvim'
+alias im='vim'
+alias mvi='vim'
+alias miv='vim'
+alias v='vim'
+
+alias bat='batcat --theme=ansi --paging=never --decorations=never'
+alias cat='bat'
+
+alias duf='duf --style=ascii --theme=ansi'
+alias df='duf'
+
+alias mkdir='mkdir --parents --verbose'
+alias rm='rm --interactive'
+
+alias genc='git add . && git commit -m "genc"'
+
+alias bigdirs='(sudo du --human-readable / | sort --reverse --human-numeric-sort | head --lines=15) 2>/dev/null'
+alias myip='printf "External: " && curl --no-progress-meter ifconfig.me && echo && printf "Local: " && hostname -I'
+alias sources='grep --color=always -v -E "^#|^ *$" /etc/apt/sources.list /etc/apt/sources.list.d/*'
+alias weather='curl wttr.in/rosario'
+alias calendar_fact='calendar | head --lines=1 | cowsay -f duck | lolcat'
+alias tree='tree --dirsfirst --gitignore -F -C -A'
+alias tre='tree'
+alias xfe='(xfe . &> /dev/null) & disown'
+alias ssh='TERM=xterm-256color ssh'
 
 if [[ -f "${HOME}/.bashrc_custom" ]]; then
     source "${HOME}/.bashrc_custom"

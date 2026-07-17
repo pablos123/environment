@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Static site generator: renders page/ Markdown and templates into docs/
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

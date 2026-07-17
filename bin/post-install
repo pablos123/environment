@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# First-boot post-install setup
-
 set -Eeuo pipefail
 
 source "/home/pab/environment/lib/helpers.bash"

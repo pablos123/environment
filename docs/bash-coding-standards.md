@@ -9,8 +9,6 @@ A style guide for Bash scripts. The rules apply to any file that begins with `#!
 ```bash
 #!/usr/bin/env bash
 
-# Battery low notification
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
@@ -82,17 +80,16 @@ Every executable script follows the same fixed top-down order, including three-l
 The strict header order, top to bottom:
 
 1. Shebang: `#!/usr/bin/env bash`
-2. Header comment (one or two lines).
-3. `set -Eeuo pipefail`
-4. `source` the helpers.
-5. `require_commands` for external dependencies.
-6. File-scope `declare -r` constants.
-7. Function definitions (helpers first, then `main`).
-8. `main "$@"`
+2. `set -Eeuo pipefail`
+3. `source` the helpers.
+4. `require_commands` for external dependencies.
+5. File-scope `declare -r` constants.
+6. Function definitions (helpers first, then `main`).
+7. `main "$@"`
 
-Each section is separated by a blank line. Sections that don't apply are omitted; the relative order of the others is preserved.
+The shebang is followed by a single blank line, then `set -Eeuo pipefail` — no descriptive header comment. Each section is separated by a blank line. Sections that don't apply are omitted; the relative order of the others is preserved.
 
-Files sourced into an interactive shell (`lib/aliases.bash`, `.bashrc`) omit `set -Eeuo pipefail`. The omission carries a one-line header comment.
+Files sourced into an interactive shell (`.bashrc`) omit `set -Eeuo pipefail`.
 
 ---
 

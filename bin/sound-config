@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Sound configuration applet
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

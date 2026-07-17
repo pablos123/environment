@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Kitty terminal installer
-
 set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"

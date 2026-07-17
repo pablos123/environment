@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Bootstrap setup
-
 set -Eeuo pipefail
 
 declare -r ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
