@@ -54,9 +54,7 @@ ${body}" "${DOCS_DIR}/items/aboutme.html"
     sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' "${DOCS_DIR}/items/aboutme.html"
 }
 
-# Renders one Markdown writeup to an article page and returns its menu link.
-# Args: <source.md> <output.html> <back-button-target>
-# Side effect: appends the <a> link to the global `writeup_link`.
+# Side effect: sets the global writeup_link to this writeup's menu <a> link.
 function render_writeup {
     local file="$1"
     local output="$2"
@@ -86,7 +84,8 @@ function make_words {
     local menu="<main class='menu'>"
     local file
     for file in "${PAGE_DIR}/items/words/"*.md; do
-        render_writeup "${file}" "${DOCS_DIR}/items/words/$(basename "${file}" .md).html" "./words.html"
+        local name="${file##*/}"
+        render_writeup "${file}" "${DOCS_DIR}/items/words/${name%.md}.html" "./words.html"
         menu="${menu}${writeup_link}"
     done
 
@@ -102,9 +101,7 @@ function make_builds {
     local playground="<h2 class='section'>playground</h2>"
     local dir
     for dir in "${PAGE_DIR}/items/builds/"*/; do
-        if [[ ! -d "${dir}" ]]; then
-            continue
-        fi
+        [[ -d "${dir}" ]] || continue
 
         local name="${dir%/}"
         name="${name##*/}"
@@ -122,10 +119,9 @@ function make_builds {
     local workshop="<h2 class='section'>workshop</h2>"
     local file
     for file in "${PAGE_DIR}/items/builds/"*.md; do
-        if [[ ! -e "${file}" ]]; then
-            continue
-        fi
-        render_writeup "${file}" "${DOCS_DIR}/items/builds/$(basename "${file}" .md).html" "./builds.html"
+        [[ -e "${file}" ]] || continue
+        local name="${file##*/}"
+        render_writeup "${file}" "${DOCS_DIR}/items/builds/${name%.md}.html" "./builds.html"
         workshop="${workshop}${writeup_link}"
     done
 
@@ -169,9 +165,7 @@ function serve {
 }
 
 function main {
-    if [[ ! -d "${PAGE_DIR}" ]]; then
-        die "${PAGE_DIR} directory not found"
-    fi
+    [[ -d "${PAGE_DIR}" ]] || die "${PAGE_DIR} directory not found"
 
     build
 

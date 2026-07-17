@@ -44,9 +44,7 @@ function main {
     mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f -name '*.png')
 
     local -i items_count="${#wallpapers[@]}"
-    if ((items_count == 0)); then
-        return 0
-    fi
+    ((items_count)) || return 0
 
     local -i random_index=$((RANDOM % items_count))
     local wallpaper="${wallpapers[random_index]}"

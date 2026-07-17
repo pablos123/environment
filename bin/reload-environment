@@ -36,9 +36,7 @@ function main {
 
     cp --recursive "${ENVIRONMENT_DIR}/dotfiles" "${DOTFILES_DIR}"
 
-    if ! cd "${DOTFILES_DIR}"; then
-        die "could not cd into ${DOTFILES_DIR}"
-    fi
+    cd "${DOTFILES_DIR}" || die "could not cd into ${DOTFILES_DIR}"
     stow --target="${HOME}" --restow -- */
     systemctl --user daemon-reload
 

@@ -48,9 +48,7 @@ function main {
     make_build_install "${NEOVIM_PATH}" "CMAKE_BUILD_TYPE=RelWithDebInfo"
 
     log "Verifying Neovim installation"
-    if ! command -v nvim >/dev/null; then
-        die "nvim not found after installation"
-    fi
+    command -v nvim >/dev/null || die "nvim not found after installation"
 }
 
 main "$@"

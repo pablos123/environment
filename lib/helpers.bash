@@ -36,9 +36,7 @@ function require_commands {
         fi
     done
 
-    if ((${#missing[@]} > 0)); then
-        die "missing commands: ${missing[*]}"
-    fi
+    ((${#missing[@]} == 0)) || die "missing commands: ${missing[*]}"
 }
 
 ORIGINAL_PWD="${ORIGINAL_PWD:-${PWD}}"
@@ -103,12 +101,12 @@ function calculate_applet_position {
         return 1
     fi
 
-    # array: x y offset_x offset_y
-    local -a res
+    # geometry: x y offset_x offset_y
+    local -a geometry
     # shellcheck disable=SC2020  # tr 'x+' maps two chars to newlines, not a word pattern
-    mapfile -t res < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
+    mapfile -t geometry < <(xrandr | grep 'connected primary' | awk '{print $4}' | tr x+ '\n\n')
 
-    echo "$((res[0] - x_size - APPLET_X_GAP + res[2]))" "$((res[1] - y_size - APPLET_Y_GAP + res[3]))"
+    echo "$((geometry[0] - x_size - APPLET_X_GAP + geometry[2]))" "$((geometry[1] - y_size - APPLET_Y_GAP + geometry[3]))"
 }
 
 # Set by git_clone_pull_repo: "true" when the repo was cloned or received new commits
@@ -170,9 +168,7 @@ function parse_force_flag {
 
 function make_build_install {
     local build_dir="$1"
-    if ! cd "${build_dir}"; then
-        return 1
-    fi
+    cd "${build_dir}" || return 1
 
     local make_arg="${2:-}"
 

@@ -20,14 +20,10 @@ function collect_sessions {
     for entry in "${entries[@]}"; do
         local label="${entry%%:*}"
         local dir="${entry#*:}"
-        if [[ ! -d "${dir}" ]]; then
-            continue
-        fi
+        [[ -d "${dir}" ]] || continue
         local file
         for file in "${dir}"/*.conf; do
-            if [[ ! -f "${file}" ]]; then
-                continue
-            fi
+            [[ -f "${file}" ]] || continue
             local name="${file##*/}"
             name="${name%.conf}"
             local key="${label}:${name}"
@@ -42,9 +38,7 @@ function pick_session {
 
 function prompt_sudo_password {
     local password
-    if ! password="$(zenity --password)"; then
-        return 1
-    fi
+    password="$(zenity --password)" || return 1
 
     if ! printf '%s\n' "${password}" | sudo --stdin --validate 2>/dev/null; then
         die "Bad password. Aborting."
@@ -56,23 +50,15 @@ function prompt_sudo_password {
 function main {
     collect_sessions
 
-    if ((${#SESSIONS[@]} == 0)); then
-        die "no sessions found"
-    fi
+    ((${#SESSIONS[@]})) || die "no sessions found"
 
     local choice
-    if ! choice="$(pick_session)"; then
-        return 0
-    fi
+    choice="$(pick_session)" || return 0
 
-    if [[ -z "${choice}" ]]; then
-        return 0
-    fi
+    [[ -n "${choice}" ]] || return 0
 
     local session="${SESSIONS[${choice}]:-}"
-    if [[ ! -f "${session}" ]]; then
-        die "session file not found: ${choice}"
-    fi
+    [[ -f "${session}" ]] || die "session file not found: ${choice}"
 
     if grep --quiet --extended-regexp '\bsudo +-A\b' "${session}"; then
         if [[ ! -x "${ASKPASS_HELPER}" ]]; then
@@ -80,9 +66,7 @@ function main {
         fi
 
         local sudo_password
-        if ! sudo_password="$(prompt_sudo_password)"; then
-            return 0
-        fi
+        sudo_password="$(prompt_sudo_password)" || return 0
 
         export SUDO_PASSWORD="${sudo_password}"
         export SUDO_ASKPASS="${ASKPASS_HELPER}"

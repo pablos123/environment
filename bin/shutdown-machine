@@ -10,9 +10,7 @@ require_commands zenity sudo
 
 function main {
     local sudo_password
-    if ! sudo_password="$(zenity --password)"; then
-        return 0
-    fi
+    sudo_password="$(zenity --password)" || return 0
 
     if ! printf '%s\n' "${sudo_password}" | sudo --stdin --validate 2>/dev/null; then
         die "Bad password. Aborting."

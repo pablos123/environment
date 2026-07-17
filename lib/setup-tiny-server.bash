@@ -51,9 +51,7 @@ declare -ra APT_PACKAGES=(
 )
 
 function require_root {
-    if ((EUID != 0)); then
-        die "Run this script as root"
-    fi
+    ((EUID == 0)) || die "Run this script as root"
 }
 
 function main {
@@ -107,9 +105,7 @@ DNSEOF
             log "DNS is working"
             break
         fi
-        if ((i == 30)); then
-            die "DNS resolution failed after 30 seconds"
-        fi
+        ((i != 30)) || die "DNS resolution failed after 30 seconds"
         sleep 1
     done
 
@@ -132,16 +128,12 @@ DNSEOF
             git clone --depth 1 "${repo_url}" "${repo_dir}"
         else
             log "Updating ${repo_dir}"
-            if ! cd "${repo_dir}"; then
-                die "could not cd into ${repo_dir}"
-            fi
+            cd "${repo_dir}" || die "could not cd into ${repo_dir}"
             git fetch --depth 1
             git reset --hard origin/HEAD
         fi
 
-        if ! cd "${repo_dir}"; then
-            die "could not cd into ${repo_dir}"
-        fi
+        cd "${repo_dir}" || die "could not cd into ${repo_dir}"
 
         local repo_name="${repo_dir##*/}"
         log "Building ${repo_name} from source"

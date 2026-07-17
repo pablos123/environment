@@ -14,15 +14,11 @@ declare -ri LOW_THRESHOLD=15
 function is_battery {
     local -n fields_ref="$1"
 
-    if ((${#fields_ref[@]} != 3)); then
-        return 1
-    fi
+    ((${#fields_ref[@]} == 3)) || return 1
 
     local field
     for field in "${fields_ref[@]}"; do
-        if [[ -z "${field}" ]]; then
-            return 1
-        fi
+        [[ -n "${field}" ]] || return 1
     done
 
     return 0
@@ -37,14 +33,11 @@ function notify_for_battery {
     local -a fields
     mapfile -t fields < <(awk '/model:|state:|percentage:/{print $2}' <<<"${battery_data}")
 
-    if ! is_battery fields; then
-        return 0
-    fi
+    is_battery fields || return 0
 
     local state="${fields[1]}"
-    if [[ "${state}" != "discharging" ]]; then
-        return 0
-    fi
+
+    [[ "${state}" == "discharging" ]] || return 0
 
     local model="${fields[0]}"
     local -i percentage="${fields[2]//%/}"

@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-# Force a repository to match its remote, discarding local changes and
-# history divergence. Companion to reset-repo (orphan-push) for repos whose
-# history is intentionally rewritten, e.g. the wallpapers backup repo.
+# Force a repository to match its remote, discarding local changes and history.
+# Companion to reset-repo for repos whose history is intentionally rewritten.
 
 set -Eeuo pipefail
 
@@ -11,7 +10,7 @@ source "${HOME}/environment/lib/helpers.bash"
 require_commands git
 
 function main {
-    local skip_confirm=0
+    local -i skip_confirm=0
     if [[ "${1:-}" == "-y" ]]; then
         skip_confirm=1
         shift
@@ -32,7 +31,7 @@ function main {
 
     git fetch origin
     git reset --hard "origin/${branch}"
-    git clean -fd
+    git clean --force -d
 
     log "Force-pull complete"
 }

@@ -11,9 +11,7 @@ declare -r MOUNT_BASE="/media/${TARGET_USER}"
 declare -r MOUNT_POINT="${MOUNT_BASE}/usb1"
 
 function require_root {
-    if ((EUID != 0)); then
-        die "Run this script as root"
-    fi
+    ((EUID == 0)) || die "Run this script as root"
 }
 
 function main {
@@ -26,13 +24,9 @@ function main {
     local sdxn
     read -r -p "In which device partition is the passwords.kdbx file?: (sdxn) " sdxn
 
-    if [[ -z "${sdxn}" ]]; then
-        die "Empty sdxn"
-    fi
+    [[ -n "${sdxn}" ]] || die "Empty sdxn"
 
-    if [[ ! -e "/dev/${sdxn}" ]]; then
-        die "/dev/${sdxn} does not exist"
-    fi
+    [[ -e "/dev/${sdxn}" ]] || die "/dev/${sdxn} does not exist"
 
     log "Asking if it is work"
 
@@ -77,9 +71,7 @@ function main {
             log "DNS is working"
             break
         fi
-        if ((i == 30)); then
-            die "DNS resolution failed after 30 seconds"
-        fi
+        ((i != 30)) || die "DNS resolution failed after 30 seconds"
         sleep 1
     done
 

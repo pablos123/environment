@@ -13,8 +13,9 @@ function main {
     force="$(parse_force_flag "${1:-}")"
 
     if [[ "${force}" == "false" ]] && command -v zed >/dev/null; then
-        local installed latest
+        local installed
         installed="$(zed --version | awk '{print $2}')"
+        local latest
         latest="$(github_latest_release_tag "zed-industries/zed")"
         if [[ -n "${latest}" && "v${installed}" == "${latest}" ]]; then
             log "Zed ${installed} already at latest version, skipping (use --force to reinstall)"

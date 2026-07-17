@@ -15,8 +15,9 @@ function main {
     force="$(parse_force_flag "${1:-}")"
 
     if [[ "${force}" == "false" && -x "${KITTY_APP}/bin/kitty" ]]; then
-        local installed latest
+        local installed
         installed="$("${KITTY_APP}/bin/kitty" --version | awk '{print $2}')"
+        local latest
         latest="$(github_latest_release_tag "kovidgoyal/kitty")"
         if [[ -n "${latest}" && "v${installed}" == "${latest}" ]]; then
             log "Kitty ${installed} already at latest version, skipping (use --force to reinstall)"

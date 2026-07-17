@@ -6,7 +6,7 @@ set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands id hostname uname lscpu lsb_release free awk column sed
+require_commands id uname lscpu lsb_release free awk column sed
 
 function user_info {
     local user_line
@@ -15,9 +15,7 @@ function user_info {
 }
 
 function hostname_info {
-    local host
-    host="$(hostname)"
-    printf 'Hostname: %s\n' "${host}"
+    printf 'Hostname: %s\n' "${HOSTNAME}"
 }
 
 function uname_info {
@@ -39,9 +37,7 @@ function mem_info {
 }
 
 function wmctrl_info {
-    if ! command -v wmctrl >/dev/null; then
-        return 0
-    fi
+    command -v wmctrl >/dev/null || return 0
     wmctrl -m 2>/dev/null | awk '/^Name/ {print "WM Name: "$2}'
 }
 
@@ -56,9 +52,9 @@ function get_info {
         wmctrl_info
     )
 
-    local f
-    for f in "${funcs[@]}"; do
-        "${f}"
+    local info_func
+    for info_func in "${funcs[@]}"; do
+        "${info_func}"
     done
 }
 

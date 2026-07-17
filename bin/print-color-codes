@@ -5,27 +5,27 @@
 set -Eeuo pipefail
 
 function main {
-    local -i x
-    for x in {0..8}; do
-        printf '\e[%dm\\e[%dm\e[0m \n' "${x}" "${x}"
+    local -i style
+    for style in {0..8}; do
+        printf '\e[%dm\\e[%dm\e[0m \n' "${style}" "${style}"
     done
 
-    local -i x
-    for x in {0..8}; do
-        local -i i
-        for i in {30..37}; do
-            printf '\e[%d;%dm\\e[%d;%dm\e[0m ' "${x}" "${i}" "${x}" "${i}"
+    local -i style
+    for style in {0..8}; do
+        local -i foreground
+        for foreground in {30..37}; do
+            printf '\e[%d;%dm\\e[%d;%dm\e[0m ' "${style}" "${foreground}" "${style}" "${foreground}"
         done
         printf '\n'
     done
 
-    local -i x
-    for x in {0..8}; do
-        local -i i
-        for i in {30..37}; do
-            local -i a
-            for a in {40..47}; do
-                printf '\e[%d;%d;%dm\\e[%d;%d;%dm\e[0m ' "${x}" "${i}" "${a}" "${x}" "${i}" "${a}"
+    local -i style
+    for style in {0..8}; do
+        local -i foreground
+        for foreground in {30..37}; do
+            local -i background
+            for background in {40..47}; do
+                printf '\e[%d;%d;%dm\\e[%d;%d;%dm\e[0m ' "${style}" "${foreground}" "${background}" "${style}" "${foreground}" "${background}"
             done
             printf '\n'
         done

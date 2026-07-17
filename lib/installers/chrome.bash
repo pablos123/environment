@@ -31,9 +31,6 @@ function main {
         fonts-noto-color-emoji \
         >/dev/null
 
-    # Fix fonts rendering incorrectly:
-    # Disable the flag chrome://flags/#enable-gpu-rasterization
-
     if command -v xdg-settings >/dev/null; then
         log "Setting default browser"
         xdg-settings set default-web-browser 'google-chrome.desktop' || true

@@ -6,7 +6,7 @@ set -Eeuo pipefail
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands sed chmod
+require_commands chmod
 
 declare -rA WEB_APPS=(
     ["whatsapp"]="https://web.whatsapp.com/"
@@ -29,8 +29,8 @@ function main {
     for app_name in "${!WEB_APPS[@]}"; do
         local app_url="${WEB_APPS[${app_name}]}"
 
-        local app_instance
-        app_instance=$(sed --regexp-extended 's/^https:\/\/([a-zA-Z.]+).*/\1/' <<<"${app_url}")
+        local app_instance="${app_url#https://}"
+        app_instance="${app_instance%%/*}"
 
         local app_exec="${HOME}/bin/${app_name}"
         cat >"${app_exec}" <<EOF

@@ -16,14 +16,10 @@ function cleanup {
 }
 
 function main {
-    if ! flameshot gui --path "${TMP_FILE}" >/dev/null 2>&1; then
-        return 0
-    fi
+    flameshot gui --path "${TMP_FILE}" >/dev/null 2>&1 || return 0
 
     local qr_content
-    if ! qr_content="$(zbarimg --raw --quiet "${TMP_FILE}")"; then
-        return 0
-    fi
+    qr_content="$(zbarimg --raw --quiet "${TMP_FILE}")" || return 0
 
     printf '%s' "${qr_content}" | xclip
 

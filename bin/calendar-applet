@@ -22,11 +22,12 @@ function main {
         return 0
     fi
 
-    local -a position
-    mapfile -t position < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}" | tr ' ' '\n')
+    local -i cal_x
+    local -i cal_y
+    read -r cal_x cal_y < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}")
 
     local selected_date=""
-    if ! selected_date="$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${position[0]}+${position[1]}" 2>/dev/null)"; then
+    if ! selected_date="$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${cal_x}+${cal_y}" 2>/dev/null)"; then
         selected_date=""
     fi
 
