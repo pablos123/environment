@@ -10,6 +10,7 @@ A style guide for Bash scripts. The rules apply to any file that begins with `#!
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
@@ -80,16 +81,16 @@ Every executable script follows the same fixed top-down order, including three-l
 The strict header order, top to bottom:
 
 1. Shebang: `#!/usr/bin/env bash`
-2. `set -Eeuo pipefail`
+2. `set -Eeuo pipefail`, then `shopt -s inherit_errexit`.
 3. `source` the helpers.
 4. `require_commands` for external dependencies.
 5. File-scope `declare -r` constants.
 6. Function definitions (helpers first, then `main`).
 7. `main "$@"`
 
-The shebang is followed by a single blank line, then `set -Eeuo pipefail` — no descriptive header comment. Each section is separated by a blank line. Sections that don't apply are omitted; the relative order of the others is preserved.
+The shebang is followed by a single blank line, then `set -Eeuo pipefail` and `shopt -s inherit_errexit` — no descriptive header comment. `inherit_errexit` propagates `set -e` into command substitutions. Each section is separated by a blank line. Sections that don't apply are omitted; the relative order of the others is preserved.
 
-Files sourced into an interactive shell (`.bashrc`) omit `set -Eeuo pipefail`.
+Files sourced into an interactive shell (`.bashrc`, `.bash_profile`) omit `set -Eeuo pipefail`.
 
 ---
 

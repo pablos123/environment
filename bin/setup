@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 declare -r ENVIRONMENT_REPO_URL="git@github.com:pablos123/environment.git"
 declare -r WALLPAPERS_REPO_URL="git@github.com:pablos123/wallpapers.git"

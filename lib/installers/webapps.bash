@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
@@ -37,6 +38,7 @@ function main {
 # Launcher for ${app_name}
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 function main {
     local -a chrome_window_ids

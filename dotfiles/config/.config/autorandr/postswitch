@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 command -v i3-msg >/dev/null || exit 0
 command -v jq >/dev/null || exit 0

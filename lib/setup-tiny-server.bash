@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 source "/home/pab/environment/lib/helpers.bash"
 

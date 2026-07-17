@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
@@ -12,6 +13,7 @@ declare -r DOTFILES_DIR="${HOME}/.dotfiles_stow"
 declare -ra FILES_TO_REMOVE=(
     "${DOTFILES_DIR}"
     "${HOME}/.bashrc"
+    "${HOME}/.bash_profile"
     "${HOME}/.profile"
     "${HOME}/.xinitrc"
     "${HOME}/.xprofile"

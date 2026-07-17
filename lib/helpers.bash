@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+shopt -s inherit_errexit
 
 function log {
     printf '\033[1;32m==>\033[0m %s\n' "${1:-}" >&2
