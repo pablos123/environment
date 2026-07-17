@@ -109,6 +109,7 @@ declare -ra APT_PACKAGES=(
     fwupd
     sshfs
     keyd
+    shfmt
 )
 
 function main {
