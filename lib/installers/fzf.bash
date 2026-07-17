@@ -17,6 +17,7 @@ function main {
 
     git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true
 
+    # shellcheck disable=SC2154  # set by git_clone_pull_repo above
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v fzf >/dev/null; then
         log "fzf already at latest version, skipping install (use --force to reinstall)"
         return 0

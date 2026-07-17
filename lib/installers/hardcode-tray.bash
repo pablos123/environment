@@ -29,6 +29,7 @@ function main {
 
     git_clone_pull_repo "${HARDCODE_TRAY_REPO_URL}" "${HARDCODE_TRAY_DIR}" true
 
+    # shellcheck disable=SC2154  # set by git_clone_pull_repo above
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v hardcode-tray >/dev/null; then
         log "Hardcode-Tray already at latest version, skipping build (use --force to rebuild)"
     else

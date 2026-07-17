@@ -122,7 +122,7 @@ Names must convey meaning. `battery`, `percentage`, `fields`, `entry` — not `b
 
 - **Executable scripts** (in `bin/`): no extension; kebab-case.
 - **Sourced bash libraries**: `.bash` extension; snake_case.
-- **Function names**: snake_case.
+- **Function names**: snake_case, and descriptive of what the function does. When the name cannot convey it, a comment above the function explains it.
 - **Variables**:
     - lowercase for local variables.
     - UPPERCASE for `declare -r` configuration and exported variables.
