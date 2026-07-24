@@ -86,6 +86,8 @@ declare -ra APT_PACKAGES=(
     luarocks
     yad
     keepassxc
+    gnome-keyring
+    libpam-gnome-keyring
     picom
     bash-completion
     pipx

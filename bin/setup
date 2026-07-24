@@ -34,6 +34,10 @@ function die {
 }
 
 function main {
+    if [[ ! -t 0 || ! -t 1 ]]; then
+        die "setup must be run from an interactive terminal"
+    fi
+
     if [[ ! -f "${HOME}/.ssh/id_rsa.pub" ]]; then
         die "Missing SSH public key at ~/.ssh/id_rsa.pub"
     fi
