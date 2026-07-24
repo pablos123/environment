@@ -24,6 +24,8 @@ declare -ra APT_PACKAGES=(
     x11-xserver-utils
     autorandr
     xdg-utils
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
     i3-wm
     i3lock
     rofi

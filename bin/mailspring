@@ -5,13 +5,11 @@ shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands google-chrome
+require_commands /usr/bin/mailspring
 
 function main {
-    exec google-chrome \
+    exec /usr/bin/mailspring \
         --password-store=gnome-libsecret \
-        --enable-blink-features=MiddleClickAutoscroll \
-        --enable-features=EnableNativeNotifications \
         "$@"
 }
 
