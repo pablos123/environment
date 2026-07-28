@@ -21,8 +21,8 @@ function main {
     form="${form:-cover}"
     type="${type:-default}"
 
-    local allowed
     local -i is_valid=0
+    local allowed
     for allowed in "${ALLOWED_FORMS[@]}"; do
         if [[ "${form}" == "${allowed}" ]]; then
             is_valid=1

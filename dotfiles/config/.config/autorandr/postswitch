@@ -3,8 +3,7 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-command -v i3-msg >/dev/null || exit 0
-command -v jq >/dev/null || exit 0
+declare -r WALLPAPER_CONFIG="${HOME}/environment/bin/wallpaper-config"
 
 function get_current_workspace {
     i3-msg -t get_workspaces | jq --raw-output '.[] | select(.focused) | .name'
@@ -14,29 +13,36 @@ function move_workspaces_to_primary {
     local current_workspace
     current_workspace="$(get_current_workspace)"
 
-    local -a workspaces=()
+    local -a workspaces
     mapfile -t workspaces < <(i3-msg -t get_workspaces | jq --raw-output '.[].name')
 
-    local w
-    for w in "${workspaces[@]}"; do
-        if [[ "${w}" == "0" ]]; then
-            i3-msg workspace "${w}"
+    local workspace
+    for workspace in "${workspaces[@]}"; do
+        if [[ "${workspace}" == "0" ]]; then
+            i3-msg workspace "${workspace}"
             # 'nonprimary' matches nothing on a single output; fall back.
             i3-msg move workspace to output nonprimary primary
             continue
         fi
 
-        i3-msg workspace "${w}"
+        i3-msg workspace "${workspace}"
         i3-msg move workspace to output primary
     done
 
     i3-msg workspace "${current_workspace}"
 }
 
-move_workspaces_to_primary >/dev/null
-i3-msg reload >/dev/null 2>&1
+function main {
+    # autorandr runs this on every profile switch; no-op instead of failing
+    # when i3 is not the running WM.
+    command -v i3-msg >/dev/null || return 0
+    command -v jq >/dev/null || return 0
 
-wallpaper_config="${HOME}/environment/bin/wallpaper-config"
-if [[ -x "${wallpaper_config}" ]]; then
-    "${wallpaper_config}"
-fi
+    move_workspaces_to_primary >/dev/null
+    i3-msg reload >/dev/null 2>&1
+
+    [[ -x "${WALLPAPER_CONFIG}" ]] || return 0
+    "${WALLPAPER_CONFIG}"
+}
+
+main "$@"

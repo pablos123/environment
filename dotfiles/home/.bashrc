@@ -1,73 +1,40 @@
-# If not running interactively, don't do anything.
-if [[ "$-" != *i* ]]; then
+#!/usr/bin/env bash
+
+if [[ "${-}" != *i* ]]; then
     return
 fi
 
-# If bash's version is bad don't do anything.
 if ((BASH_VERSINFO[0] < 4)); then
     return
 fi
 
-# Return if the terminal cannot use colors.
 if [[ ! "${TERM}" =~ color && ! "${TERM}" =~ kitty ]]; then
     return
 fi
 
-# Vim terminal buffer sets this value as xterm-256color and the buffer
-# opens tmux.
-# if [[ ! "${TERM}" =~ kitty && ! "${TERM}" =~ screen && ! "${TERM}" =~ tmux && -z "${TMUX}" ]]; then
-#     if command -v tmux &>/dev/null; then
-#         # Tell tmux to assume 256 colors with the -2 option.
-#         exec tmux -2 new-session -A -s forest
-#     fi
-# fi
-
 {
-    # Prepend cd to directory names automatically.
     shopt -s autocd
-
-    # Correct spelling errors during tab-completion.
     shopt -s dirspell
-
-    # Correct spelling errors in arguments supplied to cd.
     shopt -s cdspell
-
-    # Turn on recursive globbing (enables ** to recurse all directories).
     shopt -s globstar
-
-    # This allows you to bookmark your favorite places across the file system.
-    # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in.
+    # Bookmarks: 'cd' into a variable holding a path from anywhere.
     shopt -s cdable_vars
-
-    # Update window size after every command.
     shopt -s checkwinsize
-
-    # Append to the history file, don't overwrite.
     shopt -s histappend
-
-    # Save multi-line commands as one command in the history.
     shopt -s cmdhist
 } &>>/dev/null
 
-# Enable history expansion with space
-# E.g. typing !!<space> will replace the !! with your last command.
+# !!<space> expands to the previous command instead of waiting for Enter.
 bind Space:magic-space
 
-# Perform file completion in a case insensitive fashion.
 bind "set completion-ignore-case on"
-
-# Display matches for ambiguous patterns at first tab press.
 bind "set show-all-if-ambiguous on"
 bind "set show-all-if-unmodified on"
-
-# Immediately add a trailing slash when autocompleting symlinks to directories.
 bind "set mark-symlinked-directories on"
-
-# Prettier completitions
 bind "set colored-stats on"
 bind "set colored-completion-prefix on"
 bind "set visible-stats on"
-# The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
+# Elide a shared completion prefix once it passes 7 characters.
 bind "set completion-prefix-display-length 7"
 
 export VISUAL=/usr/local/bin/nvim
@@ -78,7 +45,6 @@ export GIT_AUTHOR_EMAIL=pablosaavedra123@gmail.com
 export GIT_COMMITTER_NAME=Pablo
 export GIT_COMMITTER_EMAIL=pablosaavedra123@gmail.com
 
-# PS1
 if [[ -f "${HOME}/.git-prompt.sh" ]]; then
     source "${HOME}/.git-prompt.sh"
 fi
@@ -89,29 +55,18 @@ export GIT_PS1_SHOWSTASHSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export GIT_PS1_SHOWUPSTREAM=verbose
 
-# Use PROMPT_COMMAND (not PS1) to get color output (see git-prompt.sh for more)
+# __git_ps1 only emits color from PROMPT_COMMAND, so PS1 is left empty and
+# rebuilt on every prompt (see git-prompt.sh).
 export PROMPT_COMMAND='__git_ps1 "\[\033[0;34m\]\w\[\033[0m\]" "\n\\\$ "'
 export PS1=''
-
-# Automatically trim long paths in the prompt.
-export PROMPT_DIRTRIM=2
-
-# Append to history after finishing any command.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
 
-# Big history.
+export PROMPT_DIRTRIM=2
+
 export HISTSIZE=500000
 export HISTFILESIZE=100000
-
-# Avoid duplicate entries.
 export HISTCONTROL="erasedups:ignoreboth"
-
-# Don't record some commands.
 export HISTIGNORE="exit:ls:history:clear:pwd"
-
-# Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d
-# %T equivalent to %H:%M:%S (24-hours format)
 export HISTTIMEFORMAT='%F %T '
 
 alias ls='eza --sort=extension --extended --group-directories-first --classify --git'
@@ -145,16 +100,16 @@ alias df='duf'
 alias mkdir='mkdir --parents --verbose'
 alias rm='rm --interactive'
 
-alias genc='git add . && git commit -m "genc"'
+alias genc='git add . && git commit --message="genc"'
 
 alias bigdirs='(sudo du --human-readable / | sort --reverse --human-numeric-sort | head --lines=15) 2>/dev/null'
 alias myip='printf "External: " && curl --no-progress-meter ifconfig.me && echo && printf "Local: " && hostname -I'
 alias sources='grep --color=always -v -E "^#|^ *$" /etc/apt/sources.list /etc/apt/sources.list.d/*'
 alias weather='curl wttr.in/rosario'
 alias calendar_fact='calendar | head --lines=1 | cowsay -f duck | lolcat'
-alias tree='tree --dirsfirst --gitignore -F -C -A'
+alias tree='tree --dirsfirst --gitignore --classify --color=always -A'
 alias tre='tree'
-alias xfe='(xfe . &> /dev/null) & disown'
+alias xfe='(xfe . &>/dev/null) & disown'
 alias ssh='TERM=xterm-256color ssh'
 
 if [[ -f "${HOME}/.bashrc_custom" ]]; then
@@ -201,7 +156,7 @@ if [[ -d "${HOME}/go/bin" ]]; then
     export PATH="${HOME}/go/bin:${PATH}"
 fi
 
-# Force home bin directory first for doing wrappers.
+# Home bin must win over /usr/bin: it holds wrappers that shadow real binaries.
 if [[ -d "${HOME}/bin" ]]; then
     export PATH="${HOME}/bin:${PATH}"
 fi

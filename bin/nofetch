@@ -41,7 +41,7 @@ function wmctrl_info {
 }
 
 function get_info {
-    local -a funcs=(
+    local -a collectors=(
         user_info
         hostname_info
         uname_info
@@ -51,9 +51,9 @@ function get_info {
         wmctrl_info
     )
 
-    local info_func
-    for info_func in "${funcs[@]}"; do
-        "${info_func}"
+    local collector
+    for collector in "${collectors[@]}"; do
+        "${collector}"
     done
 }
 

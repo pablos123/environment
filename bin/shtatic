@@ -12,12 +12,15 @@ declare -r DOCS_DIR="docs"
 declare -ri SERVER_PORT=7392
 
 # Set by serve, read by cleanup to stop the background server on exit.
-server_pid=""
+declare SERVER_PID=""
+
+# Set by render_writeup to this writeup's menu <a> link, read by its caller.
+declare WRITEUP_LINK=""
 
 function cleanup {
-    if [[ -n "${server_pid:-}" ]]; then
+    if [[ -n "${SERVER_PID}" ]]; then
         log "Killing server"
-        kill -s KILL "${server_pid}"
+        kill --signal KILL "${SERVER_PID}"
     fi
 }
 
@@ -53,7 +56,6 @@ ${body}" "${DOCS_DIR}/items/aboutme.html"
     sed -i 's@SHARED_DIR@../shared@;s@BACK_BUTTON@../index.html@' "${DOCS_DIR}/items/aboutme.html"
 }
 
-# Side effect: sets the global writeup_link to this writeup's menu <a> link.
 function render_writeup {
     local file="$1"
     local output="$2"
@@ -74,7 +76,7 @@ ${body}" "${output}"
 
     sed -i "s@SHARED_DIR@../../shared@;s@BACK_BUTTON@${back}@" "${output}"
 
-    writeup_link="<a href='./${name}.html'>${title}</a><br>"
+    WRITEUP_LINK="<a href='./${name}.html'>${title}</a><br>"
 }
 
 function make_words {
@@ -85,7 +87,7 @@ function make_words {
     for file in "${PAGE_DIR}/items/words/"*.md; do
         local name="${file##*/}"
         render_writeup "${file}" "${DOCS_DIR}/items/words/${name%.md}.html" "./words.html"
-        menu="${menu}${writeup_link}"
+        menu="${menu}${WRITEUP_LINK}"
     done
 
     render "${menu}" "${DOCS_DIR}/items/words/words.html"
@@ -121,7 +123,7 @@ function make_builds {
         [[ -e "${file}" ]] || continue
         local name="${file##*/}"
         render_writeup "${file}" "${DOCS_DIR}/items/builds/${name%.md}.html" "./builds.html"
-        workshop="${workshop}${writeup_link}"
+        workshop="${workshop}${WRITEUP_LINK}"
     done
 
     render "<main class='menu'>${playground}${workshop}" "${DOCS_DIR}/items/builds/builds.html"
@@ -145,7 +147,7 @@ function snapshot_pages {
 
 function serve {
     python3 -m http.server "${SERVER_PORT}" --directory "${DOCS_DIR}" &
-    server_pid=$!
+    SERVER_PID=$!
     sleep 2
 
     local snapshot
@@ -168,7 +170,7 @@ function main {
 
     build
 
-    if [[ "${1:-}" == "-s" ]]; then
+    if [[ "${1:-}" == "--serve" ]]; then
         serve
     fi
 }

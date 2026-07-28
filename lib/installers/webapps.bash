@@ -35,8 +35,6 @@ function main {
         cat >"${app_exec}" <<EOF
 #!/usr/bin/env bash
 
-# Launcher for ${app_name}
-
 set -Eeuo pipefail
 shopt -s inherit_errexit
 

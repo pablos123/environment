@@ -3,7 +3,10 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
+# Runs as root, so ${HOME} is /root — the repo lives in the target user's home.
 source "/home/pab/environment/lib/helpers.bash"
+
+require_commands apt systemctl usermod timedatectl getent dpkg
 
 declare -r TARGET_USER="pab"
 
@@ -172,7 +175,7 @@ DNSEOF
     target_home="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
 
     cat >"${target_home}/.xinitrc" <<'XINITRC'
-xrdb -merge ~/.Xresources 2>/dev/null
+xrdb -merge "${HOME}/.Xresources" 2>/dev/null
 hsetroot -solid '#1a1b26' &
 exec dwm
 XINITRC
@@ -182,7 +185,7 @@ XINITRC
     log "Writing .bashrc for root"
 
     cat >/root/.bashrc <<'BASHRC'
-if [[ ${-} != *i* ]]; then
+if [[ "${-}" != *i* ]]; then
     return
 fi
 
@@ -200,14 +203,6 @@ shopt -s globstar
 shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 
-declare -r RST='\[\e[0m\]'
-declare -r BOLD='\[\e[1m\]'
-declare -r RED='\[\e[31m\]'
-declare -r GREEN='\[\e[32m\]'
-declare -r YELLOW='\[\e[33m\]'
-declare -r BLUE='\[\e[34m\]'
-declare -r CYAN='\[\e[36m\]'
-
 function __git_branch {
     local branch
     if ! branch="$(git symbolic-ref --short HEAD 2>/dev/null)"; then
@@ -216,11 +211,26 @@ function __git_branch {
     printf ' (%s)' "${branch}"
 }
 
-if ((EUID == 0)); then
-    PS1="${RED}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}# "
-else
-    PS1="${GREEN}${BOLD}\u${RST}@${YELLOW}\h${RST}:${BLUE}\w${RST}${CYAN}\$(__git_branch)${RST}\$ "
-fi
+# Colors stay local so re-sourcing this file does not trip readonly globals.
+function __set_prompt {
+    local -r rst='\[\e[0m\]'
+    local -r bold='\[\e[1m\]'
+    local -r red='\[\e[31m\]'
+    local -r green='\[\e[32m\]'
+    local -r yellow='\[\e[33m\]'
+    local -r blue='\[\e[34m\]'
+    local -r cyan='\[\e[36m\]'
+
+    local -r host="@${yellow}\h${rst}:${blue}\w${rst}${cyan}\$(__git_branch)${rst}"
+
+    if ((EUID == 0)); then
+        PS1="${red}${bold}\u${rst}${host}# "
+    else
+        PS1="${green}${bold}\u${rst}${host}\$ "
+    fi
+}
+
+__set_prompt
 
 alias ls='ls --color=auto'
 alias ll='ls -l --human-readable --classify'

@@ -9,14 +9,14 @@ require_commands git
 
 function main {
     local -i skip_confirm=0
-    if [[ "${1:-}" == "-y" ]]; then
+    if [[ "${1:-}" == "--yes" ]]; then
         skip_confirm=1
         shift
     fi
 
     local branch="${1:-}"
     if [[ -z "${branch}" || ("${branch}" != "main" && "${branch}" != "master") ]]; then
-        die "Usage: force-pull-repo [-y] 'main|master'"
+        die "Usage: force-pull-repo [--yes] 'main|master'"
     fi
 
     if ((skip_confirm == 0)); then

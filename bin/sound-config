@@ -32,7 +32,7 @@ function main {
         return 0
     fi
 
-    pavucontrol -t 3 &
+    pavucontrol --tab=3 &
     disown
 
     while ! pavu_visible; do

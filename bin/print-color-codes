@@ -3,12 +3,14 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-function main {
+function print_styles {
     local -i style
     for style in {0..8}; do
         printf '\e[%dm\\e[%dm\e[0m \n' "${style}" "${style}"
     done
+}
 
+function print_foregrounds {
     local -i style
     for style in {0..8}; do
         local -i foreground
@@ -17,7 +19,9 @@ function main {
         done
         printf '\n'
     done
+}
 
+function print_backgrounds {
     local -i style
     for style in {0..8}; do
         local -i foreground
@@ -29,6 +33,12 @@ function main {
             printf '\n'
         done
     done
+}
+
+function main {
+    print_styles
+    print_foregrounds
+    print_backgrounds
 
     printf '\e[0m'
 }

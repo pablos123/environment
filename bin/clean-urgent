@@ -11,9 +11,9 @@ function main {
     local -a windows
     mapfile -t windows < <(wmctrl -l | awk '{print $1}')
 
-    local win
-    for win in "${windows[@]}"; do
-        wmctrl -i -r "${win}" -b remove,demands_attention
+    local window
+    for window in "${windows[@]}"; do
+        wmctrl -i -r "${window}" -b remove,demands_attention
     done
 }
 

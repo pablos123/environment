@@ -3,7 +3,10 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
+# Runs as root, so ${HOME} is /root — the repo lives in the target user's home.
 source "/home/pab/environment/lib/helpers.bash"
+
+require_commands apt systemctl mount umount usermod timedatectl getent
 
 declare -r TARGET_USER="pab"
 declare -r MOUNT_BASE="/media/${TARGET_USER}"
@@ -190,7 +193,7 @@ KDEOF
 
     log "Post-install setup complete"
     warn "Consider removing the usb"
-    warn "Exit the root session and enter as ${TARGET_USER} to bootsrap the setup."
+    warn "Exit the root session and enter as ${TARGET_USER} to bootstrap the setup."
 }
 
 main "$@"

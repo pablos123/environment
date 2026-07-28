@@ -11,7 +11,7 @@ declare -ri CALENDAR_WIDTH=304
 declare -ri CALENDAR_HEIGHT=208
 
 function main {
-    local previous_calendar=""
+    local previous_calendar
     if ! previous_calendar="$(xdotool search --onlyvisible --name "Tiny Calendar")"; then
         previous_calendar=""
     fi
@@ -25,7 +25,7 @@ function main {
     local -i cal_y
     read -r cal_x cal_y < <(calculate_applet_position "${CALENDAR_WIDTH}" "${CALENDAR_HEIGHT}")
 
-    local selected_date=""
+    local selected_date
     if ! selected_date="$(yad --calendar --title="Tiny Calendar" --date-format="%d-%m-%Y" --width="${CALENDAR_WIDTH}" --height="${CALENDAR_HEIGHT}" --no-buttons --fixed --geometry="+${cal_x}+${cal_y}" 2>/dev/null)"; then
         selected_date=""
     fi
