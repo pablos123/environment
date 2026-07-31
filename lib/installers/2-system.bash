@@ -102,6 +102,85 @@ ExecStart=
 ExecStart=sh -c "stdbuf -oL libinput debug-events | grep -E --line-buffered '^[[:space:]-]+event[0-9]+[[:space:]]+SWITCH_TOGGLE[[:space:]]' | while read line; do sleep 1; autorandr --batch --change; done"
 EOF
     sudo systemctl daemon-reload
+
+    log "Adding pre-login console banner"
+
+    # agetty prints /etc/issue then /etc/issue.d/*.issue before the login
+    # prompt. /etc/issue is a base-files conffile, so leave it alone and drop
+    # ours alongside, regenerated on every getty spawn for live stats.
+    sudo mkdir --parents /etc/issue.d
+
+    sudo tee /usr/local/bin/issue-banner >/dev/null <<'BANNEREOF'
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+readonly DIM=$'\033[2m'
+readonly TEXT=$'\033[38;5;252m'
+readonly ACCENT=$'\033[1;38;5;213m'
+readonly RESET=$'\033[0m'
+readonly SEP="${DIM} · ${RESET}${TEXT}"
+
+function disk {
+    local -i used
+    used="$(df --output=pcent / | tail --lines 1 | tr --delete ' %')"
+
+    local colour
+    if ((used > 90)); then
+        colour=$'\033[38;5;203m'
+    elif ((used > 75)); then
+        colour=$'\033[38;5;215m'
+    else
+        colour=$'\033[38;5;114m'
+    fi
+
+    printf '%sdisk %s%d%%%s' "${DIM}" "${colour}" "${used}" "${RESET}"
+}
+
+function battery {
+    local bat capacity colour
+    for bat in /sys/class/power_supply/BAT*; do
+        [[ -r "${bat}/capacity" ]] || continue
+        capacity="$(<"${bat}/capacity")"
+
+        if ((capacity > 50)); then
+            colour=$'\033[38;5;114m'
+        elif ((capacity > 20)); then
+            colour=$'\033[38;5;215m'
+        else
+            colour=$'\033[38;5;203m'
+        fi
+
+        local charging=''
+        [[ "$(<"${bat}/status")" == "Charging" ]] && charging='+'
+        printf '%s%sbat %s%s%%%s%s' \
+            "${SEP}" "${DIM}" "${colour}" "${capacity}" "${charging}" "${RESET}"
+        return 0
+    done
+}
+
+# \n \l \4 \d \t stay as agetty escapes: expanded per tty at print time.
+{
+    printf '\n%s%s%s%s%s%s\\l%s\\4%s\n' \
+        "${ACCENT}" \
+        "$(. /etc/os-release && printf '%s' "${PRETTY_NAME//\//+}")" \
+        "${RESET}" "${SEP}" \
+        "$(uname --kernel-release)" "${SEP}" "${SEP}" "${RESET}"
+    printf '%s\\n%s%s%s%s\n' "${TEXT}" "${RESET}" "${SEP}" "$(disk)" "$(battery)"
+    printf '%s\\t  \\d%s\n\n' "${DIM}" "${RESET}"
+} >/etc/issue.d/10-environment.issue
+BANNEREOF
+
+    sudo chmod +x /usr/local/bin/issue-banner
+
+    sudo mkdir --parents /etc/systemd/system/getty@.service.d
+    sudo tee /etc/systemd/system/getty@.service.d/banner.conf >/dev/null <<'EOF'
+[Service]
+ExecStartPre=-/usr/local/bin/issue-banner
+EOF
+
+    sudo systemctl daemon-reload
+    sudo /usr/local/bin/issue-banner
 }
 
 main "$@"
