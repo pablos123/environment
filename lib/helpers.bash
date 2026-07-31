@@ -116,7 +116,7 @@ function git_clone_pull_repo {
     local repo_url="$1"
     local repo_dir="$2"
     local force="${3:-false}"
-    local repo_name="${repo_dir##*/}"
+    local repo_name="${4:-${repo_dir##*/}}"
 
     GIT_REPO_CHANGED=true
 
@@ -171,7 +171,6 @@ function make_build_install {
 
     local make_arg="${2:-}"
 
-    log "Building ${build_dir##*/} from source"
     {
         sudo make clean 2>/dev/null || true
         if [[ -n "${make_arg}" ]]; then

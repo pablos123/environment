@@ -25,14 +25,23 @@ function main {
 
     mkdir --parents "${FONTS_DIR}"
 
+    log "Checking Nerd fonts version"
+
     local latest
     latest="$(github_latest_release_tag "ryanoasis/nerd-fonts")"
 
-    if [[ "${force}" == "false" && -n "${latest}" && -f "${VERSION_FILE}" &&
-        "$(<"${VERSION_FILE}")" == "${latest}" ]]; then
-        log "Nerd fonts ${latest} already installed, skipping (use --force to reinstall)"
+    if [[ -z "${latest}" ]]; then
+        warn "Could not determine latest Nerd fonts version, skipping"
         return 0
     fi
+
+    if [[ "${force}" == "false" && -f "${VERSION_FILE}" &&
+        "$(<"${VERSION_FILE}")" == "${latest}" ]]; then
+        log "Nerd fonts ${latest} already at latest version, skipping (use --force to reinstall)"
+        return 0
+    fi
+
+    log "Installing Nerd fonts ${latest}"
 
     local font
     for font in "${FONTS[@]}"; do
@@ -54,9 +63,7 @@ function main {
     log "Refreshing font cache"
     fc-cache --really-force >/dev/null
 
-    if [[ -n "${latest}" ]]; then
-        echo "${latest}" >"${VERSION_FILE}"
-    fi
+    echo "${latest}" >"${VERSION_FILE}"
 }
 
 main "$@"

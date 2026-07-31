@@ -27,18 +27,24 @@ function main {
     local force
     force="$(parse_force_flag "${1:-}")"
 
-    git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true
+    log "Checking dunst version"
+
+    git_clone_pull_repo "${DUNST_REPO_URL}" "${DUNST_DIR}" true "dunst"
 
     # shellcheck disable=SC2154  # set by git_clone_pull_repo above
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v dunst >/dev/null; then
-        log "dunst already at latest version, skipping build (use --force to rebuild)"
+        log "dunst already at latest version, skipping (use --force to reinstall)"
         return 0
     fi
 
     log "Installing dunst dependencies"
     sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
 
+    log "Building dunst from source"
     make_build_install "${DUNST_DIR}"
+
+    log "Verifying dunst installation"
+    command -v dunst >/dev/null || die "dunst not found after installation"
 }
 
 main "$@"

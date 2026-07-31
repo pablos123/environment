@@ -5,7 +5,7 @@ shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands git stow systemctl gsettings fc-cache i3-msg
+require_commands git stow systemctl gsettings fc-cache i3-msg pkill
 
 declare -r ENVIRONMENT_DIR="${HOME}/environment"
 declare -r DOTFILES_DIR="${HOME}/.dotfiles_stow"
@@ -58,6 +58,8 @@ function main {
     {
         fc-cache --really-force
         systemctl --user restart picom.service dunst.service
+        # kitty has no remote control enabled; SIGUSR1 makes it reload its config.
+        pkill --uid "${UID}" --exact --signal SIGUSR1 kitty || true
         # i3 restart re-runs 'exec_always open-bar', which quits polybar itself.
         i3-msg restart
     } >/dev/null || true

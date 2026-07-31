@@ -22,15 +22,25 @@ declare -ra DEPENDENCIES=(
     gir1.2-gtk-3.0
 )
 
+declare -ra PAPIRUS_THEMES=(
+    Papirus
+    Papirus-Dark
+    Papirus-Light
+)
+
+declare -ra ICON_SIZES=(16 22 24)
+
 function main {
     local force
     force="$(parse_force_flag "${1:-}")"
 
-    git_clone_pull_repo "${HARDCODE_TRAY_REPO_URL}" "${HARDCODE_TRAY_DIR}" true
+    log "Checking Hardcode-Tray version"
+
+    git_clone_pull_repo "${HARDCODE_TRAY_REPO_URL}" "${HARDCODE_TRAY_DIR}" true "Hardcode-Tray"
 
     # shellcheck disable=SC2154  # set by git_clone_pull_repo above
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v hardcode-tray >/dev/null; then
-        log "Hardcode-Tray already at latest version, skipping build (use --force to rebuild)"
+        log "Hardcode-Tray already at latest version, skipping (use --force to reinstall)"
     else
         log "Installing Hardcode-Tray dependencies"
         sudo apt install --yes "${DEPENDENCIES[@]}" >/dev/null
@@ -48,20 +58,17 @@ function main {
         )
     fi
 
-    if command -v hardcode-tray >/dev/null; then
-        log "Applying Papirus tray icon fix"
-        sudo hardcode-tray --apply --size 16 --theme Papirus
-        sudo hardcode-tray --apply --size 22 --theme Papirus
-        sudo hardcode-tray --apply --size 24 --theme Papirus
+    log "Verifying Hardcode-Tray installation"
+    command -v hardcode-tray >/dev/null || die "hardcode-tray not found after installation"
 
-        sudo hardcode-tray --apply --size 16 --theme Papirus-Dark
-        sudo hardcode-tray --apply --size 22 --theme Papirus-Dark
-        sudo hardcode-tray --apply --size 24 --theme Papirus-Dark
-
-        sudo hardcode-tray --apply --size 16 --theme Papirus-Light
-        sudo hardcode-tray --apply --size 22 --theme Papirus-Light
-        sudo hardcode-tray --apply --size 24 --theme Papirus-Light
-    fi
+    log "Applying Papirus tray icons"
+    local theme
+    for theme in "${PAPIRUS_THEMES[@]}"; do
+        local -i size
+        for size in "${ICON_SIZES[@]}"; do
+            sudo hardcode-tray --apply --size "${size}" --theme "${theme}" >/dev/null
+        done
+    done
 }
 
 main "$@"

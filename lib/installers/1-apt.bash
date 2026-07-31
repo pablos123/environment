@@ -118,11 +118,11 @@ declare -ra APT_PACKAGES=(
 
 function main {
     log "Updating system packages"
-    sudo apt update
-    sudo apt full-upgrade --yes
+    sudo apt update >/dev/null
+    sudo apt full-upgrade --yes >/dev/null
 
     log "Installing APT packages"
-    sudo apt install --yes "${APT_PACKAGES[@]}"
+    sudo apt install --yes "${APT_PACKAGES[@]}" >/dev/null
 
     if command -v fdfind >/dev/null; then
         log "Creating fd compatibility symlink"

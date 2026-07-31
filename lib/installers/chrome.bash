@@ -30,6 +30,9 @@ function main {
         fonts-noto-color-emoji \
         >/dev/null
 
+    log "Verifying Google Chrome installation"
+    command -v google-chrome-stable >/dev/null || die "google-chrome-stable not found after installation"
+
     if command -v xdg-settings >/dev/null; then
         log "Setting default browser"
         xdg-settings set default-web-browser 'google-chrome.desktop' || true

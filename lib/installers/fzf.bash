@@ -14,16 +14,21 @@ function main {
     local force
     force="$(parse_force_flag "${1:-}")"
 
-    git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true
+    log "Checking fzf version"
+
+    git_clone_pull_repo "${FZF_REPO_URL}" "${FZF_DIR}" true "fzf"
 
     # shellcheck disable=SC2154  # set by git_clone_pull_repo above
     if [[ "${force}" == "false" && "${GIT_REPO_CHANGED}" == "false" ]] && command -v fzf >/dev/null; then
-        log "fzf already at latest version, skipping install (use --force to reinstall)"
+        log "fzf already at latest version, skipping (use --force to reinstall)"
         return 0
     fi
 
     log "Installing fzf"
     "${FZF_DIR}/install" --all >/dev/null
+
+    log "Verifying fzf installation"
+    [[ -x "${FZF_DIR}/bin/fzf" ]] || die "fzf not found after installation"
 }
 
 main "$@"

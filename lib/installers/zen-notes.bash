@@ -42,17 +42,18 @@ function main {
         return 0
     fi
 
-    log "Updating Zen Notes to v${latest_version}"
+    log "Installing Zen Notes v${latest_version}"
     local current_version_path="${ZEN_NOTES_PATH}/zen-notes-v${current_version}"
     local latest_version_path="${ZEN_NOTES_PATH}/zen-notes-v${latest_version}"
     curl --no-progress-meter --location --output "${latest_version_path}" "${ZEN_NOTES_URL}" || true
 
-    if [[ -s "${latest_version_path}" ]]; then
-        chmod +x "${latest_version_path}" || true
+    log "Verifying Zen Notes installation"
+    [[ -s "${latest_version_path}" ]] || die "zen-notes not found after installation"
 
-        if [[ -s "${current_version_path}" && "${current_version_path}" != "${latest_version_path}" ]]; then
-            rm --force "${current_version_path}" || true
-        fi
+    chmod +x "${latest_version_path}"
+
+    if [[ -s "${current_version_path}" && "${current_version_path}" != "${latest_version_path}" ]]; then
+        rm --force "${current_version_path}" || true
     fi
 }
 

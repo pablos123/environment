@@ -28,15 +28,21 @@ function main {
         *) die "Mailspring has no .deb for architecture: ${arch}" ;;
     esac
 
+    log "Checking Mailspring version"
+
     local latest
     latest="$(github_latest_release_tag "${MAILSPRING_REPO}")"
-    [[ -n "${latest}" ]] || die "could not determine latest Mailspring release"
+
+    if [[ -z "${latest}" ]]; then
+        warn "Could not determine latest Mailspring version, skipping"
+        return 0
+    fi
 
     if [[ "${force}" == "false" ]] && command -v mailspring >/dev/null; then
         local installed
         installed="$(dpkg-query --showformat='${Version}' --show mailspring 2>/dev/null || true)"
         if [[ "${installed}" == "${latest}" ]]; then
-            log "Mailspring ${installed} already at latest version, skipping (use --force to reinstall)"
+            log "Mailspring ${latest} already at latest version, skipping (use --force to reinstall)"
             return 0
         fi
     fi
