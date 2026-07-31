@@ -160,6 +160,8 @@ KBEOF
     cat >/etc/keyd/default.conf <<'KDEOF'
 [ids]
 *
+# foostan Corne, remapped in its own firmware
+-4653:0001
 
 [main]
 capslock = escape
