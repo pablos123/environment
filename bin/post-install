@@ -181,6 +181,19 @@ KDEOF
 
     systemctl enable keyd
 
+    log "Configuring keyboard auto repeat"
+
+    mkdir --parents /etc/X11/xorg.conf.d
+
+    # Applied on device init, so hotplugged keyboards keep the rate too
+    cat >/etc/X11/xorg.conf.d/50-keyboard-autorepeat.conf <<'AREOF'
+Section "InputClass"
+    Identifier "keyboard autorepeat"
+    MatchIsKeyboard "on"
+    Option "AutoRepeat" "230 50"
+EndSection
+AREOF
+
     log "Configuring PAM to auto-unlock GNOME Keyring on login"
 
     if ! grep --quiet 'pam_gnome_keyring.so' /etc/pam.d/login; then
