@@ -8,7 +8,9 @@ source "${HOME}/environment/lib/helpers.bash"
 require_commands rofi
 
 function main {
-    exec rofi -show run -display-run ">"
+    # --disable-history: list only what is on PATH right now, never the
+    # frecency cache, which keeps showing programs that no longer exist.
+    exec rofi -show run -display-run ">" -disable-history
 }
 
 main "$@"

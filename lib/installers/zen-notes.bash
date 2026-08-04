@@ -5,11 +5,18 @@ shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands curl find grep chmod
+require_commands curl chmod mv rm
 
-declare -r ZEN_NOTES_PATH="${HOME}/bin"
+declare -r ZEN_NOTES_DIR="${HOME}/bin"
+declare -r ZEN_NOTES_PATH="${ZEN_NOTES_DIR}/zen-notes"
+declare -r ZEN_NOTES_DOWNLOAD_PATH="${ZEN_NOTES_DIR}/.zen-notes.download"
+declare -r VERSION_FILE="${ZEN_NOTES_DIR}/.zen-notes-version"
 declare -r ZEN_NOTES_URL="https://zennotes.org/download/linux-appimage"
 declare -r ZEN_NOTES_REPO="ZenNotes/zennotes"
+
+function cleanup {
+    rm --force "${ZEN_NOTES_DOWNLOAD_PATH}"
+}
 
 function main {
     local force
@@ -17,44 +24,39 @@ function main {
 
     log "Checking Zen Notes version"
 
-    local current_version_file
-    current_version_file="$(find "${ZEN_NOTES_PATH}" -name "zen-notes-v*" 2>/dev/null | head --lines=1)"
+    local latest
+    latest="$(github_latest_release_tag "${ZEN_NOTES_REPO}")"
+    latest="${latest#v}"
 
-    local current_version=""
-    local match
-    if [[ -n "${current_version_file}" ]]; then
-        if match="$(grep --only-matching -E 'v[0-9]+\.[0-9]+\.[0-9]+' <<<"${current_version_file}" | head --lines=1)"; then
-            current_version="${match#v}"
-        fi
-    fi
-
-    local latest_version
-    latest_version="$(github_latest_release_tag "${ZEN_NOTES_REPO}")"
-    latest_version="${latest_version#v}"
-
-    if [[ -z "${latest_version}" ]]; then
+    if [[ -z "${latest}" ]]; then
         warn "Could not determine latest Zen Notes version, skipping"
         return 0
     fi
 
-    if [[ "${force}" == "false" && "${latest_version}" == "${current_version}" ]]; then
-        log "Zen Notes v${current_version} already at latest version, skipping (use --force to reinstall)"
+    local current=""
+    if [[ -f "${VERSION_FILE}" ]]; then
+        current="$(<"${VERSION_FILE}")"
+    fi
+
+    if [[ "${force}" == "false" && -x "${ZEN_NOTES_PATH}" && "${latest}" == "${current}" ]]; then
+        log "Zen Notes v${current} already at latest version, skipping (use --force to reinstall)"
         return 0
     fi
 
-    log "Installing Zen Notes v${latest_version}"
-    local current_version_path="${ZEN_NOTES_PATH}/zen-notes-v${current_version}"
-    local latest_version_path="${ZEN_NOTES_PATH}/zen-notes-v${latest_version}"
-    curl --no-progress-meter --location --output "${latest_version_path}" "${ZEN_NOTES_URL}" || true
+    log "Installing Zen Notes v${latest}"
+    curl --fail --no-progress-meter --location \
+        --output "${ZEN_NOTES_DOWNLOAD_PATH}" \
+        "${ZEN_NOTES_URL}"
 
     log "Verifying Zen Notes installation"
-    [[ -s "${latest_version_path}" ]] || die "zen-notes not found after installation"
+    [[ -s "${ZEN_NOTES_DOWNLOAD_PATH}" ]] || die "zen-notes not found after installation"
 
-    chmod +x "${latest_version_path}"
+    chmod +x "${ZEN_NOTES_DOWNLOAD_PATH}"
+    mv --force "${ZEN_NOTES_DOWNLOAD_PATH}" "${ZEN_NOTES_PATH}"
+    echo "${latest}" >"${VERSION_FILE}"
 
-    if [[ -s "${current_version_path}" && "${current_version_path}" != "${latest_version_path}" ]]; then
-        rm --force "${current_version_path}" || true
-    fi
+    # Earlier installs kept the version in the filename (zen-notes-v2.20.2).
+    rm --force "${ZEN_NOTES_DIR}"/zen-notes-v*
 }
 
 main "$@"

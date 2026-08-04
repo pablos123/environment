@@ -48,9 +48,8 @@ function main {
     fi
 
     MAILSPRING_TMP_DIR="$(mktemp --directory)"
-    local deb_name="mailspring-${latest}-${arch}.deb"
-    local deb_path="${MAILSPRING_TMP_DIR}/${deb_name}"
-    local deb_url="https://github.com/${MAILSPRING_REPO}/releases/download/${latest}/${deb_name}"
+    local deb_path="${MAILSPRING_TMP_DIR}/mailspring.deb"
+    local deb_url="https://github.com/${MAILSPRING_REPO}/releases/download/${latest}/mailspring-${latest}-${arch}.deb"
 
     log "Downloading Mailspring ${latest} (${arch})"
     curl --fail --no-progress-meter --location --output "${deb_path}" "${deb_url}"
