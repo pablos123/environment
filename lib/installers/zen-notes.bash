@@ -55,7 +55,6 @@ function main {
     mv --force "${ZEN_NOTES_DOWNLOAD_PATH}" "${ZEN_NOTES_PATH}"
     echo "${latest}" >"${VERSION_FILE}"
 
-    # Earlier installs kept the version in the filename (zen-notes-v2.20.2).
     rm --force "${ZEN_NOTES_DIR}"/zen-notes-v*
 }
 

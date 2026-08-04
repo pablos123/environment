@@ -98,7 +98,6 @@ function make_words {
 function make_builds {
     mkdir --parents "${DOCS_DIR}/items/builds"
 
-    # playground: self-contained interactive apps (a dir with an index.html)
     local playground="<h2 class='section'>playground</h2>"
     local dir
     for dir in "${PAGE_DIR}/items/builds/"*/; do
@@ -116,7 +115,6 @@ function make_builds {
         playground="${playground}<a href='./${name}/index.html'>${title}</a><br>"
     done
 
-    # workshop: Markdown writeups (each links out to its repository)
     local workshop="<h2 class='section'>workshop</h2>"
     local file
     for file in "${PAGE_DIR}/items/builds/"*.md; do

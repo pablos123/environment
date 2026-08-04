@@ -48,7 +48,6 @@ function main {
         git -C "${ENVIRONMENT_DIR}" pull --ff-only --quiet
     fi
 
-    # Source helpers now that environment repo exists
     source "${ENVIRONMENT_DIR}/lib/helpers.bash"
 
     git_clone_pull_repo "${WALLPAPERS_REPO_URL}" "${HOME}/images/wallpapers" true
