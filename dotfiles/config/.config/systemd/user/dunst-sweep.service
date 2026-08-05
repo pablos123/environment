@@ -1,0 +1,12 @@
+[Unit]
+Description=Close notifications that refuse to expire
+BindsTo=x-session.target
+After=x-session.target dunst.service
+
+[Service]
+ExecStart=%h/environment/bin/dunst-sweep
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=x-session.target

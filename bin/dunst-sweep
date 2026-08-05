@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+shopt -s inherit_errexit
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands dunstctl
+
+declare -ri POLL_SECONDS=2
+declare -ri STUCK_SAMPLES=3
+
+# Chrome sends its requireInteraction notifications with expire_timeout=0, and
+# that beats both the configured timeout and a matching rule's timeout. A
+# notification whose count sits unchanged for longer than the configured
+# timeout cannot be a well behaved one, since those have already expired.
+# Closed notifications stay in dunst's history, recoverable with history-pop.
+function main {
+    local previous=''
+    local -i stable=0
+
+    while true; do
+        sleep "${POLL_SECONDS}"
+
+        local current
+        current="$(dunstctl count displayed 2>/dev/null)" || continue
+
+        if [[ "${current}" == "${previous}" ]] && ((current > 0)); then
+            ((++stable))
+        else
+            stable=0
+        fi
+
+        previous="${current}"
+
+        if ((stable >= STUCK_SAMPLES)); then
+            dunstctl close-all
+            stable=0
+            previous=''
+        fi
+    done
+}
+
+main "$@"
