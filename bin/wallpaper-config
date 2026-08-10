@@ -5,49 +5,330 @@ shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands hsetroot find
+require_commands hsetroot magick xrandr flock find
 
 declare -r CONFIG_FILE="${HOME}/.wallpaper_config"
+declare -r WALLPAPERS_ROOT="${HOME}/images/wallpapers"
+declare -r STATE_DIR="${XDG_RUNTIME_DIR:-/dev/shm}/wallpaper-fade"
+declare -ri FADE_FRAMES=16
+declare -ri JPEG_QUALITY=85
 declare -ra ALLOWED_FORMS=(cover center fill full tile extend)
+declare -ra FADEABLE_FORMS=(cover center fill full)
 
-function main {
+declare CONFIG_TYPE="default"
+declare CONFIG_FORM="cover"
+declare -i CONFIG_FADE=1
+declare STATE_CURRENT=""
+declare STATE_NEXT=""
+declare STATE_GEOMETRY=""
+declare STATE_TYPE=""
+declare RESTING_IMAGE=""
+
+# Reached through on_exit in helpers.bash: an interrupted fade must never leave
+# the root window on an intermediate frame or on black.
+function cleanup {
+    [[ -n "${RESTING_IMAGE}" ]] || return 0
+    hsetroot "-${CONFIG_FORM}" "${RESTING_IMAGE}" >/dev/null 2>&1 || true
+}
+
+function contains {
+    local needle="$1"
+    shift
+
+    local candidate
+    for candidate in "$@"; do
+        if [[ "${candidate}" == "${needle}" ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+function read_config {
     local type="default"
     local form="cover"
+    local fade=1
 
     if [[ -r "${CONFIG_FILE}" ]]; then
         # shellcheck source=/dev/null
         source "${CONFIG_FILE}"
     fi
-    form="${form:-cover}"
-    type="${type:-default}"
 
-    local -i is_valid=0
-    local allowed
-    for allowed in "${ALLOWED_FORMS[@]}"; do
-        if [[ "${form}" == "${allowed}" ]]; then
-            is_valid=1
-            break
+    CONFIG_TYPE="${type:-default}"
+    CONFIG_FORM="${form:-cover}"
+    CONFIG_FADE="${fade:-1}"
+
+    if ! contains "${CONFIG_FORM}" "${ALLOWED_FORMS[@]}"; then
+        warn "unknown wallpaper form '${CONFIG_FORM}', falling back to 'cover'"
+        CONFIG_FORM="cover"
+    fi
+}
+
+function output_geometry {
+    local -i best_area=0
+    local -i best_width=0
+    local -i best_height=0
+
+    local specification
+    while read -r _ _ specification _; do
+        local -i width="${specification%%/*}"
+        local remainder="${specification#*x}"
+        local -i height="${remainder%%/*}"
+
+        if ((width * height > best_area)); then
+            best_area=$((width * height))
+            best_width="${width}"
+            best_height="${height}"
         fi
-    done
-    if ((is_valid == 0)); then
-        warn "unknown wallpaper form '${form}', falling back to 'cover'"
-        form="cover"
+    done < <(xrandr --listmonitors | tail --lines=+2)
+
+    ((best_area)) || return 1
+
+    printf '%dx%d\n' "${best_width}" "${best_height}"
+}
+
+function wallpapers_directory {
+    local wallpaper_type="$1"
+
+    local directory="${WALLPAPERS_ROOT}/${wallpaper_type}"
+    if [[ ! -d "${directory}" ]]; then
+        directory="${WALLPAPERS_ROOT}/default"
     fi
 
-    local wallpapers_dir="${HOME}/images/wallpapers/${type}/"
-    if [[ ! -d "${wallpapers_dir}" ]]; then
-        wallpapers_dir="${HOME}/images/wallpapers/default/"
-    fi
+    printf '%s\n' "${directory}"
+}
+
+function pick_wallpaper {
+    local directory="$1"
+    local excluded="$2"
 
     local -a wallpapers
-    mapfile -t wallpapers < <(find "${wallpapers_dir}" -maxdepth 1 -type f -name '*.png')
+    mapfile -t wallpapers < <(find "${directory}" -maxdepth 1 -type f -name '*.png')
 
-    local -i items_count="${#wallpapers[@]}"
-    ((items_count)) || return 0
+    local -a pool=()
+    local wallpaper
+    for wallpaper in "${wallpapers[@]}"; do
+        if [[ "${wallpaper}" != "${excluded}" ]]; then
+            pool+=("${wallpaper}")
+        fi
+    done
 
-    local -i random_index=$((RANDOM % items_count))
-    local wallpaper="${wallpapers[random_index]}"
-    hsetroot "-${form}" "${wallpaper}" >/dev/null 2>&1
+    local -i count="${#pool[@]}"
+    ((count)) || return 1
+
+    printf '%s\n' "${pool[RANDOM % count]}"
+}
+
+# shellcheck disable=SC2034  # arguments_ref is a nameref, written for the caller
+function form_arguments {
+    local -n arguments_ref="$1"
+    local form="$2"
+    local geometry="$3"
+
+    case "${form}" in
+        cover)
+            arguments_ref=(-resize "${geometry}^" -gravity center -extent "${geometry}")
+            ;;
+        center)
+            arguments_ref=(-gravity center -background black -extent "${geometry}")
+            ;;
+        fill)
+            arguments_ref=(-resize "${geometry}!")
+            ;;
+        full)
+            arguments_ref=(-resize "${geometry}" -gravity center -extent "${geometry}")
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Frame FADE_FRAMES is deliberately absent: it is the source file itself,
+# blitted directly at rest. Computing it here would build the factor as
+# "0.1000" -- one tenth, not one -- because %03d pads rather than truncates.
+function build_ramp {
+    local image="$1"
+    local geometry="$2"
+    local target_dir="$3"
+
+    local -a scale_arguments
+    form_arguments scale_arguments "${CONFIG_FORM}" "${geometry}" || return 1
+
+    local staging_dir="${target_dir}.tmp"
+    rm --recursive --force "${staging_dir}"
+    mkdir --parents "${staging_dir}"
+
+    local base="${staging_dir}/base.bmp"
+    magick "${image}" "${scale_arguments[@]}" "${base}" || return 1
+
+    local -i i
+    for ((i = 1; i < FADE_FRAMES; i++)); do
+        local factor
+        factor="0.$(printf '%03d' $((i * 1000 / FADE_FRAMES)))"
+
+        magick "${base}" -evaluate multiply "${factor}" \
+            -quality "${JPEG_QUALITY}" -strip "${staging_dir}/${i}.jpg" || return 1
+    done
+
+    rm --force "${base}"
+    rm --recursive --force "${target_dir}"
+    mv "${staging_dir}" "${target_dir}"
+}
+
+function set_wallpaper {
+    local image="$1"
+
+    hsetroot "-${CONFIG_FORM}" "${image}" >/dev/null 2>&1
+}
+
+function play_fade {
+    local resting_image="$1"
+
+    RESTING_IMAGE="${resting_image}"
+
+    local -i i
+    for ((i = FADE_FRAMES - 1; i >= 1; i--)); do
+        hsetroot "-${CONFIG_FORM}" "${STATE_DIR}/cur/${i}.jpg" >/dev/null 2>&1
+    done
+
+    hsetroot -solid '#000000' >/dev/null 2>&1
+
+    for ((i = 1; i < FADE_FRAMES; i++)); do
+        hsetroot "-${CONFIG_FORM}" "${STATE_DIR}/next/${i}.jpg" >/dev/null 2>&1
+    done
+
+    set_wallpaper "${resting_image}"
+
+    RESTING_IMAGE=""
+}
+
+function load_state {
+    [[ -r "${STATE_DIR}/state" ]] || return 0
+
+    # shellcheck source=/dev/null
+    source "${STATE_DIR}/state"
+}
+
+function save_state {
+    local current="$1"
+    local next="$2"
+    local geometry="$3"
+
+    printf 'STATE_CURRENT=%q\nSTATE_NEXT=%q\nSTATE_GEOMETRY=%q\nSTATE_TYPE=%q\n' \
+        "${current}" "${next}" "${geometry}" "${CONFIG_TYPE}" >"${STATE_DIR}/state"
+}
+
+function ramps_are_usable {
+    local geometry="$1"
+
+    [[ -n "${STATE_CURRENT}" && -n "${STATE_NEXT}" ]] || return 1
+    [[ "${STATE_GEOMETRY}" == "${geometry}" ]] || return 1
+    [[ "${STATE_TYPE}" == "${CONFIG_TYPE}" ]] || return 1
+    [[ -r "${STATE_NEXT}" && -d "${STATE_DIR}/cur" ]] || return 1
+
+    local -a frames
+    mapfile -t frames < <(find "${STATE_DIR}/next" -maxdepth 1 -type f -name '*.jpg' 2>/dev/null)
+
+    ((${#frames[@]} == FADE_FRAMES - 1))
+}
+
+# Today's behaviour, for forms that cannot be pre-scaled and for fade=0. No
+# ramps are built, so nothing is left in tmpfs.
+function transition_without_ramps {
+    local directory="$1"
+    local geometry="$2"
+
+    local image
+    image="$(pick_wallpaper "${directory}" "${STATE_CURRENT}")" || return 0
+
+    set_wallpaper "${image}"
+
+    rm --recursive --force "${STATE_DIR}/cur" "${STATE_DIR}/next"
+    save_state "${image}" "" "${geometry}"
+}
+
+function prepare_next {
+    local directory="$1"
+    local current="$2"
+    local geometry="$3"
+
+    local next
+    next="$(pick_wallpaper "${directory}" "${current}")" || return 1
+
+    build_ramp "${next}" "${geometry}" "${STATE_DIR}/next" || return 1
+    save_state "${current}" "${next}" "${geometry}"
+}
+
+function cold_start {
+    local directory="$1"
+    local geometry="$2"
+
+    local image
+    image="$(pick_wallpaper "${directory}" "${STATE_CURRENT}")" || return 0
+
+    rm --recursive --force "${STATE_DIR}/cur" "${STATE_DIR}/next"
+
+    set_wallpaper "${image}"
+    save_state "${image}" "" "${geometry}"
+
+    build_ramp "${image}" "${geometry}" "${STATE_DIR}/cur" || return 0
+    prepare_next "${directory}" "${image}" "${geometry}" || return 0
+}
+
+function advance {
+    local directory="$1"
+    local geometry="$2"
+    local -i instant="$3"
+
+    local resting="${STATE_NEXT}"
+
+    if ((instant == 1)); then
+        set_wallpaper "${resting}"
+    else
+        play_fade "${resting}"
+    fi
+
+    rm --recursive --force "${STATE_DIR}/cur"
+    mv "${STATE_DIR}/next" "${STATE_DIR}/cur"
+    save_state "${resting}" "" "${geometry}"
+
+    prepare_next "${directory}" "${resting}" "${geometry}" || return 0
+}
+
+function main {
+    local -i instant=0
+    if [[ "${1:-}" == "--no-fade" ]]; then
+        instant=1
+    fi
+
+    mkdir --parents "${STATE_DIR}"
+
+    local lock_fd
+    exec {lock_fd}>"${STATE_DIR}/lock"
+    flock --nonblock "${lock_fd}" || return 0
+
+    read_config
+
+    local geometry
+    geometry="$(output_geometry)" || return 0
+
+    local directory
+    directory="$(wallpapers_directory "${CONFIG_TYPE}")"
+
+    load_state
+
+    if ((CONFIG_FADE == 0)) || ! contains "${CONFIG_FORM}" "${FADEABLE_FORMS[@]}"; then
+        transition_without_ramps "${directory}" "${geometry}"
+        return 0
+    fi
+
+    if ramps_are_usable "${geometry}"; then
+        advance "${directory}" "${geometry}" "${instant}"
+    else
+        cold_start "${directory}" "${geometry}"
+    fi
 }
 
 main "$@"

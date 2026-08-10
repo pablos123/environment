@@ -42,7 +42,7 @@ function main {
     i3-msg reload >/dev/null 2>&1
 
     [[ -x "${WALLPAPER_CONFIG}" ]] || return 0
-    "${WALLPAPER_CONFIG}"
+    "${WALLPAPER_CONFIG}" --no-fade
 }
 
 main "$@"
