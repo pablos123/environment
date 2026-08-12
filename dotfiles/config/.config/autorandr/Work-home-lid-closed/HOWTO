@@ -1,0 +1,11 @@
+# Work-home-lid-closed — work laptop, lid CLOSED, LG FULL HD over HDMI only.
+# Cannot be fabricated: autorandr matches by EDID, so it must be saved live
+# with the monitor plugged in and the laptop panel off.
+#
+#   xrandr --output HDMI-1 --primary --auto --output eDP-1 --off
+#   autorandr --save Work-home-lid-closed
+#   cp -r ~/.config/autorandr/Work-home-lid-closed ~/environment/dotfiles/config/.config/autorandr/
+#   git -C ~/environment add -A && git -C ~/environment commit -m genc
+#
+# If the LG lands on another port, swap HDMI-1 for the name `xrandr` reports.
+# Delete this file once the real 'config' and 'setup' are in place.
