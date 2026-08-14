@@ -91,6 +91,9 @@ function main {
     log "Granting sudo access to ${TARGET_USER}"
     usermod --append --groups sudo "${TARGET_USER}" >/dev/null
 
+    log "Granting journal read access to ${TARGET_USER}"
+    usermod --append --groups systemd-journal "${TARGET_USER}" >/dev/null
+
     log "Creating mount directories"
     mkdir --parents \
         "${MOUNT_BASE}/usb1" \
