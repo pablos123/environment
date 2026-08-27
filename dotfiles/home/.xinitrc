@@ -7,8 +7,6 @@ export XDG_SESSION_TYPE=x11
 
 xrdb -merge ~/.Xresources &
 
-xset r rate 230 50
-
 xset s off
 xset -dpms
 

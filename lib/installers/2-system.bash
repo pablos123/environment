@@ -55,6 +55,11 @@ KDEOF
 k:046d:c548
 
 [main]
+# keyd handles a device with one config file only, so default.conf's
+# swap has to be repeated here
+capslock = escape
+escape = capslock
+
 leftalt = layer(meta)
 leftmeta = layer(alt)
 rightalt = layer(control)
@@ -68,12 +73,14 @@ KDEOF
 
     sudo mkdir --parents /etc/X11/xorg.conf.d
 
-    # Applied on device init, so hotplugged keyboards keep the rate too
+    # Applied on device init, so hotplugged keyboards keep the rate too.
+    # Units differ from xset: "<delay ms> <interval ms>", so 20 ms == 50 Hz,
+    # matching the "xset r rate 230 50" in .xinitrc.
     sudo tee /etc/X11/xorg.conf.d/50-keyboard-autorepeat.conf >/dev/null <<'AREOF'
 Section "InputClass"
     Identifier "keyboard autorepeat"
     MatchIsKeyboard "on"
-    Option "AutoRepeat" "230 50"
+    Option "AutoRepeat" "230 20"
 EndSection
 AREOF
 
