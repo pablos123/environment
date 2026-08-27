@@ -41,6 +41,8 @@ KBEOF
 *
 # foostan Corne, remapped in its own firmware
 -4653:0001
+# Logi Bolt receiver, see logitech-bolt.conf
+-046d:c548
 
 [main]
 capslock = escape
@@ -49,7 +51,8 @@ KDEOF
 
     sudo tee /etc/keyd/logitech-bolt.conf >/dev/null <<'KDEOF'
 [ids]
-*Logi Bolt Receiver*
+# Logi Bolt receiver; every paired device reports this id
+k:046d:c548
 
 [main]
 leftalt = layer(meta)
