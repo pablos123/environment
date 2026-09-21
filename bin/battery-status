@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+shopt -s inherit_errexit
+
+source "${HOME}/environment/lib/helpers.bash"
+
+require_commands sleep
+
+declare -r POWER_SUPPLY_DIR="${POWER_SUPPLY_DIR:-/sys/class/power_supply}"
+declare -r BATTERY_DIR="${POWER_SUPPLY_DIR}/BAT0"
+declare -r ADAPTER_DIR="${POWER_SUPPLY_DIR}/AC0"
+
+declare -ri FULL_AT=98
+declare -ri LOW_AT=20
+declare -ri FRAME_SECONDS=1
+
+declare -r FAILURE_ICON=$''
+
+declare -ra RAMP_ICONS=($'' $'' $'' $'' $'')
+declare -ra CHARGING_ICONS=($'' $'' $'' $'' $'')
+declare -ra LOW_ICONS=($'' ' ')
+
+# The product of the animation lengths keeps each animation in phase.
+declare -ri FRAME_CYCLE=$((${#CHARGING_ICONS[@]} * ${#LOW_ICONS[@]}))
+
+function read_sysfs {
+    local path="$1"
+    local fallback="$2"
+
+    if [[ ! -r "${path}" ]]; then
+        printf '%s' "${fallback}"
+        return 0
+    fi
+
+    local value
+    read -r value <"${path}" || true
+
+    printf '%s' "${value:-${fallback}}"
+}
+
+# A full or threshold-parked pack also reports "Not charging".
+function battery_state {
+    local -i percentage="$1"
+    local status="$2"
+    local -i online="$3"
+    local -i end_threshold="$4"
+
+    if ((percentage >= FULL_AT)); then
+        printf 'full'
+        return 0
+    fi
+
+    if [[ "${status}" == "Charging" ]]; then
+        printf 'charging'
+        return 0
+    fi
+
+    if ((online == 1)) && [[ "${status}" == "Not charging" ]] &&
+        ((percentage < end_threshold)); then
+        printf 'failure'
+        return 0
+    fi
+
+    if ((percentage <= LOW_AT)); then
+        printf 'low'
+        return 0
+    fi
+
+    printf 'discharging'
+}
+
+function render {
+    local state="$1"
+    local -i percentage="$2"
+    local -i frame="$3"
+
+    local icon
+    case "${state}" in
+        "full")
+            icon="${RAMP_ICONS[-1]}"
+            ;;
+        "charging")
+            icon="${CHARGING_ICONS[frame % ${#CHARGING_ICONS[@]}]}"
+            ;;
+        "failure")
+            icon="${FAILURE_ICON}"
+            ;;
+        "low")
+            icon="${LOW_ICONS[frame % ${#LOW_ICONS[@]}]}"
+            ;;
+        *)
+            icon="${RAMP_ICONS[percentage / 25]}"
+            ;;
+    esac
+
+    printf '%s  %d%%' "${icon}" "${percentage}"
+}
+
+function current_line {
+    local -i frame="$1"
+
+    local status
+    status="$(read_sysfs "${BATTERY_DIR}/status" "Unknown")"
+
+    local -i online
+    online="$(read_sysfs "${ADAPTER_DIR}/online" "0")"
+
+    local -i percentage
+    percentage="$(read_sysfs "${BATTERY_DIR}/capacity" "0")"
+
+    local -i end_threshold
+    end_threshold="$(read_sysfs "${BATTERY_DIR}/charge_control_end_threshold" "100")"
+
+    local state
+    state="$(battery_state "${percentage}" "${status}" "${online}" "${end_threshold}")"
+
+    render "${state}" "${percentage}" "${frame}"
+}
+
+function main {
+    if [[ "${1:-}" == "--once" ]]; then
+        local line
+        line="$(current_line 0)"
+
+        printf '%s\n' "${line}"
+        return 0
+    fi
+
+    local -i frame=0
+    local previous=""
+    while true; do
+        local line
+        line="$(current_line "${frame}")"
+
+        if [[ "${line}" != "${previous}" ]]; then
+            printf '%s\n' "${line}"
+            previous="${line}"
+        fi
+
+        frame=$(((frame + 1) % FRAME_CYCLE))
+        sleep "${FRAME_SECONDS}"
+    done
+}
+
+main "$@"
