@@ -169,13 +169,16 @@ function battery {
     done
 }
 
-# \n \l \4 \d \t stay as agetty escapes: expanded per tty at print time.
+# \n \l \d \t stay as agetty escapes: expanded per tty at print time.
+# No \4 or \6: those subscribe agetty to RTMGRP_IPV4_IFADDR, and it reprints
+# the whole issue on every address change. getty runs it with --noclear, so the
+# reprints stack instead of replacing, once per interface coming up at boot.
 {
-    printf '\n%s%s%s%s%s%s\\l%s\\4%s\n' \
+    printf '\n%s%s%s%s%s%s\\l%s\n' \
         "${ACCENT}" \
         "$(. /etc/os-release && printf '%s' "${PRETTY_NAME//\//+}")" \
         "${RESET}" "${SEP}" \
-        "$(uname --kernel-release)" "${SEP}" "${SEP}" "${RESET}"
+        "$(uname --kernel-release)" "${SEP}" "${RESET}"
     printf '%s\\n%s%s%s%s\n' "${TEXT}" "${RESET}" "${SEP}" "$(disk)" "$(battery)"
     printf '%s\\t  \\d%s\n\n' "${DIM}" "${RESET}"
 } >/etc/issue.d/10-environment.issue
