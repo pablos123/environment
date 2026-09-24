@@ -5,15 +5,24 @@ shopt -s inherit_errexit
 
 source "${HOME}/environment/lib/helpers.bash"
 
-require_commands polybar polybar-msg
+require_commands polybar polybar-msg flock timeout
+
+declare -r LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/open-bar.lock"
 
 function main {
+    # At login i3's exec_always and autorandr's postswitch (i3-msg reload)
+    # both run this; interleaved runs quit each other's bars mid-startup.
+    local lock_fd
+    exec {lock_fd}>"${LOCK_FILE}"
+    flock "${lock_fd}"
+
     quit_and_wait "polybar-msg cmd quit" polybar
 
-    polybar left &
-    polybar center &
-    polybar tray &
-    exec polybar right
+    # Bars must not inherit the lock, or the next run would block forever.
+    local bar
+    for bar in left center tray right; do
+        polybar "${bar}" {lock_fd}>&- &
+    done
 }
 
 main "$@"

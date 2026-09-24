@@ -81,11 +81,19 @@ function kill_and_wait {
     done
 }
 
+declare -ri QUIT_TIMEOUT_TICKS=10
+
+# A process that ignores the quit command (e.g. hung) is killed after the timeout.
 function quit_and_wait {
     local quit_cmd="${1}"
     local process_name="${2}"
-    ${quit_cmd} || true
+    # shellcheck disable=SC2086  # quit_cmd is a command line; splitting is intended
+    timeout 3 ${quit_cmd} || true
+    local -i ticks=0
     while pgrep --uid "${UID}" --exact "${process_name}" >/dev/null; do
+        if ((ticks++ >= QUIT_TIMEOUT_TICKS)); then
+            pkill --uid "${UID}" --exact --signal SIGKILL "${process_name}" || true
+        fi
         sleep 0.3
     done
 }
