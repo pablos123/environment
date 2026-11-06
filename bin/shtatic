@@ -168,7 +168,7 @@ function main {
 
     build
 
-    if [[ "${1:-}" == "--serve" ]]; then
+    if [[ "${1:-}" == "-s" || "${1:-}" == "--serve" ]]; then
         serve
     fi
 }
