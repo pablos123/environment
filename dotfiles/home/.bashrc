@@ -116,7 +116,6 @@ if [[ -f "${HOME}/.bashrc_custom" ]]; then
     source "${HOME}/.bashrc_custom"
 fi
 
-export PYENV_ROOT="${HOME}/.pyenv"
 export NVM_DIR="${HOME}/.nvm"
 
 if [[ -f /usr/share/bash-completion/bash_completion ]]; then
@@ -131,13 +130,9 @@ if [[ -f "${HOME}/.cargo/env" ]]; then
     source "${HOME}/.cargo/env"
 fi
 
-if [[ -d "${PYENV_ROOT}/bin" && ":${PATH}:" != *":${PYENV_ROOT}/bin:"* ]]; then
-    export PATH="${PYENV_ROOT}/bin:${PATH}"
-fi
-
-if command -v pyenv &>/dev/null; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+if command -v uv &>/dev/null; then
+    eval "$(uv generate-shell-completion bash)"
+    eval "$(uvx --generate-shell-completion bash)"
 fi
 
 if [[ -s "${NVM_DIR}/nvm.sh" ]]; then

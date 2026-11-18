@@ -6,7 +6,7 @@ shopt -s inherit_errexit
 # Runs as root, so ${HOME} is /root — the repo lives in the target user's home.
 source "/home/pab/environment/lib/helpers.bash"
 
-require_commands apt systemctl usermod timedatectl getent dpkg
+require_commands apt systemctl usermod timedatectl getent dpkg runuser
 
 declare -r TARGET_USER="pab"
 
@@ -38,13 +38,11 @@ declare -ra APT_PACKAGES=(
     upower
     xfe
     shellcheck
-    pipx
     aria2
     pipewire-audio
     firmware-iwlwifi
     curl
     inxi
-    python3-venv
     imagemagick
     ripgrep
     bash-completion
@@ -169,10 +167,15 @@ DNSEOF
 
     systemctl enable docker
 
-    log "Writing .xinitrc for ${TARGET_USER}"
-
     local target_home
     target_home="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
+
+    log "Installing uv for ${TARGET_USER}"
+    curl --fail --no-progress-meter --location https://astral.sh/uv/install.sh |
+        runuser --user "${TARGET_USER}" -- env HOME="${target_home}" UV_NO_MODIFY_PATH=1 sh
+    [[ -x "${target_home}/.local/bin/uv" ]] || die "uv not found after installation"
+
+    log "Writing .xinitrc for ${TARGET_USER}"
 
     cat >"${target_home}/.xinitrc" <<'XINITRC'
 xrdb -merge "${HOME}/.Xresources" 2>/dev/null

@@ -84,7 +84,6 @@ declare -ra APT_PACKAGES=(
     pkexec
     inotify-tools
     libnotify-bin
-    python3-venv
     luarocks
     yad
     keepassxc
@@ -92,7 +91,6 @@ declare -ra APT_PACKAGES=(
     libpam-gnome-keyring
     picom
     bash-completion
-    pipx
     curl
     zenity
     shellcheck
