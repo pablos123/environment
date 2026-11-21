@@ -48,6 +48,7 @@ for_window [class="(?i)dbeaver"] move container to workspace 6
 for_window [class="(?i)steam"] move container to workspace 7
 
 for_window [instance="(?i)open.spotify.com"] move container to workspace 9
+for_window [instance="(?i)music.youtube.com"] move container to workspace 9
 for_window [instance="(?i)tidal.com"] move container to workspace 9
 
 for_window [class="(?i)xfe"] floating enable sticky enable focus
