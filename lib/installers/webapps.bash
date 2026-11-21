@@ -12,6 +12,7 @@ declare -rA WEB_APPS=(
     ["discord"]="https://discord.com/channels/@me"
     ["telegram"]="https://web.telegram.org/a/"
     ["spotify"]="https://open.spotify.com/"
+    ["music"]="https://music.youtube.com/"
     ["skype"]="https://web.skype.com/"
     ["excalidraw"]="https://excalidraw.com/"
     ["chatgpt"]="https://chatgpt.com/"
